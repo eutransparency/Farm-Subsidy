@@ -4,13 +4,15 @@
 #Set up Paths
 
 #Path to root of the project (where the indexer is)
-project_path = "/Users/sym/Projects/farm-subsidy/"
+#project_path = "/Users/sym/Projects/farm-subsidy/"
+project_path = "/var/www/farmsubsidy"
 
 #Indexer path
 indexer_path = project_path + "indexer"
 
 # Absolute path to the data (folder containing mdb and csv folders)
-datadir = "/Users/sym/Projects/farm-subsidy/data"
+#datadir = "/Users/sym/Projects/farm-subsidy/data"
+datadir = "/var/www/farmsubsidy/data"
 
 #Path to the MDBs (from unzipped data)
 mdbdir = datadir + "/mdb"

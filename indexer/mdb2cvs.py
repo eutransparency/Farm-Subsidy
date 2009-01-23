@@ -15,6 +15,7 @@ def extractmdb2csv():
   #Find all files with a .mdb extention and loop though them
   dbs = commands.getstatusoutput('find %s -name "*.mdb"' % (mdbdir))[1].splitlines()
   for db in dbs:
+    print db
 
     # Get the path the file is in
     filepath = '/'.join(db.split('/')[:-1])
@@ -30,6 +31,9 @@ def extractmdb2csv():
     tables = commands.getstatusoutput('mdb-tables %s' % (db))[1].split(" ")
       
     for table in tables:
+
+      tabletype = None
+
       if table[0:7] == 'payment':
         tabletype = 'payment'
       if table[0:9] == 'recipient':
@@ -55,7 +59,6 @@ def extractmdb2csv():
         file_all.write(fields+"\n")
         file_all.close()
         
-        tabletype = None
   
   
 if __name__ == '__main__':
