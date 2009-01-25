@@ -45,13 +45,13 @@ def extractmdb2csv():
         #Dump the table to a csv file
         tablepath = "%s/%s/%s/" % (csvdir,country, tabletype)
         commands.getstatusoutput('mkdir -p %s' % (tablepath))
-        commands.getstatusoutput('mdb-export %s %s > %s%s.csv'% (db,table,tablepath,table))
+        commands.getstatusoutput('mdb-export -H %s %s > %s%s.csv'% (db,table,tablepath,table))
       
         # Create the scheme file
         schemepath = "%s%s/%s/" % (fsconf.schemedir, country, tabletype)
         commands.getstatusoutput('mkdir -p %s' % (schemepath))
-        fields = commands.getstatusoutput('head -n 1 %s%s.csv' % (tablepath,table))[1]
-        filename = schemepath+table
+        fields = commands.getstatusoutput('mdb-export %s %s | head -n 1' % (db,table))[1]
+        filename = schemepath+table+".scheme"
         file = open(filename, 'w')
         file.write(fields)
         file.close()
