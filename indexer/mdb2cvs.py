@@ -62,44 +62,42 @@ def filenameToCountryCode(filename):
   if filename[0:7] == 'austria':
     return 'AT'
   if filename[0:7] == 'belgium':
-    return 'UK'
+    return 'BE'
   if filename[0:8] == 'bulgaria':
-    return 'AT'
+    return 'BG'
   if filename[0:5] == 'czech':
-    return 'UK'
+    return 'CZ'
   if filename[0:8] == 'estonia':
     return 'AT'
   if filename[0:7] == 'finland':
-    return 'UK'
+    return 'EE'
   if filename[0:6] == 'france':
-    return 'AT'
+    return 'FR'
   if filename[0:7] == 'germany':
-    return 'UK'
+    return 'DE'
   if filename[0:7] == 'hungary':
-    return 'AT'
+    return 'HU'
   if filename[0:7] == 'ireland':
-    return 'UK'
+    return 'IE'
   if filename[0:5] == 'italy':
-    return 'AT'
+    return 'IT'
   if filename[0:6] == 'latvia':
-    return 'UK'
+    return 'LV'
   if filename[0:9] == 'lithuania':
-    return 'AT'
+    return 'LT'
   if filename[0:6] == 'poland':
-    return 'UK'
+    return 'PL'
   if filename[0:8] == 'portugal':
-    return 'AT'
+    return 'PT'
   if filename[0:8] == 'slovakia':
     return 'UK'
   if filename[0:8] == 'slovenia':
-    return 'UK'
+    return 'SK'
   if filename[0:5] == 'spain':
-    return 'UK'
+    return 'ES'
   if filename[0:7] == 'toscana':
-    return 'UK'
+    return 'IT'
   if filename[0:13] == 'unitedkingdom':
-    return 'UK'
-  if filename[0:13] == '':
     return 'UK'
   else:
     raise Exception, "Could not work out country for %s!" % filename
