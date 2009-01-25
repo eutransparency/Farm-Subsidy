@@ -15,7 +15,6 @@ def extractmdb2csv():
   #Find all files with a .mdb extention and loop though them
   dbs = commands.getstatusoutput('find %s -name "*.mdb"' % (mdbdir))[1].splitlines()
   for db in dbs:
-    print db
 
     # Get the path the file is in
     filepath = '/'.join(db.split('/')[:-1])
@@ -24,8 +23,8 @@ def extractmdb2csv():
     filename = db.split('/')[-1]
 
     # Get the country
-    country = filename.split('-')[0]
-
+    country = filenameToCountryCode(filename)
+    
     # Make the country folder for the CSV files
     commands.getstatusoutput('mkdir %s/%s' % (csvdir,country))
     tables = commands.getstatusoutput('mdb-tables %s' % (db))[1].split(" ")
@@ -59,6 +58,57 @@ def extractmdb2csv():
         file_all.write(fields+"\n")
         file_all.close()
         
+def filenameToCountryCode(filename):
+  if filename[0:7] == 'austria':
+    return 'AT'
+  if filename[0:7] == 'belgium':
+    return 'UK'
+  if filename[0:8] == 'bulgaria':
+    return 'AT'
+  if filename[0:5] == 'czech':
+    return 'UK'
+  if filename[0:8] == 'estonia':
+    return 'AT'
+  if filename[0:7] == 'finland':
+    return 'UK'
+  if filename[0:6] == 'france':
+    return 'AT'
+  if filename[0:7] == 'germany':
+    return 'UK'
+  if filename[0:7] == 'hungary':
+    return 'AT'
+  if filename[0:7] == 'ireland':
+    return 'UK'
+  if filename[0:5] == 'italy':
+    return 'AT'
+  if filename[0:6] == 'latvia':
+    return 'UK'
+  if filename[0:9] == 'lithuania':
+    return 'AT'
+  if filename[0:6] == 'poland':
+    return 'UK'
+  if filename[0:8] == 'portugal':
+    return 'AT'
+  if filename[0:8] == 'slovakia':
+    return 'UK'
+  if filename[0:8] == 'slovenia':
+    return 'UK'
+  if filename[0:5] == 'spain':
+    return 'UK'
+  if filename[0:7] == 'toscana':
+    return 'UK'
+  if filename[0:13] == 'unitedkingdom':
+    return 'UK'
+  if filename[0:13] == '':
+    return 'UK'
+  else:
+    raise Exception, "Could not work out country for %s!" % filename
+  
+  
+  
+  
+  
+  
   
   
 if __name__ == '__main__':
