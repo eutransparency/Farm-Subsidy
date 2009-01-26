@@ -67,7 +67,7 @@ def filenameToCountryCode(filename):
     return 'BG'
   if filename[0:5] == 'czech':
     return 'CZ'
-  if filename[0:8] == 'estonia':
+  if filename[0:7] == 'estonia':
     return 'AT'
   if filename[0:7] == 'finland':
     return 'EE'
@@ -90,9 +90,9 @@ def filenameToCountryCode(filename):
   if filename[0:8] == 'portugal':
     return 'PT'
   if filename[0:8] == 'slovakia':
-    return 'UK'
-  if filename[0:8] == 'slovenia':
     return 'SK'
+  if filename[0:8] == 'slovenia':
+    return 'SL'
   if filename[0:5] == 'spain':
     return 'ES'
   if filename[0:7] == 'toscana':

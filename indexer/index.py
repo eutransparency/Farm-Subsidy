@@ -42,6 +42,7 @@ def index():
               payment_id = values[scheme['payment_id']]
               recipient_id = values[scheme['recipient_id']]              
             except:
+              print scheme
               raise Exception, "There was an error, maybe with the scheme mappings for %s/%s/%s?" % (country, tabletype, table)
           if tabletype == 'recipient':
             try:

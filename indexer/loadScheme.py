@@ -13,9 +13,9 @@ def loadScheme(schemefile):
   file.close()
   fieldMap = fieldNameMappings()
   for key,field in enumerate(schemetext.split(',')):
+    field = field.lower().strip()
     if field in fieldMap:
       scheme[fieldMap[field]] = key
-  print scheme
   return scheme    
   
 
@@ -43,6 +43,7 @@ def fieldNameMappings():
 
   fieldMapping['amount'] = 'amount'
   fieldMapping['Amount'] = 'amount'  
+  fieldMapping['amount_euro_conversion'] = 'amount'
   fieldMapping['payment_id'] = 'payment_id'
   fieldMapping['recipient_id'] = 'recipient_id'
   fieldMapping['id_recipient_1'] = 'recipient_id'
@@ -58,5 +59,5 @@ def fieldNameMappings():
   
   
 if __name__ == '__main__':
-  print loadScheme('/Users/sym/Projects/farm-subsidy/data/scheme/estonia/payment/payment20070218.scheme')
-  print loadScheme('/Users/sym/Projects/farm-subsidy/data/scheme/estonia/recipient/recipient20070218.scheme')  
+  print loadScheme('/var/www/farmsubsidy/data/scheme/IE/payment/payment.scheme')
+#  print loadScheme('/Users/sym/Projects/farm-subsidy/data/scheme/estonia/payment/payment20070218.scheme')
