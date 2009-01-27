@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-import os, sys, string, commands, fsconf, loadScheme
+import os, sys, string, commands, fsconf, loadScheme, csv, traceback
 
 # This modules should:
 # 
@@ -28,22 +28,30 @@ def index():
         tabletype = dataFilePath.split('/')[-2]
         table = dataFilePath.split('/')[-1]
         
-        reader = file(dataFilePath)
-                
+        reader = csv.reader(open(dataFilePath))
         for key,line in enumerate(reader):
+          
+          
           recipient_id = None
           if key > 10: # just for testing :)
             break
-          values = line.split(',')
+          # values = line.split(',')
           if tabletype == 'payment':
             try:
               rec_type = 'payment'
-              amount = values[scheme['amount']]
-              payment_id = values[scheme['payment_id']]
-              recipient_id = values[scheme['recipient_id']]              
-            except:
+              amount = line[scheme['amount']]
+              try:
+                payment_id = line[scheme['payment_id']]
+              except:
+                payment_id = 0
+              recipient_id = line[scheme['recipient_id']]              
+            except Exception, e:
               print scheme
-              raise Exception, "There was an error, maybe with the scheme mappings for %s/%s/%s?" % (country, tabletype, table)
+              print line
+              print e
+              traceback.print_exc()  
+              sys.exit()            
+              # raise Exception, "There was an error, maybe with the scheme mappings for %s/%s/%s?" % (country, tabletype, table)
           if tabletype == 'recipient':
             try:
               rec_type = 'recipient'

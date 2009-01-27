@@ -1,21 +1,26 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-import os, sys, string, commands, fsconf
+import os, sys, string, commands, fsconf, csv
 
 def loadScheme(schemefile):
   """Where 'schemefile' is a path to a .scheme file
      Returns a list of field names and key"""
   
   scheme = {}
-  file = open(schemefile,'r')
-  schemetext = file.read() + '\n'
-  file.close()
+  
+  schemetext = csv.reader(open(schemefile))
+  
+  # file = open(schemefile,'r')
+  # schemetext = file.read() + '\n'
+  # file.close()
   fieldMap = fieldNameMappings()
-  for key,field in enumerate(schemetext.split(',')):
-    field = field.lower().strip()
-    if field in fieldMap:
-      scheme[fieldMap[field]] = key
+  
+  for line in schemetext:
+    for key,field in enumerate(line):    
+      field = field.lower().strip()
+      if field in fieldMap:
+        scheme[fieldMap[field]] = key
   return scheme    
   
 
@@ -59,5 +64,5 @@ def fieldNameMappings():
   
   
 if __name__ == '__main__':
-  print loadScheme('/var/www/farmsubsidy/data/scheme/IE/payment/payment.scheme')
-#  print loadScheme('/Users/sym/Projects/farm-subsidy/data/scheme/estonia/payment/payment20070218.scheme')
+  # print loadScheme('/var/www/farmsubsidy/data/scheme/IE/payment/payment.scheme')
+ print loadScheme('/Users/sym/Projects/farm-subsidy/data/scheme/AT/payment/payment20070218.scheme')

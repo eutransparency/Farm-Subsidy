@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-import os, sys, string, commands, fsconf
+import os, sys, string, commands, fsconf, countryCodes
 
-def extractmdb2csv():
+def extractmdb2csv(countryToProcess="all"):
   """Uses mdbtools to extract tables from access
   databases and put them in to a given directory, 
   as set in fsconf.py"""
@@ -24,6 +24,8 @@ def extractmdb2csv():
 
     # Get the country
     country = filenameToCountryCode(filename)
+    if countryToProcess is not "all" and countryToProcess != country:
+      continue
     
     # Make the country folder for the CSV files
     commands.getstatusoutput('mkdir %s/%s' % (csvdir,country))
@@ -85,6 +87,8 @@ def filenameToCountryCode(filename):
     return 'LV'
   if filename[0:9] == 'lithuania':
     return 'LT'
+  if filename[0:10] == 'netherland':
+    return 'NL'        
   if filename[0:6] == 'poland':
     return 'PL'
   if filename[0:8] == 'portugal':
@@ -95,8 +99,6 @@ def filenameToCountryCode(filename):
     return 'SL'
   if filename[0:5] == 'spain':
     return 'ES'
-  if filename[0:7] == 'toscana':
-    return 'IT'
   if filename[0:13] == 'unitedkingdom':
     return 'UK'
   else:
@@ -110,4 +112,11 @@ def filenameToCountryCode(filename):
   
   
 if __name__ == '__main__':
-  extractmdb2csv()
+  if len(sys.argv) > 1:
+    if sys.argv[1] in countryCodes.countryCodes() or sys.argv[1] == "all":
+      country = sys.argv[1]
+      extractmdb2csv(country)
+    else:
+      print "%s isn't a valid country code" % sys.argv[1]
+  else:
+    print "Usage: 'python mdb2csv.py [country|all]"
