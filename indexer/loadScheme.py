@@ -62,6 +62,15 @@ def fieldNameMappings():
   return fieldMapping
 
   
+def mapSchemeToData(schemefile):
+  """Maps a given scheme file to the relivent data file"""
+  path = "%s/%s.csv" % (fsconf.csvdir, "/".join(schemefile.split('/')[-3:]).split('.')[0])
+  if os.path.exists(path):
+    return path
+  else:
+    raise Exception, "The scheme file %s has no data file mapping at %s" % (schemefile, path)
+
+  
   
 if __name__ == '__main__':
   # print loadScheme('/var/www/farmsubsidy/data/scheme/IE/payment/payment.scheme')

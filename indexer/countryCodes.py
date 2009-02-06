@@ -70,8 +70,6 @@ def filenameToCountryCode(filename):
     return 'UK'
   else:
     raise Exception, "Could not work out country for %s!" % filename
-
-  
   
 if __name__ == '__main__':
   print countryCodes()

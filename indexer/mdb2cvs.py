@@ -48,7 +48,8 @@ def extractmdb2csv(countryToProcess="all"):
         commands.getstatusoutput('mkdir -p %s' % (tablepath))
         commands.getstatusoutput('mdb-export -H %s %s > %s%s.csv'% (db,table,tablepath,table))
       
-        # Create the scheme file
+        # Create the scheme file.  
+        # Scheme files are created sepirate so the data files can be split later, if need be.
         schemepath = "%s%s/%s/" % (fsconf.schemedir, country, tabletype)
         commands.getstatusoutput('mkdir -p %s' % (schemepath))
         fields = commands.getstatusoutput('mdb-export %s %s | head -n 1' % (db,table))[1]
