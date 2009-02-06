@@ -26,7 +26,9 @@ def index():
   global database,indexer 
   database = xapian.WritableDatabase(fsconf.xapianDbPath, xapian.DB_CREATE_OR_OPEN)
   indexer = xapian.TermGenerator()
-
+  stemmer = xapian.Stem("english")
+  indexer.set_stemmer(stemmer)
+  
   
   # Find each scheme file
   for dirpath, dirnames, filenames in os.walk(schemedir):
@@ -42,15 +44,12 @@ def index():
         scheme['country'] = dataFilePath.split('/')[-3]
         scheme['tabletype'] = dataFilePath.split('/')[-2]
         scheme['table'] = dataFilePath.split('/')[-1]
-        
-        
-        
+                
         # Open the data file for looping over
         reader = csv.reader(open(dataFilePath))
         linecount = csv.reader(open(dataFilePath))
         
         print scheme['country'], scheme['tabletype'], scheme['table']
-
         pbar = progressbar.ProgressBar(maxval=len(list(linecount))).start()
         for key,line in enumerate(reader):
           recipient_id = None
@@ -67,7 +66,6 @@ def index():
           if scheme['tabletype'] == 'recipient':
             # We're looking at a payment record
             index_recipient(scheme,line)
-
             
           pbar.update(key)
         pbar.finish()
@@ -76,45 +74,51 @@ def index():
   
 def index_payments(scheme,line):
   """indexes all payment records"""
-  pass
-
-def index_recipient(scheme,line):
-  """indexes all recipient records"""
   doc = xapian.Document()
   doc.set_data("|||".join(line))
-  
+
+  #Create a unique document ID
   unique_id = "%s-%s-%s" % (scheme['country'], scheme['table'].split('.')[0], line[scheme['recipient_id']])  
   doc.add_value(0,unique_id)
   docid = "XDOCID"+unique_id
   doc.add_term(docid)
 
-  indexer.set_document(doc)
-  # print line[scheme['name']]
-  indexer.index_text(line[scheme['name']],10,"XNAME")
+  if 'recipient_id' in scheme:
+    doc.add_term("XRID"+line[scheme['recipient_id']])
 
-  # for value in doc.values():
-  #   print value.num,value.value
-  
-  # print doc
+  doc.add_value(1,xapian.sortable_serialise(float(line[scheme['amount']])))
+  doc.add_value(2,xapian.sortable_serialise(float(line[scheme['year']])))
+
+  indexer.set_document(doc)
+
+  database.replace_document(docid,doc)
+
+
+def index_recipient(scheme,line):
+  """indexes all recipient records"""
+  doc = xapian.Document()
+  doc.set_data("|||".join(line))
+
+  #Create a unique document ID
+  unique_id = "%s-%s-%s" % (scheme['country'], scheme['table'].split('.')[0], line[scheme['recipient_id']])  
+  doc.add_value(0,unique_id)
+  docid = "XDOCID"+unique_id
+  doc.add_term(docid)
+
+  if 'recipient_id' in scheme:
+    doc.add_term("XRID"+line[scheme['recipient_id']])
+    
+  # Will add this later:
+  # if 'address1' in scheme:
+  #   if scheme['address1'] not "":
+  #     doc.add_term("XADDRESS1:"+line[scheme['address1']])
+
+  indexer.set_document(doc)
+
+  indexer.index_text(line[scheme['name']],10,"XNAME")
   
   database.replace_document(docid,doc)
 
-  # payment_id = line[scheme['payment_id']]
-                  
-  # try:
-
-  #   amount = line[scheme['amount']]
-  #   try:
-  #     payment_id = line[scheme['payment_id']]
-  #   except:
-  #     payment_id = 0
-  #   recipient_id = line[scheme['recipient_id']]              
-  # except Exception, e:
-  #   print scheme
-  #   print line
-  #   print e
-  #   traceback.print_exc()  
-  #   sys.exit()
 
 if __name__ == '__main__':
   index()

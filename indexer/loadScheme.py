@@ -59,6 +59,17 @@ def fieldNameMappings():
   fieldMapping['geo2'] = 'geo2'  
   fieldMapping['country'] = 'country'
 
+  # recipient stuff
+  fieldMapping['address1'] = 'address1'
+  fieldMapping['zipcode'] = 'zipcode'
+  fieldMapping['geo1'] = 'geo1'
+  fieldMapping['geo2'] = 'geo2'
+  fieldMapping['geo3'] = 'geo3'
+  fieldMapping['geo4'] = 'geo4'
+  fieldMapping['cord_x'] = 'cord_x'
+  fieldMapping['cord_y'] = 'cord_y'
+  
+
   return fieldMapping
 
   

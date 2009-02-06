@@ -30,7 +30,14 @@ query_string = " ".join(sys.argv[1:])
 qp = xapian.QueryParser()
 qp.set_default_op(xapian.Query.OP_AND)
 
-qp.set_stemmer(xapian.Stem("english"))
+amount = xapian.NumberValueRangeProcessor(1,"amount")
+qp.add_valuerangeprocessor(amount)
+
+year = xapian.NumberValueRangeProcessor(2,"year")
+qp.add_valuerangeprocessor(year)
+
+
+# qp.set_stemmer(xapian.Stem("english"))
 qp.set_database(database)
 qp.set_stemming_strategy(xapian.QueryParser.STEM_SOME)
 
@@ -38,7 +45,9 @@ qp.add_prefix("name", "XNAME")
 qp.add_boolean_prefix("id", "XID")
 
 
-query = qp.parse_query(query_string, DEFAULT_SEARCH_FLAGS)
+
+
+query = qp.parse_query(query_string, DEFAULT_SEARCH_FLAGS, "XNAME")
 print "Parsed query is: %s" % query.get_description()
 
 
