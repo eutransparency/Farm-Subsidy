@@ -2,6 +2,8 @@
 # encoding: utf-8
 
 import os, sys, string, commands, fsconf, loadScheme, csv, traceback, xapian
+sys.path.append('lib')
+import  progressbar
 
 # This modules should:
 # 
@@ -45,21 +47,30 @@ def index():
         
         # Open the data file for looping over
         reader = csv.reader(open(dataFilePath))
+        linecount = csv.reader(open(dataFilePath))
+        
+        print scheme['country'], scheme['tabletype'], scheme['table']
+
+        pbar = progressbar.ProgressBar(maxval=len(list(linecount))).start()
         for key,line in enumerate(reader):
           recipient_id = None
-          
+
           # Only loop 10 lines.  Just for testing!
           # if key > 10: 
-          #             break
-                    
+          #   break
+
           if scheme['tabletype'] == 'payment':
             # We're looking at a payment record
             index_payments(scheme,line)
-                            
-              
+
+
           if scheme['tabletype'] == 'recipient':
             # We're looking at a payment record
             index_recipient(scheme,line)
+
+            
+          pbar.update(key)
+        pbar.finish()
     database.flush()
 
   
