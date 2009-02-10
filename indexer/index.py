@@ -85,9 +85,12 @@ def index_payments(scheme,line):
 
   if 'recipient_id' in scheme:
     doc.add_term("XRID"+line[scheme['recipient_id']])
-
-  doc.add_value(1,xapian.sortable_serialise(float(line[scheme['amount']])))
-  doc.add_value(2,xapian.sortable_serialise(float(line[scheme['year']])))
+  
+  if 'amount' in scheme:
+    if line[scheme['amount']] is not "":
+      doc.add_value(1,xapian.sortable_serialise(float(line[scheme['amount']])))
+  if 'year' in scheme:
+    doc.add_value(2,xapian.sortable_serialise(float(line[scheme['year']])))
 
   indexer.set_document(doc)
 
@@ -104,6 +107,8 @@ def index_recipient(scheme,line):
   doc.add_value(0,unique_id)
   docid = "XDOCID"+unique_id
   doc.add_term(docid)
+
+  doc.add_term("XCOUNTRY:"+scheme['country'])
 
   if 'recipient_id' in scheme:
     doc.add_term("XRID"+line[scheme['recipient_id']])

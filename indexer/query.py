@@ -42,6 +42,7 @@ qp.set_database(database)
 qp.set_stemming_strategy(xapian.QueryParser.STEM_SOME)
 
 qp.add_prefix("name", "XNAME")
+qp.add_boolean_prefix("country", "XCOUNTRY:")
 qp.add_boolean_prefix("id", "XID")
 
 
