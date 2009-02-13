@@ -49,7 +49,6 @@ def index():
         reader = csv.reader(open(dataFilePath))
         linecount = csv.reader(open(dataFilePath))
         
-        print scheme['country'], scheme['tabletype'], scheme['table']
         pbar = progressbar.ProgressBar(maxval=len(list(linecount))).start()
         for key,line in enumerate(reader):
           recipient_id = None
@@ -90,7 +89,13 @@ def index_payments(scheme,line):
     if line[scheme['amount']] is not "":
       doc.add_value(1,xapian.sortable_serialise(float(line[scheme['amount']])))
   if 'year' in scheme:
-    doc.add_value(2,xapian.sortable_serialise(float(line[scheme['year']])))
+    try:
+      year_float = float(line[scheme['year']])
+      doc.add_value(2,xapian.sortable_serialise(float(line[scheme['year']])))
+    except:
+      f = open('/tmp/borkedyears/%s-%s.txt' % (scheme['country'],scheme['table']),'w')
+      f.write(",".join(line))
+      f.close()
 
   indexer.set_document(doc)
 
