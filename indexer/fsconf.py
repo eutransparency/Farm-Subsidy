@@ -5,20 +5,20 @@ import os
 
 #Set up Paths
 
-#Path to root of the project (where the indexer is)
+#Path to root of the project (where the indexer is),
 if os.environ['COMPUTERNAME'] == "macbook-sym":
-  project_path = "/Users/sym/Projects/farm-subsidy"
+  project_path = "/Users/sym/Projects/farm-subsidy/"
 else:
-  project_path = "/var/www/farmsubsidy"
+  project_path = "/var/www/farmsubsidy/"
+
+# absolute path to the data (folder containing mdb and csv folders)
+datadir = project_path + "data"
+
+# Tmp path
+tmppath = "/tmp"
 
 #Indexer path
 indexer_path = project_path + "indexer"
-
-# Absolute path to the data (folder containing mdb and csv folders)
-if os.environ['COMPUTERNAME'] == "macbook-sym":
-  datadir = "/Users/sym/Projects/farm-subsidy/data"
-else:
-  datadir = "/var/www/farmsubsidy/data"
 
 #Path to the MDBs (from unzipped data)
 mdbdir = datadir + "/mdb"
@@ -30,4 +30,4 @@ csvdir = datadir + "/csv"
 schemedir = datadir+'/scheme/'
 
 #Xapian Database
-xapianDbPath = project_path + '/xapian.db'
+xapianDbPath = project_path + 'xapian.db'

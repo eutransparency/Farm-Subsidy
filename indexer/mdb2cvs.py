@@ -11,7 +11,7 @@ def extractmdb2csv(countryToProcess="all"):
   datadir = fsconf.datadir
   mdbdir = fsconf.mdbdir
   csvdir = fsconf.csvdir
-
+  
   #Find all files with a .mdb extention and loop though them
   dbs = commands.getstatusoutput('find %s -name "*.mdb"' % (mdbdir))[1].splitlines()
   for db in dbs:
@@ -21,10 +21,13 @@ def extractmdb2csv(countryToProcess="all"):
 
     # Get the file name
     filename = db.split('/')[-1]
+    
+    # Database ID
+    dbid =  filename.split('.')[0]
 
     # Get the country
     country = countryCodes.filenameToCountryCode(filename)
-    if countryToProcess is not "all" and countryToProcess != country:
+    if countryToProcess != "all" and countryToProcess != country:
       continue
     
     # Make the country folder for the CSV files
@@ -46,14 +49,14 @@ def extractmdb2csv(countryToProcess="all"):
         #Dump the table to a csv file
         tablepath = "%s/%s/%s/" % (csvdir,country, tabletype)
         commands.getstatusoutput('mkdir -p %s' % (tablepath))
-        commands.getstatusoutput('mdb-export -H %s %s > %s%s.csv'% (db,table,tablepath,table))
+        commands.getstatusoutput('mdb-export -H %s %s > %s%s--%s.csv'% (db,table,tablepath,dbid,table))
       
         # Create the scheme file.  
         # Scheme files are created sepirate so the data files can be split later, if need be.
         schemepath = "%s%s/%s/" % (fsconf.schemedir, country, tabletype)
         commands.getstatusoutput('mkdir -p %s' % (schemepath))
         fields = commands.getstatusoutput('mdb-export %s %s | head -n 1' % (db,table))[1]
-        filename = schemepath+table+".scheme"
+        filename = "%s%s--%s.scheme" %(schemepath,dbid,table)
         file = open(filename, 'w')
         file.write(fields)
         file.close()

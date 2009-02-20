@@ -85,4 +85,4 @@ def mapSchemeToData(schemefile):
   
 if __name__ == '__main__':
   # print loadScheme('/var/www/farmsubsidy/data/scheme/IE/payment/payment.scheme')
- print loadScheme('/Users/sym/Projects/farm-subsidy/data/scheme/AT/payment/payment20070218.scheme')
+ print loadScheme('/Users/sym/Projects/farm-subsidy/data/scheme/AT/payment/austria-20081111--payment20080628.scheme')
