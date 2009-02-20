@@ -66,6 +66,8 @@ def filenameToCountryCode(filename):
     return 'SL'
   if filename[0:5] == 'spain':
     return 'ES'
+  if filename[0:6] == 'sweden':
+    return 'SE'
   if filename[0:13] == 'unitedkingdom':
     return 'UK'
   else:
