@@ -107,7 +107,7 @@ def mapSchemeToData(schemefile):
     raise Exception, "The scheme file %s has no data file mapping at %s" % (schemefile, path)
 
 
-def calc_year(year):
+def calc_year(year,fragile=false):
   """Takes a string in the format of either '2000', '2000-2001' or '2000-2008'
   and does something sane with them"""
   years = str(year).split('-')
@@ -116,7 +116,7 @@ def calc_year(year):
 
   years_len = len(range(int(years[0]),int(years[-1])))
   if years_len > 2:
-    if not options.fragile:
+    if not fragile:
       return
     else:
       raise ValueError, "Year span too long"

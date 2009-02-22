@@ -109,7 +109,7 @@ def index_payments(data,line):
     if line[data['scheme']['amount']] is not "":
       doc.add_value(1,xapian.sortable_serialise(float(line[data['scheme']['amount']])))
   if 'year' in data['scheme']:
-    data['calced_year'] = loadScheme.calc_year(line[data['scheme']['year']])
+    data['calced_year'] = loadScheme.calc_year(line[data['scheme']['year']],options.fragile)
     if data['calced_year']:
       doc.add_value(2,xapian.sortable_serialise(data['calced_year']))
 
