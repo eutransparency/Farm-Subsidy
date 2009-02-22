@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-import os, sys, string, commands, fsconf, csv
+import os, sys, string, commands, fsconf, csv, math
 
 def loadScheme(schemefile):
   """Where 'schemefile' is a path to a .scheme file
@@ -81,6 +81,25 @@ def mapSchemeToData(schemefile):
   else:
     raise Exception, "The scheme file %s has no data file mapping at %s" % (schemefile, path)
 
+
+def calc_year(year):
+  """Takes a string in the format of either '2000', '2000-2001' or '2000-2008'
+  and does something sane with them"""
+  years = str(year).split('-')
+  for key,year in enumerate(years):
+    years[key] = float(year)
+
+  years_len = len(range(int(years[0]),int(years[-1])))
+  if years_len > 2:
+    if not options.fragile:
+      return
+    else:
+      raise ValueError, "Year span too long"
+  elif years_len < 1:
+    year_int = int(math.ceil(sum(years)))
+  else:
+    year_int = int(math.ceil(sum(years) / 2))
+  return year_int
   
   
 if __name__ == '__main__':
