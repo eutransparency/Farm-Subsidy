@@ -49,9 +49,6 @@ def fieldNameMappings():
   fieldMapping['amount'] = 'amount'
   fieldMapping['Amount'] = 'amount'  
   fieldMapping['amount_euro_conversion'] = 'amount'
-  fieldMapping['payment_id'] = 'payment_id'
-  fieldMapping['recipient_id'] = 'recipient_id'
-  fieldMapping['id_recipient_1'] = 'recipient_id'
   fieldMapping['year'] = 'year'
   fieldMapping['Year'] = 'year'  
   fieldMapping['name'] = 'name'
@@ -59,16 +56,44 @@ def fieldNameMappings():
   fieldMapping['geo2'] = 'geo2'  
   fieldMapping['country'] = 'country'
 
-  # recipient stuff
+  # Address stuff
+  fieldMapping['address'] = 'address1'
   fieldMapping['address1'] = 'address1'
+  fieldMapping['address2'] = 'address2'
   fieldMapping['zipcode'] = 'zipcode'
   fieldMapping['geo1'] = 'geo1'
   fieldMapping['geo2'] = 'geo2'
   fieldMapping['geo3'] = 'geo3'
   fieldMapping['geo4'] = 'geo4'
+
+  # Geocode stuff
   fieldMapping['cord_x'] = 'cord_x'
   fieldMapping['cord_y'] = 'cord_y'
+  fieldMapping['cord_x'] = 'Lat'
+  fieldMapping['cord_y'] = 'Lng'
+
+  #IDs
+  fieldMapping['payment_id'] = 'payment_id'
+  fieldMapping['recipient_id'] = 'recipient_id'
+  fieldMapping['id_recipient_1'] = 'recipient_id'
+  fieldMapping['country1_id'] = 'country1_id'
+  fieldMapping['country2_id'] = 'country2_id'
+  fieldMapping['recipient_id_eu'] = 'recipient_id_eu'
+  fieldMapping['recipient_id_x'] = 'recipient_id_x'
   
+  # To Add:
+    # source
+    # country
+    # city
+    # town
+    # zip_area
+    # town2
+    # Zip_integer
+    # notes
+
+
+
+
 
   return fieldMapping
 

@@ -72,8 +72,8 @@ def index(country=None, tabletype=None, table=None):
           recipient_id = None
 
           # Only loop 10 lines.  Just for testing!
-          if key > 10: 
-            break
+          # if key > 10: 
+          #   break
           
           data['linenumber'] = key+1
           
@@ -174,14 +174,13 @@ def format_doc(data,line):
   doc.append(s.substitute(value='"%s"' % ('","'.join(line))))
   
   doc.append('<div class="originaldata">')
+  
   for item in data['scheme']:
-    print item,
     s = Template('  <div class="$key">$value</div>')
     doc.append(s.substitute(key=item, value=line[data['scheme'][item]]))
   doc.append('</div>')        
 
-  print "\n".join(doc)
-  sys.exit()
+  # print "\n".join(doc)
   
   # print scheme,line
   return "\n".join(doc)
