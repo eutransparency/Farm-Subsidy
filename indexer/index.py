@@ -145,11 +145,8 @@ def index_recipient(data,line):
   indexer.set_document(doc)
 
   indexer.index_text(line[data['scheme']['name']],10,"XNAME")
-  
-  print doc
-  sys.exit(1)
-  
-  if not options.dryrun:
+
+   if not options.dryrun:
     database.replace_document(docid,doc)
 
 
