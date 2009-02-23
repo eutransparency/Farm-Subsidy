@@ -6,10 +6,10 @@ import os
 #Set up Paths
 
 #Path to root of the project (where the indexer is),
-if os.environ['COMPUTERNAME'] == "macbook-sym":
-  project_path = "/Users/sym/Projects/farm-subsidy/"
-else:
-  project_path = "/var/www/farmsubsidy/"
+#if os.environ['COMPUTERNAME'] == "macbook-sym":
+#  project_path = "/Users/sym/Projects/farm-subsidy/"
+#else:
+project_path = "/var/www/farmsubsidy/"
 
 # absolute path to the data (folder containing mdb and csv folders)
 datadir = project_path + "data"

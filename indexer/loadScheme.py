@@ -107,7 +107,7 @@ def mapSchemeToData(schemefile):
     raise Exception, "The scheme file %s has no data file mapping at %s" % (schemefile, path)
 
 
-def calc_year(year,fragile=false):
+def calc_year(year,fragile=None):
   """Takes a string in the format of either '2000', '2000-2001' or '2000-2008'
   and does something sane with them"""
   years = str(year).split('-')

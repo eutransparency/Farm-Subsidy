@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/!svn/ver/152/trunk/maintainer
+END
+TODO
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/152/trunk/maintainer/TODO
+END
+release-checklist
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/151/trunk/maintainer/release-checklist
+END
+make_docs.sh
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/141/trunk/maintainer/make_docs.sh
+END

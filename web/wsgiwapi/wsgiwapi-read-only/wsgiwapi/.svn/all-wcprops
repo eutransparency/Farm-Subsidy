@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/!svn/ver/154/trunk/wsgiwapi
+END
+pathinfo.py
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/141/trunk/wsgiwapi/pathinfo.py
+END
+validation.py
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/141/trunk/wsgiwapi/validation.py
+END
+reason_phrases.py
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/141/trunk/wsgiwapi/reason_phrases.py
+END
+autodoc.py
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/141/trunk/wsgiwapi/autodoc.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/141/trunk/wsgiwapi/__init__.py
+END
+application.py
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/154/trunk/wsgiwapi/application.py
+END
+decorators.py
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/154/trunk/wsgiwapi/decorators.py
+END
+overlaydict.py
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/141/trunk/wsgiwapi/overlaydict.py
+END
+wsgisupport.py
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/153/trunk/wsgiwapi/wsgisupport.py
+END
+jsonsupport.py
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/141/trunk/wsgiwapi/jsonsupport.py
+END
+logging.py
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/141/trunk/wsgiwapi/logging.py
+END

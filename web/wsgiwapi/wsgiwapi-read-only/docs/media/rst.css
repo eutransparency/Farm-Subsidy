@@ -1,0 +1,46 @@
+
+body {
+    background-color: #F0F0FB;
+    font-family: helvetica, arial, sans-serif;
+    font-size: 12pt;
+}
+
+.section {
+    background-color: white;
+    margin: 20px auto;
+    text-align:left;
+    padding: 5px;
+    border: 1px solid #B0B0B0;
+}
+
+.literal-block {
+    margin-left: 1em;
+    margin-right: 1em;
+    border: 1px solid blue;
+    padding: 1em;
+    background-color: #eeeeee;
+    overflow: auto;
+}
+
+.note {
+    margin-left: 1em;
+    margin-right: 1em;
+    border: 1px solid #B0B0B0;
+    padding: 1em;
+    margin: 1em;
+    overflow: auto;
+}
+.warning {
+    margin-left: 1em;
+    margin-right: 1em;
+    border: 1px solid red;
+    padding: 1em;
+    margin: 1em;
+    overflow: auto;
+}
+
+
+
+.admonition-title {
+    font-weight: bold;
+}

@@ -1,0 +1,51 @@
+/* Site-wide text styling. */
+
+.default {
+    background-color: #F0F0FB;
+    font-family: helvetica, arial, sans-serif;
+    font-size: 12pt;
+}
+
+h1 {
+    font-size: 22pt;
+}
+h2 {
+    font-size: 17pt;
+}
+
+hr {
+    border: 0;
+    text-align: center;
+    width: 97%;
+    color: #D0D0D0;
+    background-color: #D0D0D0;
+    height: 1px;
+    margin-top: 18px;
+}
+
+a:link {
+    text-decoration: none;
+    color: #0040B0;
+}
+a:visited {
+    text-decoration: none;
+    color: #0040B0;
+}
+a:hover {
+    color: darkred;
+}
+
+.contentbox {
+    background-color: white;
+    width: 800px;
+    margin: 20px auto;
+    text-align:left;
+    padding: 5px;
+    border: 1px solid #B0B0B0;
+}
+
+.subcontent {
+    border: 0px solid pink;
+    width: auto;
+    margin: 30px 30px 50px 30px;
+}

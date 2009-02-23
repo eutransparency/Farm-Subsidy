@@ -1,0 +1,9 @@
+K 10
+svn:ignore
+V 39
+.coverage
+.runtests.prof
+dist
+MANIFEST
+
+END
