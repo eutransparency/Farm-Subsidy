@@ -102,6 +102,8 @@ def index_payments(data,line):
   docid = "XDOCID"+unique_id
   doc.add_term(docid)
 
+  doc.add_term('XTYPE:payment')
+
   if 'recipient_id' in data['scheme']:
     doc.add_term("XRID:%s-%s" % (data['database'],line[data['scheme']['recipient_id']]))
   
@@ -130,6 +132,8 @@ def index_recipient(data,line):
   doc.add_value(0,unique_id)
   docid = "XDOCID"+unique_id
   doc.add_term(docid)
+
+  doc.add_term('XTYPE:recipient')
 
   doc.add_term("XCOUNTRY:"+data['country'])
 
