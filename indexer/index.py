@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-import os, sys, string, commands, fsconf, loadScheme, csv, traceback, xapian
+import os, sys, string, commands, fsconf, scheme, csv, traceback, xapian
 import math
 from string import Template
 from optparse import OptionParser
 sys.path.append('lib')
 import  progressbar
-
+import countryCodes
+import pprint
 
 # This modules should:
 # 
@@ -23,11 +24,11 @@ schemedir = fsconf.schemedir
 
 def index(country=None, tabletype=None, table=None):
   """The Main indexing function.  This will:
-  1. Load each scheme and check the data file exists for it
-  2. Load the data file in to a csv reader object
-  3. Loop though the data, line by line, trying to guess the field names.
+  1. Load each data file to a csv reader object
+  2. Loop though the data, line by line (doc by doc), trying to guess the field names.
   """
-  global database,indexer 
+
+  global database, indexer
   database = xapian.WritableDatabase(fsconf.xapianDbPath, xapian.DB_CREATE_OR_OPEN)
   indexer = xapian.TermGenerator()
   stemmer = xapian.Stem("english")
@@ -35,60 +36,127 @@ def index(country=None, tabletype=None, table=None):
   
   
   # Find each scheme file
-  for dirpath, dirnames, filenames in os.walk(schemedir):
+  for dirpath, dirnames, filenames in os.walk(csvdir):
+    
     for name in filenames: 
+
       if name[-7:] == ".scheme":
-        
-        data = {}
-        # Load the scheme information        
-        schemeFilePath = os.path.join(dirpath, name)
-        data['scheme'] = loadScheme.loadScheme(schemeFilePath)
-      
-      
+        print name  
         # Get some information about the data
-        dataFilePath = loadScheme.mapSchemeToData(schemeFilePath)
-        data['country'] = dataFilePath.split('/')[-3]
-        data['tabletype'] = dataFilePath.split('/')[-2]
-        data['table'] = dataFilePath.split('/')[-1]
-        data['database'] = data['table'].split('--')[0]
-
-        if country is not None and country != data['country']:
-          continue
-
-        if tabletype is not None and tabletype != data['tabletype']:
-          continue
+        meta = {}
         
-        if table is not None and table != data['table']:
-          continue        
+        data_file_path = scheme.mapSchemeToData(name)
                 
+        meta['scheme'] = scheme.loadScheme("%s/%s" % (csvdir,name))
+
+        meta['country'] = countryCodes.filenameToCountryCode(name[12:])
+
+
+        # TODO Add more options here.  Like the filename to index
+        if country is not None and country != meta['scheme']['country']:
+          continue
+      
+
         # Open the data file for looping over
-        reader = csv.reader(open(dataFilePath))
-        linecount = csv.reader(open(dataFilePath))
-        
-        print data['country'],data['tabletype'],data['table']
-        
-        pbar = progressbar.ProgressBar(maxval=len(list(linecount))).start()
+        reader = csv.reader(open(data_file_path))
+
+        # FIXME - Can I just count the lines from the first reader?
+        linecount = csv.reader(open(data_file_path))
+
+      
+        # pbar = progressbar.ProgressBar(maxval=len(list(linecount))).start()
         for key,line in enumerate(reader):
           recipient_id = None
 
           # Only loop 10 lines.  Just for testing!
-          # if key > 10: 
-          #   break
+          if key > 10: 
+            break
+        
+          meta['linenumber'] = key+1
           
-          data['linenumber'] = key+1
           
-          if data['tabletype'] == 'payment':
-            # We're looking at a payment record
-            index_payments(data,line)
+          index_line(line, meta)
+
+          
+        #   pbar.update(key)
+        # pbar.finish()
+      database.flush()
 
 
-          if data['tabletype'] == 'recipient':
-            # We're looking at a payment record
-            index_recipient(data,line)
-            
-          pbar.update(key)
-        pbar.finish()
-    database.flush()
+def index_line(line,meta):
+  """docstring for index_line"""
+  doc = xapian.Document()
+  
+  #Create a unique document ID
+  
+  # TODO Come up with a really good, true, unique ID 
+  #      (in a way that can make a nice hackable URL)
+  
+  uniques = (
+    meta['country'], 
+    line[meta['scheme']['year']], 
+    line[meta['scheme']['recipient_id']],
+  )
+  
+  unique_id = "-".join("%s" % v for v in uniques)
+    
+  doc.add_value(0,unique_id)
+  docid = "XDOCID"+unique_id
+  doc.add_term(docid)
+
+  fields = scheme.fieldTypeMaps()
+
+  # pp = pprint.PrettyPrinter(indent=4)
+  # pp.pprint(dict(fields))
+  # 
+  # sys.exit()
+  indexer.set_document(doc)
+  
+  for field in meta['scheme']:
+    if fields[field]:
+      if meta['scheme'][field] in range(len(line)):
+        if 'formatter' in fields[field]:
+          field_value = line[meta['scheme'][field]]
+          field_value = eval(fields[field]['formatter'])
+        else:
+          field_value = line[meta['scheme'][field]]
+      else:
+        field_value = meta['scheme'][field]
+
+      
+      if 'prefix' in fields[field]:
+        if 'index' in fields[field]:
+          indexer.index_text(field_value,fields[field]['termweight'],fields[field]['prefix'])
+          print "yes"
+        else:
+          doc.add_term(fields[field]['prefix']+field_value)
+      
+      if 'value' in fields[field]:
+        print field_value
+        # print fields[field]['value'],eval(fields[field]['value_formatter'])
+        doc.add_value(fields[field]['value'],eval(fields[field]['value_formatter']))
+      
+      # if 'formatter' in fields[field]:
+      #   print field,eval(fields[field]['formatter'])
+      # else:
+      #   print field,meta['scheme'][field]
+
+        
+  
+  # print meta
+  # sys.exit()
+
+  # doc.add_term("XCOUNTRY:"+meta['country'])
+  # 
+  # if 'recipient_id' in meta['scheme']:
+  #   rid = "%s" % (line[meta['scheme']['recipient_id']])
+  #   doc.add_value(3,rid)
+  #   doc.add_term("XRID:%s" % rid)
+
+  doc.set_data(format_doc(meta,line))
+
+
+  database.replace_document(docid,doc)
 
   
 def index_payments(data,line):
@@ -105,8 +173,10 @@ def index_payments(data,line):
   doc.add_term('XTYPE:payment')
 
   if 'recipient_id' in data['scheme']:
-    doc.add_term("XRID:%s-%s" % (data['database'],line[data['scheme']['recipient_id']]))
-  
+    rid = "%s-%s" % (data['database'],line[data['scheme']['recipient_id']])
+    doc.add_value(3,rid)
+    doc.add_term("XRID:%s" % rid)
+
   if 'amount' in data['scheme']:
     if line[data['scheme']['amount']] is not "":
       doc.add_value(1,xapian.sortable_serialise(float(line[data['scheme']['amount']])))
@@ -138,7 +208,9 @@ def index_recipient(data,line):
   doc.add_term("XCOUNTRY:"+data['country'])
 
   if 'recipient_id' in data['scheme']:
-    doc.add_term("XRID:%s-%s" % (data['database'],line[data['scheme']['recipient_id']]))
+    rid = "%s-%s" % (data['database'],line[data['scheme']['recipient_id']])
+    doc.add_value(3,rid)
+    doc.add_term("XRID:%s" % rid)
     
   # Will add this later:
   # if 'address1' in scheme:

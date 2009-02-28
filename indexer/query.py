@@ -53,11 +53,11 @@ def get_doc_by_rid(RIDS):
     # print "%i: %i%% docid=%i" % (m.rank + 1, m.percent, m.docid)
 
 
-    # t = database.termlist(m.docid)
-    # for term in t:
-    #   if term.term[0:5] == "XYEAR":
-    #     year = term.term[5:]
-    #     print "year:",year
+    t = database.termlist(m.docid)
+    for term in t:
+      if term.term[0:5] == "XYEAR":
+        year = term.term[5:]
+        print "year:",year
 
 
 
@@ -95,10 +95,10 @@ def main_search():
   qp = xapian.QueryParser()
   qp.set_default_op(xapian.Query.OP_AND)
 
-  amount = xapian.NumberValueRangeProcessor(1,"amount")
+  amount = xapian.NumberValueRangeProcessor(2,"amount")
   qp.add_valuerangeprocessor(amount)
 
-  year = xapian.NumberValueRangeProcessor(2,"year")
+  year = xapian.NumberValueRangeProcessor(1,"year")
   qp.add_valuerangeprocessor(year)
 
 
@@ -109,7 +109,7 @@ def main_search():
   qp.add_prefix("name", "XNAME")
   qp.add_boolean_prefix("country", "XCOUNTRY:")
   qp.add_boolean_prefix("id", "XID")
-
+  qp.add_boolean_prefix("type", "XTYPE:")
 
 
 
@@ -126,18 +126,20 @@ def main_search():
 
   for m in matches:
     # print m.document.get_data()
-    # print "%i: %i%% docid=%i" % (m.rank + 1, m.percent, m.docid)
+    print "%i: %i%% docid=%i" % (m.rank + 1, m.percent, m.docid)
     t = database.termlist(m.docid)
     name = []
     RID = []
     for term in t:
+      print term.term
       if term.term[0:5] == "XNAME":
         name.append(term.term[5:])
       if term.term[0:4] == "XRID":
         RID.append(term.term[4:])
     print " ".join(name)
-    print get_doc_by_rid(RID)
-    print "\n\n"
+    # print RID
+    # print get_doc_by_rid(RID)
+    print "\n"
   
   
   
