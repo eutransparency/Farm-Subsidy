@@ -3,6 +3,10 @@
 
 import os, sys, string, commands, fsconf, countryCodes
 import re
+import MySQLdb
+import MySQLdb.converters
+import csv
+
 
 def extractmdb2mysql(countryToProcess="all"):
   """Uses mdbtools to extract tables from access
@@ -13,6 +17,13 @@ def extractmdb2mysql(countryToProcess="all"):
   mysql_user = fsconf.mysql_user
   mysql_pass = fsconf.mysql_pass
   mdbdir = fsconf.mdbdir
+  
+  connection = MySQLdb.connect (host = "localhost",
+                             user = mysql_user,
+                             passwd = mysql_pass,
+                             )
+  c = connection.cursor()
+  
   
   #Find all files with a .mdb extention and loop though them
   dbs = commands.getstatusoutput('find %s -name "*.mdb"' % (mdbdir))[1].splitlines()
@@ -32,28 +43,40 @@ def extractmdb2mysql(countryToProcess="all"):
     if countryToProcess != "all" and countryToProcess != country:
       continue
       
-    mysql_string = "mysql -u %s --password=%s " % (mysql_user,mysql_pass)
+
     mysql_database_name = mysql_prefix+dbid
-    print commands.getstatusoutput("echo 'create database %s' | %s" % (mysql_database_name,mysql_string))
-    # print "create database %s | %s" % (mysql_database_name,mysql_string)
-    mysql_string += mysql_database_name 
-
-
-
-    scheme = commands.getoutput("mdb-schema %s mysql" % (db))
+    
+    connection.query("drop database IF EXISTS %s;" % (mysql_database_name))
         
-      
+    connection.query("create database %s;" % (mysql_database_name))
+
+    connection.query("use %s;" % (mysql_database_name))
+    
+    
+    scheme = commands.getoutput("mdb-schema %s mysql" % (db))
     scheme = re.findall("(CREATE TABLE [^;]+;)", str(scheme))
     scheme_sql = []
     for match in scheme:
-      scheme_sql.append(re.sub("-","_", "%s\n\n\n" % match))
-    
+      scheme_sql.append(re.sub("-","_", "%s\n\n\n" % match))    
     scheme_sql = "\n\n".join(scheme_sql)
-    
     scheme_sql = re.sub("\t([^\t]+)\t\t","\t`\\1`\t", scheme_sql)
 
-    print commands.getoutput("echo '%s' | %s" % (scheme_sql, mysql_string))
+    # c.execute("FLUSH TABLES")
+    # connection.query("FLUSH TABLES")
     
+    # connection.commit()
+    connection.query("%s;" % scheme_sql)    
+    c.close()
+    connection.close()
+    
+    
+    connection = MySQLdb.connect (host = "localhost",
+                               user = mysql_user,
+                               passwd = mysql_pass,
+                               db=mysql_database_name
+                               )
+    c = connection.cursor()
+
     
     tables = commands.getstatusoutput('mdb-tables %s' % (db))[1].split(" ")
       
@@ -69,11 +92,23 @@ def extractmdb2mysql(countryToProcess="all"):
       if tabletype:
         print "%s - %s" % (country, tabletype)
         
-        print commands.getstatusoutput("mdb-export -I %s %s \
-        | sed -e 's/)$/)\;/' \
-        | %s" \
-        % (db,table,mysql_string))
+        print commands.getstatusoutput("mdb-export -H %s %s > /tmp/%s.csv" % (db, table, table))
+        
+        reader = csv.reader(open("/tmp/%s.csv" % (table)))
+        
+        for key,line in enumerate(reader):
+        
+          # Only loop 10 lines.  Just for testing!
+          # if key > 10: 
+          #   break
+          
+          sql = "INSERT INTO `%s` VALUES %s;" % (table, tuple(line))
+          print c.execute(sql)
 
+        
+          
+        # sys.exit()
+        # rows = 
 
         # # Create the scheme file.  
         # # Scheme files are created sepirate so the data files can be split later, if need be.
