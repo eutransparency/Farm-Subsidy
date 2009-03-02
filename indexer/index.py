@@ -99,13 +99,13 @@ def index_line(line,meta):
   )
   
   unique_id = "-".join("%s" % v for v in uniques)
-    
+  
   doc.add_value(0,unique_id)
   docid = "XDOCID"+unique_id
   doc.add_term(docid)
-
+  
   fields = scheme.fieldTypeMaps()
-
+  
   # pp = pprint.PrettyPrinter(indent=4)
   # pp.pprint(dict(fields))
   # 
@@ -122,7 +122,6 @@ def index_line(line,meta):
           field_value = line[meta['scheme'][field]]
       else:
         field_value = meta['scheme'][field]
-
       
       if 'prefix' in fields[field]:
         if 'index' in fields[field]:
