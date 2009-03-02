@@ -7,9 +7,9 @@ import os
 
 #Path to root of the project (where the indexer is),
 # if os.environ['COMPUTERNAME'] == "macbook-sym":
-project_path = "/Users/sym/Projects/farm-subsidy/"
+#project_path = "/Users/sym/Projects/farm-subsidy/"
 # else:
-  # project_path = "/var/www/farmsubsidy/"
+project_path = "/var/www/farmsubsidy/"
 
 # absolute path to the data (folder containing mdb and csv folders)
 datadir = project_path + "data"
@@ -34,7 +34,7 @@ xapianDbPath = project_path + 'xapian.db'
 
 #Mysql database name to use to temp databases
 mysql_prefix = "farmsubsidy_"
-mysql_user = "farmsubsidy"
+mysql_user = "farmsubsidy2"
 mysql_pass = "farmsubsidy"
 
 

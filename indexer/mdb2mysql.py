@@ -6,6 +6,9 @@ import re
 import MySQLdb
 import MySQLdb.converters
 import csv
+import codecs
+
+ 
 
 
 def extractmdb2mysql(countryToProcess="all"):
@@ -21,6 +24,7 @@ def extractmdb2mysql(countryToProcess="all"):
   connection = MySQLdb.connect (host = "localhost",
                              user = mysql_user,
                              passwd = mysql_pass,
+                             charset = 'utf8',
                              )
   c = connection.cursor()
   
@@ -43,12 +47,13 @@ def extractmdb2mysql(countryToProcess="all"):
     if countryToProcess != "all" and countryToProcess != country:
       continue
       
+    print country
 
     mysql_database_name = mysql_prefix+dbid
     
     connection.query("drop database IF EXISTS %s;" % (mysql_database_name))
         
-    connection.query("create database %s;" % (mysql_database_name))
+    connection.query("create database %s DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;" % (mysql_database_name))
 
     connection.query("use %s;" % (mysql_database_name))
     
@@ -59,13 +64,34 @@ def extractmdb2mysql(countryToProcess="all"):
     for match in scheme:
       scheme_sql.append(re.sub("-","_", "%s\n\n\n" % match))    
     scheme_sql = "\n\n".join(scheme_sql)
+
+    scheme_sql = re.sub("CREATE TABLE ([^\n]+)","CREATE TABLE `\\1`",scheme_sql)
+
+    tablenames = re.findall("CREATE TABLE ([^\n]+)",scheme_sql)
+    for tablename in tablenames:
+      scheme_sql = re.sub("CREATE TABLE %s" % tablename,"CREATE TABLE %s" % re.sub(" ","_",tablename), scheme_sql)
+
+   
     scheme_sql = re.sub("\t([^\t]+)\t\t","\t`\\1`\t", scheme_sql)
+
+    # Add Indexes
+    indextable = re.findall("CREATE TABLE `([^`]+)`[^;]+(`recipient_id`)[^;]+;",scheme_sql, re.S)
+    for table,field in indextable:
+      scheme_sql = """
+        %s
+
+        ALTER TABLE `%s` ADD INDEX ( %s );  
+      """ % (scheme_sql,table,field)
 
     # c.execute("FLUSH TABLES")
     # connection.query("FLUSH TABLES")
-    
     # connection.commit()
-    connection.query("%s;" % scheme_sql)    
+    try:
+      connection.query("%s;" % scheme_sql)    
+    except Exception, e:
+      print "Error loading scheme"
+      print scheme_sql
+      print e
     c.close()
     connection.close()
     
@@ -92,25 +118,34 @@ def extractmdb2mysql(countryToProcess="all"):
       if tabletype:
         print "%s - %s" % (country, tabletype)
         
-        print commands.getstatusoutput("mdb-export -H %s %s > /tmp/%s.csv" % (db, table, table))
+        print commands.getstatusoutput("mdb-export -H %s %s > /tmp/%s-%s.csv" % (db, table, country, table))
         
-        reader = csv.reader(open("/tmp/%s.csv" % (table)))
+        reader = csv.reader(codecs.open("/tmp/%s-%s.csv" % (country, table),'r'))
         
-        for key,line in enumerate(reader):
-        
+        for line in reader:
           # Only loop 10 lines.  Just for testing!
-          # if key > 10: 
-          #   break
-          
-          sql = "INSERT INTO `%s` VALUES %s;" % (table, tuple(line))
-          print c.execute(sql)
+          #if key > 10: 
+          #  break
+          #line = ",".join("\"%s\"" % field for field in line) 
+
+          try:
+            line = ",".join("'%s'" % re.escape(field) for field in line)
+
+            sql = "INSERT INTO `%s` VALUES (%s);" % (table, line)
+            #print sql
+            c.execute(sql)
+          except Exception,e:
+            print line
+            print sql
+            print e
+
 
         
           
         # sys.exit()
         # rows = 
 
-        # # Create the scheme file.  
+        # # cCreate the scheme file.  
         # # Scheme files are created sepirate so the data files can be split later, if need be.
         # schemepath = "%s%s/%s/" % (fsconf.schemedir, country, tabletype)
         # commands.getstatusoutput('mkdir -p %s' % (schemepath))

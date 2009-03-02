@@ -10,6 +10,7 @@ def countryCodes():
   codes.append('CZ')
   codes.append('AT')
   codes.append('EE')
+  codes.append('FI')
   codes.append('FR')
   codes.append('DE')
   codes.append('HU')
