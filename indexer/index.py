@@ -93,17 +93,30 @@ def index_line(line,meta):
   #      (in a way that can make a nice hackable URL)
   
   uniques = (
-    meta['country'], 
-    line[meta['scheme']['year']], 
+    meta['country'],
     line[meta['scheme']['recipient_id']],
+    line[meta['scheme']['payment_id']],
+    scheme.calc_year(line[meta['scheme']['year']]),
   )
   
   unique_id = "-".join("%s" % v for v in uniques)
-  
+
   doc.add_value(0,unique_id)
   docid = "XDOCID"+unique_id
   doc.add_term(docid)
+
+  unique_id_x = (
+  meta['country'],
+  scheme.calc_year(line[meta['scheme']['year']]),
+  line[meta['scheme']['recipient_id_x']],  
+  )
+
+
+  unique_id_x = "-".join("%s" % v for v in unique_id_x)
+  line[meta['scheme']['recipient_id_x']] = unique_id_x
   
+  print "\rindexing %s" % unique_id_x,
+
   fields = scheme.fieldTypeMaps()
   
   # pp = pprint.PrettyPrinter(indent=4)
@@ -126,19 +139,12 @@ def index_line(line,meta):
       if 'prefix' in fields[field]:
         if 'index' in fields[field]:
           indexer.index_text(field_value,fields[field]['termweight'],fields[field]['prefix'])
-          print "yes"
         else:
           doc.add_term(fields[field]['prefix']+field_value)
       
       if 'value' in fields[field]:
-        print field_value
-        # print fields[field]['value'],eval(fields[field]['value_formatter'])
         doc.add_value(fields[field]['value'],eval(fields[field]['value_formatter']))
       
-      # if 'formatter' in fields[field]:
-      #   print field,eval(fields[field]['formatter'])
-      # else:
-      #   print field,meta['scheme'][field]
 
         
   
@@ -161,21 +167,21 @@ def index_line(line,meta):
 def index_payments(data,line):
   """indexes all payment records"""
   doc = xapian.Document()
-
-
+  
+  
   #Create a unique document ID
   unique_id = "%s-%s-%s" % (data['country'], data['table'].split('.')[0], line[data['scheme']['recipient_id']])  
   doc.add_value(0,unique_id)
   docid = "XDOCID"+unique_id
   doc.add_term(docid)
-
+  
   doc.add_term('XTYPE:payment')
-
+  
   if 'recipient_id' in data['scheme']:
     rid = "%s-%s" % (data['database'],line[data['scheme']['recipient_id']])
     doc.add_value(3,rid)
     doc.add_term("XRID:%s" % rid)
-
+    
   if 'amount' in data['scheme']:
     if line[data['scheme']['amount']] is not "":
       doc.add_value(1,xapian.sortable_serialise(float(line[data['scheme']['amount']])))
@@ -183,11 +189,11 @@ def index_payments(data,line):
     data['calced_year'] = loadScheme.calc_year(line[data['scheme']['year']],options.fragile)
     if data['calced_year']:
       doc.add_value(2,xapian.sortable_serialise(data['calced_year']))
-
+      
   doc.set_data(format_doc(data,line))
-
+  
   indexer.set_document(doc)
-
+  
   if not options.dryrun:
     database.replace_document(docid,doc)
 
@@ -195,17 +201,17 @@ def index_payments(data,line):
 def index_recipient(data,line):
   """indexes all recipient records"""
   doc = xapian.Document()
-
+  
   #Create a unique document ID
   unique_id = "%s-%s-%s" % (data['country'], data['table'].split('.')[0], line[data['scheme']['recipient_id']])  
   doc.add_value(0,unique_id)
   docid = "XDOCID"+unique_id
   doc.add_term(docid)
-
+  
   doc.add_term('XTYPE:recipient')
-
+  
   doc.add_term("XCOUNTRY:"+data['country'])
-
+  
   if 'recipient_id' in data['scheme']:
     rid = "%s-%s" % (data['database'],line[data['scheme']['recipient_id']])
     doc.add_value(3,rid)
@@ -215,12 +221,12 @@ def index_recipient(data,line):
   # if 'address1' in scheme:
   #   if data['address1'] not "":
   #     doc.add_term("XADDRESS1:"+line[data['address1']])
-
+  
   doc.set_data(format_doc(data,line))
   indexer.set_document(doc)
-
+  
   indexer.index_text(line[data['scheme']['name']],10,"XNAME")
-
+  
   if not options.dryrun:
     database.replace_document(docid,doc)
 
@@ -228,30 +234,32 @@ def index_recipient(data,line):
 
 
 
-def format_doc(data,line):
+def format_doc(meta,line):
   """Takes a scheme, with all the data and returns a formatted HTML string"""
-  # line = '"%s"' % ('","'.join(line))
+
   doc = []
-  for item in data:
+  for item in meta:
+    # print data
+    # sys.exit()
     if item == "scheme":
       doc.append('<div class="scheme">')
-      for schemeitem in data[item]:
+      for schemeitem in meta[item]:
         s = Template('  <div class="$key">$value</div>')
-        doc.append(s.substitute(key=schemeitem, value=data[item][schemeitem]))
+        doc.append(s.substitute(key=schemeitem, value=meta[item][schemeitem]))
       doc.append('</div>')        
     else:
       s = Template('<div class="$key">$value</div>')
-      doc.append(s.substitute(key=item, value=data[item]))
+      doc.append(s.substitute(key=item, value=meta[item]))
   s = Template('<div class="line">$value</div>')
   doc.append(s.substitute(value='"%s"' % ('","'.join(line))))
   
   doc.append('<div class="originaldata">')
   
-  for item in data['scheme']:
+  for item in meta['scheme']:
     s = Template('  <div class="$key">$value</div>')
-    doc.append(s.substitute(key=item, value=line[data['scheme'][item]]))
+    doc.append(s.substitute(key=item, value=line[meta['scheme'][item]]))
   doc.append('</div>')        
-
+  
   # print "\n".join(doc)
   
   # print scheme,line

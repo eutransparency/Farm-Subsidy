@@ -103,26 +103,40 @@ def fieldTypeMaps(field_value='field_value'):
   fields['name'] = {
     'prefix' : 'XNAME',
     'termweight' : 100,
-    'index' : True
+    'index' : True,
+    'doc_body' : True,
   }
   
   fields['year'] = {
     'value' : fsconf.index_values['year'],
     'value_formatter': "xapian.sortable_serialise(float(%s))"  % field_value,
-    'formatter' : "scheme.calc_year(%s)" % field_value
+    'formatter' : "scheme.calc_year(%s)" % field_value,
+    'doc_body' : True,
   }
 
   fields['amount'] = {
     'value' : fsconf.index_values['amount'],
-    'value_formatter': "xapian.sortable_serialise(float(%s))"  % field_value
+    'value_formatter': "xapian.sortable_serialise(float(%s))"  % field_value,
+    'doc_body' : True,
   }
 
   fields['country'] = {
-    'prefix' : 'XCOUNTRY',
+    'prefix' : 'XCOUNTRY:',
+    'doc_body' : True,
   }
 
   fields['recipient_id'] = {
-    'prefix' : 'XRID',
+    'prefix' : 'XRID:',
+    'value' : fsconf.index_values['recipient_id'],
+    'value_formatter': "%s"  % field_value,
+    'doc_body' : True,
+  }
+
+  fields['recipient_id_x'] = {
+    'prefix' : 'XRIDX:',
+    'value' : fsconf.index_values['recipient_id_x'],
+    'value_formatter': "%s"  % field_value,
+    'doc_body' : True,
   }
 
 
@@ -135,7 +149,6 @@ def fieldTypeMaps(field_value='field_value'):
 
   # payment_id
   # geo2
-  # name
   # country1_id
   # geo1
   # address1
@@ -143,10 +156,6 @@ def fieldTypeMaps(field_value='field_value'):
   # recipient_id_eu
   # zipcode
   # recipient_id_x
-  # amount
-  # recipient_id
-  # year
-  # country
 
 
   

@@ -108,7 +108,7 @@ def main_search():
 
   qp.add_prefix("name", "XNAME")
   qp.add_boolean_prefix("country", "XCOUNTRY:")
-  qp.add_boolean_prefix("id", "XID")
+  qp.add_boolean_prefix("id", "XRID:")
   qp.add_boolean_prefix("type", "XTYPE:")
 
 
@@ -118,6 +118,7 @@ def main_search():
 
 
   enquire.set_query(query)
+  # enquire.set_collapse_key(fsconf.index_values['recipient_id_x'])
   matches = enquire.get_mset(0, 10)
 
   # Display the results.
@@ -131,16 +132,20 @@ def main_search():
     name = []
     RID = []
     for term in t:
-      print term.term
       if term.term[0:5] == "XNAME":
         name.append(term.term[5:])
-      if term.term[0:4] == "XRID":
-        RID.append(term.term[4:])
+      if term.term[0:5] == "XRID:":
+        RID.append(term.term[5:])
     print " ".join(name)
-    # print RID
+    print RID
     # print get_doc_by_rid(RID)
-    print "\n"
-  
+
+    v = m.document.values()
+    #     name = []
+    info = []
+    for value in v:
+      print value.num,value.value
+    print "\n\n"
   
   
   
