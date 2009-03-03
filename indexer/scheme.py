@@ -185,7 +185,7 @@ def calc_year(year,fragile=None):
   years_len = len(range(int(years[0]),int(years[-1])))
   if years_len > 2:
     if not fragile:
-      return
+      return "0"
     else:
       raise ValueError, "Year span too long"
   elif years_len < 1:

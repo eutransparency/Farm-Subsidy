@@ -41,7 +41,6 @@ def index(country=None, tabletype=None, table=None):
     for name in filenames: 
 
       if name[-7:] == ".scheme":
-        print name  
         # Get some information about the data
         meta = {}
         
@@ -49,22 +48,22 @@ def index(country=None, tabletype=None, table=None):
                 
         meta['scheme'] = scheme.loadScheme("%s/%s" % (csvdir,name))
 
-        meta['country'] = countryCodes.filenameToCountryCode(name[12:])
+        meta['scheme']['country'] = countryCodes.filenameToCountryCode(name[12:])
 
-
+        print meta['scheme']['country']
         # TODO Add more options here.  Like the filename to index
         if country is not None and country != meta['scheme']['country']:
           continue
       
+        print "\n %s" % name  
 
         # Open the data file for looping over
         reader = csv.reader(open(data_file_path))
 
         # FIXME - Can I just count the lines from the first reader?
         linecount = csv.reader(open(data_file_path))
-
       
-        # pbar = progressbar.ProgressBar(maxval=len(list(linecount))).start()
+        pbar = progressbar.ProgressBar(maxval=len(list(linecount))).start()
         for key,line in enumerate(reader):
           recipient_id = None
 
@@ -78,8 +77,8 @@ def index(country=None, tabletype=None, table=None):
           index_line(line, meta)
 
           
-        #   pbar.update(key)
-        # pbar.finish()
+          pbar.update(key)
+        pbar.finish()
       database.flush()
 
 
@@ -92,6 +91,21 @@ def index_line(line,meta):
   # TODO Come up with a really good, true, unique ID 
   #      (in a way that can make a nice hackable URL)
   
+
+
+  # HACK because the year isn't always there.  Sigh.
+  if 'year' not in meta['scheme']:
+    line.append('0')
+    meta['scheme']['year'] = len(line)-1
+  
+  try:
+    line[meta['scheme']['year']]
+  except:
+    line.append('0')
+ 
+  if line[meta['scheme']['year']] is "" or line[meta['scheme']['year']] is "None":
+    line[meta['scheme']['year']] = "0"
+
   uniques = (
     meta['country'],
     line[meta['scheme']['recipient_id']],
@@ -115,7 +129,7 @@ def index_line(line,meta):
   unique_id_x = "-".join("%s" % v for v in unique_id_x)
   line[meta['scheme']['recipient_id_x']] = unique_id_x
   
-  print "\rindexing %s" % unique_id_x,
+  #print "\rindexing %s" % unique_id_x,
 
   fields = scheme.fieldTypeMaps()
   

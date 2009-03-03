@@ -95,10 +95,10 @@ def main_search():
   qp = xapian.QueryParser()
   qp.set_default_op(xapian.Query.OP_AND)
 
-  amount = xapian.NumberValueRangeProcessor(2,"amount")
+  amount = xapian.NumberValueRangeProcessor(fsconf.index_values['amount'],"amount:")
   qp.add_valuerangeprocessor(amount)
-
-  year = xapian.NumberValueRangeProcessor(1,"year")
+  print fsconf.index_values['amount']
+  year = xapian.NumberValueRangeProcessor(fsconf.index_values['year'],"year:")
   qp.add_valuerangeprocessor(year)
 
 
