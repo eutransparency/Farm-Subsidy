@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
-
+from __future__ import with_statement
 import os, sys, string, commands, fsconf, scheme, csv, traceback, xapian
 import math
 from string import Template
@@ -48,37 +48,44 @@ def index(country=None, tabletype=None, table=None):
                 
         meta['scheme'] = scheme.loadScheme("%s/%s" % (csvdir,name))
 
-        meta['scheme']['country'] = countryCodes.filenameToCountryCode(name[12:])
+        meta['country'] = countryCodes.filenameToCountryCode(name[12:])
 
-        print meta['scheme']['country']
+        print meta['country']
         # TODO Add more options here.  Like the filename to index
-        if country is not None and country != meta['scheme']['country']:
+        if country is not None and country != meta['country']:
           continue
       
         print "\n %s" % name  
-
-        # Open the data file for looping over
-        reader = csv.reader(open(data_file_path))
-
-        # FIXME - Can I just count the lines from the first reader?
-        linecount = csv.reader(open(data_file_path))
       
-        pbar = progressbar.ProgressBar(maxval=len(list(linecount))).start()
-        for key,line in enumerate(reader):
-          recipient_id = None
 
-          # Only loop 10 lines.  Just for testing!
-          if key > 10: 
-            break
+        with open(data_file_path) as csvfile:
+          counter = csv.reader(csvfile)
+
+          for countline in counter:
+            linecount = counter.line_num
+
+          pbar = progressbar.ProgressBar(maxval=linecount).start()
+
+          reader = csv.reader(csvfile)                    
+          csvfile.seek(0)
+          for line in reader:
+            # print "\r%s" % reader.line_num,
+            
         
-          meta['linenumber'] = key+1
-          
-          
-          index_line(line, meta)
+            recipient_id = None
+            meta['linenumber'] = reader.line_num
+            # Only loop 10 lines.  Just for testing!
+            # if meta['linenumber'] > 10: 
+            #   break
+        
 
           
-          pbar.update(key)
-        pbar.finish()
+          
+            index_line(line, meta)
+
+          
+            pbar.update(meta['linenumber'])
+        # pbar.finish()
       database.flush()
 
 
