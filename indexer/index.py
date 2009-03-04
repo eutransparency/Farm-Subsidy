@@ -132,7 +132,9 @@ def index_line(line,meta):
   line[meta['scheme']['recipient_id_x']],  
   )
 
-
+  doc.add_term("XPATH:/a/b/c/d/e/f/g")
+  
+  
   unique_id_x = "-".join("%s" % v for v in unique_id_x)
   line[meta['scheme']['recipient_id_x']] = unique_id_x
   

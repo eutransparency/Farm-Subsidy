@@ -43,3 +43,5 @@ index_values = {
   'year' :          3,
   'amount' :        4
 }
+
+print "Loaded"
