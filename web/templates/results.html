@@ -1,5 +1,7 @@
 $def with (f)
 <b>$:f['info']</b>
+$if f['spelling']:
+  <p>Did you mean: <a href="?query=$:f['spelling']">$:f['spelling']</a>?</p>
 <ol>
 $for v in f['documents']:
   <li>$:f['documents'][v]</li>

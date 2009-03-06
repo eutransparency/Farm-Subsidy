@@ -63,44 +63,46 @@ def get_payments_by_rid(rid, db=querylib.load_database()):
 #   return query
   
 
-
-if __name__ == '__main__':
-  
-  
-  query_string = querylib.parse_query(" ".join(sys.argv[1:]))
-  print query_string
-  
+def do_search(query):  
+  query_string = querylib.parse_query(query)
+ # print query_string
   (qp,valueranges) = querylib.load_queryparser()
-  qp.set_default_op(xapian.Query.OP_AND)
-
-  query = qp.parse_query(query_string, qp.FLAG_BOOLEAN, "XNAME")
-  
-  print "Parsed query is: %s" % query.get_description()
-  v = []  
   db = querylib.load_database()
-  # 
+  qp.set_database(db)
+ 
+  qp.set_default_op(xapian.Query.OP_AND)
+  DEFAULT_SEARCH_FLAGS = (
+         xapian.QueryParser.FLAG_BOOLEAN |
+         xapian.QueryParser.FLAG_PHRASE |
+         # xapian.QueryParser.FLAG_LOVEHATE |   
+         # xapian.QueryParser.FLAG_BOOLEAN_ANY_CASE |
+         xapian.QueryParser.FLAG_WILDCARD |
+         xapian.QueryParser.FLAG_SPELLING_CORRECTION
+         # xapian.QueryParser.FLAG_PARTIAL 
+         )
+
+
+  query = qp.parse_query(query_string, DEFAULT_SEARCH_FLAGS )
+  
+ # print "Parsed query is: %s" % query.get_description()
   enq = querylib.load_enquire(db)
-  # 
   enq.set_query(query)
-  enq.set_sort_by_value(fsconf.index_values['amount'],1)
+  #enq.set_sort_by_value(fsconf.index_values['amount'],1)
+  enq.set_collapse_key(fsconf.index_values['recipient_id_x'])
   matches = enq.get_mset(0,10)
-  # ids = []
-  for m in matches:
-    print xapian.sortable_unserialise(m.document.get_value(fsconf.index_values['amount']))
-  # 
-  # 
-  # p_enq = querylib.load_enquire(db)
-  # 
-  # 
-  # 
-  # p_matches = p_enq.get_mset(0, 100)
-  # for p in p_matches:
-  #   print "%s" % p.document.get_value(0)      
-  #   print "     %s" % xapian.sortable_unserialise(p.document.get_value(1))
-  #   # print "     %s" % p.document.get_data()    
-  # 
-  #   # t = db.termlist(p.docid)
-  #   # for term in t:
-  #   #   print term.term
-  #   
+
+  results = {}
+  results['decsription'] = "Parsed query is: %s" % query.get_description()
+  results['info'] = "%i results found." % (matches.get_matches_estimated())
+  results['documents'] = {}
+  results['spelling'] = qp.get_corrected_query_string()
+  results['size'] = matches.get_matches_estimated()
+
+  for k,m in enumerate(matches):
+    results['documents'][k] =  doc_dict(m.document.get_data())
+
+  return results
+
+
+def doc_dict(doc):
   
