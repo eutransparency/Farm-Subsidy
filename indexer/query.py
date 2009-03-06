@@ -15,7 +15,8 @@ def main_search():
           xapian.QueryParser.FLAG_PHRASE |
           # xapian.QueryParser.FLAG_LOVEHATE |   
           # xapian.QueryParser.FLAG_BOOLEAN_ANY_CASE |
-          xapian.QueryParser.FLAG_WILDCARD 
+          xapian.QueryParser.FLAG_WILDCARD | 
+          xapian.QueryParser.FLAG_SPELLING_CORRECTION
           # xapian.QueryParser.FLAG_PARTIAL 
           )
 
@@ -59,13 +60,13 @@ def main_search():
     print word
 
 
-  query = qp.parse_query(query_string, DEFAULT_SEARCH_FLAGS, "XNAME")
+  query = qp.parse_query(query_string, DEFAULT_SEARCH_FLAGS)
   print "Parsed query is: %s" % query.get_description()
   
-
+  print "Did you mean:%s" % qp.get_corrected_query_string()
   
   enquire.set_query(query)
-  # enquire.set_collapse_key(fsconf.index_values['recipient_id_x'])
+  #enquire.set_collapse_key(fsconf.index_values['recipient_id_x'])
   matches = enquire.get_mset(0, 10)
 
   # Display the results.
@@ -84,7 +85,7 @@ def main_search():
       if term.term[0:5] == "XRID:":
         RID.append(term.term[5:])
     print " ".join(name)
-    print RID
+    print "RID:",RID
     # print get_doc_by_rid(RID)
 
     v = m.document.values()

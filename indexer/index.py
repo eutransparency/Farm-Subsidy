@@ -9,6 +9,7 @@ sys.path.append('lib')
 import  progressbar
 import countryCodes
 import pprint
+import mappings
 
 # This modules should:
 # 
@@ -33,6 +34,8 @@ def index(country=None, tabletype=None, table=None):
   indexer = xapian.TermGenerator()
   stemmer = xapian.Stem("english")
   indexer.set_stemmer(stemmer)
+  indexer.set_database(database)
+  indexer.set_flags(indexer.FLAG_SPELLING)
   
   
   # Find each scheme file
@@ -132,15 +135,13 @@ def index_line(line,meta):
   line[meta['scheme']['recipient_id_x']],  
   )
 
-  doc.add_term("XPATH:/a/b/c/d/e/f/g")
-  
   
   unique_id_x = "-".join("%s" % v for v in unique_id_x)
   line[meta['scheme']['recipient_id_x']] = unique_id_x
   
   #print "\rindexing %s" % unique_id_x,
 
-  fields = scheme.fieldTypeMaps()
+  fields = mappings.fieldTypeMaps()
   
   # pp = pprint.PrettyPrinter(indent=4)
   # pp.pprint(dict(fields))
@@ -161,7 +162,7 @@ def index_line(line,meta):
       
       if 'prefix' in fields[field]:
         if 'index' in fields[field]:
-          indexer.index_text(field_value,fields[field]['termweight'],fields[field]['prefix'])
+          indexer.index_text(field_value,fields[field]['termweight'])
         else:
           doc.add_term(fields[field]['prefix']+field_value)
       
@@ -169,6 +170,9 @@ def index_line(line,meta):
         doc.add_value(fields[field]['value'],eval(fields[field]['value_formatter']))
       
 
+      # Always index the name
+      if field == "name":
+        indexer.index_text(field_value,fields[field]['termweight'],fields[field]['prefix'])
         
   
   # print meta
@@ -239,12 +243,7 @@ def index_recipient(data,line):
     rid = "%s-%s" % (data['database'],line[data['scheme']['recipient_id']])
     doc.add_value(3,rid)
     doc.add_term("XRID:%s" % rid)
-    
-  # Will add this later:
-  # if 'address1' in scheme:
-  #   if data['address1'] not "":
-  #     doc.add_term("XADDRESS1:"+line[data['address1']])
-  
+ 
   doc.set_data(format_doc(data,line))
   indexer.set_document(doc)
   
