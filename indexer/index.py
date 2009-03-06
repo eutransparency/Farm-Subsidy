@@ -133,15 +133,14 @@ def index_line(line,meta):
 
   unique_id_x = (
   meta['country'],
-  scheme.calc_year(line[meta['scheme']['year']]),
   line[meta['scheme']['recipient_id_x']],  
   )
 
   
-  unique_id_x = "-".join("%s" % v for v in unique_id_x)
+  unique_id_x = "".join("%s" % v for v in unique_id_x).lower()
   line[meta['scheme']['recipient_id_x']] = unique_id_x
   
-  #print "\rindexing %s" % unique_id_x,
+  print "\rindexing %s" % unique_id_x,
 
   fields = mappings.fieldTypeMaps()
   
