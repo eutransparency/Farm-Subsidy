@@ -10,7 +10,8 @@ import sys
 import os
 
 import xapian
-
+sys.path.append('../indexer')
+import fsconf
 import querylib
 
 def load_doc(doc_id, db=querylib.load_database()):
@@ -69,22 +70,23 @@ if __name__ == '__main__':
   query_string = querylib.parse_query(" ".join(sys.argv[1:]))
   print query_string
   
-  qp1 = querylib.load_queryparser()
-  # qp.set_default_op(xapian.Query.OP_AND)
-  
-  query = qp1.parse_query(query_string, qp1.FLAG_BOOLEAN, "XNAME")
+  (qp,valueranges) = querylib.load_queryparser()
+  qp.set_default_op(xapian.Query.OP_AND)
+
+  query = qp.parse_query(query_string, qp.FLAG_BOOLEAN, "XNAME")
   
   print "Parsed query is: %s" % query.get_description()
-  
-  # db = querylib.load_database()
+  v = []  
+  db = querylib.load_database()
   # 
-  # enq = querylib.load_enquire(db)
+  enq = querylib.load_enquire(db)
   # 
-  # enq.set_query()
-  # enq.set_sort_by_value(1,0)
-  # matches = enq.get_mset(0,10)
+  enq.set_query(query)
+  enq.set_sort_by_value(fsconf.index_values['amount'],1)
+  matches = enq.get_mset(0,10)
   # ids = []
-  # for m in matches:
+  for m in matches:
+    print xapian.sortable_unserialise(m.document.get_value(fsconf.index_values['amount']))
   # 
   # 
   # p_enq = querylib.load_enquire(db)

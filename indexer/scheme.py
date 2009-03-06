@@ -49,7 +49,9 @@ def fieldNameMappings():
 
   fieldMapping['amount'] = 'amount'
   fieldMapping['Amount'] = 'amount'  
+  fieldMapping['amount_paid'] = 'amount'
   fieldMapping['amount_euro_conversion'] = 'amount'
+  
   fieldMapping['year'] = 'year'
   fieldMapping['Year'] = 'year'  
   fieldMapping['name'] = 'name'
@@ -62,6 +64,14 @@ def fieldNameMappings():
   fieldMapping['address1'] = 'address1'
   fieldMapping['address2'] = 'address2'
   fieldMapping['zipcode'] = 'zipcode'
+
+  fieldMapping['town'] =  'town'
+  fieldMapping['town1'] = 'town1'
+  fieldMapping['town2'] = 'town2'
+  fieldMapping['town2'] = 'town2'
+  
+  
+  
   fieldMapping['geo1'] = 'geo1'
   fieldMapping['geo2'] = 'geo2'
   fieldMapping['geo3'] = 'geo3'
@@ -83,14 +93,76 @@ def fieldNameMappings():
   fieldMapping['recipient_id_x'] = 'recipient_id_x'
   
   # To Add:
-    # source
-    # country
-    # city
-    # town
-    # zip_area
-    # town2
-    # Zip_integer
-    # notes
+  # area2
+  # auto
+  # Betriebsnr
+  # budgetline
+  # cif2
+  # city
+  # comarca
+  # consultant_business
+  # consultant_preparing
+  # contract_number
+  # country
+  # country1_id
+  # country2_id
+  # country_id
+  # county_realization_raw
+  # date
+  # date1
+  # date_apply
+  # domanda
+  # extremes
+  # finland20061211a_Municipality
+  # help_id
+  # id_castilla
+  # id_city
+  # id_national
+  # id_receiver
+  # kommunalkode
+  # lau2
+  # LAU2 national code
+  # law
+  # measure
+  # No
+  # no
+  # notes
+  # numero
+  # NUTS 1
+  # NUTS 3
+  # okres
+  # Ort
+  # paydate
+  # paying_agency
+  # payment_id
+  # pay_files_code
+  # place_realization
+  # postcode_prefix
+  # product
+  # project_code
+  # project_id
+  # project_total
+  # projekt_title
+  # provins_source
+  # quality
+  # recipient_id
+  # recipient_id_eu
+  # recipient_id_x
+  # regionskode
+  # region_realization
+  # region_realization_raw
+  # sector
+  # source
+  # source_id
+  # source_state
+  # tipo
+  # town_realization_raw
+  # type
+  # year_apply
+  # zip
+  # zipcode
+  # Zip_integer
+  # Zip_prefix
 
   return fieldMapping
     

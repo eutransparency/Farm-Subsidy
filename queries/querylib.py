@@ -51,23 +51,14 @@ def load_queryparser():
   qp = xapian.QueryParser()
   field_mappings = mappings.fieldTypeMaps()
   qp.set_default_op(xapian.Query.OP_AND)
-  vasd = xapian.NumberValueRangeProcessor(1,'name')
-  qp.add_valuerangeprocessor(vasd) 
+  valueranges = []  
   
   for key,field in field_mappings.items():
-    # field = mappings[key]
-    # print field
-    # sys.exit()
-    # field = mappings[field]
 
     if 'value_range_search' in field:
-      # vrp = xapian.NumberValueRangeProcessor(field['value'],field['value_range_prefix'])
-      try:
-        vasd = xapian.NumberValueRangeProcessor(1,'name')
-        qp.add_valuerangeprocessor(vasd) 
-        vrp = None
-      except Exception, e:
-        print e
+      vrp = xapian.NumberValueRangeProcessor(field['value'],field['value_range_prefix'])
+      valueranges.append(vrp)
+      qp.add_valuerangeprocessor(vrp) 
 
     if 'prefix' in field:
       if 'boolean' in field:
@@ -75,7 +66,7 @@ def load_queryparser():
       else:
         qp.add_prefix(field['name'], field['prefix'])
       
-  return qp
+  return (qp,valueranges)
 
 
 def format_range_query(valuerange):
