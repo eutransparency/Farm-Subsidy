@@ -31,7 +31,7 @@ xapianDbPath = project_path + 'xapian.db'
 
 #Mysql database name to use to temp databases
 mysql_prefix = "farmsubsidy_"
-mysql_user = "farmsubsidy2"
+mysql_user = "farmsubsidy"
 mysql_pass = "farmsubsidy"
 
 

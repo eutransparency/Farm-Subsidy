@@ -10,6 +10,8 @@ import  progressbar
 import countryCodes
 import pprint
 import mappings
+import cPickle
+import collections
 
 # This modules should:
 # 
@@ -149,6 +151,7 @@ def index_line(line,meta):
   # sys.exit()
   indexer.set_document(doc)
   
+  index_text = []
   for field in meta['scheme']:
     if fields[field]:
       if meta['scheme'][field] in range(len(line)):
@@ -162,7 +165,7 @@ def index_line(line,meta):
       
       if 'prefix' in fields[field]:
         if 'index' in fields[field]:
-          indexer.index_text(field_value,fields[field]['termweight'])
+          indexer.index_text(field_value,fields[field]['termweight'],fields[field]['prefix'])
         else:
           doc.add_term(fields[field]['prefix']+field_value)
       
@@ -170,122 +173,27 @@ def index_line(line,meta):
         doc.add_value(fields[field]['value'],eval(fields[field]['value_formatter']))
       
 
-      # Always index the name
-      if field == "name":
-        indexer.index_text(field_value,fields[field]['termweight'],fields[field]['prefix'])
-        
-  
-  # print meta
-  # sys.exit()
-
-  # doc.add_term("XCOUNTRY:"+meta['country'])
-  # 
-  # if 'recipient_id' in meta['scheme']:
-  #   rid = "%s" % (line[meta['scheme']['recipient_id']])
-  #   doc.add_value(3,rid)
-  #   doc.add_term("XRID:%s" % rid)
+      if 'index' in fields[field]:
+        index_text.append(field_value)
+      
+  indexer.index_text(" ".join(index_text))
+      
 
   doc.set_data(format_doc(meta,line))
-
+  
 
   database.replace_document(docid,doc)
-
-  
-def index_payments(data,line):
-  """indexes all payment records"""
-  doc = xapian.Document()
-  
-  
-  #Create a unique document ID
-  unique_id = "%s-%s-%s" % (data['country'], data['table'].split('.')[0], line[data['scheme']['recipient_id']])  
-  doc.add_value(0,unique_id)
-  docid = "XDOCID"+unique_id
-  doc.add_term(docid)
-  
-  doc.add_term('XTYPE:payment')
-  
-  if 'recipient_id' in data['scheme']:
-    rid = "%s-%s" % (data['database'],line[data['scheme']['recipient_id']])
-    doc.add_value(3,rid)
-    doc.add_term("XRID:%s" % rid)
-    
-  if 'amount' in data['scheme']:
-    if line[data['scheme']['amount']] is not "":
-      doc.add_value(1,xapian.sortable_serialise(float(line[data['scheme']['amount']])))
-  if 'year' in data['scheme']:
-    data['calced_year'] = loadScheme.calc_year(line[data['scheme']['year']],options.fragile)
-    if data['calced_year']:
-      doc.add_value(2,xapian.sortable_serialise(data['calced_year']))
-      
-  doc.set_data(format_doc(data,line))
-  
-  indexer.set_document(doc)
-  
-  if not options.dryrun:
-    database.replace_document(docid,doc)
-
-
-def index_recipient(data,line):
-  """indexes all recipient records"""
-  doc = xapian.Document()
-  
-  #Create a unique document ID
-  unique_id = "%s-%s-%s" % (data['country'], data['table'].split('.')[0], line[data['scheme']['recipient_id']])  
-  doc.add_value(0,unique_id)
-  docid = "XDOCID"+unique_id
-  doc.add_term(docid)
-  
-  doc.add_term('XTYPE:recipient')
-  
-  doc.add_term("XCOUNTRY:"+data['country'])
-  
-  if 'recipient_id' in data['scheme']:
-    rid = "%s-%s" % (data['database'],line[data['scheme']['recipient_id']])
-    doc.add_value(3,rid)
-    doc.add_term("XRID:%s" % rid)
- 
-  doc.set_data(format_doc(data,line))
-  indexer.set_document(doc)
-  
-  indexer.index_text(line[data['scheme']['name']],10,"XNAME")
-  
-  if not options.dryrun:
-    database.replace_document(docid,doc)
-
-
 
 
 
 def format_doc(meta,line):
   """Takes a scheme, with all the data and returns a formatted HTML string"""
 
-  doc = []
-  for item in meta:
-    # print data
-    # sys.exit()
-    if item == "scheme":
-      doc.append('<div class="scheme">')
-      for schemeitem in meta[item]:
-        s = Template('  <div class="$key">$value</div>')
-        doc.append(s.substitute(key=schemeitem, value=meta[item][schemeitem]))
-      doc.append('</div>')        
-    else:
-      s = Template('<div class="$key">$value</div>')
-      doc.append(s.substitute(key=item, value=meta[item]))
-  s = Template('<div class="line">$value</div>')
-  doc.append(s.substitute(value='"%s"' % ('","'.join(line))))
-  
-  doc.append('<div class="originaldata">')
-  
+  doc = collections.defaultdict(dict)
   for item in meta['scheme']:
-    s = Template('  <div class="$key">$value</div>')
-    doc.append(s.substitute(key=item, value=line[meta['scheme'][item]]))
-  doc.append('</div>')        
+    doc[item] = line[meta['scheme'][item]]
+  return cPickle.dumps(doc)
   
-  # print "\n".join(doc)
-  
-  # print scheme,line
-  return "\n".join(doc)
 
 
 if __name__ == '__main__':

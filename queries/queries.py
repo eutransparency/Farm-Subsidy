@@ -13,6 +13,7 @@ import xapian
 sys.path.append('../indexer')
 import fsconf
 import querylib
+import cPickle
 
 def load_doc(doc_id, db=querylib.load_database()):
   """ Returns a xapian.Document with the given doc_id.
@@ -44,28 +45,10 @@ def get_payments_by_rid(rid, db=querylib.load_database()):
   query = qp.parse_query('(%s) AND type:payment' % (rid_string), DEFAULT_SEARCH_FLAGS,)
   
   return query
-
-
-# def get_recipients(query):
-#   DEFAULT_SEARCH_FLAGS = (
-#           xapian.QueryParser.FLAG_BOOLEAN
-#           )
-#   
-#   qp = xapian.QueryParser()
-#   qp.set_default_op(xapian.Query.OP_AND)
-#   
-#   qp.add_boolean_prefix("rid", "XRID:")
-#   qp.add_boolean_prefix("country", "XCOUNTRY:")
-#   
-# 
-#   query = qp.parse_query(query, DEFAULT_SEARCH_FLAGS, "XNAME")
-#   
-#   return query
   
 
 def do_search(query):  
   query_string = querylib.parse_query(query)
- # print query_string
   (qp,valueranges) = querylib.load_queryparser()
   db = querylib.load_database()
   qp.set_database(db)
@@ -99,10 +82,22 @@ def do_search(query):
   results['size'] = matches.get_matches_estimated()
 
   for k,m in enumerate(matches):
-    results['documents'][k] =  doc_dict(m.document.get_data())
+    results['documents'][k] =  cPickle.loads(m.document.get_data())
 
   return results
 
 
-def doc_dict(doc):
-  
+if __name__ == "__main__":
+  results = do_search(" ".join(sys.argv[1:]))
+  print results['decsription']  
+  if results['spelling']:
+    print results['spelling']
+  print results['info']
+  for key in results['documents']:
+    meta = results['documents'][key]
+    print meta['name']
+
+
+
+
+
