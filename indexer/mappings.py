@@ -16,7 +16,7 @@ def fieldTypeMaps(field_value='field_value'):
   fields['name'] = {
     'prefix' : 'XNAME',
     'name' : 'name',
-    'termweight' : 100,
+    'termweight' : 1000,
     'index' : True,
     'doc_body' : True,
   }
@@ -61,7 +61,35 @@ def fieldTypeMaps(field_value='field_value'):
     'doc_body' : True,
   }
 
+  fields['geo1'] = {
+    'index' : True,
+    'termweight' : 10,
+    'doc_body' : True,
+  }
 
+
+
+  fields['geo2'] = {
+    'index' : True,
+    'termweight' : 10,
+    'doc_body' : True,
+  }
+
+
+
+  fields['geo3'] = {
+    'index' : True,
+    'termweight' : 10,
+    'doc_body' : True,
+  }
+
+
+
+  fields['geo4'] = {
+    'index' : True,
+    'termweight' : 10,
+    'doc_body' : True,
+  }
   
   # print eval(fields['year']['formatter'])
 
