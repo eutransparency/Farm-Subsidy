@@ -125,7 +125,7 @@ def index_line(line,meta):
     scheme.calc_year(line[meta['scheme']['year']]),
   )
   
-  unique_id = "-".join("%s" % v for v in uniques)
+  unique_id = "".join("%s" % v for v in uniques)
 
   doc.add_value(0,unique_id)
   docid = "XDOCID"+unique_id
@@ -140,7 +140,7 @@ def index_line(line,meta):
   unique_id_x = "".join("%s" % v for v in unique_id_x).lower()
   line[meta['scheme']['recipient_id_x']] = unique_id_x
   
-  print "\rindexing %s" % unique_id_x,
+  #print "\rindexing %s" % unique_id_x,
 
   fields = mappings.fieldTypeMaps()
   

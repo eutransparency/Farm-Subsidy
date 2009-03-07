@@ -15,6 +15,7 @@ import queries
 urls = (
   '/', 'index',
   '/results', 'results',
+  '/recipient/(.*)', 'recipient',
   )
 
 application = web.application(urls, globals()).wsgifunc()
@@ -39,3 +40,14 @@ class results:
       i = web.input()
       results = queries.do_search(i.query)
       return render.results(results)
+
+class recipient:
+    def GET(self, rid):
+      results = queries.do_search("xid:%s" % rid)
+      return render.recipient(results)
+
+
+
+
+
+

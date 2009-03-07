@@ -72,7 +72,7 @@ def do_search(query):
   enq.set_query(query)
   #enq.set_sort_by_value(fsconf.index_values['amount'],1)
   enq.set_collapse_key(fsconf.index_values['recipient_id_x'])
-  matches = enq.get_mset(0,10)
+  matches = enq.get_mset(0,100)
 
   results = {}
   results['decsription'] = "Parsed query is: %s" % query.get_description()
