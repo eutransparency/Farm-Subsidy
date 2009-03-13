@@ -1,0 +1,8 @@
+$def with (r)
+<table>
+$for v in r['documents']:
+  $for n,f in r['documents'][v].items():
+    <tr>
+    <td width="300px"><b>$n</b></td>
+    <td>$f</td>
+  </table>
