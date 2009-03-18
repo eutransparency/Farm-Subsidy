@@ -9,12 +9,24 @@ import collections
 
 
 def fieldTypeMaps(field_value='field_value'):
-  """Defines how different fields should be indexed and queried by xapian, including prefixes and values"""
+  """Defines how different fields should be 
+  indexed and queried by xapian, including prefixes and values
+  
+  This function is used by both the indexer and the qurey parser
+  to add proper prefixed to the search.  
+  
+  For indexing, if a field needs formatting before being indexed 
+  (see 'year') then use 'formatter' to call a function though eval()
+  
+  - 'field_value' is the name of the field varible passed to the function
+    and is used at index time.  See indexer.index_line() for more.
+  
+  """
   
   fields = collections.defaultdict(dict)
   
   fields['name'] = {
-    'prefix' : 'XNAME',
+    'prefix' : 'XNAME:',
     'name' : 'name',
     'termweight' : 1000,
     'index' : True,
@@ -54,7 +66,7 @@ def fieldTypeMaps(field_value='field_value'):
   }
 
   fields['recipient_id_x'] = {
-    'prefix' : 'XRIDX:',
+    'prefix' : 'XRIDX',
     'name' : 'xid',
     'value' : fsconf.index_values['recipient_id_x'],
     'value_formatter': "%s"  % field_value,
@@ -63,52 +75,62 @@ def fieldTypeMaps(field_value='field_value'):
 
   fields['geo1'] = {
     'index' : True,
-    'termweight' : 10,
+    'termweight' : 50,
     'doc_body' : True,
+    'geo_weight' : 1,
   }
 
 
 
   fields['geo2'] = {
     'index' : True,
-    'termweight' : 10,
+    'termweight' : 40,
     'doc_body' : True,
+    'geo_weight' : 2,
   }
-
-
 
   fields['geo3'] = {
     'index' : True,
-    'termweight' : 10,
+    'termweight' : 30,
     'doc_body' : True,
+    'geo_weight' : 3,
   }
-
-
 
   fields['geo4'] = {
     'index' : True,
+    'termweight' : 20,
+    'doc_body' : True,
+    'geo_weight' : 4,
+  }
+
+  fields['town'] = {
+    'index' : True,
     'termweight' : 10,
     'doc_body' : True,
+    'geo_weight' : 5,
   }
-  
-  # print eval(fields['year']['formatter'])
 
+  fields['town1'] = {
+    'index' : True,
+    'termweight' : 10,
+    'doc_body' : True,
+    'geo_weight' : 6,
+  }
 
-  # sys.exit()
+  fields['town2'] = {
+    'index' : True,
+    'termweight' : 10,
+    'doc_body' : True,
+    'geo_weight' : 7,
+  }
 
+  fields['town3'] = {
+    'index' : True,
+    'termweight' : 10,
+    'doc_body' : True,
+    'geo_weight' : 8,
+  }
 
-  # payment_id
-  # geo2
-  # country1_id
-  # geo1
-  # address1
-  # address2
-  # recipient_id_eu
-  # zipcode
-  # recipient_id_x
-
-
-  
 
   return fields
   

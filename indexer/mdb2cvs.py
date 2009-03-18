@@ -64,13 +64,6 @@ def extractmdb2csv(countryToProcess="all"):
         file_all.write(fields+"\n")
         file_all.close()
         
-
-  
-  
-  
-  
-  
-  
   
 if __name__ == '__main__':
   if len(sys.argv) > 1:

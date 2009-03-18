@@ -52,7 +52,7 @@ def index(country=None, tabletype=None, table=None):
         data_file_path = scheme.mapSchemeToData(name)
                 
         meta['scheme'] = scheme.loadScheme("%s/%s" % (csvdir,name))
-
+        meta['data'] = {}
         meta['country'] = countryCodes.filenameToCountryCode(name[12:])
 
         print meta['country']
@@ -65,29 +65,35 @@ def index(country=None, tabletype=None, table=None):
 
         with open(data_file_path) as csvfile:
           counter = csv.reader(csvfile)
-
+          linecount = 0
           for countline in counter:
             linecount = counter.line_num
-
+            
+          if linecount is 0:
+            print "No content in %s" % csvfile
+            continue
+          
           pbar = progressbar.ProgressBar(maxval=linecount).start()
 
           reader = csv.reader(csvfile)                    
           csvfile.seek(0)
           for line in reader:
-            # print "\r%s" % reader.line_num,
+
+
+            for k,v in meta['scheme'].items():
+              meta['data'][k] = line[v]
+              
+            meta['data']['country'] = meta['country'] #Because it's not always there
             
-        
             recipient_id = None
             meta['linenumber'] = reader.line_num
-            # Only loop 10 lines.  Just for testing!
-            # if meta['linenumber'] > 10: 
-            #   break
+            
+            if options.test:
+              # Only loop 10 lines.  Just for testing!
+              if meta['linenumber'] > 10: 
+                break
         
-
-          
-          
             index_line(line, meta)
-
           
             pbar.update(meta['linenumber'])
         # pbar.finish()
@@ -95,7 +101,17 @@ def index(country=None, tabletype=None, table=None):
 
 
 def index_line(line,meta):
-  """docstring for index_line"""
+  """The workhorse of the indexing.
+  Here we are given a line of a CSV file and a dictionary "meta" that contains 
+  all sorts of information about that line.
+  
+  A line contains the joined payment and recipient information as created by
+  mysql2csv.py.
+  
+  meta contains:
+    * The information on what data is contained in a particulay column (as 
+      defined in scheme.py)
+  """
   doc = xapian.Document()
   
   #Create a unique document ID
@@ -103,26 +119,15 @@ def index_line(line,meta):
   # TODO Come up with a really good, true, unique ID 
   #      (in a way that can make a nice hackable URL)
   
-
-
   # HACK because the year isn't always there.  Sigh.
-  if 'year' not in meta['scheme']:
-    line.append('0')
-    meta['scheme']['year'] = len(line)-1
-  
-  try:
-    line[meta['scheme']['year']]
-  except:
-    line.append('0')
- 
-  if line[meta['scheme']['year']] is "" or line[meta['scheme']['year']] is "None":
-    line[meta['scheme']['year']] = "0"
-
+  if 'year' not in meta['data']:
+    meta['data']['year'] = "0"
+   
   uniques = (
-    meta['country'],
-    line[meta['scheme']['recipient_id']],
-    line[meta['scheme']['payment_id']],
-    scheme.calc_year(line[meta['scheme']['year']]),
+    meta['data']['country'],
+    meta['data']['recipient_id'],
+    meta['data']['payment_id'],
+    scheme.calc_year(meta['data']['year']),
   )
   
   unique_id = "".join("%s" % v for v in uniques)
@@ -132,35 +137,27 @@ def index_line(line,meta):
   doc.add_term(docid)
 
   unique_id_x = (
-  meta['country'],
-  line[meta['scheme']['recipient_id_x']],  
+  meta['data']['recipient_id_x']
   )
-
   
   unique_id_x = "".join("%s" % v for v in unique_id_x).lower()
-  line[meta['scheme']['recipient_id_x']] = unique_id_x
+  meta['data']['recipient_id_x'] = unique_id_x
   
   #print "\rindexing %s" % unique_id_x,
 
   fields = mappings.fieldTypeMaps()
   
-  # pp = pprint.PrettyPrinter(indent=4)
-  # pp.pprint(dict(fields))
-  # 
-  # sys.exit()
   indexer.set_document(doc)
   
   index_text = []
-  for field in meta['scheme']:
+  for field in meta['data']:
     if fields[field]:
-      if meta['scheme'][field] in range(len(line)):
-        if 'formatter' in fields[field]:
-          field_value = line[meta['scheme'][field]]
-          field_value = eval(fields[field]['formatter'])
-        else:
-          field_value = line[meta['scheme'][field]]
+      if 'formatter' in fields[field]:
+        field_value = meta['data'][field]
+        field_value = eval(fields[field]['formatter'])
       else:
-        field_value = meta['scheme'][field]
+        field_value = meta['data'][field]
+
       
       if 'prefix' in fields[field]:
         if 'index' in fields[field]:
@@ -176,10 +173,8 @@ def index_line(line,meta):
         index_text.append(field_value)
       
   indexer.index_text(" ".join(index_text))
-      
 
   doc.set_data(format_doc(meta,line))
-  
 
   database.replace_document(docid,doc)
 
@@ -219,6 +214,10 @@ if __name__ == '__main__':
 
   parser.add_option("-r", "--dry-run", action="store_true", dest="dryrun",
                     help="Do everything without adding a document to xapian", metavar="[Y|N]")
+
+  parser.add_option("-e", "--test", action="store_true", dest="test",
+                    help="Only process the first 10 lines of each file", metavar="[Y|N]")
+
 
   global options  
   (options, args) = parser.parse_args()

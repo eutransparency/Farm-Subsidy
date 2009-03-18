@@ -68,7 +68,7 @@ def fieldNameMappings():
   fieldMapping['town'] =  'town'
   fieldMapping['town1'] = 'town1'
   fieldMapping['town2'] = 'town2'
-  fieldMapping['town2'] = 'town2'
+  fieldMapping['town3'] = 'town3'
   
   
   
