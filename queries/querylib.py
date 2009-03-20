@@ -18,10 +18,10 @@ Provide:
 import sys
 import os
 import xapian
-sys.path.append('../indexer') # FIXME: Do this better!
-import fsconf
+sys.path.append('..') # FIXME: Do this better!
+import indexer.fsconf as fsconf
 
-import mappings
+import indexer.mappings as mappings
 
 def load_database(db=fsconf.xapianDbPath):
   """Returns a xapian.Database object

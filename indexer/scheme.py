@@ -91,6 +91,9 @@ def fieldNameMappings():
   fieldMapping['country2_id'] = 'country2_id'
   fieldMapping['recipient_id_eu'] = 'recipient_id_eu'
   fieldMapping['recipient_id_x'] = 'recipient_id_x'
+  fieldMapping['global_id'] = 'global_id'  
+  fieldMapping['global_id_x'] = 'global_id_x'  
+  
   
   # To Add:
   # area2

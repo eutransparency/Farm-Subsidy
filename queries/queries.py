@@ -10,8 +10,8 @@ import sys
 import os
 
 import xapian
-sys.path.append('../indexer')
-import fsconf
+sys.path.append('..')
+import indexer.fsconf as fsconf
 import querylib
 import cPickle
 

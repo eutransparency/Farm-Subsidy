@@ -24,6 +24,23 @@ def fieldTypeMaps(field_value='field_value'):
   """
   
   fields = collections.defaultdict(dict)
+
+  fields['global_id'] = {
+    'prefix' : 'XDOCID:',
+    'name' : 'gid',
+    'value' : fsconf.index_values['global_id'],
+    'value_formatter': "%s"  % field_value,    
+    'doc_body' : True,
+  }
+
+  fields['global_id_x'] = {
+    'prefix' : 'XDOCIDX:',
+    'name' : 'gidx',
+    'value' : fsconf.index_values['global_id_x'],
+    'value_formatter': "%s"  % field_value,    
+    'doc_body' : True,
+  }
+
   
   fields['name'] = {
     'prefix' : 'XNAME:',
