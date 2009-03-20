@@ -18,6 +18,7 @@ def countryCodes():
   codes.append('IT')
   codes.append('LV')
   codes.append('LT')
+  codes.append('LU')
   codes.append('PL')
   codes.append('PT')
   codes.append('S')  
@@ -55,6 +56,8 @@ def filenameToCountryCode(filename):
     return 'LV'
   if filename[0:9] == 'lithuania':
     return 'LT'
+  if filename[0:10] == 'luxembourg':
+    return 'LU'
   if filename[0:10] == 'netherland':
     return 'NL'        
   if filename[0:6] == 'poland':

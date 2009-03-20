@@ -144,8 +144,9 @@ def index_line(line,meta):
   indexer.index_text(" ".join(index_text))
 
   doc.set_data(format_doc(meta,line))
-
+  docid = "XDOCID"+meta['data']['global_id']
   database.replace_document(docid,doc)
+
 
 
 

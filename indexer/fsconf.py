@@ -38,7 +38,7 @@ mysql_pass = "farmsubsidy"
 # Xapian database values
 index_values = {
   'global_id' :         0,
-  'global_id_X' :       1,
+  'global_id_x' :       1,
   'recipient_id' :      2,
   'recipient_id_x' :    3,  
   'year' :              4,
