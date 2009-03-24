@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% load blocks %}
+
+{% block title %}
+{{country.name}}
+{% endblock %}
+
+{% block content %}
+<h2>{{country.name}}</h2>
+{% endblock %}
+
+
+{% block left %}
+{{left.render}}
+{% countryBrowse country.code browsepath %}
+{% endblock %}

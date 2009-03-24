@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}The current time{% endblock %}
+
+{% block content %}
+<p>It is now {{ results.decsription }}.</p>
+  <ul>
+{% for key,document in results.documents.items %}
+<li>
+    {{ document.name }}
+    {{document.geopath}}
+</li>
+
+{% endfor %}
+  </ul>
+{% endblock %}
+

@@ -1,0 +1,5 @@
+<ul>
+{% for name,info in regions.items %}
+<li><a href="{% url data.views.countrybrowse country info.path %}">{{name|title}}</a></li>
+{% endfor %}
+</ul>

@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+    <title>{% block title %}{{title}}{% endblock %} | FarmSubsidy.org</title>
+    <link rel="stylesheet" href="/media/layout.css" type="text/css" media="screen" title="" charset="utf-8">
+</head>
+<body>
+    <div id="head">
+      <h1>FarmSubsidy.org {{request}}</h1>
+      <ul id="mainmenu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/search">Search</a></li>
+        <li><a href="/blog">Blog</a></li>
+      </ul>
+      {% block search %}
+      {% endblock %}
+    </div>    
+    <div id="left">{% block left %}
+      foo
+    {% endblock %}
+    </div>
+    
+    
+    <div id="content">{% block content %}{% endblock %}</div>
+    {% block footer %}
+    <div id="footer">
+    <hr>      
+    </div>
+
+    {% endblock %}
+</body>
+</html>

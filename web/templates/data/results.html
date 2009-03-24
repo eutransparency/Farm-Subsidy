@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% load currency %}
+
+{% block content %}
+
+{% if results.spelling %}
+ <b>Did you mean <i><a href="{% url data.views.search %}/{{results.spelling}}">{{results.spelling}}</a></i>?</b>
+{% endif %}
+
+{% if results.documents.items %}
+<table border="0" cellspacing="5" cellpadding="5">
+  <tr>
+    <th>Name</th>
+    <th>Amount</th>
+    <th>Country</th>
+    <th>Geo1</th>
+    <th>Geo2</th>    
+  </tr>
+
+
+{% for key,result in results.documents.items %}
+  {% url data.views.recipient recipient_id=result.recipient_id_x as recipient_url %}
+  <tr class="{% cycle 'odd' 'even' %}">
+    <td>
+      <a href="{{recipient_url}}/{{result.country}}/{{result.name|slugify|urlencode}}">
+        {{result.name}}
+      </a>
+    </td>
+    <td>&euro;{{result.amount|currency}}</td>
+    <td>{{result.country}}</td>
+    <td>{{result.geo1}}</td>
+    <td>{{result.geo2}}</td>    
+  </tr>
+{% endfor %}
+</table>
+{% else %}
+Sorry, no results found.
+{% endif %}
+{% endblock%}

@@ -1,0 +1,35 @@
+body {
+  margin:0;
+  padding:0;
+}
+
+#left {
+  float:left;
+  width:20%;
+}
+
+#content {
+  float:left;
+  width:70%;
+}
+
+#footer {
+  clear:both;
+}
+
+#mainmenu {
+  float:right;
+  clear:both;
+  list-style-type:none;
+}
+
+#mainmenu li {
+  float:left;
+  padding-left:2em;
+}
+
+#head {
+  clear:both;
+  height:100px;
+  border-bottom:1px solid black;
+}

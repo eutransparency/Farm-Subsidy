@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<table border="0" cellspacing="5" cellpadding="5">
+{% for k,result in results.documents.items %}
+
+  {% for key,v in result.items %}
+    <tr>
+      <td><b>{{key}}</b></td>
+      <td>{{v}}</td>      
+    </tr>
+  {% endfor %}
+
+{% endfor %}
+</table>
+{% endblock%}
