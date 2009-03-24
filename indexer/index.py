@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 # encoding: utf-8
 from __future__ import with_statement
-import os, sys, string, commands, fsconf, scheme, csv, traceback, xapian
+import os, sys, string, commands, scheme, csv, traceback, xapian
+from farmsubsidy import fsconf
 import math
 from string import Template
 from optparse import OptionParser
-sys.path.append('lib')
-import  progressbar
+from lib import progressbar
 import countryCodes
 import pprint
 import mappings
 import cPickle
 import collections
+
 
 # This modules should:
 # 
@@ -119,6 +120,9 @@ def index_line(line,meta):
   indexer.set_document(doc)
   
   index_text = []
+  
+  meta['data']['geopath'] = formatGeoPath(fields, meta)
+  
   for field in meta['data']:
     if fields[field]:
       if 'formatter' in fields[field]:
@@ -143,19 +147,31 @@ def index_line(line,meta):
       
   indexer.index_text(" ".join(index_text))
 
-  doc.set_data(format_doc(meta,line))
-  docid = "XDOCID"+meta['data']['global_id']
+  doc.set_data(format_doc(fields,meta,line))
+  docid = "XDOCID"+meta['data']['recipient_id']
   database.replace_document(docid,doc)
 
 
+def formatGeoPath(fields, meta):
+  order = {}
+  for field in meta['data']:
+    if 'geo_weight' in fields[field]:
+      order[fields[field]['geo_weight']] = field
+
+  return "/".join([meta['data'][field[1]] for field in order.items()]).strip().lower()
 
 
-def format_doc(meta,line):
+def format_doc(fields,meta,line):
   """Takes a scheme, with all the data and returns a formatted HTML string"""
 
   doc = collections.defaultdict(dict)
-  for item in meta['scheme']:
-    doc[item] = line[meta['scheme'][item]]
+  for field in meta['data']:
+    if 'doc_body' in fields[field]:
+      doc[field] = meta['data'][field]
+      
+  # for item in meta['scheme']:
+  #   print item
+  #   doc[item] = line[meta['scheme'][item]]
   return cPickle.dumps(doc)
   
 

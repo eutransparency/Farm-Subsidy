@@ -21,13 +21,38 @@ def countryCodes():
   codes.append('LU')
   codes.append('PL')
   codes.append('PT')
-  codes.append('S')  
+  codes.append('SE')    
   codes.append('SK')
   codes.append('SL')
   codes.append('ES')
   codes.append('UK')
   return codes
 
+
+code2name = {
+'AT'	: 'Austria',
+'BE'	: 'Belgium',
+'BG'	: 'Bulgaria',
+'CZ' : 'Czech',
+'EE' : 'Estonia',
+'FI' : 'Finland',
+'FR' : 'France',
+'DE' : 'Germany',
+'HU' : 'Hungary',
+'IE' : 'Ireland',
+'IT' : 'Italy',
+'LV' : 'Latvia',
+'LT' : 'Lithuania',
+'LU' : 'Luxembourg',
+'NL' : 'Netherland',
+'PL' : 'Poland',
+'PT' : 'Portugal',
+'SK' : 'Slovakia',
+'SL' : 'Slovenia',
+'ES' : 'Spain',
+'SE' : 'Sweden',
+'UK' : 'United Kingdom',
+}
 
 def filenameToCountryCode(filename):
   if filename[0:7] == 'austria':
@@ -81,3 +106,25 @@ if __name__ == '__main__':
   print countryCodes()
 
 
+'austria'
+'belgium'
+'bulgaria'
+'czech'
+'estonia'
+'finland'
+'france'
+'germany'
+'hungary'
+'ireland'
+'italy'
+'latvia'
+'lithuania'
+'luxembourg'
+'netherland'
+'poland'
+'portugal'
+'slovakia'
+'slovenia'
+'spain'
+'sweden'
+'unitedkingdom'

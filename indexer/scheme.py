@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-import os, sys, string, commands, fsconf, csv, math
+import os, sys, string, commands, csv, math
+from farmsubsidy import fsconf
 import collections, pprint
 
 def loadScheme(schemefile):
@@ -182,20 +183,23 @@ def mapSchemeToData(schemefile):
 def calc_year(year,fragile=None):
   """Takes a string in the format of either '2000', '2000-2001' or '2000-2008'
   and does something sane with them"""
-  years = str(year).split('-')
-  for key,year in enumerate(years):
-    years[key] = float(year)
+  if year:
+    years = str(year).split('-')
+    for key,year in enumerate(years):
+      years[key] = int(year)
 
-  years_len = len(range(int(years[0]),int(years[-1])))
-  if years_len > 2:
-    if not fragile:
-      return "0"
+    years_len = len(range(int(years[0]),int(years[-1])))
+    if years_len > 2:
+      if not fragile:
+        return "0"
+      else:
+        raise ValueError, "Year span too long"
+    elif years_len < 1:
+      year_int = int(math.ceil(sum(years)))
     else:
-      raise ValueError, "Year span too long"
-  elif years_len < 1:
-    year_int = int(math.ceil(sum(years)))
+      year_int = int(math.ceil(sum(years) / 2))
   else:
-    year_int = int(math.ceil(sum(years) / 2))
+    year_int = 0
   return year_int
   
   

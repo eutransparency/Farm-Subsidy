@@ -8,10 +8,9 @@ Created by Sym on 2009-02-25.
 
 import sys
 import os
-
+import re
 import xapian
-sys.path.append('..')
-import indexer.fsconf as fsconf
+from farmsubsidy import fsconf as fsconf
 import querylib
 import cPickle
 
@@ -82,9 +81,34 @@ def do_search(query):
   results['size'] = matches.get_matches_estimated()
 
   for k,m in enumerate(matches):
-    results['documents'][k] =  cPickle.loads(m.document.get_data())
+    results['documents'][k] =  dict(cPickle.loads(m.document.get_data()))
 
   return results
+
+
+
+def allterms(prefix=''):
+  db = querylib.load_database()
+  return db.allterms(prefix)
+
+
+def dumpRegions(country, path=''):
+  """dumps all regions in the 'geopath' term in to a file"""
+  if path == "":
+    path = "XGEOPATH:%s/" % (country.lower())
+    offsetnum = 0
+  else:
+    path = "XGEOPATH:%s/%s" % (country.lower(),re.sub('-', ' ', path).lower())    
+    offsetnum = 1
+  # return path
+  regions = []
+  for term in allterms(path):
+    region = term.term[len(path):].split('/')[offsetnum]
+    if region is not "":
+      regions.append(region)
+  return set(regions)
+
+
 
 
 if __name__ == "__main__":

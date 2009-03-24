@@ -18,10 +18,9 @@ Provide:
 import sys
 import os
 import xapian
-sys.path.append('..') # FIXME: Do this better!
-import indexer.fsconf as fsconf
+from farmsubsidy import fsconf
 
-import indexer.mappings as mappings
+import farmsubsidy.indexer.mappings as mappings
 
 def load_database(db=fsconf.xapianDbPath):
   """Returns a xapian.Database object

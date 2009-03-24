@@ -4,7 +4,7 @@
 mappings.py
 """
 
-import fsconf
+from farmsubsidy import fsconf
 import collections
 
 
@@ -72,6 +72,7 @@ def fieldTypeMaps(field_value='field_value'):
     'name' : 'country',
     'boolean' : True,
     'doc_body' : True,
+    'geo_weight' : 0,
   }
 
   fields['recipient_id'] = {
@@ -146,6 +147,13 @@ def fieldTypeMaps(field_value='field_value'):
     'termweight' : 10,
     'doc_body' : True,
     'geo_weight' : 8,
+  }
+
+  fields['geopath'] = {
+  'doc_body' : True,
+  'prefix' : 'XGEOPATH:',
+  'name' : 'geopath',
+  'boolean' : True,
   }
 
 
