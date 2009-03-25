@@ -45,4 +45,5 @@ index_values = {
   'recipient_id_x' :    3,  
   'year' :              4,
   'amount' :            5,
+  'total_amount' :      6,  
 }

@@ -20,17 +20,27 @@ def search(request):
   try:
     query = request.GET['q']
     title = "Search results for %s" % query
-    results = queries.do_search(query)
+  
+    options = {
+      'collapse_key' : fsconf.index_values['recipient_id_x'], 
+      'sort_value' : fsconf.index_values['total_amount'],
+      'offset' : 0,
+      'len' : 50,
+      'page' : int(request.GET.get('page',0))
+    }
+  
+    results = queries.do_search(query, options)
     return render_to_response('data/results.html', {'results' : results, 'query' : query, 'title' : title})  
-    
-  except:
+  
+  except Exception, e:
     title = "Search"
     query = ''
+
     return render_to_response('data/search.html', {'form' : forms.SearchForm(), 'title' : title}, context_instance=RequestContext(request))  
 
   
 def recipient(request, recipient_id):
-  results = queries.do_search("id:%s" % recipient_id)
+  results = queries.do_search("xid:%s" % recipient_id)
   # assert False
   return render_to_response('data/recipient.html', {'results' : results})  
   

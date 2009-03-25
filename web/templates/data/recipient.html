@@ -1,16 +1,21 @@
 {% extends "base.html" %}
+{% load currency %}
 {% block content %}
 
+<h2>{{results.documents.0.name}}</h2>
 
 <table border="0" cellspacing="5" cellpadding="5">
+  <tr>
+    <th>Year</th>
+    <th>Amount</th>
+  </tr>
+
 {% for k,result in results.documents.items %}
 
-  {% for key,v in result.items %}
     <tr>
-      <td><b>{{key}}</b></td>
-      <td>{{v}}</td>      
+      <td><b>{{result.year}}</b></td>
+      <td>&euro;{{result.amount|currency}}</td>      
     </tr>
-  {% endfor %}
 
 {% endfor %}
 </table>
