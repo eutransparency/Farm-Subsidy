@@ -2,6 +2,7 @@
 # encoding: utf-8
 
 import sys
+sys.path.append('..')
 import os
 import commands
 import re
@@ -48,7 +49,7 @@ def mysql2csv():
       while db_end is 0:
         c = connection.cursor()
             
-        query = """SELECT *
+        query = """SELECT *,r.recipient_id_x as total_amount
         FROM %s p, %s r 
         WHERE r.recipient_id=p.recipient_id 
         LIMIT %s,100000
@@ -71,6 +72,8 @@ def mysql2csv():
         print "Writing rows"
         row = c.fetchone()
         while row:
+          row = list(row)
+          row[-1] = calcTotalAmount(database,row[-1])
           writer.writerow(row)
           row = c.fetchone()
         
@@ -86,6 +89,30 @@ def mysql2csv():
       connection.close()
     
     
+
+def calcTotalAmount(name,ridx):
+  """docstring for calcTotalAmount"""
+  mysql_prefix = fsconf.mysql_prefix
+  mysql_user = fsconf.mysql_user
+  mysql_pass = fsconf.mysql_pass
+
+  connection = MySQLdb.connect (host = "localhost",
+                             user = mysql_user,
+                             passwd = mysql_pass,
+                             db = name.split('.')[0])
+
+  c = connection.cursor()
+
+  query = """
+  SELECT SUM(p.amount) FROM recipient r LEFT JOIN payment p
+  ON r.recipient_id=p.recipient_id
+  WHERE r.recipient_id_x = %s
+  GROUP BY r.recipient_id_x
+  """ % ridx
+  c.execute(query)
+
+  return c.fetchone()[0]
+  c.close()
 
 
 

@@ -52,7 +52,8 @@ def fieldNameMappings():
   fieldMapping['Amount'] = 'amount'  
   fieldMapping['amount_paid'] = 'amount'
   fieldMapping['amount_euro_conversion'] = 'amount'
-  
+  fieldMapping['total_amount'] = 'total_amount'
+    
   fieldMapping['year'] = 'year'
   fieldMapping['Year'] = 'year'  
   fieldMapping['name'] = 'name'
