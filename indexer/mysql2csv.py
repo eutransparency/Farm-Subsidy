@@ -48,13 +48,14 @@ def mysql2csv():
       while db_end is 0:
         c = connection.cursor()
             
-        query = """SELECT SQL_BIG_RESULT *  
+        query = """SELECT *
         FROM %s p, %s r 
-        WHERE r.recipient_id=p.recipient_id LIMIT %s,10000;
+        WHERE r.recipient_id=p.recipient_id 
+        LIMIT %s,100000
         """ % (payment_table, recipient_table, start)
           
 
-        print "Execute Query %s to %s" % (start,start+10000)
+        print "Execute Query %s to %s" % (start,start+100000)
 
         c.execute(query)
             
@@ -75,12 +76,12 @@ def mysql2csv():
         
         c.scroll(0,mode='absolute')
         # print "rows:%s" % len(c.fetchall())
-        if len(c.fetchall()) <= 9999:
+        if len(c.fetchall()) <= 99999:
           print "yes"
           db_end = 1
   
       
-        start +=10000  
+        start +=100000  
         c.close()
       connection.close()
     
