@@ -46,7 +46,7 @@ def get_payments_by_rid(rid, db=querylib.load_database()):
   return query
   
 
-def do_search(query):  
+def do_search(query, options={'len' : 100, 'page' : 0, 'len' : 50}):  
   query_string = querylib.parse_query(query)
   (qp,valueranges) = querylib.load_queryparser()
   db = querylib.load_database()
@@ -69,9 +69,13 @@ def do_search(query):
  # print "Parsed query is: %s" % query.get_description()
   enq = querylib.load_enquire(db)
   enq.set_query(query)
-  #enq.set_sort_by_value(fsconf.index_values['amount'],1)
-  enq.set_collapse_key(fsconf.index_values['recipient_id_x'])
-  matches = enq.get_mset(0,100)
+
+  if 'sort_value' in options:
+    enq.set_sort_by_value(options['sort_value'],1)
+  if 'collapse_key' in options:
+    enq.set_collapse_key(options['collapse_key'])
+
+  matches = enq.get_mset(calcPages(options['page'], options['len']),options['len'],)
 
   results = {}
   results['decsription'] = "Parsed query is: %s" % query.get_description()
@@ -81,11 +85,15 @@ def do_search(query):
   results['size'] = matches.get_matches_estimated()
 
   for k,m in enumerate(matches):
-    results['documents'][k] =  dict(cPickle.loads(m.document.get_data()))
+    results['documents'][k] = dict(cPickle.loads(m.document.get_data()))
+    # results['documents'][k] = get_collapse_count()
+    
 
   return results
 
-
+def calcPages(page,resultlen):
+  """docstring for calcPages"""
+  return resultlen*(page)
 
 def allterms(prefix=''):
   db = querylib.load_database()

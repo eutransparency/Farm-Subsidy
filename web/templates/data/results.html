@@ -17,8 +17,6 @@
     <th>Geo1</th>
     <th>Geo2</th>    
   </tr>
-
-
 {% for key,result in results.documents.items %}
   {% url data.views.recipient recipient_id=result.recipient_id_x as recipient_url %}
   <tr class="{% cycle 'odd' 'even' %}">
@@ -27,7 +25,7 @@
         {{result.name}}
       </a>
     </td>
-    <td>&euro;{{result.amount|currency}}</td>
+    <td>&euro;{{result.total_amount|currency}}</td>
     <td>{{result.country}}</td>
     <td>{{result.geo1}}</td>
     <td>{{result.geo2}}</td>    

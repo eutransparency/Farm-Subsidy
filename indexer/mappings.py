@@ -67,6 +67,15 @@ def fieldTypeMaps(field_value='field_value'):
     'doc_body' : True,
   }
 
+  fields['total_amount'] = {
+    'value' : fsconf.index_values['total_amount'],
+    'value_formatter': "xapian.sortable_serialise(float(%s))"  % field_value,
+    'value_range_search' : True,    
+    'value_range_prefix' : 'totalamount:',
+    'doc_body' : True,
+  }
+
+
   fields['country'] = {
     'prefix' : 'XCOUNTRY:',
     'name' : 'country',

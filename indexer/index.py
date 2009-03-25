@@ -12,6 +12,7 @@ import pprint
 import mappings
 import cPickle
 import collections
+import MySQLdb
 
 
 # This modules should:
@@ -54,6 +55,7 @@ def index(country=None, tabletype=None, table=None):
                 
         meta['scheme'] = scheme.loadScheme("%s/%s" % (csvdir,name))
         meta['data'] = {}
+        meta['database'] = name.split('.')[0]
         meta['country'] = countryCodes.filenameToCountryCode(name[12:])
 
         print meta['country']
@@ -122,6 +124,8 @@ def index_line(line,meta):
   index_text = []
   
   meta['data']['geopath'] = formatGeoPath(fields, meta)
+  meta['data']['total_amount'] = calcTotalAmount(meta['database'],meta['data']['recipient_id_x'])
+  print meta['data']['total_amount']
   
   for field in meta['data']:
     if fields[field]:
@@ -130,7 +134,6 @@ def index_line(line,meta):
         field_value = eval(fields[field]['formatter'])
       else:
         field_value = meta['data'][field]
-
       
       if 'prefix' in fields[field]:
         if 'index' in fields[field]:
@@ -174,6 +177,29 @@ def format_doc(fields,meta,line):
   #   doc[item] = line[meta['scheme'][item]]
   return cPickle.dumps(doc)
   
+
+def calcTotalAmount(name,ridx):
+  """docstring for calcTotalAmount"""
+  mysql_prefix = fsconf.mysql_prefix
+  mysql_user = fsconf.mysql_user
+  mysql_pass = fsconf.mysql_pass
+  
+  connection = MySQLdb.connect (host = "localhost",
+                             user = mysql_user,
+                             passwd = mysql_pass,
+                             db = name.split('.')[0])
+                             
+  c = connection.cursor()
+  
+  query = """
+  SELECT SUM(p.amount) FROM recipient r LEFT JOIN payment p
+  ON r.recipient_id=p.recipient_id
+  WHERE r.recipient_id_x = %s
+  GROUP BY r.recipient_id_x
+  """ % ridx
+  c.execute(query)
+  
+  return c.fetchone()[0]
 
 
 if __name__ == '__main__':
