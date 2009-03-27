@@ -2,7 +2,6 @@
 # encoding: utf-8
 
 import sys
-sys.path.append('..')
 import os
 import commands
 import re
@@ -10,10 +9,11 @@ import MySQLdb
 import csv
 import codecs
 
-import fsconf
+import farmsubsidy.fsconf as fsconf
+import countryCodes
 
 
-def mysql2csv():
+def mysql2csv(countryToProcess="all"):
   mysql_prefix = fsconf.mysql_prefix
   mysql_user = fsconf.mysql_user
   mysql_pass = fsconf.mysql_pass
@@ -22,7 +22,15 @@ def mysql2csv():
   databases = re.findall("((^|(?<=\n))%s[^\n]+)" % mysql_prefix,commands.getoutput("echo 'SHOW DATABASES' | %s" % (mysql_string)))
   
   for database in databases:
+
     database = database[0]
+    
+    country = countryCodes.filenameToCountryCode(database[len('farmsubsidy_'):])
+    if countryToProcess != "all" and countryToProcess != country:
+      continue
+    
+    
+
     mysql_string
     tables = commands.getoutput('echo "SHOW TABLES" | %s %s' % (mysql_string, database)).split("\n")
     for table in tables:
@@ -95,40 +103,16 @@ def mysql2csv():
         c.close()
       connection.close()
     
-    
-
-# def calcTotalAmount(name,ridx):
-#   """docstring for calcTotalAmount"""
-#   mysql_prefix = fsconf.mysql_prefix
-#   mysql_user = fsconf.mysql_user
-#   mysql_pass = fsconf.mysql_pass
-# 
-#   connection = MySQLdb.connect (host = "localhost",
-#                              user = mysql_user,
-#                              passwd = mysql_pass,
-#                              db = name.split('.')[0])
-# 
-#   c = connection.cursor()
-# 
-#   query = """
-#   SELECT SUM(p.amount) FROM recipient r LEFT JOIN payment p
-#   ON r.recipient_id=p.recipient_id
-#   WHERE r.recipient_id_x = %s
-#   GROUP BY r.recipient_id_x
-#   """ % ridx
-#   c.execute(query)
-# 
-#   return c.fetchone()[0]
-#   c.close()
-# 
-# 
-
-
-
-
 
 if __name__ == '__main__':
-  mysql2csv()
+  if len(sys.argv) > 1:
+    if sys.argv[1] in countryCodes.countryCodes() or sys.argv[1] == "all":
+      country = sys.argv[1]
+      mysql2csv(country)
+    else:
+      print "%s isn't a valid country code" % sys.argv[1]
+  else:
+    print "Usage: 'python mdb2csv.py [country|all]"
 
 
 
