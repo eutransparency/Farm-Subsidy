@@ -52,55 +52,45 @@ def mysql2csv(countryToProcess="all"):
                                  passwd = mysql_pass,
                                  db = database)
         
-      start = 0
-      length = 1000                         
-      db_end = 0
-      while db_end is 0:
-        c = connection.cursor()
-            
-        query = """
-
-        SELECT *,
-          (SELECT sum(%(payment)s.amount) 
-           FROM %(payment)s, %(recipient)s 
-           WHERE %(payment)s.recipient_id=%(recipient)s.recipient_id 
-           AND R.recipient_id_x=recipient_id_x 
-           GROUP BY recipient_id_x) AS total_amount 
-        FROM %(recipient)s AS R, %(payment)s AS P
-        WHERE R.recipient_id=P.recipient_id
-        LIMIT %(start)s,%(length)s;
-         
-        """ % {'payment' : payment_table, 'recipient' : recipient_table, 'start' : start, 'length' : length}
+      c = connection.cursor()
           
+      query = """
 
-        print "Execute Query %s to %s" % (start,start+length)
-
-        c.execute(query)
-            
-        if start == 0:
-          print "Load Scheme"
-          scheme = []
-          for f in c.description:
-            scheme.append(f[0])
-      
-          file = csv.writer(codecs.open("%s/%s.scheme" % (fsconf.csvdir, database),'w'))
-          file.writerow(scheme)
-    
-        print "Writing rows"
-        row = c.fetchone()
-        while row:
-          writer.writerow(row)
-          row = c.fetchone()
+      SELECT * 
+      FROM %(recipient)s as R, %(payment)s as P, 
+        (SELECT 
+          sum(%(payment)s.amount) AS total_amount, 
+          recipient_id_x  
+          FROM %(payment)s, %(recipient)s  
+          WHERE %(payment)s.recipient_id=%(recipient)s.recipient_id  
+          GROUP BY recipient_id_x) AS T 
+      WHERE  R.recipient_id=P.recipient_id 
+      AND  T.recipient_id_x=R.recipient_id_x;
+       
+      """ % {'payment' : payment_table, 'recipient' : recipient_table}
         
-        c.scroll(0,mode='absolute')
-        # print "rows:%s" % len(c.fetchall())
-        if len(c.fetchall()) <= length-1:
-          print "yes"
-          db_end = 1
+
+      print "Execute Query"
+
+      c.execute(query)
+          
+      if start == 0:
+        print "Load Scheme"
+        scheme = []
+        for f in c.description:
+          scheme.append(f[0])
+    
+        file = csv.writer(codecs.open("%s/%s.scheme" % (fsconf.csvdir, database),'w'))
+        file.writerow(scheme)
   
-      
-        start +=length  
-        c.close()
+      print "Writing rows"
+      row = c.fetchone()
+      while row:
+        writer.writerow(row)
+        row = c.fetchone()
+
+    
+      c.close()
       connection.close()
     
 
