@@ -77,7 +77,6 @@ def mysql2csv(countryToProcess="all"):
       rlen = 100000
       db_end = 0
       while db_end is 0:
-        db_end = 1        
         query = """
         SELECT * from
           (%(recipient)s R 
