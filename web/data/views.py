@@ -40,9 +40,17 @@ def search(request):
 
   
 def recipient(request, recipient_id):
+  options = {
+    'sort_value' : fsconf.index_values['year'],
+  }
   results = queries.do_search("xid:%s" % recipient_id)
-  # assert False
-  return render_to_response('data/recipient.html', {'results' : results})  
+  total = 0
+  for key,result in results['documents'].items():
+    total = total + float(result['amount'])
+  return render_to_response('data/recipient.html', {'results' : results, 'title' : results, 'total' : total})  
+  
+  
+  
   
 def country(request, country):
   countryinfo = {

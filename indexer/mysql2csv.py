@@ -53,43 +53,71 @@ def mysql2csv(countryToProcess="all"):
                                  db = database)
         
       c = connection.cursor()
-          
-      query = """
 
-      SELECT * 
-      FROM %(recipient)s as R, %(payment)s as P, 
-        (SELECT 
-          sum(%(payment)s.amount) AS total_amount, 
-          recipient_id_x  
-          FROM %(payment)s, %(recipient)s  
-          WHERE %(payment)s.recipient_id=%(recipient)s.recipient_id  
-          GROUP BY recipient_id_x) AS T 
-      WHERE  R.recipient_id=P.recipient_id 
-      AND  T.recipient_id_x=R.recipient_id_x;
-       
+
+      totals_query = """
+      CREATE TEMPORARY TABLE totals
+      SELECT sum(%(payment)s.amount)
+      as total_amount, %(recipient)s.recipient_id_x
+      FROM %(payment)s, %(recipient)s  
+      WHERE %(payment)s.recipient_id=%(recipient)s.recipient_id
+      GROUP BY %(recipient)s.recipient_id_x;
       """ % {'payment' : payment_table, 'recipient' : recipient_table}
+
+      print "Making totals"
+      c.execute(totals_query)
+
+      index_query = """
+       ALTER TABLE `totals` ADD INDEX ( `recipient_id_x` )  
+      
+      """
+      c.execute(index_query)
+
+      start = 0
+      rlen = 100000
+      db_end = 0
+      while db_end is 0:
+        db_end = 1        
+        query = """
+        SELECT * from
+          (%(recipient)s R 
+          LEFT JOIN %(payment)s P 
+          ON R.recipient_id = P.recipient_id) 
+          INNER JOIN totals T ON R.recipient_id_x=T.recipient_id_x
+          LIMIT %(start)s,%(rlen)s;
+        """ % {'payment' : payment_table, 'recipient' : recipient_table, 'rlen' : rlen, 'start' : start}
         
 
-      print "Execute Query"
+        print "Execute Query %s to %s" % (start,start+rlen)
 
-      c.execute(query)
+        c.execute(query)
+
+
+
+        if start == 0:
+          print "Load Scheme"
+          scheme = []
+          for f in c.description:
+            scheme.append(f[0])
           
-      if start == 0:
-        print "Load Scheme"
-        scheme = []
-        for f in c.description:
-          scheme.append(f[0])
-    
-        file = csv.writer(codecs.open("%s/%s.scheme" % (fsconf.csvdir, database),'w'))
-        file.writerow(scheme)
   
-      print "Writing rows"
-      row = c.fetchone()
-      while row:
-        writer.writerow(row)
+          file = csv.writer(codecs.open("%s/%s.scheme" % (fsconf.csvdir, database),'w'))
+          file.writerow(scheme)
+  
+        print "Writing rows"
         row = c.fetchone()
+        row_count = 0
+        while row:
+          writer.writerow(row)
+          row = c.fetchone()
+          row_count += 1
 
-    
+        if row_count < rlen:
+          print "Database End"
+          db_end = 1
+
+        start = start + rlen
+              
       c.close()
       connection.close()
     

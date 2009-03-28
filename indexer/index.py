@@ -3,6 +3,7 @@
 from __future__ import with_statement
 import os, sys, string, commands, scheme, csv, traceback, xapian
 from farmsubsidy import fsconf
+from farmsubsidy.indexer import scheme
 import math
 from string import Template
 from optparse import OptionParser
@@ -142,16 +143,20 @@ def index_line(line,meta):
           doc.add_term(fields[field]['prefix']+field_value)
       
       if 'value' in fields[field]:
-        doc.add_value(fields[field]['value'],eval(fields[field]['value_formatter']))
-      
+        try:
+          doc.add_value(fields[field]['value'],eval(fields[field]['value_formatter']))
+        except:
+          print field
+          print line
 
       if 'index' in fields[field]:
         index_text.append(field_value)
       
   indexer.index_text(" ".join(index_text))
 
+  docid = "XDOCID"+meta['data']['recipient_id']+meta['data']['payment_id']
+  doc.add_term(docid)
   doc.set_data(format_doc(fields,meta,line))
-  docid = "XDOCID"+meta['data']['recipient_id']
   database.replace_document(docid,doc)
 
 
@@ -169,8 +174,16 @@ def format_doc(fields,meta,line):
 
   doc = collections.defaultdict(dict)
   for field in meta['data']:
-    if 'doc_body' in fields[field]:
-      doc[field] = meta['data'][field]
+    if 'doc_body' in fields[field]:    
+      if 'formatter' in fields[field]:
+        field_value = meta['data'][field]
+        field_value = eval(fields[field]['formatter'])
+      else:
+        field_value = meta['data'][field]
+      doc[field] = field_value
+    
+
+
       
   # for item in meta['scheme']:
   #   print item

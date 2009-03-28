@@ -6,4 +6,7 @@ register = template.Library()
  
 @register.filter()
 def currency(value):
+  try:
     return locale.format('%.2f', float(value), True)
+  except:
+    return value

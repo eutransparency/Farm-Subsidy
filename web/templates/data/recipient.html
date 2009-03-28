@@ -1,9 +1,14 @@
 {% extends "base.html" %}
 {% load currency %}
+
+{% block title %}
+  {{results.documents.0.name|title}} | {{results.documents.0.country}}
+{% endblock %}
+
 {% block content %}
 
-<h2>{{results.documents.0.name}}</h2>
-
+<h2>{{results.documents.0.name|title}}</h2>
+{{total|currency}} - {{results.documents.0.total_amount|currency}}
 <table border="0" cellspacing="5" cellpadding="5">
   <tr>
     <th>Year</th>
@@ -14,7 +19,7 @@
 
     <tr>
       <td><b>{{result.year}}</b></td>
-      <td>&euro;{{result.amount|currency}}</td>      
+      <td>&euro;{{result.amount|currency}}</td>
     </tr>
 
 {% endfor %}
