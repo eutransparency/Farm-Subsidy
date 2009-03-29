@@ -46,7 +46,9 @@ def get_payments_by_rid(rid, db=querylib.load_database()):
   return query
   
 
-def do_search(query, options={'len' : 100, 'page' : 0, 'len' : 50}):  
+def do_search(query, options={'len' : 100, 'page' : 0, 'len' : 50,}):  
+      
+  
   query_string = querylib.parse_query(query)
   (qp,valueranges) = querylib.load_queryparser()
   db = querylib.load_database()
@@ -102,17 +104,13 @@ def allterms(prefix=''):
 
 def dumpRegions(country, path=''):
   """dumps all regions in the 'geopath' term in to a file"""
-  if path == "":
-    path = "XGEOPATH:%s/" % (country.lower())
-    offsetnum = 0
-  else:
-    path = "XGEOPATH:%s/%s" % (country.lower(),re.sub('-', ' ', path).lower())    
-    offsetnum = 1
+    
+  path = "XGEOPATH:%s" % (path)
   # return path
   regions = []
   for term in allterms(path):
-    region = term.term[len(path):].split('/')[offsetnum]
-    if region is not "":
+    region = term.term[len(path)+1:].split('/')[0]
+    if region != "":
       regions.append(region)
   return set(regions)
 

@@ -14,6 +14,7 @@ import mappings
 import cPickle
 import collections
 import MySQLdb
+import re
 
 
 # This modules should:
@@ -124,7 +125,7 @@ def index_line(line,meta):
   
   index_text = []
   
-  meta['data']['geopath'] = formatGeoPath(fields, meta)
+  meta['data']['geopath'] = formatGeoPath(fields, meta, doc)
   # meta['data']['total_amount'] = calcTotalAmount(meta['database'],meta['data']['recipient_id_x'])
   # print meta['data']['total_amount']
   
@@ -160,11 +161,23 @@ def index_line(line,meta):
   database.replace_document(docid,doc)
 
 
-def formatGeoPath(fields, meta):
+def formatGeoPath(fields, meta, doc):
   order = {}
+  stem = ""
+  last = ""
   for field in meta['data']:
     if 'geo_weight' in fields[field]:
+      # print meta['data'][field]
+      if last == field:
+        print "last:",field
+        sys.exit()    
+      last = field
       order[fields[field]['geo_weight']] = field
+      
+  for key,field in order.items():
+    stem = "/".join([stem,meta['data'][field]])
+    doc.add_term("XGEOPATH:"+re.sub(' ','+',stem[1:]))
+    
 
   return "/".join([meta['data'][field[1]] for field in order.items()]).strip().lower()
 

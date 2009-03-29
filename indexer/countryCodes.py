@@ -19,6 +19,7 @@ def countryCodes():
   codes.append('LV')
   codes.append('LT')
   codes.append('LU')
+  codes.append('NL')
   codes.append('PL')
   codes.append('PT')
   codes.append('SE')    

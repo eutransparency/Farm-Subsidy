@@ -47,7 +47,7 @@ def recipient(request, recipient_id):
   total = 0
   for key,result in results['documents'].items():
     total = total + float(result['amount'])
-  return render_to_response('data/recipient.html', {'results' : results, 'title' : results, 'total' : total})  
+  return render_to_response('data/recipient.html', {'results' : results, 'title' : results, 'total' : total, 'country' : {'code' : 'UK'}})  
   
   
   
@@ -57,7 +57,7 @@ def country(request, country):
     'code' : country,
     'name' : countryCodes.code2name[country]
   }
-  path = ''
+  path = country
   return render_to_response('data/country.html', {'country' : countryinfo, 'browsepath' : path}, context_instance=RequestContext(request))    
 
 

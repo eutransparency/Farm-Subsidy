@@ -33,3 +33,38 @@ body {
   height:100px;
   border-bottom:1px solid black;
 }
+
+.active {
+  background-color:#999999
+  ;
+}
+
+table {
+  border:1px solid #00AA00;
+  margin:0;
+  padding:0;
+  font-size:0.8em;
+  width:100%;
+  text-align:left;
+}
+
+table a {
+  color:#000000;
+}
+
+tr {
+  padding-bottom:20px;
+}
+
+td {
+  padding:0.2em;
+}
+
+.odd {
+}
+
+thead tr {
+  background-color:#00AA00;
+  margin:0;
+  color:#FFFFFF;
+}
