@@ -71,3 +71,10 @@ def countrybrowse(request, country, browsepath):
 
 
 
+def home(request):
+  """temp home view"""
+  # TODO replace with a real view!
+  return render_to_response('base.html', {'country' : {'code' : None}}, context_instance=RequestContext(request))    
+  
+
+
