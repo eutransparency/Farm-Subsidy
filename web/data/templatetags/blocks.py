@@ -27,7 +27,7 @@ def countryBrowse(country, path):
   # return {'regions' : regions}
   browsepaths = {}
   for region in regions:
-    regionpath = "%s/%s" % (path,region)
+    regionpath = "%s/%s" % (path.encode('utf8'),region)
     if regionpath[0] == "/":
       regionpath = regionpath[1:]
     
