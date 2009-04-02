@@ -7,12 +7,12 @@
     </tr>
   </thead>
 {% for key,result in results.documents.items %}
-  {% url data.views.recipient recipient_id=result.recipient_id_x as recipient_url %}
+  {% url data.views.recipient  recipient_id=result.recipient_id_x as recipient_url %}
   <tr class="{% cycle 'odd' 'even' %}">
     <td>
       <a href="{{recipient_url}}/{{result.name|slugify|urlencode}}">
         {{result.name}}
-      </a>
+      </a>  
     </td>
     <td>&euro;{{result.total_amount|currency}}</td>
   </tr>
