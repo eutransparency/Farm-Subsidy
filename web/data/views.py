@@ -39,7 +39,7 @@ def search(request):
     return render_to_response('data/search.html', {'form' : forms.SearchForm(), 'title' : title}, context_instance=RequestContext(request))  
 
   
-def recipient(request, recipient_id):
+def recipient(request, recipient_id, country):
   options = {
     'sort_value' : fsconf.index_values['year'],
   }
@@ -47,7 +47,9 @@ def recipient(request, recipient_id):
   total = 0
   for key,result in results['documents'].items():
     total = total + float(result['amount'])
-  return render_to_response('data/recipient.html', {'results' : results, 'title' : results, 'total' : total, 'country' : {'code' : 'UK'}})  
+  return render_to_response('data/recipient.html', 
+  {'results' : results, 'title' : results, 'total' : total},
+  context_instance=RequestContext(request))  
   
   
   

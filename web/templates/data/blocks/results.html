@@ -10,7 +10,7 @@
   {% url data.views.recipient recipient_id=result.recipient_id_x as recipient_url %}
   <tr class="{% cycle 'odd' 'even' %}">
     <td>
-      <a href="{{recipient_url}}/{{result.country}}/{{result.name|slugify|urlencode}}">
+      <a href="{{recipient_url}}/{{result.name|slugify|urlencode}}">
         {{result.name}}
       </a>
     </td>
