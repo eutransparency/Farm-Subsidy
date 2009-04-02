@@ -13,6 +13,8 @@ import xapian
 from farmsubsidy import fsconf as fsconf
 import querylib
 import cPickle
+from farmsubsidy.queries import xapcache
+
 
 def load_doc(doc_id, db=querylib.load_database()):
   """ Returns a xapian.Document with the given doc_id.
@@ -47,7 +49,10 @@ def get_payments_by_rid(rid, db=querylib.load_database()):
   
 
 def do_search(query, options={'len' : 100, 'page' : 0, 'len' : 50,}):  
-      
+  
+  cache = xapcache.load_cache(query, options)
+  if cache:
+    return cache
   
   query_string = querylib.parse_query(query)
   (qp,valueranges) = querylib.load_queryparser()
@@ -90,8 +95,8 @@ def do_search(query, options={'len' : 100, 'page' : 0, 'len' : 50,}):
     results['documents'][k] = dict(cPickle.loads(m.document.get_data()))
     # results['documents'][k] = get_collapse_count()
     
-
-  return results
+  xapcache.save_cache(query_string, options, results)  
+  return results  
 
 def calcPages(page,resultlen):
   """docstring for calcPages"""

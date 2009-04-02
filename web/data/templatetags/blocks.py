@@ -40,6 +40,22 @@ def countryBrowse(country, path):
 
 register.inclusion_tag('data/blocks/regions.html')(countryBrowse)
 
+def browsePathTitle(browsepath):
+  stem = ""
+  for path in browsepath.split('/')[-1:]:
+    stem = " | ".join([path,stem])
+  try:
+    return countryCodes.code2name[re.sub('\+',' ',stem)]
+  except:
+    return re.sub('\+',' ',stem)
+register.simple_tag(browsePathTitle)
+
+def browsePathHead(browsepath):
+  try:
+    return countryCodes.code2name["%s" % browsepath.split('/')[-1:][0]]
+  except:
+    return "%s" % re.sub('\+',' ',browsepath.split('/')[-1:][0])
+register.simple_tag(browsePathHead)
 
 
 def search(prefix, query, rlen=30, page=0, sort_value=fsconf.index_values['total_amount'],):

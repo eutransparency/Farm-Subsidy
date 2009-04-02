@@ -1,4 +1,5 @@
 {% load blocks %}
+{% load cache %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="en">
 <head>
@@ -18,7 +19,13 @@
     </div>    
     
     <div id="left">{% block left %}
-    {% countryMenu country.code %}      
+    {% countryMenu country.code %}  
+    {% load blog %}
+    {% get_latest_posts 10 as latest_post_list %}
+    {{latest_post_list}}
+    {% for post in latest_post_list %}
+      {{ post }}
+    {% endfor %}
     {% endblock %}
 
     </div>

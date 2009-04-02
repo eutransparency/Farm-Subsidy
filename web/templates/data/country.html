@@ -3,11 +3,11 @@
 {% load blocks %}
 
 {% block title %}
-{{country.name}}
+{% browsePathTitle browsepath%}{{country.name}}
 {% endblock %}
 
 {% block content %}
-<h2>{{country.name}}</h2>
+<h2>{% browsePathHead browsepath%}</h2>
 
 <h3>Top 10 Recipients</h3>
 {% search "geopath:" browsepath 10 %}

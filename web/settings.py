@@ -61,6 +61,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',    
 )
 
 ROOT_URLCONF = 'web.urls'
@@ -72,12 +73,31 @@ TEMPLATE_DIRS = (
     '/var/www/farmsubsidy/web/templates'
 )
 
+
 INSTALLED_APPS = (
-    'django.contrib.auth',
     'django.contrib.admin',    
-    'django.contrib.redirects',
+    'django.contrib.auth',
+    'django.contrib.comments',
     'django.contrib.contenttypes',
+    'django.contrib.syndication',
+    'django.contrib.flatpages',
+    'django.contrib.markup',
+    'django.contrib.redirects',
     'django.contrib.sessions',
     'django.contrib.sites',
     'web.data',
+    'web.basic.blog',
+    'web.basic.inlines',
+    'web.tagging',
 )
+
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+  "django.core.context_processors.auth",
+  "django.core.context_processors.debug",
+  "django.core.context_processors.i18n",
+  "django.core.context_processors.media",
+  'data.context_processors.country',  
+)
+
+

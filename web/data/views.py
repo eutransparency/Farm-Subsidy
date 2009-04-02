@@ -58,7 +58,7 @@ def country(request, country):
     'name' : countryCodes.code2name[country]
   }
   path = country
-  return render_to_response('data/country.html', {'country' : countryinfo, 'browsepath' : path}, context_instance=RequestContext(request))    
+  return render_to_response('data/country.html', {'browsepath' : path}, context_instance=RequestContext(request))    
 
 
 
