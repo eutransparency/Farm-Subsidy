@@ -1,0 +1,133 @@
+8
+
+dir
+102
+http://django-basic-apps.googlecode.com/svn/trunk/profiles
+http://django-basic-apps.googlecode.com/svn
+
+
+
+2008-11-17T18:20:14.208880Z
+95
+nathan@playgroundblues.com
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+5ae32e2a-df40-0410-a01d-45158a99d8df
+
+admin.py
+file
+
+
+
+
+2009-03-31T11:54:11.000000Z
+d1ef9e71a3b9c34cb50ebfa9f4ebeda9
+2008-09-10T16:16:07.350756Z
+68
+nathan@playgroundblues.com
+
+views.py
+file
+
+
+
+
+2009-03-31T11:54:11.000000Z
+1acf92ff13cfc27b835505f2cd57c876
+2008-11-17T18:20:14.208880Z
+95
+nathan@playgroundblues.com
+
+__init__.py
+file
+
+
+
+
+2009-03-31T11:54:11.000000Z
+d41d8cd98f00b204e9800998ecf8427e
+2008-03-27T00:51:14.650785Z
+2
+nathan@playgroundblues.com
+
+CHANGELOG.yml
+file
+
+
+
+
+2009-03-31T11:54:11.000000Z
+f891a2f10ad81e24e1458a1d8fd67764
+2008-09-02T16:40:48.316008Z
+63
+nathan@playgroundblues.com
+
+fixtures
+dir
+
+templatetags
+dir
+
+models.py
+file
+
+
+
+
+2009-03-31T11:54:11.000000Z
+559ff8eec42f727ed3651f9bbb67f905
+2008-09-10T16:16:07.350756Z
+68
+nathan@playgroundblues.com
+
+README.txt
+file
+
+
+
+
+2009-03-31T11:54:11.000000Z
+3b7f405c4a805977d34abfdd88f5b740
+2008-04-20T23:56:45.671454Z
+20
+nathan@playgroundblues.com
+
+urls.py
+file
+
+
+
+
+2009-03-31T11:54:11.000000Z
+13d4a8b5904261c1f030aad6df43d105
+2008-08-25T04:47:08.414161Z
+61
+nathan@playgroundblues.com
+
+forms.py
+file
+
+
+
+
+2009-03-31T11:54:11.000000Z
+2c18e8c974bd158d101131d3371a88cf
+2008-08-25T04:38:15.364368Z
+58
+nathan@playgroundblues.com
+
+templates
+dir
+

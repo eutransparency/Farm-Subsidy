@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/68/trunk/profiles/templates/profiles
+END
+profile_detail.html
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/68/trunk/profiles/templates/profiles/profile_detail.html
+END
+profile_form.html
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/58/trunk/profiles/templates/profiles/profile_form.html
+END
+base_profile.html
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/32/trunk/profiles/templates/profiles/base_profile.html
+END
+profile_list.html
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/68/trunk/profiles/templates/profiles/profile_list.html
+END

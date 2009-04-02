@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/98/trunk/relationships/templates/relationships
+END
+base_relationships.html
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/73/trunk/relationships/templates/relationships/base_relationships.html
+END
+relationship_delete_confirm.html
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/82/trunk/relationships/templates/relationships/relationship_delete_confirm.html
+END
+relationship_add_success.html
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/74/trunk/relationships/templates/relationships/relationship_add_success.html
+END
+relationship_add_confirm.html
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/74/trunk/relationships/templates/relationships/relationship_add_confirm.html
+END
+relationship_delete_success.html
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/!svn/ver/82/trunk/relationships/templates/relationships/relationship_delete_success.html
+END

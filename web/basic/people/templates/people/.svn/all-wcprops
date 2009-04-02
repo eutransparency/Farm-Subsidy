@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/57/trunk/people/templates/people
+END
+person_quote_list.html
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/57/trunk/people/templates/people/person_quote_list.html
+END
+base_people.html
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/32/trunk/people/templates/people/base_people.html
+END
+person_list.html
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/2/trunk/people/templates/people/person_list.html
+END
+persontype_list.html
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/2/trunk/people/templates/people/persontype_list.html
+END
+person_detail.html
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/2/trunk/people/templates/people/person_detail.html
+END
+persontype_detail.html
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/2/trunk/people/templates/people/persontype_detail.html
+END

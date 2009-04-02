@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}{{ flatpage.title }}{% endblock%}
+
+
+{% block content %}
+
+{{ flatpage.content }}
+
+
+{% load comments %}
+
+
+{% get_comment_list for flatpage as comment_list %}
+{% for comment in comment_list %}
+  <p>{{ comment }}</p>
+{% endfor %}
+
+
+{% render_comment_form for flatpage %}
+
+
+{% endblock%}
+
+
+{% block left %}
+
+{% endblock %}

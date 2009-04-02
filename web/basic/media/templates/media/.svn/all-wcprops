@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/54/trunk/media/templates/media
+END
+videoset_list.html
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/2/trunk/media/templates/media/videoset_list.html
+END
+photoset_list.html
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/2/trunk/media/templates/media/photoset_list.html
+END
+video_list.html
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/2/trunk/media/templates/media/video_list.html
+END
+base_videos.html
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/32/trunk/media/templates/media/base_videos.html
+END
+photo_list.html
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/2/trunk/media/templates/media/photo_list.html
+END
+videoset_detail.html
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/2/trunk/media/templates/media/videoset_detail.html
+END
+base_photos.html
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/32/trunk/media/templates/media/base_photos.html
+END
+photoset_detail.html
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/2/trunk/media/templates/media/photoset_detail.html
+END
+video_detail.html
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/2/trunk/media/templates/media/video_detail.html
+END
+photo_detail.html
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/2/trunk/media/templates/media/photo_detail.html
+END
+base_audio.html
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/54/trunk/media/templates/media/base_audio.html
+END

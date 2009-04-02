@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 32
+/svn/!svn/ver/90/trunk/bookmarks
+END
+admin.py
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/55/trunk/bookmarks/admin.py
+END
+views.py
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/55/trunk/bookmarks/views.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/55/trunk/bookmarks/__init__.py
+END
+CHANGELOG.yml
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/55/trunk/bookmarks/CHANGELOG.yml
+END
+tests.py
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/55/trunk/bookmarks/tests.py
+END
+models.py
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/55/trunk/bookmarks/models.py
+END
+README.txt
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/55/trunk/bookmarks/README.txt
+END
+urls.py
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/55/trunk/bookmarks/urls.py
+END

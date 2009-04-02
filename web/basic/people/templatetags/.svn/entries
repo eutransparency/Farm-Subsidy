@@ -1,0 +1,52 @@
+8
+
+dir
+102
+http://django-basic-apps.googlecode.com/svn/trunk/people/templatetags
+http://django-basic-apps.googlecode.com/svn
+
+
+
+2008-05-18T18:30:40.910065Z
+41
+nathan@playgroundblues.com
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+5ae32e2a-df40-0410-a01d-45158a99d8df
+
+__init__.py
+file
+
+
+
+
+2009-03-31T11:54:11.000000Z
+d41d8cd98f00b204e9800998ecf8427e
+2008-03-27T00:51:14.650785Z
+2
+nathan@playgroundblues.com
+
+people.py
+file
+
+
+
+
+2009-03-31T11:54:11.000000Z
+6cc2bdf14116c663974b1f6f62f45de8
+2008-05-18T18:30:40.910065Z
+41
+nathan@playgroundblues.com
+

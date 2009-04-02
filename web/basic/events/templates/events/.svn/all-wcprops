@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/72/trunk/events/templates/events
+END
+base_events.html
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/69/trunk/events/templates/events/base_events.html
+END
+eventtime_archive_day.html
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/72/trunk/events/templates/events/eventtime_archive_day.html
+END
+eventtime_archive_year.html
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/72/trunk/events/templates/events/eventtime_archive_year.html
+END
+eventtime_detail.html
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/72/trunk/events/templates/events/eventtime_detail.html
+END
+eventtime_archive_month.html
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/72/trunk/events/templates/events/eventtime_archive_month.html
+END
+eventtime_list.html
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/72/trunk/events/templates/events/eventtime_list.html
+END
