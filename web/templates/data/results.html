@@ -5,7 +5,7 @@
 {% block content %}
 
 {% if results.spelling %}
- <b>Did you mean <i><a href="{% url data.views.search %}/{{results.spelling}}">{{results.spelling}}</a></i>?</b>
+ <b>Did you mean <i><a href="{% url data.views.search %}/?q={{results.spelling}}">{{results.spelling}}</a></i>?</b>
 {% endif %}
 
 {% if results.documents.items %}
@@ -18,16 +18,16 @@
     <th>Geo2</th>    
   </tr>
 {% for key,result in results.documents.items %}
-  {% url data.views.recipient recipient_id=result.recipient_id_x as recipient_url %}
+  {% url data.views.recipient recipient_id=result.recipient_id_x country=result.country as recipient_url %}
   <tr class="{% cycle 'odd' 'even' %}">
     <td>
       <a href="{{recipient_url}}/{{result.country}}/{{result.name|slugify|urlencode}}">
         {{result.name}}
       </a>
     </td>
-    <td>&euro;{{result.total_amount|currency}}</td>
+    <td>&euro;{{result.amount|currency}}</td>
     <td>{{result.country}}</td>
-    <td>{{result.geo1}}</td>
+    <td>{{result.scheme_name}}</td>
     <td>{{result.geo2}}</td>    
   </tr>
 {% endfor %}

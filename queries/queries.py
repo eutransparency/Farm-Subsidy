@@ -123,16 +123,19 @@ def dumpRegions(country, path=''):
 
 
 if __name__ == "__main__":
-  results = do_search(" ".join(sys.argv[1:]))
-  print results['decsription']  
-  if results['spelling']:
-    print results['spelling']
-  print results['info']
-  for key in results['documents']:
-    meta = results['documents'][key]
-    print meta['name']
-
-
+  # results = do_search(" ".join(sys.argv[1:]))
+  # print results['decsription']  
+  # if results['spelling']:
+  #   print results['spelling']
+  # print results['info']
+  # for key in results['documents']:
+  #   meta = results['documents'][key]
+  #   print meta['name']
+  prefix = "%s" % sys.argv[1:][0]
+  print prefix
+  terms = allterms(prefix)
+  for term in terms:
+    print term.term
 
 
 

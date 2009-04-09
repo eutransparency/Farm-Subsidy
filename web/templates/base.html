@@ -19,17 +19,13 @@
     </div>    
     
     <div id="left">{% block left %}
-    {% countryMenu country.code %}  
-    {% load blog %}
-    {% get_latest_posts 10 as latest_post_list %}
-    {{latest_post_list}}
-    {% for post in latest_post_list %}
-      {{ post }}
-    {% endfor %}
+        {% countryMenu country.code %}          
     {% endblock %}
 
     </div>
-    
+    {% block error %}
+      
+    {% endblock %}
     
     <div id="content">{% block content %}{% endblock %}</div>
     {% block footer %}

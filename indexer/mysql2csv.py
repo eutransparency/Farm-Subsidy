@@ -39,10 +39,12 @@ def mysql2csv(countryToProcess="all"):
         payment_table = table
       if table[0:9] == 'recipient':
         recipient_table = table
+      if table[0:7] == 'scheme1':
+        scheme_table = table
 
-    if recipient_table and payment_table:
+    if recipient_table and payment_table and scheme_table:
       print "working with %s" % database
-      
+      print recipient_table, payment_table, scheme_table
       writer = csv.writer(codecs.open("%s/%s.csv" % (fsconf.csvdir, database),'w'))
       
       print "Opening Connection"
@@ -55,8 +57,8 @@ def mysql2csv(countryToProcess="all"):
       c = connection.cursor()
 
 
-      totals_query = """
-      CREATE TEMPORARY TABLE totals
+      ## Make the total_amount field for each payment
+      totals_query = """CREATE TEMPORARY TABLE totals
       SELECT sum(%(payment)s.amount)
       as total_amount, %(recipient)s.recipient_id_x
       FROM %(payment)s, %(recipient)s  
@@ -67,11 +69,21 @@ def mysql2csv(countryToProcess="all"):
       print "Making totals"
       c.execute(totals_query)
 
-      index_query = """
-       ALTER TABLE `totals` ADD INDEX ( `recipient_id_x` )  
-      
-      """
+      index_query = """ALTER TABLE `totals` ADD INDEX ( `recipient_id_x` )"""
       c.execute(index_query)
+
+      ## Make the scheme field for each payment
+      scheme_query = """CREATE TEMPORARY TABLE scheme_total
+      SELECT p.payment_id, s.name_english as scheme_name FROM payment p
+      INNER JOIN %(scheme_table)s s
+      ON p.scheme1_id=s.scheme1_id
+      """ % {'scheme_table' : scheme_table}
+      print "Making schemes"
+      c.execute(scheme_query)
+
+      scheme_index_query = """ALTER TABLE `scheme_total` ADD INDEX ( `payment_id` )"""
+      c.execute(scheme_index_query)
+
 
       start = 0
       rlen = 100000
@@ -80,7 +92,8 @@ def mysql2csv(countryToProcess="all"):
         query = """
         SELECT * from
           (%(recipient)s R 
-          LEFT JOIN %(payment)s P 
+          LEFT JOIN 
+            (%(payment)s P LEFT JOIN scheme_total s ON p.payment_id=s.payment_id)
           ON R.recipient_id = P.recipient_id) 
           INNER JOIN totals T ON R.recipient_id_x=T.recipient_id_x
           LIMIT %(start)s,%(rlen)s;

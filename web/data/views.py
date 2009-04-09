@@ -30,16 +30,25 @@ def search(request):
     }
   
     results = queries.do_search(query, options)
-    return render_to_response('data/results.html', {'results' : results, 'query' : query, 'title' : title})  
+    return render_to_response(
+    'data/results.html', 
+    {'results' : results, 'query' : query, 'title' : title},
+    context_instance=RequestContext(request)
+    )  
   
   except Exception, e:
-    title = "Search"
+    title = "Search %s" % e
     query = ''
-
-    return render_to_response('data/search.html', {'form' : forms.SearchForm(), 'title' : title}, context_instance=RequestContext(request))  
+    error = e
+    raise e
+    return render_to_response(
+      'data/search.html', 
+      {'form' : forms.SearchForm(), 'title' : title, 'error' : error}, 
+      context_instance=RequestContext(request)
+    )  
 
   
-def recipient(request, recipient_id, country):
+def recipient(request, recipient_id, country=None):
   options = {
     'sort_value' : fsconf.index_values['year'],
   }

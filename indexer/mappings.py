@@ -165,6 +165,14 @@ def fieldTypeMaps(field_value='field_value'):
   'boolean' : True,
   }
 
+  fields['scheme_name'] = {
+    'prefix' : 'XSCHEME:',
+    'name' : 'scheme',
+    'termweight' : 500,
+    'index' : True,
+    'doc_body' : True,
+  }
+
 
   return fields
   

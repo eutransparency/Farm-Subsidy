@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-import os, sys, string, commands, fsconf, countryCodes
+import os, sys, string, commands
 import re
 import MySQLdb
 import MySQLdb.converters
 import csv
 import codecs
+from farmsubsidy import fsconf
+from farmsubsidy.indexer import countryCodes
 
  
 
@@ -75,7 +77,7 @@ def extractmdb2mysql(countryToProcess="all"):
     scheme_sql = re.sub("\t([^\t]+)\t\t","\t`\\1`\t", scheme_sql)
 
     # Add Indexes
-    indextable = re.findall("CREATE TABLE `([^`]+)`[^;]+(`recipient_id`)[^;]+;",scheme_sql, re.S)
+    indextable = re.findall("CREATE TABLE `([^`]+)`[^;]+(`recipient_id`)[^;]+;",scheme_sql, re.S) #`
     for table,field in indextable:
       scheme_sql = """
         %s
@@ -114,6 +116,8 @@ def extractmdb2mysql(countryToProcess="all"):
         tabletype = 'payment'
       if table[0:9] == 'recipient':
         tabletype = 'recipient'
+      if table[0:6] == 'scheme':
+        tabletype = 'scheme'
       
       if tabletype:
         print "%s - %s" % (country, tabletype)

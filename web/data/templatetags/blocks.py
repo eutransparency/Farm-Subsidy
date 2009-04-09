@@ -79,8 +79,8 @@ def countryMenu(country=None):
     countries[code] = {
       'name' : name,
     }
-  if country:
-    countries[country]['active'] = 'active'
+  # if country:
+  #   countries[country]['active'] = 'active'
   return {'countries' : countries}
 
 register.inclusion_tag('data/blocks/country-menu.html')(countryMenu)

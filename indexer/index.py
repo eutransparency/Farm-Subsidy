@@ -167,13 +167,8 @@ def formatGeoPath(fields, meta, doc):
   last = ""
   for field in meta['data']:
     if 'geo_weight' in fields[field]:
-      # print meta['data'][field]
-      if last == field:
-        print "last:",field
-        sys.exit()    
-      last = field
       order[fields[field]['geo_weight']] = field
-      
+
   for key,field in order.items():
     stem = "/".join([stem,meta['data'][field]])
     doc.add_term("XGEOPATH:"+re.sub(' ','+',stem[1:]))

@@ -70,7 +70,8 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/var/www/farmsubsidy/web/templates'
+    '/var/www/farmsubsidy/web/templates',
+    '/var/www/farmsubsidy/web/groups/templates',
 )
 
 
@@ -79,16 +80,17 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.comments',
     'django.contrib.contenttypes',
-    'django.contrib.syndication',
     'django.contrib.flatpages',
     'django.contrib.markup',
     'django.contrib.redirects',
     'django.contrib.sessions',
     'django.contrib.sites',
+    'django.contrib.syndication',
+    'web.contrib.basic.blog',
+    'web.contrib.basic.inlines',
+    'web.contrib.cart',
+    'web.contrib.tagging',
     'web.data',
-    'web.basic.blog',
-    'web.basic.inlines',
-    'web.tagging',
 )
 
 

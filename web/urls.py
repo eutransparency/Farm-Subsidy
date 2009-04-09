@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 from web import settings
 from farmsubsidy.indexer import countryCodes
-from web.basic.blog import feeds as blogfeeds
+from web.contrib.basic.blog import feeds as blogfeeds
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
@@ -16,7 +16,8 @@ feeds = {
 urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
     (r'^comments/', include('django.contrib.comments.urls')),
-    (r'^blog/', include('web.basic.blog.urls')),    
+    (r'^blog/', include('web.contrib.basic.blog.urls')),    
+    (r'^cart/', include('web.groups.urls')),    
     (r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.feed', {'feed_dict': feeds}),
     )
 

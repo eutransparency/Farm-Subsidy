@@ -80,10 +80,10 @@ def fieldNameMappings():
   fieldMapping['geo4'] = 'geo4'
 
   # Geocode stuff
-  fieldMapping['cord_x'] = 'cord_x'
-  fieldMapping['cord_y'] = 'cord_y'
   fieldMapping['cord_x'] = 'Lat'
+  fieldMapping['cord_x'] = 'cord_x'
   fieldMapping['cord_y'] = 'Lng'
+  fieldMapping['cord_y'] = 'cord_y'
 
   #IDs
   fieldMapping['payment_id'] = 'payment_id'
@@ -96,6 +96,8 @@ def fieldNameMappings():
   fieldMapping['global_id'] = 'global_id'  
   fieldMapping['global_idx'] = 'global_id_x'  
   
+  # Scheme stuff
+  fieldMapping['scheme_name'] = 'scheme_name'  
   
   # To Add:
   # area2
