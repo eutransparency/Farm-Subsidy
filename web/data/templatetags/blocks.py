@@ -1,8 +1,10 @@
 import re 
 from django.template import Library, Node
+from django import forms
 from farmsubsidy.queries import queries
 from farmsubsidy.indexer import countryCodes
 from farmsubsidy import fsconf
+from farmsubsidy.web.data import forms
 register = Library()
 
 
@@ -57,6 +59,11 @@ def browsePathHead(browsepath):
     return "%s" % re.sub('\+',' ',browsepath.split('/')[-1:][0])
 register.simple_tag(browsePathHead)
 
+
+def search_form():
+  form = forms.SearchFormLite()
+  return {'form' : form}
+register.inclusion_tag('data/blocks/search_form.html')(search_form)  
 
 def search(prefix, query, rlen=30, page=0, sort_value=fsconf.index_values['total_amount'],):
   options = {

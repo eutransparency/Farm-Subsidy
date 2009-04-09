@@ -10,14 +10,16 @@
 <h2>{{results.documents.0.name|title}}</h2>
 {{total|currency}} - {{results.documents.0.total_amount|currency}}
 <table border="0" cellspacing="5" cellpadding="5">
+<thead>  
   <tr>
     <th>Year</th>
     <th>Amount</th>
+    <th>Scheme</th>
   </tr>
-
+</thead>
 {% for k,result in results.documents.items %}
 
-    <tr>
+    <tr class="{% cycle 'odd' 'even' %}">
       <td><b>{{result.year}}</b></td>
       <td>&euro;{{result.amount|currency}}</td>
       <td>{{result.scheme_name|title}}</td>

@@ -5,10 +5,11 @@ import sqlite3
 import cPickle
 import sys
 import hashlib
+from farmsubsidy import fsconf
 
 def _create_or_open():
   """Creates and/or opens a sqlite database"""
-  conn = sqlite3.connect('/tmp/xapcache.sqlite')
+  conn = sqlite3.connect(fsconf.xapcache_path)
   c = conn.cursor()
   c.execute('''CREATE TABLE IF NOT EXISTS cache (query text PRIMARY KEY, results blob)''')
   return conn,c
@@ -33,8 +34,15 @@ def save_cache(query, options, results):
   conn.commit()
 
 
+def clear_cache():
+  conn,c = _create_or_open()
+  sql = '''DELETE FROM cache'''
+  c.execute(sql)  
+  conn.commit()
+
+
 if __name__ == "__main__":
-  save_cache('foo', 'bar')
-  load_cache('foo')
+  save_cache('foo', 'bar','tar')
+  print load_cache('foo', 'bar')
   
   

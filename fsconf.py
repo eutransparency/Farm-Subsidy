@@ -31,6 +31,9 @@ schemedir = datadir+'/scheme/'
 #Xapian Database
 xapianDbPath = project_path + 'xapian.db'
 
+#Xapian cache path
+xapcache_path = '/tmp/xapcache.sqlite'
+
 #Mysql database name to use to temp databases
 mysql_prefix = "farmsubsidy_"
 mysql_user = "farmsubsidy"
@@ -47,3 +50,5 @@ index_values = {
   'amount' :            5,
   'total_amount' :      6,  
 }
+
+

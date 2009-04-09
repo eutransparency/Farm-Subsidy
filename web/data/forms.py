@@ -5,6 +5,15 @@ register = Library()
 
 
 class SearchForm(forms.Form):
-  q = forms.CharField(label='Query')
-  country = forms.ChoiceField(widget=forms.Select, choices=countryCodes.code2name)
+  
+  choices = []
+  for code,name in countryCodes.code2name.items():
+    choices.append((code,name))
+  
+  q = forms.CharField(label='Search')
+  country = forms.ChoiceField(widget=forms.Select, choices=choices)
+
+
+class SearchFormLite(forms.Form):
+  q = forms.CharField(label='')
 

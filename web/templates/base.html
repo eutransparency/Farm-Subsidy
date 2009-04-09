@@ -4,21 +4,31 @@
 <html lang="en">
 <head>
     <title>{% block title %}{{title}}{% endblock %} | FarmSubsidy.org</title>
-    <link rel="stylesheet" href="/media/layout.css" type="text/css" media="screen" title="" charset="utf-8">
+    <link rel="stylesheet" href="/media/css/screen.css" type="text/css" media="screen, projection">
+    <link rel="stylesheet" href="/media/css/print.css" type="text/css" media="print"> 
+    <link rel="stylesheet" href="/media/css/layout.css" type="text/css" media="screen, projection"> 
+    <!--[if IE]>
+      <link rel="stylesheet" href="/media/css/ie.css" type="text/css" media="screen, projection">
+    <![endif]-->
+    
+
 </head>
 <body>
     <div id="head">
-      <h1>FarmSubsidy.org {{request}}</h1>
+      <h1><a href={% url data.views.home %}><img src="/media/images/logo-small.png" width="83" height="58"> farmsubsidy.org {{request}}</a></h1>
+      <h2>Discover who gets what from European Farm Subsidies</h2>
+      
       <ul id="mainmenu">
         <li><a href="/">Home</a></li>
         <li><a href="/search">Search</a></li>
         <li><a href="/blog">Blog</a></li>
       </ul>
       {% block search %}
+      {% search_form %}
       {% endblock %}
     </div>    
     
-    <div id="left">{% block left %}
+    <div id="right">{% block left %}
         {% countryMenu country.code %}          
     {% endblock %}
 
