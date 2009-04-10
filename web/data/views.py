@@ -19,6 +19,7 @@ def search(request):
   """Does a xapian search and returns the results"""
   try:
     query = request.GET['q']
+    request.session["query"] = query
     title = "Search results for %s" % query
   
     options = {
@@ -64,20 +65,12 @@ def recipient(request, recipient_id, country=None):
   
   
 def country(request, country):
-  countryinfo = {
-    'code' : country,
-    'name' : countryCodes.code2name[country]
-  }
   path = country
   return render_to_response('data/country.html', {'browsepath' : path}, context_instance=RequestContext(request))    
 
 
 
 def countrybrowse(request, country, browsepath):
-  countryinfo = {
-    'code' : country,
-    'name' : countryCodes.code2name[country]
-  }
   return render_to_response('data/country.html', {'browsepath' : browsepath }, context_instance=RequestContext(request))    
 
 

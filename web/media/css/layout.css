@@ -61,8 +61,16 @@ body {
 }
 
 
+#search-form {
+  position:absolute;
+  right:0;
+  bottom:10px;
+}
 
 .active {
-  background-color:#999999
-  ;
+  list-style:circle;
+}
+
+.active a {
+  color:#000;
 }

@@ -14,8 +14,8 @@
     <th>Name</th>
     <th>Amount</th>
     <th>Country</th>
-    <th>Geo1</th>
-    <th>Geo2</th>    
+    <th>Scheme</th>
+    <th>Area</th>    
   </tr>
 {% for key,result in results.documents.items %}
   {% url data.views.recipient recipient_id=result.recipient_id_x country=result.country as recipient_url %}
@@ -27,7 +27,7 @@
     </td>
     <td>&euro;{{result.amount|currency}}</td>
     <td>{{result.country}}</td>
-    <td>{{result.scheme_name}}</td>
+    <td>{{result.scheme_name|title}}</td>
     <td>{{result.geo2}}</td>    
   </tr>
 {% endfor %}

@@ -44,12 +44,15 @@ register.inclusion_tag('data/blocks/regions.html')(countryBrowse)
 
 def browsePathTitle(browsepath):
   stem = ""
-  for path in browsepath.split('/')[-1:]:
-    stem = " | ".join([path,stem])
-  try:
-    return countryCodes.code2name[re.sub('\+',' ',stem)]
-  except:
-    return re.sub('\+',' ',stem)
+  paths = browsepath.split('/')
+  if len(paths) > 1:
+    for path in paths:
+      stem = " | ".join([path,stem])
+    try:
+      return countryCodes.code2name[re.sub('\+',' ',stem)]
+    except:
+      return re.sub('\+',' ',stem)
+  return ''
 register.simple_tag(browsePathTitle)
 
 def browsePathHead(browsepath):
@@ -60,10 +63,12 @@ def browsePathHead(browsepath):
 register.simple_tag(browsePathHead)
 
 
-def search_form():
-  form = forms.SearchFormLite()
-  return {'form' : form}
+def search_form(q=None):
+  form = forms.SearchFormLite(initial={'q' : q})
+  return {'form' : form, 'q' : q}
 register.inclusion_tag('data/blocks/search_form.html')(search_form)  
+
+
 
 def search(prefix, query, rlen=30, page=0, sort_value=fsconf.index_values['total_amount'],):
   options = {
@@ -86,8 +91,8 @@ def countryMenu(country=None):
     countries[code] = {
       'name' : name,
     }
-  # if country:
-  #   countries[country]['active'] = 'active'
+  if country:
+    countries[country]['active'] = 'active'
   return {'countries' : countries}
 
 register.inclusion_tag('data/blocks/country-menu.html')(countryMenu)
