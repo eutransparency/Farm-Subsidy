@@ -12,6 +12,6 @@ def country(request):
       }
     # country = {'code' : 'UK', 'name' : 'United Kingdom'}
     
-    query = request.session["query"]
+    query = request.session.get('query', '')
     
     return {'country': country, 'query' : query}
