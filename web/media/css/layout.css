@@ -10,6 +10,10 @@ body {
   margin:2em 0;
 }
 
+#home #head {
+  text-align:center;
+}
+
 #head h1 {
   font-variant:small-caps;
   font-size:2em;
