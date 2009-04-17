@@ -51,10 +51,15 @@ def get_payments_by_rid(rid, db=querylib.load_database()):
 def do_search(query, options={'len' : 100, 'page' : 0, 'len' : 50,}):  
   
   cache = xapcache.load_cache(query, options)
-  if cache:
+  if cache and 'cache' in options:
     return cache
   
-  query_string = querylib.parse_query(query)
+  query_string = query
+  
+  # if not 'allyears' in options:
+  #   query_string = query_string + " year:2007..2007"
+    
+  query_string = querylib.parse_query(query_string)
   (qp,valueranges) = querylib.load_queryparser()
   db = querylib.load_database()
   qp.set_database(db)
@@ -123,19 +128,26 @@ def dumpRegions(country, path=''):
 
 
 if __name__ == "__main__":
-  # results = do_search(" ".join(sys.argv[1:]))
-  # print results['decsription']  
-  # if results['spelling']:
-  #   print results['spelling']
-  # print results['info']
-  # for key in results['documents']:
-  #   meta = results['documents'][key]
-  #   print meta['name']
-  prefix = "%s" % sys.argv[1:][0]
-  print prefix
-  terms = allterms(prefix)
-  for term in terms:
-    print term.term
+  options = {
+    'page' : 0,
+    'len' : 100,  
+    'sort_value' : fsconf.index_values['year'],
+    'allyears' : True
+  }
+  
+  results = do_search(" ".join(sys.argv[1:]), options)
+  print results['decsription']  
+  if results['spelling']:
+    print results['spelling']
+  print results['info']
+  for key in results['documents']:
+    meta = results['documents'][key]
+    print meta['name']
+  # prefix = "%s" % sys.argv[1:][0]
+  # print prefix
+  # terms = allterms(prefix)
+  # for term in terms:
+  #   print term.term
 
 
 

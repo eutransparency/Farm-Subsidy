@@ -74,3 +74,8 @@ body {
 .active a {
   color:#000;
 }
+
+
+ul.error {
+  list-style-position:inside;
+}
