@@ -39,7 +39,7 @@ def mysql2csv(countryToProcess="all"):
         payment_table = table
       if table[0:9] == 'recipient':
         recipient_table = table
-      if table[0:7] == 'scheme1':
+      if table[0:6] == 'scheme':
         scheme_table = table
 
     if recipient_table and payment_table and scheme_table:
@@ -74,10 +74,10 @@ def mysql2csv(countryToProcess="all"):
 
       ## Make the scheme field for each payment
       scheme_query = """CREATE TEMPORARY TABLE scheme_total
-      SELECT p.payment_id, s.name_english as scheme_name FROM payment p
+      SELECT p.payment_id, s.name_english as scheme_name FROM %(payment)s p
       INNER JOIN %(scheme_table)s s
       ON p.scheme1_id=s.scheme1_id
-      """ % {'scheme_table' : scheme_table}
+      """ % {'scheme_table' : scheme_table, 'payment' : payment_table}
       print "Making schemes"
       c.execute(scheme_query)
 
@@ -93,7 +93,7 @@ def mysql2csv(countryToProcess="all"):
         SELECT * from
           (%(recipient)s R 
           LEFT JOIN 
-            (%(payment)s P LEFT JOIN scheme_total s ON p.payment_id=s.payment_id)
+            (%(payment)s P LEFT JOIN scheme_total s ON P.payment_id=s.payment_id)
           ON R.recipient_id = P.recipient_id) 
           INNER JOIN totals T ON R.recipient_id_x=T.recipient_id_x
           LIMIT %(start)s,%(rlen)s;
