@@ -21,11 +21,13 @@ def search(request):
     query = request.GET['q']
     if query == '':
       raise ValueError({'error' : "Please Enter a search term"})
-    if request.GET['country'] != '':
+      
+    if request.GET.get('country'):
       if request.GET['country'] in countryCodes.countryCodes():
         query = "%s country:%s" % (query, request.GET['country'])
       else:
         raise ValueError({'error' : "Please Enter valid country"})
+        
     request.session["query"] = query
     title = "Search results for %s" % query
   
@@ -91,7 +93,7 @@ def countrybrowse(request, country, browsepath):
 def home(request):
   """temp home view"""
   # TODO replace with a real view!
-  return render_to_response('base.html', context_instance=RequestContext(request))    
+  return render_to_response('home.html', context_instance=RequestContext(request))    
   
 
 

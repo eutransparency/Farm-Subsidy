@@ -4,6 +4,12 @@
 <html lang="en">
 <head>
     <title>{% block title %}{{title}}{% endblock %} | FarmSubsidy.org</title>
+    <script type="text/javascript" src="media/js/jquery.js"></script>
+    <script type="text/javascript" src="media/js/jquery.example.min.js"></script>
+
+<script src="media/js/scripts.js" type="text/javascript" charset="utf-8"></script>
+
+
     <link rel="stylesheet" href="/media/css/screen.css" type="text/css" media="screen, projection">
     <link rel="stylesheet" href="/media/css/print.css" type="text/css" media="print"> 
     <link rel="stylesheet" href="/media/css/layout.css" type="text/css" media="screen, projection"> 
@@ -13,7 +19,7 @@
     
 
 </head>
-<body>
+<body id="{% block body_style %}{% endblock %}">
     <div id="head">
       <h1><a href={% url data.views.home %}><img src="/media/images/logo-small.png" width="83" height="58"> farmsubsidy.org</a></h1>
       <h2>Discover who gets what from European Farm Subsidies</h2>
@@ -24,17 +30,11 @@
         <li><a href="/blog">Blog</a></li>
         <li><a href="/news">In The News</a></li>
       </ul>
-      {% block search %}
-      {% search_form query%}
-      {% endblock %}
     </div>    
     
     <div id="right">  
-      {% block left %}
-      {% load inthenews %}
-      {% latestnews country.code %}
-      
-      {% countryMenu country.code %}
+      {% block right %}
+    
         
 
     {% endblock %}
@@ -46,14 +46,27 @@
 
       {% endblock %}
       
-      
-      {% block content %}{% endblock %}</div>
+      {% block content %}
+      {% endblock %}
+    </div>
     
     {% block footer %}
-    <div id="footer">
-    <hr>      
-    </div>
+      <div id="footer" class="clear">
+      <hr>      
 
-    {% endblock %}
+      <ul id="">
+        <li><a href="/">Home</a></li>
+        <li><a href="/search">Search</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/news">In The News</a></li>
+      </ul>
+    
+      <p>FarmSubsidy.org is a project of <a href="http://www.followthemoney.eu/" title="Monitoring the European Union Budget | FollowTheMoney.eu" target="_blank">FollowTheMoney.eu</a></p>
+    </div>
+  {% endblock %}
+
+
+    
+    
 </body>
 </html>
