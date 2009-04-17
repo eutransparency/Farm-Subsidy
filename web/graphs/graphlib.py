@@ -29,7 +29,7 @@ def make_fig(request, type):
     # import sys
     # sys.exit(name_value_dict)
     
-    figure(figsize=(5, 2), linewidth=10) # image dimensions  
+    figure(figsize=(5, 2), linewidth=0) # image dimensions  
     # title(graph_title, size='x-small')
     subplots_adjust(left=0.2)
     # autofmt_xdate()
@@ -37,12 +37,12 @@ def make_fig(request, type):
     
     # add bars
     for i, key in enumerate(name_value_dict.keys()):
-        bar(i + 0.25 , name_value_dict[key], 0.5,  color='black', alpha=0.7, linewidth=0)
+        bar(i + 0.25 , name_value_dict[key], 0.5,  color='grey', alpha=0.7, linewidth=0)
 
     # axis setup
     xticks(arange(0.5, len(name_value_dict)),
-        [('%s: %d' % (name, value)) for name, value in
-        zip(name_value_dict.keys(), name_value_dict.values())],
+        [('%s: %s' % (name, u"\u20ac%s" % locale.format(u'%.2f', float(value), True) )) 
+        for name, value in name_value_dict.items()],
         size='xx-small')
     max_value = max(name_value_dict.values())
     tick_range = arange(0, max_value+100, round(float((max_value / 3))))

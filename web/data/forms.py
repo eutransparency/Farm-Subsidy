@@ -16,5 +16,5 @@ class SearchForm(forms.Form):
 
 
 class SearchFormLite(forms.Form):
-  q = forms.CharField(label='', help_text='e.g. <a href="/search?q=nestle">Nestle</a> or <a href="/search?q=guildford">Guildford</a>, <a href="search?q=country:UK">UK</a> or <a href="/search?q=country:FR">France</a>')
+  q = forms.CharField(label='Search', help_text='e.g. <a href="/search?q=nestle">Nestle</a> or <a href="/search?q=guildford">Guildford</a>, <a href="search?q=country:UK">UK</a> or <a href="/search?q=country:FR">France</a>')
 
