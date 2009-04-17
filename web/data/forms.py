@@ -7,6 +7,7 @@ register = Library()
 class SearchForm(forms.Form):
   
   choices = []
+  choices.append(('','All'))
   for code,name in countryCodes.code2name.items():
     choices.append((code,name))
   

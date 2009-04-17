@@ -62,6 +62,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',    
+    'pagination.middleware.PaginationMiddleware'
 )
 
 ROOT_URLCONF = 'web.urls'
@@ -76,7 +77,7 @@ TEMPLATE_DIRS = (
 
 
 INSTALLED_APPS = (
-    'django.contrib.admin',    
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.comments',
     'django.contrib.contenttypes',
@@ -86,11 +87,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.syndication',
-    'web.contrib.basic.blog',
-    'web.contrib.basic.inlines',
-    'web.contrib.cart',
-    'web.contrib.tagging',
-    'web.data',
+    'farmsubsidy.web.contrib.cart',
+    'farmsubsidy.web.data',
+    'farmsubsidy.web.feeds',
+    'farmsubsidy.web.graphs',
+    'pagination',
 )
 
 
@@ -99,6 +100,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   "django.core.context_processors.debug",
   "django.core.context_processors.i18n",
   "django.core.context_processors.media",
+  "django.core.context_processors.request",
   'data.context_processors.country',  
 )
 

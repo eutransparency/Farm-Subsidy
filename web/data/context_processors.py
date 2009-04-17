@@ -10,7 +10,6 @@ def country(request):
         'code' : countryCode,
         'name' : countryCodes.code2name[countryCode]
       }
-    # country = {'code' : 'UK', 'name' : 'United Kingdom'}
     
     query = request.session.get('query', '')
     

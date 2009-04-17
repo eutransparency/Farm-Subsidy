@@ -15,8 +15,9 @@ feeds = {
 
 urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
+    (r'', include('farmsubsidy.web.feeds.urls')),
+    (r'', include('farmsubsidy.web.graphs.urls')),
     (r'^comments/', include('django.contrib.comments.urls')),
-    (r'^blog/', include('web.contrib.basic.blog.urls')),    
     (r'^cart/', include('web.groups.urls')),    
     (r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.feed', {'feed_dict': feeds}),
     )

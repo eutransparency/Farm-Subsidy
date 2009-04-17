@@ -8,22 +8,6 @@ from farmsubsidy.web.data import forms
 register = Library()
 
 
-# class LatestLinksNode(Node):
-#     def __init__(self, bits):
-#       self.bits = bits
-#   
-#     def render(self, context):
-#       context['recent_links'] = self.bits
-#       return ''
-# 
-# 
-# def get_latest_links(parser, token):
-#     bits = token.contents.split()
-#     return LatestLinksNode(bits)
-# 
-# get_latest_links = register.tag(get_latest_links)
-
-
 def countryBrowse(country, path):
   regions = queries.dumpRegions(country, path)
   # return {'regions' : regions}
@@ -40,7 +24,7 @@ def countryBrowse(country, path):
   return {'regions' : browsepaths, 'country' : country}
 
 
-register.inclusion_tag('data/blocks/regions.html')(countryBrowse)
+register.inclusion_tag('blocks/regions.html')(countryBrowse)
 
 def browsePathTitle(browsepath):
   stem = ""
@@ -66,7 +50,7 @@ register.simple_tag(browsePathHead)
 def search_form(q=None):
   form = forms.SearchFormLite(initial={'q' : q})
   return {'form' : form, 'q' : q}
-register.inclusion_tag('data/blocks/search_form.html')(search_form)  
+register.inclusion_tag('blocks/search_form.html')(search_form)  
 
 
 
@@ -76,12 +60,13 @@ def search(prefix, query, rlen=30, page=0, sort_value=fsconf.index_values['total
   'collapse_key' : fsconf.index_values['recipient_id_x'],  
   'offset' : 0,
   'len' : rlen,
-  'page' : page
+  'page' : page,
+  # 'cache' : True,
   }
   results = queries.do_search(prefix+query, options)
   return {'results' : results}
 
-register.inclusion_tag('data/blocks/results.html')(search)
+register.inclusion_tag('blocks/results.html')(search)
 
 
 def countryMenu(country=None):
@@ -95,7 +80,7 @@ def countryMenu(country=None):
     countries[country]['active'] = 'active'
   return {'countries' : countries}
 
-register.inclusion_tag('data/blocks/country-menu.html')(countryMenu)
+register.inclusion_tag('blocks/country-menu.html')(countryMenu)
 
 
 

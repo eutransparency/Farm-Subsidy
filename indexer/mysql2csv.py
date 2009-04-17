@@ -60,10 +60,10 @@ def mysql2csv(countryToProcess="all"):
       ## Make the total_amount field for each payment
       totals_query = """CREATE TEMPORARY TABLE totals
       SELECT sum(%(payment)s.amount)
-      as total_amount, %(recipient)s.recipient_id_x
+      as total_amount, %(payment)s.year  %(recipient)s.recipient_id_x
       FROM %(payment)s, %(recipient)s  
       WHERE %(payment)s.recipient_id=%(recipient)s.recipient_id
-      GROUP BY %(recipient)s.recipient_id_x;
+      GROUP BY %(payment)s.year, %(recipient)s.recipient_id_x;
       """ % {'payment' : payment_table, 'recipient' : recipient_table}
 
       print "Making totals"
@@ -96,6 +96,7 @@ def mysql2csv(countryToProcess="all"):
             (%(payment)s P LEFT JOIN scheme_total s ON P.payment_id=s.payment_id)
           ON R.recipient_id = P.recipient_id) 
           INNER JOIN totals T ON R.recipient_id_x=T.recipient_id_x
+          WHERE P.year = T.year
           LIMIT %(start)s,%(rlen)s;
         """ % {'payment' : payment_table, 'recipient' : recipient_table, 'rlen' : rlen, 'start' : start}
         

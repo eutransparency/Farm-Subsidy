@@ -1,5 +1,0 @@
-<ul>
-{% for code,country in countries.items %}
-<li class="{{country.active}}"><a href="{% url data.views.country code %}">{{country.name}}</a></li>
-{% endfor %}
-</ul>
