@@ -21,7 +21,9 @@
 </head>
 <body id="{% block body_style %}{% endblock %}">
     <div id="head">
-      <h1><a href={% url data.views.home %}><img src="/media/images/logo-small.png" width="83" height="58"> farmsubsidy.org</a></h1>
+      <h1><a href={% url data.views.home %}>
+        {% block logo %}<img src="/media/images/logo-small.png" width="83" height="58"> {% endblock %}
+        farmsubsidy.org</a></h1>
       <h2>Discover who gets what from European Farm Subsidies</h2>
       
       <ul id="mainmenu">
