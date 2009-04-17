@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% for feed in content %}
+    <h2><a href="{{ feed.url }}">{{ feed.title }}</a></h2>
+    <p>{{ feed.description|safe }}</p>
+    <strong>{{ feed.date }}</strong>
+  {% endfor %}
+{% endblock %}

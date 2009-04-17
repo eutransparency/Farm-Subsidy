@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load pagination_tags %}
+{% block content %}
+  {% autopaginate items 10 %}
+  {% for item in items %}
+    <h3><a href="{{ item.url }}">{{ item.title }}</a></h3>
+    <p>{{ item.description|safe }}</p>
+  {% endfor %}
+  {% paginate %}
+{% endblock %}
