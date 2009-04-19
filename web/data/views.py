@@ -9,7 +9,6 @@ import forms
 
 from farmsubsidy import fsconf
 from farmsubsidy.queries import queries
-import pager
 
 def test(response, something):
   """docstring for test"""
