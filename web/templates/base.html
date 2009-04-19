@@ -19,7 +19,9 @@
     
 
 </head>
-<body id="{% block body_style %}{% endblock %}">
+<body id="{% block body_style %}{% endblock %}" class="{% block body_class %}list_enabled{% endblock %}">
+  
+<div id="outer">  
     <div id="head">
       <h1><a href={% url data.views.home %}>
         {% block logo %}<img src="/media/images/logo-small.png" width="83" height="58"> {% endblock %}
@@ -67,7 +69,11 @@
     </div>
   {% endblock %}
 
+</div>
 
+<div id="lists">
+  Foo
+</div>
     
     
 </body>

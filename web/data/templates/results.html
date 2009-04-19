@@ -4,6 +4,8 @@
 
 {% block content %}
 
+<div id="results_info">About {{ results.info }}</div>
+
 {% if results.spelling %}
  <b>Did you mean <i><a href="{% url data.views.search %}/?q={{results.spelling}}">{{results.spelling}}</a></i>?</b>
 {% endif %}
@@ -32,8 +34,20 @@
   </tr>
 {% endfor %}
 </table>
+
+{% load pager %}
+{% pager results %}
+
+
 {% else %}
 {{ results }}
 Sorry, no results found.
 {% endif %}
 {% endblock%}
+
+
+
+
+
+
+

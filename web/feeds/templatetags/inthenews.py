@@ -8,7 +8,7 @@ from tagging.models import TaggedItem
 
 register = Library()
 
-def latestnews(country=None, num=5, category='News'):
+def latestnews(country=None, num=5, category='News', oneline=False):
   cat = FeedCategories.objects.filter(name=category)
   q = FeedItems.objects.all()
   feeds = Feeds.objects.filter(category__in=cat)
@@ -20,6 +20,6 @@ def latestnews(country=None, num=5, category='News'):
 
   q = q.order_by("-date")
     
-  return {'newsitems' : q[:num]}
+  return {'newsitems' : q[:num], 'oneline' : oneline}
 
 register.inclusion_tag('blocks/latest-news.html')(latestnews)

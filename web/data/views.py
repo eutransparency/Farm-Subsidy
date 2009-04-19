@@ -9,6 +9,7 @@ import forms
 
 from farmsubsidy import fsconf
 from farmsubsidy.queries import queries
+import pager
 
 def test(response, something):
   """docstring for test"""
@@ -40,6 +41,10 @@ def search(request):
     }
   
     results = queries.do_search(query, options)
+    
+    results['url'] = reverse("web.data.views.search")
+    results['GET'] = request.GET
+    
     return render_to_response(
     'results.html', 
     {'results' : results, 'query' : query, 'title' : title},
@@ -56,7 +61,7 @@ def search(request):
 
     return render_to_response(
       'search.html', 
-      {'form' : forms.SearchForm(), 'title' : title, 'errors' : errors}, 
+      {'form' : forms.SearchForm(), 'title' : title, 'errors' : errors, 'e' : e}, 
       context_instance=RequestContext(request)
     )  
 
