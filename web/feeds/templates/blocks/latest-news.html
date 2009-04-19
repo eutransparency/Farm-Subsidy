@@ -1,10 +1,16 @@
 {% if newsitems %}
+  {% ifequal oneline 1 %}
+    {% for item in newsitems %}
+      <div id="latest_news"><strong>Latest News:</strong> <a href="{{ item.url }}" target="_blank">{{ item }}</a></div>
+    {% endfor %}
+  {% endifequal %}
   
-
-<h3>Recent news stories</h3>
-<ul>
-  {% for item in newsitems %}
-  <li><a href="{{ item.url }}" target="_blank">{{ item }}</a></li>
-  {% endfor %}
-</ul>
+  {% ifequal oneline True %}
+    <h3>Recent news stories</h3>
+    <ul>
+      {% for item in newsitems %}
+      <li><a href="{{ item.url }}" target="_blank">{{ item }}</a></li>
+      {% endfor %}
+    </ul>  
+  {% endifequal %}
 {% endif %}

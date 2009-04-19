@@ -95,12 +95,17 @@ def do_search(query, options={'len' : 100, 'page' : 0, 'len' : 50,}):
   results['documents'] = {}
   results['spelling'] = qp.get_corrected_query_string()
   results['size'] = matches.get_matches_estimated()
+  results['pager'] = {
+    'page' : options['page'],
+    'results' : results['size'],
+    'len' : options['len']
+  }
 
   for k,m in enumerate(matches):
     results['documents'][k] = dict(cPickle.loads(m.document.get_data()))
-    # results['documents'][k] = get_collapse_count()
-    
-  xapcache.save_cache(query_string, options, results)  
+
+  if 'cache' in options:
+    xapcache.save_cache(query_string, options, results)  
   return results  
 
 def calcPages(page,resultlen):
