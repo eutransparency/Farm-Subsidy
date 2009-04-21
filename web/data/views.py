@@ -7,12 +7,10 @@ from django.template import RequestContext
 from farmsubsidy.indexer import countryCodes
 import forms
 
+from models import SearchModelWrapper
+
 from farmsubsidy import fsconf
 from farmsubsidy.queries import queries
-
-def test(response, something):
-  """docstring for test"""
-  return render_to_response('base.html')
   
 
 def search(request):
@@ -44,9 +42,11 @@ def search(request):
     results['url'] = reverse("web.data.views.search")
     results['GET'] = request.GET
     
+    search = SearchModelWrapper(results)
+    
     return render_to_response(
     'results.html', 
-    {'results' : results, 'query' : query, 'title' : title},
+    {'results' : search.results, 'query' : query, 'title' : title, 'search' : search},
     context_instance=RequestContext(request)
     )  
   
@@ -76,8 +76,10 @@ def recipient(request, recipient_id, country=None):
   total = 0
   for key,result in results['documents'].items():
     total = total + float(result['amount'])
+    
+  search = SearchModelWrapper(results)  
   return render_to_response('recipient.html', 
-  {'results' : results, 'title' : results, 'total' : total},
+  {'results' : results, 'title' : results, 'total' : total, 'search' : search},
   context_instance=RequestContext(request))  
   
   

@@ -19,7 +19,7 @@
     
 
 </head>
-<body id="{% block body_style %}{% endblock %}" class="{% block body_class %}list_enabled{% endblock %}">
+<body id="{% block body_style %}{% endblock %}" class="{% block body_class %}{% endblock %}">
   
 <div id="outer">  
     <div id="head">
@@ -71,9 +71,7 @@
 
 </div>
 
-<div id="lists">
-  Foo
-</div>
+{% block list %}{% endblock %}
     
     
 </body>
