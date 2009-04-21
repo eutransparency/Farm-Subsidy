@@ -6,6 +6,10 @@
   <img src="media/images/logo-big.png" width="160" height="120"> 
 {% endblock %}
 
+{% block title %}
+  Home
+{% endblock %}
+
 {% block content %}
 {% load inthenews %}
 {% latestnews "" 1 "Blog" 1 %}
@@ -21,6 +25,42 @@
 
 <div class="section">
   <h2 class="section_title">Browse</h2>
+  <div class="section_content">
+    <div class="col1">
+      <div class="halfbox">
+        {% load top_recipients %}
+        {% top_recipients %}
+        </div>
+      <div class="halfbox">
+        {% top_recipients ip_country 5 %}        
+      </div>
+      <div class="box">
+        <h3>Average size of payments</h3>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </div>
+      <div class="box">
+        <h3>Payments per capita</h3>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </div>
+    </div>
+    <div class="col2">
+      <h3>By country</h3>
+      {% load blocks %}
+      {% countryMenu %}
+
+    </div>
+  </div>
 </div>
+
+<div class="section">
+  <h2 class="section_title">Get the data</h2>
+  <p>The data behind FarmSubsidy.org was collected by using 
+  freedom of information law to force 
+  European governments to release detailed data on who gets what from Europe's &euro;55 billion 
+  Common Agricultural Policy. All the data is available for you to reuse under a Creative Commons 
+  [insert type] License via our API, as raw data and as spread sheets.</p>
+</div>
+
+
 
 {% endblock %}

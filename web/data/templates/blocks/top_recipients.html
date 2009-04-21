@@ -1,0 +1,7 @@
+<h3>Top {{ location }} Recipients</h3>
+<ul>
+  {# {{ results }} #}
+  {% for k,document in results.documents.items %}
+    <li>{{ document.name }}</li>
+  {% endfor %}
+</ul>

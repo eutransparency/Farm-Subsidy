@@ -1,5 +1,8 @@
 from django.db import models
 
+from django_restapi.model_resource import Collection
+from django_restapi.responder import XMLResponder
+
 # Create your models here.
 
 class blog(models.Model):
@@ -9,4 +12,9 @@ class blog(models.Model):
   
   def __unicode__(self):
     return self.title
-    
+
+
+blog_resource = Collection(
+    queryset = blog.objects.all(),
+    responder = XMLResponder()
+)

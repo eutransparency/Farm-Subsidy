@@ -162,7 +162,37 @@ ul.error {
   padding:2em 0 4em 0;
   margin:0.5em 0 0 0;
   border-top:1px solid black;
+  overflow:auto;
 }
+
+#home .section_content {
+  margin-left:20%;
+}
+
+#home .section_content .col1 {
+  float:left;
+  width:70%;
+}
+
+#home .section_content .col1 .halfbox {
+  float:left;
+  width:45%;
+/*  border:1px solid black;*/
+}
+
+#home .section_content .col1 .box {
+  clear:both;
+  border-top:2px dotted #7E7E7E;
+  margin:5px;
+  padding:10px 0;
+}
+
+#home .section_content .col2 {
+  float:left;
+  width:30%;
+}
+
+
 
 #lists {
   width:100%;

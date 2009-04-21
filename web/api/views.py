@@ -1,24 +1,58 @@
 from django.db import models
-from farmjango.api.models import blog as apiblog
-from farmjango.api.forms import *
+
 from django.shortcuts import render_to_response
+from simplejson import dumps
 from django.utils.html import escape
-import sys
-sys.path.append('../../')
+from django.core import serializers 
+import pyfo
+import cPickle
 
-import queries.querylib
-import queries.queries
+from farmsubsidy.queries import queries
+import farmsubsidy.fsconf as fsconf
 
-import datetime
 
-def results(request):
-  results = queries.queries.do_search(request.GET['query'])
-  # assert False
-  return render_to_response('time.html', {'results' : results, 'query' : request.GET['query']})
+def format_data(data, format):
+  if format == "xml":    
+    # Replace doc numbers with 'document' because xml can't have numbers as keys
+    documents = []
+    for doc in data['documents'].items():
+      documents.append(('recipient', doc[1],))
+    data['documents'] = documents
+    
+    data = pyfo.pyfo(('root',data), pretty=True)
+    return data, "text/xml"
+  if format == "json":
+    return dumps(data), "application/json"
 
-def allterms(request):
-  results = queries.queries.allterms(request.GET['prefix'])
-  # assert False
-  return render_to_response('allterms.html', {'results' : results, 'query' : request.GET['prefix']})
+  if format == "pickle":
+    return cPickle.dumps(data), "text"
+
+def test(request):
+  format = request.GET.get('format', 'xml')
+  test = queries.do_search("roe")
+  # data = serializers.serialize("json", test)
+  data, mimetype = format_data(test, format)
+    
+  return render_to_response("data.html", {'data' : data}, mimetype=mimetype)
+  
+  
+def get_recipient(request, rid):
+  format = request.GET.get('format', 'xml')
+  
+  options = {
+    'collapse_key' : fsconf.index_values['year'], 
+    'page' : 0,
+    'len' : 50
+  }
+  
+  results = queries.do_search("xid:%s" % rid, options)
+
+  data, mimetype = format_data(results, format)
+    
+  return render_to_response("data.html", {'data' : data}, mimetype=mimetype)
+
+
+
+
 
 

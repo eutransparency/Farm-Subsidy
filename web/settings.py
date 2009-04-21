@@ -90,6 +90,7 @@ INSTALLED_APPS = (
     'farmsubsidy.web.contrib.cart',
     'farmsubsidy.web.data',
     'farmsubsidy.web.feeds',
+    'farmsubsidy.web.api',
     'farmsubsidy.web.graphs',
     'pagination',
 )
@@ -102,6 +103,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   "django.core.context_processors.media",
   "django.core.context_processors.request",
   'data.context_processors.country',  
+  'data.context_processors.ip_country',  
 )
 
 
