@@ -171,13 +171,13 @@ ul.error {
 
 #home .section_content .col1 {
   float:left;
-  width:70%;
+  width:75%;
+  margin-right:5%;
 }
 
 #home .section_content .col1 .halfbox {
   float:left;
   width:45%;
-/*  border:1px solid black;*/
 }
 
 #home .section_content .col1 .box {
@@ -188,8 +188,8 @@ ul.error {
 }
 
 #home .section_content .col2 {
-  float:left;
-  width:30%;
+  float:right;
+  width:20%;
 }
 
 

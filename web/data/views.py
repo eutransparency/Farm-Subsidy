@@ -42,11 +42,10 @@ def search(request):
     results['url'] = reverse("web.data.views.search")
     results['GET'] = request.GET
     
-    search = SearchModelWrapper(results)
     
     return render_to_response(
     'results.html', 
-    {'results' : search.results, 'query' : query, 'title' : title, 'search' : search},
+    {'results' : search.results, 'query' : query, 'title' : title},
     context_instance=RequestContext(request)
     )  
   
@@ -77,9 +76,9 @@ def recipient(request, recipient_id, country=None):
   for key,result in results['documents'].items():
     total = total + float(result['amount'])
     
-  search = SearchModelWrapper(results)  
+  # search = SearchModelWrapper(results)  
   return render_to_response('recipient.html', 
-  {'results' : results, 'title' : results, 'total' : total, 'search' : search},
+  {'results' : results, 'title' : results, 'total' : total},
   context_instance=RequestContext(request))  
   
   

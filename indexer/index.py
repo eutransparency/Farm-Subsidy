@@ -4,6 +4,7 @@ from __future__ import with_statement
 import os, sys, string, commands, scheme, csv, traceback, xapian
 from farmsubsidy import fsconf
 from farmsubsidy.indexer import scheme
+from farmsubsidy.queries import xapcache
 import math
 from string import Template
 from optparse import OptionParser
@@ -103,7 +104,7 @@ def index(country=None, tabletype=None, table=None):
             pbar.update(meta['linenumber'])
         # pbar.finish()
       database.flush()
-
+      xapcache.clear_cache()
 
 def index_line(line,meta):
   """The workhorse of the indexing.
