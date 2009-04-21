@@ -31,7 +31,7 @@ def ip_country(request):
     request.session['ip_country'] = ip_country
     return {'ip_country' : ip_country}
   else:
-    return {'ip_country' : "UK"}
+    # return {'ip_country' : "UK"}
     return {'ip_country' : request.session.get('ip_country',None)}
 
 
