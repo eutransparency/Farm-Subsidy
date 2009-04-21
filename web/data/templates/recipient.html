@@ -30,20 +30,7 @@
 {% endfor %}
 </table>
 
-{% load comments %}
-{# {% get_comment_list for search as comments %} #}
-{# {% for comment in comments %} #}
-{#   <div>{{ comment }}</div> #}
-{# {% endfor %} #}
 
-{% get_comment_form for search as form %}
-<form action="{% comment_form_target %}" method="POST">
-  {{ form }}
-  <tr>
-    <td></td>
-    <td><input type="submit" name="preview" class="submit-post" value="Preview"></td>
-  </tr>
-</form>
 
 
 {% endblock%}

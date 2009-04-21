@@ -2,6 +2,9 @@
 <ul>
   {# {{ results }} #}
   {% for k,document in results.documents.items %}
-    <li>{{ document.name }}</li>
+  
+    {% url data.views.recipient recipient_id=document.recipient_id_x country=document.country as recipient_url %}
+    
+    <li><a href="{{ recipient_url }}">{{ document.name }}</a></li>
   {% endfor %}
 </ul>

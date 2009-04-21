@@ -1,5 +1,6 @@
 from farmsubsidy.indexer import countryCodes
-import urllib
+import socket
+import urllib2
 import random
 
 def country(request):
@@ -24,14 +25,26 @@ def message(request):
 
 def ip_country(request):
   if request.session.get('ip_country',None) == None:
-    ip = request.META.get('REMOTE_ADDR') 
-    ip_country = urllib.urlopen('http://gaze.mysociety.org/gaze-rest?f=get_country_from_ip&ip=%s' % ip).read()
-    if len(ip_country) == 1:
+    try:
+      timeout = 3
+      socket.setdefaulttimeout(timeout)
+      
+      ip = request.META.get('REMOTE_ADDR') 
+      req = urllib2.Request('http://gaze.mysociety.org/gaze-rest?f=get_country_from_ip&ip=%s' % ip)
+      ip_country = urllib2.urlopen(req).read()
+      
+      if len(ip_country) == 1:
+        raise ValueError
+        
+      request.session['ip_country'] = ip_country
+  
+      
+    except Exception, e:
       ip_country = countryCodes.countryCodes()[random.randint(0,22)]
-    request.session['ip_country'] = ip_country
-    return {'ip_country' : ip_country}
+      request.session['ip_country'] = ip_country
   else:
-    # return {'ip_country' : "UK"}
-    return {'ip_country' : request.session.get('ip_country',None)}
+    ip_country = request.session.get('ip_country',None)
+
+  return {'ip_country' : ip_country }
 
 
