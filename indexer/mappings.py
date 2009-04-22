@@ -28,8 +28,6 @@ def fieldTypeMaps(field_value='field_value'):
   fields['global_id'] = {
     'prefix' : 'GID:',
     'name' : 'gid',
-    # 'value' : fsconf.index_values['global_id'],
-    # 'value_formatter': "%s"  % field_value,    
     'doc_body' : True,
   }
 
@@ -87,8 +85,6 @@ def fieldTypeMaps(field_value='field_value'):
   fields['recipient_id'] = {
     'prefix' : 'XRID:',
     'name' : 'id',
-    # 'value' : fsconf.index_values['recipient_id'],
-    # 'value_formatter': "%s"  % field_value,
     'doc_body' : True,
   }
 
@@ -163,6 +159,16 @@ def fieldTypeMaps(field_value='field_value'):
   'prefix' : 'XGEOPATH:',
   'name' : 'geopath',
   'boolean' : True,
+  }
+
+  fields['lat'] = {
+  'doc_body' : True,
+  'name' : 'lat',
+  }
+
+  fields['long'] = {
+  'doc_body' : True,
+  'name' : 'long',
   }
 
   fields['scheme_name'] = {

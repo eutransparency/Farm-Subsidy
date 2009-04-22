@@ -66,6 +66,12 @@ def fieldNameMappings():
   fieldMapping['address1'] = 'address1'
   fieldMapping['address2'] = 'address2'
   fieldMapping['zipcode'] = 'zipcode'
+  
+  fieldMapping['zipcode'] = 'zip'
+  fieldMapping['zipcode'] = 'zipcode'
+  fieldMapping['zipcode'] = 'Zip_integer'
+  fieldMapping['zipcode'] = 'Zip_prefix'
+
 
   fieldMapping['town'] =  'town'
   fieldMapping['town1'] = 'town1'
@@ -80,10 +86,10 @@ def fieldNameMappings():
   fieldMapping['geo4'] = 'geo4'
 
   # Geocode stuff
-  fieldMapping['cord_x'] = 'Lat'
-  fieldMapping['cord_x'] = 'cord_x'
-  fieldMapping['cord_y'] = 'Lng'
-  fieldMapping['cord_y'] = 'cord_y'
+  fieldMapping['lat'] = 'Lat'
+  fieldMapping['lat'] = 'cord_x'
+  fieldMapping['long'] = 'Lng'
+  fieldMapping['long'] = 'cord_y'
 
   #IDs
   fieldMapping['payment_id'] = 'payment_id'

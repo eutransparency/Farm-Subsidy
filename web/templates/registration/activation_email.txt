@@ -1,0 +1,5 @@
+Thank you for registering at FarmSubsidy.org
+
+To activate your user account, please click the link below:
+
+http://localhost:8000/user/activate/{{ activation_key }}
