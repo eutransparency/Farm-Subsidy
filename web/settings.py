@@ -62,7 +62,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',    
-    'pagination.middleware.PaginationMiddleware'
+    'pagination.middleware.PaginationMiddleware',
+    'misc.middleware.Middleware'
 )
 
 ROOT_URLCONF = 'web.urls'
@@ -93,6 +94,7 @@ INSTALLED_APPS = (
     'farmsubsidy.web.api',
     'farmsubsidy.web.graphs',
     'pagination',
+    'registration',
 )
 
 
@@ -102,8 +104,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   "django.core.context_processors.i18n",
   "django.core.context_processors.media",
   "django.core.context_processors.request",
-  'data.context_processors.country',  
-  'data.context_processors.ip_country',  
+  'data.context_processors.country',
+  'data.context_processors.ip_country',
+  'data.context_processors.welcome_message',
 )
 
 
+
+ACCOUNT_ACTIVATION_DAYS = 7

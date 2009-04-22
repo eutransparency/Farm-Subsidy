@@ -6,6 +6,7 @@
     <title>{% block title %}{{title}}{% endblock %} | FarmSubsidy.org</title>
     <script type="text/javascript" src="media/js/jquery.js"></script>
     <script type="text/javascript" src="media/js/jquery.example.min.js"></script>
+    <script type="text/javascript" src="media/js/jquery-ui-1.7.1.custom.min.js"></script>
 
 <script src="media/js/scripts.js" type="text/javascript" charset="utf-8"></script>
 
@@ -34,16 +35,16 @@
         <li><a href="/blog">Blog</a></li>
         <li><a href="/news">In The News</a></li>
       </ul>
+
+      {% block message %}
+        {% ifequal display_welcome_message "1" %}
+          <div class="welcome_message notice">
+            Hello, welcome to FarmSubsidy.org. We use Freedom of Information requests to discover who gets what from European Farm Subsidies, 
+            from little farmers to big multi-nationals. We are a not-for-proﬁt organisation, part of the FollowTheMoney.eu organisation.
+          </div>
+        {% endifequal %}
+      {% endblock %}
     </div>    
-    
-    <div id="right">  
-      {% block right %}
-    
-        
-
-    {% endblock %}
-
-    </div>
     
     <div id="content">
       {% block error %}

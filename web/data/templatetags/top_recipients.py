@@ -2,6 +2,7 @@ from django.template import Library, Node
 
 from farmsubsidy.queries import queries
 from farmsubsidy import fsconf
+from farmsubsidy.indexer import countryCodes
 
 register = Library()
 def top_recipients(location="EU", number=5):
@@ -9,7 +10,10 @@ def top_recipients(location="EU", number=5):
   country = "country:%s" % location
   if location == "EU":
     country = ""
-  
+    countryname = "Europe"
+  else:
+    countryname = countryCodes.code2name[location]  
+    
   options = {
     'page' : 0,
     'len' : number,
@@ -17,6 +21,8 @@ def top_recipients(location="EU", number=5):
   }
   
   results = queries.do_search("%s amount:1000..1000000000" % country, options)
+  
+  
   
   return locals()
 

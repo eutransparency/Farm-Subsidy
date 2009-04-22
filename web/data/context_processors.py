@@ -2,6 +2,7 @@ from farmsubsidy.indexer import countryCodes
 import socket
 import urllib2
 import random
+import datetime
 
 def country(request):
     from django.conf import settings
@@ -47,4 +48,12 @@ def ip_country(request):
 
   return {'ip_country' : ip_country }
 
-
+def welcome_message(request):
+  return {'display_welcome_message' : request.COOKIES.get('display_welcome_message', "1")}
+  
+  
+  
+  
+  
+  
+  
