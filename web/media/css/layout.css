@@ -105,6 +105,11 @@ body {
   padding-left:2em;
 }
 
+#user_menu {
+  position:absolute;
+  top: 2em;
+  right:0;
+}
 
 #search_form {
   position:relative;

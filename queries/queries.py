@@ -103,10 +103,13 @@ def do_search(query, options={'len' : 100, 'page' : 0, 'len' : 50,}):
 
   for k,m in enumerate(matches):
     results['documents'][k] = dict(cPickle.loads(m.document.get_data()))
+    results['documents'][k]['doc_id'] = m.document.get_docid()
+    
 
   if 'cache' in options:
     xapcache.save_cache(query_string, options, results)  
   return results  
+
 
 def calcPages(page,resultlen):
   """docstring for calcPages"""
@@ -130,29 +133,57 @@ def dumpRegions(country, path=''):
   return set(regions)
 
 
+def get_rset(rid=4):
+  db = querylib.load_database()
+  enq = querylib.load_enquire(db)
+  rset = xapian.RSet()
+  eset = xapian.Enquire(db)  
+  
+  rset.add_document(rid)
+  
+  eset = eset.get_eset(5, rset);  
+  query = xapian.Query(xapian.Query.OP_ELITE_SET, [k for k,v in eset])
+  
+  enq.set_query(query)
+  enq.set_collapse_key(fsconf.index_values['recipient_id_x'])
+  
+  matches = enq.get_mset(1,6)
 
+  results = {}
+  results['decsription'] = "Parsed query is: %s" % query.get_description()
+  results['documents'] = {}
+  results['size'] = matches.get_matches_estimated()
+
+  for k,m in enumerate(matches):
+    results['documents'][k] = dict(cPickle.loads(m.document.get_data()))
+    results['documents'][k]['doc_id'] = m.document.get_docid()
+  
+  return results
 
 if __name__ == "__main__":
-  options = {
-    'page' : 0,
-    'len' : 100,  
-    'sort_value' : fsconf.index_values['year'],
-    'allyears' : True
-  }
+  get_rset()
   
-  results = do_search(" ".join(sys.argv[1:]), options)
-  print results['decsription']  
-  if results['spelling']:
-    print results['spelling']
-  print results['info']
-  for key in results['documents']:
-    meta = results['documents'][key]
-    print meta['name']
+  
+  # options = {
+  #   'page' : 0,
+  #   'len' : 100,  
+  #   'sort_value' : fsconf.index_values['year'],
+  #   'allyears' : True
+  # }
+  # 
+  # results = do_search(" ".join(sys.argv[1:]), options)
+  # print results['decsription']  
+  # if results['spelling']:
+  #   print results['spelling']
+  # print results['info']
+  # for key in results['documents']:
+  #   meta = results['documents'][key]
+  #   print meta['name']
+
+
+
   # prefix = "%s" % sys.argv[1:][0]
   # print prefix
   # terms = allterms(prefix)
   # for term in terms:
   #   print term.term
-
-
-

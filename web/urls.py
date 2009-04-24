@@ -13,7 +13,8 @@ urlpatterns = patterns('',
     (r'', include('farmsubsidy.web.feeds.urls')),
     (r'', include('farmsubsidy.web.graphs.urls')),
     (r'^api/', include('farmsubsidy.web.api.urls')),
-    (r'^user/', include('registration.urls')),
+    (r'^accounts/', include('registration.urls')),
+    (r'^profiles/', include('profiles.urls')),
     (r'^comments/', include('django.contrib.comments.urls')),
     )
 

@@ -7,30 +7,68 @@
 
 {% block content %}
 
-<h2>{{results.documents.0.name|title}}</h2>
-{% load graphs %}
-{% graph "recipient" results %}
+  <h2>{{results.documents.0.name|title}}</h2>
+  {% load graphs %}
+  {% graph "recipient" results %}
 
-<table border="0" cellspacing="5" cellpadding="5">
-<thead>  
-  <tr>
-    <th>Year</th>
-    <th>Amount</th>
-    <th>Scheme</th>
-  </tr>
-</thead>
-{% for k,result in results.documents.items %}
-
-    <tr class="{% cycle 'odd' 'even' %}">
-      <td><b>{{result.year}}</b></td>
-      <td>&euro;{{result.amount|currency}}</td>
-      <td>{{result.scheme_name|title}}</td>
+  <div class="section">
+  <h3>Breakdown of payments</h3>
+  <table border="0" cellspacing="5" cellpadding="5">
+  <thead>  
+    <tr>
+      <th>Year</th>
+      <th>Scheme</th>
+      <th>Member state</th>
+      <th>Total</th>
     </tr>
+  </thead>
+  {% for k,result in results.documents.items %}
 
-{% endfor %}
-</table>
+      <tr class="{% cycle 'odd' 'even' %}">
+        <td><b>{{result.year}}</b></td>
+        <td>{{result.scheme_name|title}}</td>
+        <td>{{result.country}}</td>
+        <td>&euro;{{result.amount|currency}}</td>
+      </tr>
+
+  {% endfor %}
+  </table>
+  </div>
 
 
+  <div class="section">
+    {% load comments %}
+    {% recipient_comments results.documents.0.recipient_id %}
+  </div>
 
-
+  <div class="section">
+    <h3>Add information for this recipient</h3>
+    <p>e.g. is the recipient an organic farm, does is it part of a national park. Please include links where possible.</p>
+    {% if user.is_authenticated %}
+      <form action="" method="post" accept-charset="utf-8">
+        {{ form.as_p }}
+        <p><input type="submit" value="Add your information"></p>
+      </form>
+    {% else %}
+        <a href="{% url registration_register %}">Create an account</a> or <a href="{% url auth_login %}">Log in</a> to add information.
+    {% endif %}
+  </div>
 {% endblock%}
+
+
+{% block right %}
+  {% load download_block %}
+  {% download_recipient results.documents.0.recipient_id %}
+  
+  {% load related %}
+  {% get_related results.documents.0.doc_id %}
+  
+  {% load recipient_blocks %}  
+  {% recipient_links results.documents.0.name %}
+  {% link_to_recipient results.documents.0 %}
+  
+{% endblock %}
+
+
+
+

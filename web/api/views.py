@@ -21,11 +21,23 @@ def format_data(data, format):
     
     data = pyfo.pyfo(('root',data), pretty=True)
     return data, "text/xml"
+    
   if format == "json":
     return dumps(data), "application/json"
-
+    
   if format == "pickle":
     return cPickle.dumps(data), "text"
+  
+  if format == "csv":
+    csv = []
+    for i,line in data['documents'].items():
+      # assert False
+      csv.append(
+        ",".join('"%s"' % str(v) for k,v in line.items())
+      )
+      
+    # assert False
+    return ";\n".join(csv), "text"
 
 def test(request):
   format = request.GET.get('format', 'xml')

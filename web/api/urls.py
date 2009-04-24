@@ -7,5 +7,5 @@ import views
 
 urlpatterns = patterns('',
    url(r'^xml/test/', views.test),
-   url(r'^get_recipient/(\d+)/$', views.get_recipient),
+   url(r'^get_recipient/(\d+)/$', views.get_recipient, name="get_recipient"),
  )

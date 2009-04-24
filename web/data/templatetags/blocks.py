@@ -1,10 +1,10 @@
 import re 
-from django.template import Library, Node
-from django import forms
 from farmsubsidy.queries import queries
 from farmsubsidy.indexer import countryCodes
 from farmsubsidy import fsconf
 from farmsubsidy.web.data import forms
+from django.template import Library, Node
+from django import forms
 register = Library()
 
 

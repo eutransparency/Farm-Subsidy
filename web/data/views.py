@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from farmsubsidy.indexer import countryCodes
+from web.comments import forms as comment_forms
 import forms
 
 from models import SearchModelWrapper
@@ -65,6 +66,28 @@ def search(request):
 
   
 def recipient(request, recipient_id, country=None):
+  
+  if request.method == 'POST' and request.user.is_authenticated():
+    form = comment_forms.CommentForm(request.POST)
+    if form.is_valid():
+      from web.comments.models import Comment
+      c = Comment(
+        user=request.user, 
+        comment=form.cleaned_data['comment'], 
+        owner=form.cleaned_data['owner'], 
+        recipient_id=recipient_id
+        )
+      c.save()
+      if form.cleaned_data['owner']:
+        from web.misc.models import FarmOwners
+        f = FarmOwners(user=request.user, farm=recipient_id)
+        f.save()
+      return HttpResponseRedirect(
+        reverse("recipient_view", kwargs={'recipient_id' : recipient_id, 'country' : country})
+        )
+  else:
+    form = comment_forms.CommentForm()
+    
   options = {
     'page' : 0,
     'len' : 100,
@@ -75,10 +98,12 @@ def recipient(request, recipient_id, country=None):
   total = 0
   for key,result in results['documents'].items():
     total = total + float(result['amount'])
-    
+  
+  
+  
   # search = SearchModelWrapper(results)  
   return render_to_response('recipient.html', 
-  {'results' : results, 'title' : results, 'total' : total},
+  {'results' : results, 'title' : results, 'total' : total, 'form' : form},
   context_instance=RequestContext(request))  
   
   

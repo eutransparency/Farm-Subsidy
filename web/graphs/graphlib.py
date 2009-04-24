@@ -41,7 +41,7 @@ def make_fig(request, type):
 
     # axis setup
     xticks(arange(0.5, len(name_value_dict)),
-        [('%s: %s' % (name, u"\u20ac%s" % locale.format(u'%.2f', float(value), True) )) 
+        [('%s' % name) 
         for name, value in name_value_dict.items()],
         size='xx-small')
     max_value = max(name_value_dict.values())

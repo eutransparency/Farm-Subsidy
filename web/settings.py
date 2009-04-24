@@ -80,7 +80,7 @@ TEMPLATE_DIRS = (
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.comments',
+    # 'django.contrib.comments',
     'django.contrib.contenttypes',
     'django.contrib.flatpages',
     'django.contrib.markup',
@@ -88,13 +88,15 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.syndication',
-    'farmsubsidy.web.contrib.cart',
     'farmsubsidy.web.data',
     'farmsubsidy.web.feeds',
     'farmsubsidy.web.api',
     'farmsubsidy.web.graphs',
+    'farmsubsidy.web.misc',
+    'farmsubsidy.web.comments',
     'pagination',
     'registration',
+    'profiles',
 )
 
 
@@ -112,3 +114,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 
 ACCOUNT_ACTIVATION_DAYS = 7
+# LOGIN_REDIRECT_URL = "/user/profile"
+AUTH_PROFILE_MODULE = "misc.Profile"
+DEFAULT_FROM_EMAIL = "team@farmsubsidy.org"

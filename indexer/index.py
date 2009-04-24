@@ -156,7 +156,7 @@ def index_line(line,meta):
       
   indexer.index_text(" ".join(index_text))
 
-  docid = "XDOCID"+meta['data']['recipient_id']+meta['data']['payment_id']
+  docid = "XDOCID%s%s" % (meta['data']['recipient_id'],meta['data']['payment_id'])
   doc.add_term(docid)
   doc.set_data(format_doc(fields,meta,line))
   database.replace_document(docid,doc)

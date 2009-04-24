@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+  <a href="{% url profiles_edit_profile %}">Edit</a>
+  {{ profile.info }}
+{% endblock %}
