@@ -22,9 +22,13 @@ locale.setlocale(locale.LC_ALL, '')
 def make_fig(request, type):
     """ make a chart """
     name_value_dict = {}
-
-    for year, amount in request.GET.items():
-      name_value_dict[year] = round(float(amount),2)
+    
+    years = sorted(request.GET)
+    # assert False
+    for year in years:
+      name_value_dict[year] = float(request.GET[year])
+    # assert False
+    # name_value_dict = sorted(name_value_dict.keys())
     
     # import sys
     # sys.exit(name_value_dict)
@@ -45,7 +49,7 @@ def make_fig(request, type):
         for name, value in name_value_dict.items()],
         size='xx-small')
     max_value = max(name_value_dict.values())
-    tick_range = arange(0, max_value+100, round(float((max_value / 3))))
+    tick_range = arange(0, max_value+max_value*1.1, round(max_value,1)/2)
     yticks(tick_range, size='xx-small')
     formatter = FixedFormatter([u"\u20ac%s" % locale.format(u'%d', float(x), True) for x in tick_range])
     gca().yaxis.set_major_formatter(formatter)
