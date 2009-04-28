@@ -75,6 +75,7 @@ caption {background:#eee;}
 
 .clear {
   clear:both;
+  overflow:auto;
 }
 
 /* forms.css */
@@ -124,4 +125,19 @@ textarea {width:390px;height:250px;padding:5px;}
   position:absolute;
   top:0px;
   right:5px;
+}
+
+.section {
+  border-top:1px solid #000000;
+  position:relative;
+  overflow:visible;
+  padding-top:2em;
+  padding-bottom:2em;
+}
+
+.section h3 {
+  position:absolute;
+  background-color:#FFFFFF;
+  padding-right:1em;
+  top:-0.6em;
 }

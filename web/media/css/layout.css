@@ -198,6 +198,13 @@ ul.error {
 }
 
 
+.recipients {
+  width:95%;
+}
+
+.recipients .amount {
+  text-align:right;
+}
 
 #lists {
   width:100%;
@@ -205,4 +212,15 @@ ul.error {
   height:2em;
   position:absolute;
   bottom:0;
+}
+
+.halfcol {
+  width:44%;
+  padding-right:5%;
+  float:left;
+  text-align:right;
+}
+
+.halfcol strong {
+  float:left;
 }

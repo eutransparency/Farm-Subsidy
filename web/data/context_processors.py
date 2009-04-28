@@ -25,7 +25,7 @@ def message(request):
 
 
 def ip_country(request):
-  if request.session.get('ip_country',None) == None:
+  if request.session.get('ip_country', None) == None:
     try:
       timeout = 3
       socket.setdefaulttimeout(timeout)
@@ -36,7 +36,11 @@ def ip_country(request):
       
       if len(ip_country) == 1:
         raise ValueError
-        
+      
+      # We don't name GB correctly according to ISO. UK is FIPS.
+      if ip_country == "GB":
+        ip_country = "UK"
+      
       request.session['ip_country'] = ip_country
   
       
