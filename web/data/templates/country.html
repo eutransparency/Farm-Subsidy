@@ -7,17 +7,15 @@
 {% endblock %}
 
 {% block content %}
-<h2>{% browsePathHead browsepath%}</h2>
+<h2>EU Farm subsidies, {% browsePathHead browsepath%}</h2>
 
+{% ifequal  country.code browsepath %}
+  {% load countrystats %}
+  {% country_stats country.code %}  
+{% endifequal %}
 
-{% load countrystats %}
-{% country_stats country.code %}
-
-<div class="section">
-<h3>Breakdown by region</h3>  
 {% load blocks %}
 {% countryBrowse country.code browsepath%}
-</div>
 
 <div class="section">
 <h3>Top 20 recipients</h3>  

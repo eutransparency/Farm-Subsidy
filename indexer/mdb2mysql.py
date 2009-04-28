@@ -77,11 +77,10 @@ def extractmdb2mysql(countryToProcess="all"):
     scheme_sql = re.sub("\t([^\t]+)\t\t","\t`\\1`\t", scheme_sql)
 
     # Add Indexes
-    indextable = re.findall("CREATE TABLE `([^`]+)`[^;]+(`recipient_id`)[^;]+;",scheme_sql, re.S) #`
+    indextable = re.findall("CREATE TABLE `([^`]+)`[^;]+(`recipient_id`)[^;]+;",scheme_sql, re.S) #` stupid textmate syntax parser
     for table,field in indextable:
       scheme_sql = """
         %s
-
         ALTER TABLE `%s` ADD INDEX ( %s );  
       """ % (scheme_sql,table,field)
 
@@ -116,8 +115,13 @@ def extractmdb2mysql(countryToProcess="all"):
         tabletype = 'payment'
       if table[0:9] == 'recipient':
         tabletype = 'recipient'
+        
+      # *sigh*
+      if table[0:9] == 'recepient':
+        tabletype = 'recipient'
+        
       if table[0:18] == 'budgetlinesd8digit':
-        tabletype = 'scheme'
+        tabletype = 'budgetline'
       if table[0:6] == 'scheme':
         tabletype = 'scheme'
       
@@ -129,10 +133,6 @@ def extractmdb2mysql(countryToProcess="all"):
         reader = csv.reader(codecs.open("/tmp/%s-%s.csv" % (country, table),'r'))
         
         for line in reader:
-          # Only loop 10 lines.  Just for testing!
-          #if key > 10: 
-          #  break
-          #line = ",".join("\"%s\"" % field for field in line) 
 
           try:
             line = ",".join("'%s'" % re.escape(field) for field in line)
@@ -145,30 +145,6 @@ def extractmdb2mysql(countryToProcess="all"):
             print sql
             print e
 
-
-        
-          
-        # sys.exit()
-        # rows = 
-
-        # # cCreate the scheme file.  
-        # # Scheme files are created sepirate so the data files can be split later, if need be.
-        # schemepath = "%s%s/%s/" % (fsconf.schemedir, country, tabletype)
-        # commands.getstatusoutput('mkdir -p %s' % (schemepath))
-        # fields = commands.getstatusoutput('mdb-export %s %s | head -n 1' % (db,table))[1]
-        # filename = "%s%s--%s.scheme" %(schemepath,dbid,table)
-        # file = open(filename, 'w')
-        # file.write(fields)
-        # file.close()
-        # file_all = open("%s/all-%s" % (fsconf.schemedir,tabletype),'a')
-        # file_all.write(fields+"\n")
-        # file_all.close()
-        
-
-  
-  
-  
-  
   
   
   

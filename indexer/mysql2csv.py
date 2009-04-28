@@ -29,9 +29,7 @@ def mysql2csv(countryToProcess="all"):
     if countryToProcess != "all" and countryToProcess != country:
       continue
     
-    
 
-    mysql_string
     tables = commands.getoutput('echo "SHOW TABLES" | %s %s' % (mysql_string, database)).split("\n")
     for table in tables:
       if table[0:7] == 'payment':
@@ -40,6 +38,11 @@ def mysql2csv(countryToProcess="all"):
         recipient_table = table
       if table[0:6] == 'scheme':
         scheme_table = table
+        budgetline = False
+      if table[0:18] == 'budgetlinesd8digit':
+        scheme_table = table
+        budgetline = True
+
 
     if recipient_table and payment_table and scheme_table:
       print "working with %s" % database
@@ -54,16 +57,31 @@ def mysql2csv(countryToProcess="all"):
                                  db = database)
         
       c = connection.cursor()
-
+      
+      #Guess at the payment fields *sigh*      
+      c.execute("select * from %s LIMIT 1" % payment_table)
+      
+      amount_guesses = ['amount', 'amount_euro']
+      for d in c.description:
+        if d[0] in amount_guesses:
+          print d[0]
+          amount_field = d[0]
+          
+      year_guesses = ['year', 'feoga_year']
+      for d in c.description:
+        if d[0] in year_guesses:
+          print d[0]
+          year_field = d[0]
+          
 
       ## Make the total_amount field for each payment
       totals_query = """CREATE TEMPORARY TABLE totals
-      SELECT sum(%(payment)s.amount)
-      as total_amount, %(payment)s.year, %(recipient)s.recipient_id_x
+      SELECT sum(%(payment)s.%(amount)s)
+      as total_amount, %(payment)s.%(year)s, %(recipient)s.recipient_id_x
       FROM %(payment)s, %(recipient)s  
       WHERE %(payment)s.recipient_id=%(recipient)s.recipient_id
-      GROUP BY %(payment)s.year, %(recipient)s.recipient_id_x;
-      """ % {'payment' : payment_table, 'recipient' : recipient_table}
+      GROUP BY %(payment)s.%(year)s, %(recipient)s.recipient_id_x;
+      """ % {'payment' : payment_table, 'recipient' : recipient_table, 'amount' : amount_field, 'year' : year_field}
 
       print "Making totals"
       c.execute(totals_query)
@@ -72,16 +90,31 @@ def mysql2csv(countryToProcess="all"):
       c.execute(index_query)
 
       ## Make the scheme field for each payment
-      scheme_query = """CREATE TEMPORARY TABLE scheme_total
-      SELECT p.payment_id, s.name_english as scheme_name FROM %(payment)s p
-      INNER JOIN %(scheme_table)s s
-      ON p.scheme1_id=s.scheme1_id
-      """ % {'scheme_table' : scheme_table, 'payment' : payment_table}
-      print "Making schemes"
-      c.execute(scheme_query)
+      if budgetline:
+        budgetline_query = """CREATE TEMPORARY TABLE scheme_total
+        SELECT p.payment_id, s.text as scheme_name FROM %(payment)s p
+        INNER JOIN %(scheme_table)s s
+        ON p.budgetline_8digit=s.budgetline_8digit
+        """ % {'scheme_table' : scheme_table, 'payment' : payment_table}
 
-      scheme_index_query = """ALTER TABLE `scheme_total` ADD INDEX ( `payment_id` )"""
-      c.execute(scheme_index_query)
+        c.execute(budgetline_query)
+
+        scheme_index_query = """ALTER TABLE `scheme_total` ADD INDEX ( `payment_id` )"""
+
+        c.execute(scheme_index_query)
+
+      else:
+        scheme_query = """CREATE TEMPORARY TABLE scheme_total
+        SELECT p.payment_id, s.name_english as scheme_name FROM %(payment)s p
+        INNER JOIN %(scheme_table)s s
+        ON p.scheme1_id=s.scheme1_id
+        """ % {'scheme_table' : scheme_table, 'payment' : payment_table}
+        print "Making schemes"
+        c.execute(scheme_query)
+
+        scheme_index_query = """ALTER TABLE `scheme_total` ADD INDEX ( `payment_id` )"""
+
+        c.execute(scheme_index_query)
 
 
       start = 0
@@ -95,9 +128,9 @@ def mysql2csv(countryToProcess="all"):
             (%(payment)s P LEFT JOIN scheme_total s ON P.payment_id=s.payment_id)
           ON R.recipient_id = P.recipient_id) 
           INNER JOIN totals T ON R.recipient_id_x=T.recipient_id_x
-          WHERE P.year = T.year
+          WHERE P.%(year)s = T.%(year)s
           LIMIT %(start)s,%(rlen)s;
-        """ % {'payment' : payment_table, 'recipient' : recipient_table, 'rlen' : rlen, 'start' : start}
+        """ % {'payment' : payment_table, 'recipient' : recipient_table, 'rlen' : rlen, 'start' : start, 'year' : year_field}
         
 
         print "Execute Query %s to %s" % (start,start+rlen)
@@ -118,6 +151,7 @@ def mysql2csv(countryToProcess="all"):
   
         print "Writing rows"
         row = c.fetchone()
+        print row
         row_count = 0
         while row:
           writer.writerow(row)
