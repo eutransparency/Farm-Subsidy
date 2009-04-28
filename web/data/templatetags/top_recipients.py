@@ -12,7 +12,7 @@ def top_recipients(location="EU", number=5):
     country = ""
     countryname = "Europe"
   else:
-    countryname = countryCodes.code2name[location]  
+    countryname = countryCodes.code2name[location.strip()]  
     
   options = {
     'page' : 0,
