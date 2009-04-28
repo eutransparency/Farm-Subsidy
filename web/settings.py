@@ -92,6 +92,7 @@ INSTALLED_APPS = (
     'farmsubsidy.web.feeds',
     'farmsubsidy.web.api',
     'farmsubsidy.web.graphs',
+    'farmsubsidy.web.countryinfo',
     'farmsubsidy.web.misc',
     'farmsubsidy.web.comments',
     'pagination',

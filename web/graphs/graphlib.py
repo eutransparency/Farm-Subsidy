@@ -33,6 +33,7 @@ def make_fig(request, type):
     
     figure(figsize=(5, 2), linewidth=0) # image dimensions  
 
+    
     subplots_adjust(left=0.2)
 
     # add bars

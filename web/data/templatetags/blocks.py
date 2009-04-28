@@ -61,8 +61,11 @@ def search(prefix, query, rlen=30, page=0, sort_value=fsconf.index_values['total
   'offset' : 0,
   'len' : rlen,
   'page' : page,
-  # 'cache' : True,
+  'cache' : True,
   }
+  
+  if len(query.split("/")) < 2:
+    query = "%s amount:100000..100000000"  % query
   results = queries.do_search(prefix+query, options)
   return {'results' : results}
 

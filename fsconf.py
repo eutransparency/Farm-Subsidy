@@ -22,6 +22,9 @@ indexer_path = project_path + "indexer"
 #Path to the MDBs (from unzipped data)
 mdbdir = datadir + "/mdb"
 
+#Path to the stats
+statsdir = datadir + "/stats"
+
 #Path to the CSV files (from MDBs)
 csvdir = datadir + "/csv"
 
@@ -38,6 +41,8 @@ xapcache_path = '/tmp/xapcache.sqlite'
 mysql_prefix = "farmsubsidy_"
 mysql_user = "farmsubsidy"
 mysql_pass = "farmsubsidy"
+
+current_year = "2007"
 
 
 # Xapian database values

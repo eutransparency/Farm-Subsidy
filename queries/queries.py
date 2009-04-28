@@ -90,7 +90,7 @@ def do_search(query, options={'len' : 100, 'page' : 0, 'len' : 50,}):
   matches = enq.get_mset(calcPages(options['page'], options['len']),options['len'],)
 
   results = {}
-  results['decsription'] = "Parsed query is: %s" % query.get_description()
+  results['description'] = "Parsed query is: %s" % query.get_description()
   results['info'] = "%i results found." % (matches.get_matches_estimated())
   results['documents'] = {}
   results['spelling'] = qp.get_corrected_query_string()
@@ -150,7 +150,7 @@ def get_rset(rid=4):
   matches = enq.get_mset(1,6)
 
   results = {}
-  results['decsription'] = "Parsed query is: %s" % query.get_description()
+  results['description'] = "Parsed query is: %s" % query.get_description()
   results['documents'] = {}
   results['size'] = matches.get_matches_estimated()
 
