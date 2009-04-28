@@ -116,6 +116,8 @@ def extractmdb2mysql(countryToProcess="all"):
         tabletype = 'payment'
       if table[0:9] == 'recipient':
         tabletype = 'recipient'
+      if table[0:18] == 'budgetlinesd8digit':
+        tabletype = 'scheme'
       if table[0:6] == 'scheme':
         tabletype = 'scheme'
       

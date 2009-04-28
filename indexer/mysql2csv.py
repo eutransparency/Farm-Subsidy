@@ -34,7 +34,6 @@ def mysql2csv(countryToProcess="all"):
     mysql_string
     tables = commands.getoutput('echo "SHOW TABLES" | %s %s' % (mysql_string, database)).split("\n")
     for table in tables:
-      
       if table[0:7] == 'payment':
         payment_table = table
       if table[0:9] == 'recipient':
