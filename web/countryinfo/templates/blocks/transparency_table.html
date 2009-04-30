@@ -1,0 +1,15 @@
+<table>
+  <thead>
+    <th>Country</th>
+    <th>Score</th>
+  </thead>
+  <tbody>
+    {% for country,score in table %}
+      <tr>
+        <td>{{ country }}</td>
+        <td>{{ score }}</td>
+        <td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

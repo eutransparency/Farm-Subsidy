@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ flatpage.title }}{% endblock%}
+
+
+{% block content %}
+{% load markup %}
+<h2>{{ flatpage.title }}</h2>
+
+{% load transparency_index %}
+{% transparency_table %}
+
+
+{{ flatpage.content|markdown }}
+{% endblock%}
+
+
+{% block left %}
+
+{% endblock %}

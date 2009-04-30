@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% load currency %}
+
+{% block content %}
+
+<div id="results_info">About {{ results.info }}</div>
+
+{% if results.documents.items %}
+<table border="0" cellspacing="5" cellpadding="5">
+  <tr>
+    <th>Name</th>
+    <th>Amount</th>
+    <th>Country</th>
+    <th>Scheme</th>
+    <th>Area</th>    
+  </tr>
+{% for key,result in results.documents.items %}
+  {% url data.views.recipient recipient_id=result.recipient_id_x country=result.country as recipient_url %}
+  <tr class="{% cycle 'odd' 'even' %}">
+    <td>
+      <a href="{{recipient_url}}/{{result.country}}/{{result.name|slugify|urlencode}}">
+        {{result.name}}
+      </a>
+    </td>
+    <td>&euro;{{result.amount|currency}}</td>
+    <td>{{result.country}}</td>
+    <td>{{result.scheme_name|title}}</td>
+    <td>{{result.geo2}}</td>    
+  </tr>
+{% endfor %}
+</table>
+
+{% load pager %}
+{% pager results %}
+
+
+{% else %}
+{{ results }}
+Sorry, no results found.
+{% endif %}
+{% endblock%}
+
+
+
+
+
+
+
