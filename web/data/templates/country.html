@@ -15,11 +15,14 @@
 {% endifequal %}
 
 {% load blocks %}
-{% countryBrowse country.code browsepath%}
+{% regionBrowse country.code browsepath%}
 
 <div class="section">
 <h3>Top 20 recipients</h3>  
 {% search "geopath:" browsepath 20 %}
+{% url countrybrowse country.code as browseurl %}
+<a href="{{ browseurl }}">
+ Browse all {{ country.code }} recipients</a>
 </div>
 
 
@@ -27,6 +30,15 @@
 
 
 {% block right %}
+
+<div class="block">
+  <h5>Browse all recipients</h5>
+    {% url countrybrowse country.code as browseurl %}
+    <a href="{{ browseurl }}">By amount received</a>
+</div>
+
+{% load transparency_index %}
+{% transparency_index country.code %}
 
 {% load inthenews %}
 {% latestnews country.code %}

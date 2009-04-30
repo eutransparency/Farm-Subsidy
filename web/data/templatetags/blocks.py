@@ -8,9 +8,9 @@ from django import forms
 register = Library()
 
 
-def countryBrowse(country, path):
+def regionBrowse(country, path):
   regions = queries.dumpRegions(country, path)
-  # return {'regions' : regions}
+
   browsepaths = {}
   for region in regions:
     regionpath = "%s/%s" % (path.encode('utf8'),region)
@@ -24,7 +24,7 @@ def countryBrowse(country, path):
   return {'regions' : browsepaths, 'country' : country}
 
 
-register.inclusion_tag('blocks/regions.html')(countryBrowse)
+register.inclusion_tag('blocks/regions.html')(regionBrowse)
 
 def browsePathTitle(browsepath):
   stem = ""

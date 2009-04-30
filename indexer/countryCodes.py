@@ -8,25 +8,25 @@ def countryCodes():
   codes.append('BE')
   codes.append('BG')
   codes.append('CZ')
+  codes.append('DE')
   codes.append('DK')
-  codes.append('AT')
   codes.append('EE')
+  codes.append('ES')
   codes.append('FI')
   codes.append('FR')
-  codes.append('DE')
+  codes.append('GR')
   codes.append('HU')
   codes.append('IE')
   codes.append('IT')
-  codes.append('LV')
   codes.append('LT')
   codes.append('LU')
+  codes.append('LV')
   codes.append('NL')
   codes.append('PL')
   codes.append('PT')
   codes.append('SE')    
   codes.append('SK')
   codes.append('SL')
-  codes.append('ES')
   codes.append('UK')
   return codes
 
@@ -36,24 +36,25 @@ code2name = {
 'BE'	: 'Belgium',
 'BG'	: 'Bulgaria',
 'CZ' : 'Czech',
+'DE' : 'Germany',
 'DK' : 'Denmark',
 'EE' : 'Estonia',
+'ES' : 'Spain',
 'FI' : 'Finland',
 'FR' : 'France',
-'DE' : 'Germany',
+'GR' : 'Greece',
 'HU' : 'Hungary',
 'IE' : 'Ireland',
 'IT' : 'Italy',
-'LV' : 'Latvia',
 'LT' : 'Lithuania',
 'LU' : 'Luxembourg',
+'LV' : 'Latvia',
 'NL' : 'Netherland',
 'PL' : 'Poland',
 'PT' : 'Portugal',
+'SE' : 'Sweden',
 'SK' : 'Slovakia',
 'SL' : 'Slovenia',
-'ES' : 'Spain',
-'SE' : 'Sweden',
 'UK' : 'United Kingdom',
 }
 
@@ -76,6 +77,8 @@ def filenameToCountryCode(filename):
     return 'FR'
   if filename[0:7] == 'germany':
     return 'DE'
+  if filename[0:6] == 'greece':
+    return 'GR'
   if filename[0:7] == 'hungary':
     return 'HU'
   if filename[0:7] == 'ireland':

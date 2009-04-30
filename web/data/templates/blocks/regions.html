@@ -3,7 +3,7 @@
     <h3>Regions</h3>
     <ul>
       {% for name,info in regions.items %}
-        <li><a href="{% url data.views.countrybrowse country info.path|urlencode %}">{{info.name|title}}</a></li>
+        <li><a href="{% url data.views.regionbrowse country info.path|urlencode %}">{{info.name|title}}</a></li>
       {% endfor %}
     </ul>
   </div>

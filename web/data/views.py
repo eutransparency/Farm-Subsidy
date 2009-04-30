@@ -46,7 +46,7 @@ def search(request):
     
     return render_to_response(
     'results.html', 
-    {'results' : search.results, 'query' : query, 'title' : title},
+    {'results' : results, 'query' : query, 'title' : title},
     context_instance=RequestContext(request)
     )  
   
@@ -92,7 +92,7 @@ def recipient(request, recipient_id, country=None):
     'page' : 0,
     'len' : 100,
     'sort_value' : fsconf.index_values['year'],
-    'allyears' : True
+    'allyears' : True,
   }
   results = queries.do_search("xid:%s" % recipient_id, options)
   total = 0
@@ -115,7 +115,7 @@ def country(request, country):
 
 
 
-def countrybrowse(request, country, browsepath):
+def regionbrowse(request, country, browsepath):
   return render_to_response('country.html', {'browsepath' : browsepath }, context_instance=RequestContext(request))    
 
 
@@ -124,6 +124,42 @@ def home(request):
   """temp home view"""
   # TODO replace with a real view!
   return render_to_response('home.html', context_instance=RequestContext(request))    
+
+
+def countrybrowse(request, country):
+  options = {
+    'collapse_key' : fsconf.index_values['recipient_id_x'], 
+    'sort_value' : fsconf.index_values['amount'],
+    'cache' : True,
+    'offset' : 0,
+    'len' : 50,
+    'page' : int(request.GET.get('page',0)),
+    'check_at_least_term' : 'XCOUNTRY:%s' % country
+  }
   
+  results = queries.do_search('country:%s' % country, options)
+  results['GET'] = request.GET    
+  return render_to_response(
+  'browse.html', 
+  {'results' : results},
+  context_instance=RequestContext(request)
+  )  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

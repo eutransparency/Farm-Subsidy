@@ -50,14 +50,15 @@ def get_payments_by_rid(rid, db=querylib.load_database()):
 
 def do_search(query, options={'len' : 100, 'page' : 0, 'len' : 50,}):  
   
-  cache = xapcache.load_cache(query, options)
-  if cache and 'cache' in options:
-    return cache
+  if 'cache' in options:
+    cache = xapcache.load_cache(query, options)
+    if cache:
+      return cache
   
   query_string = query
   
-  # if not 'allyears' in options:
-  #   query_string = query_string + " year:2007..2007"
+  if not 'allyears' in options:
+    query_string = query_string + " year:2007..2007"
     
   query_string = querylib.parse_query(query_string)
   (qp,valueranges) = querylib.load_queryparser()
@@ -68,7 +69,7 @@ def do_search(query, options={'len' : 100, 'page' : 0, 'len' : 50,}):
   DEFAULT_SEARCH_FLAGS = (
          xapian.QueryParser.FLAG_BOOLEAN |
          xapian.QueryParser.FLAG_PHRASE |
-         # xapian.QueryParser.FLAG_LOVEHATE |   
+         xapian.QueryParser.FLAG_LOVEHATE |   
          # xapian.QueryParser.FLAG_BOOLEAN_ANY_CASE |
          xapian.QueryParser.FLAG_WILDCARD |
          xapian.QueryParser.FLAG_SPELLING_CORRECTION
@@ -81,13 +82,22 @@ def do_search(query, options={'len' : 100, 'page' : 0, 'len' : 50,}):
  # print "Parsed query is: %s" % query.get_description()
   enq = querylib.load_enquire(db)
   enq.set_query(query)
+  
+  check_at_least = None
+  offset = calcPages(options['page'], options['len'])
+  length = options['len']
 
+  
   if 'sort_value' in options:
     enq.set_sort_by_value(options['sort_value'],1)
   if 'collapse_key' in options:
     enq.set_collapse_key(options['collapse_key'])
-
-  matches = enq.get_mset(calcPages(options['page'], options['len']),options['len'],)
+  if 'check_at_least_term' in options:
+    check_at_least = querylib.get_term_freq(options['check_at_least_term'])
+  
+  
+  
+  matches = enq.get_mset(offset, length, check_at_least)
 
   results = {}
   results['description'] = "Parsed query is: %s" % query.get_description()
@@ -161,8 +171,10 @@ def get_rset(rid=4):
   return results
 
 if __name__ == "__main__":
-  get_rset()
+  # get_rset()
   
+  print querylib.get_term_freq('XCOUNTRY:UK')
+  print querylib.get_term_freq('XYEAR:2007')
   
   # options = {
   #   'page' : 0,

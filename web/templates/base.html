@@ -8,16 +8,16 @@
   
   
     <title>{% block title %}{{title}}{% endblock %} | FarmSubsidy.org</title>
+
     <script type="text/javascript" src="/media/js/jquery.js"></script>
     <script type="text/javascript" src="/media/js/jquery.example.min.js"></script>
     <script type="text/javascript" src="/media/js/jquery-ui-1.7.1.custom.min.js"></script>
-
     <script src="/media/js/scripts.js" type="text/javascript" charset="utf-8"></script>
 
 
+    <link rel="stylesheet" href="/media/css/layout.css" type="text/css"> 
     <link rel="stylesheet" href="/media/css/screen.css" type="text/css" media="screen, projection">
     <link rel="stylesheet" href="/media/css/print.css" type="text/css" media="print"> 
-    <link rel="stylesheet" href="/media/css/layout.css" type="text/css" media="screen, projection"> 
     <!--[if IE]>
       <link rel="stylesheet" href="/media/css/ie.css" type="text/css" media="screen, projection">
     <![endif]-->
@@ -71,14 +71,21 @@
       <div id="footer" class="clear">
       <hr>      
 
-      <ul id="">
+      <ul id="footer_menu">
         <li><a href="/">Home</a></li>
         <li><a href="/search">Search</a></li>
         <li><a href="/blog">Blog</a></li>
         <li><a href="/news">In The News</a></li>
+        
       </ul>
-    
+      <ul id="footer_meta">
+        <li><a href="/legal">Legal / Privacy Policy</a></li>
+        <li><a href="/about#contactus">Contact Us</a></li>
+      </ul>
+      
       <p>FarmSubsidy.org is a project of <a href="http://www.followthemoney.eu/" title="Monitoring the European Union Budget | FollowTheMoney.eu" target="_blank">FollowTheMoney.eu</a></p>
+      
+      
     </div>
   {% endblock %}
 

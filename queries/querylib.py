@@ -78,26 +78,13 @@ def format_range_query(valuerange):
   
 def parse_query(query):
   """takes a query string and does any cleaning needed."""
-  # query = query.split(' ')
-
-
-
-
-  # 
-  # for term in query:
-  #   try:
-  #     (k,v) = term.split(':')
-  #     if k in payment_keys:
-  #       if payment_keys[k] == "range":
-  #         v = format_range_query(v)
-  #       payments.append("%s:%s" % (k,v))
-  #     else:
-  #       recipients.append("%s:%s" % (k,v))
-  #   except:
-  #     recipients.append(term)
-  # 
   return query
   
+
+def get_term_freq(term):
+  db = load_database()
+  return db.get_termfreq(term)
+
   
 if __name__ == "__main__":
   db = load_database()
