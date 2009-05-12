@@ -6,7 +6,7 @@ register = Library()
 def transparency_index(country):
   score = transparency_score(country)
   score['country'] = country
-  return score
+  return {'score' : score, 'country' : country}
   
 register.inclusion_tag('blocks/transparency_index.html')(transparency_index)
 

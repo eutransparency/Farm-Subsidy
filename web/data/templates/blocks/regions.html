@@ -1,10 +1,9 @@
 {% if regions %}
   <div class="section">
     <h3>Regions</h3>
-    <ul>
       {% for name,info in regions.items %}
-        <li><a href="{% url data.views.regionbrowse country info.path|urlencode %}">{{info.name|title}}</a></li>
+        <p class="thirdcol"><a href="{% url data.views.regionbrowse country info.path|urlencode %}">{{info.name|title}}</a></p>
       {% endfor %}
-    </ul>
+      <br class="clear" />
   </div>
 {% endif %}

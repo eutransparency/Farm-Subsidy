@@ -1,9 +1,11 @@
 {% if results.documents %}
-  <h4>Recipients with similar names</h4>
+<div class="block">
+  <h3>Similar recipients</h3>
   <ul>
     {% for k,document in results.documents.items %}
       {% url data.views.recipient recipient_id=document.recipient_id_x country=document.country as recipient_url %}
       <li><a href="{{ recipient_url }}/{{document.name|slugify|urlencode}}">{{ document.name }}</a></li>
     {% endfor %}
   </ul>
+</div>  
 {% endif %}

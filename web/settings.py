@@ -58,12 +58,15 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',    
     'pagination.middleware.PaginationMiddleware',
-    'misc.middleware.Middleware'
+    'misc.middleware.Middleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
+    
 )
 
 ROOT_URLCONF = 'web.urls'
@@ -88,13 +91,14 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.syndication',
+    'farmsubsidy.web.api',
+    'farmsubsidy.web.comments',
+    'farmsubsidy.web.countryinfo',
+    'farmsubsidy.web.customlists',
     'farmsubsidy.web.data',
     'farmsubsidy.web.feeds',
-    'farmsubsidy.web.api',
     'farmsubsidy.web.graphs',
-    'farmsubsidy.web.countryinfo',
     'farmsubsidy.web.misc',
-    'farmsubsidy.web.comments',
     'pagination',
     'registration',
     'profiles',
@@ -110,6 +114,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   'data.context_processors.country',
   'data.context_processors.ip_country',
   'data.context_processors.welcome_message',
+  'customlists.context_processors.list_items',
 )
 
 
@@ -118,3 +123,6 @@ ACCOUNT_ACTIVATION_DAYS = 7
 # LOGIN_REDIRECT_URL = "/user/profile"
 AUTH_PROFILE_MODULE = "misc.Profile"
 DEFAULT_FROM_EMAIL = "team@farmsubsidy.org"
+
+
+CACHE_BACKEND = 'file:///var/tmp/django_cache'

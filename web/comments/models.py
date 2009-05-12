@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from web.misc.models import FarmOwners
+from farmsubsidy.web.misc.models import FarmOwners
 
 class Comment(models.Model):
   user = models.ForeignKey(User, unique=False)

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# encoding: utf-8
 import os,sys
 os.environ['DJANGO_SETTINGS_MODULE'] = 'farmsubsidy.web.settings'
 
@@ -6,12 +8,6 @@ import feedparser
 import datetime
 import calendar
 import time
-
-
-# feedurls = (
-# 'http://feeds.delicious.com/v2/rss/brn.santanna?count=15',
-# 'http://feeds.delicious.com/v2/rss/komasri?count=15',
-# )
 
 allfeeds = feeds.Feeds.objects.filter(is_active=True)
 
@@ -23,7 +19,6 @@ for f in allfeeds:
   except:
     last_mod = None
   
-  # d = feedparser.parse(f.url, modified=f.last_modified, etag=f.etag)
   d = feedparser.parse(f.url)
   
   if len(d.entries) > 0:

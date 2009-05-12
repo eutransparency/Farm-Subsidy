@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from farmsubsidy.indexer import countryCodes
 from web.comments import forms as comment_forms
+from web.data.country_years import years
 import forms
 
 from models import SearchModelWrapper
@@ -110,8 +111,31 @@ def recipient(request, recipient_id, country=None):
   
   
 def country(request, country):
-  path = country
-  return render_to_response('country.html', {'browsepath' : path}, context_instance=RequestContext(request))    
+  data_years = years()['UK']
+  latest_year = max(data_years)
+  getyear = request.GET.get('year', latest_year)
+  if getyear in data_years:
+    year = getyear
+  else:
+    year = latest_year
+    
+  options = {
+    'len' : 20,
+    'page' : 0,
+    # 'year' : year,
+    'allyears' : True,
+    'collapse_key' : fsconf.index_values['recipient_id_x'], 
+    'sort_value' : fsconf.index_values['amount'],
+    'cache' : True,
+    'offset' : 0,
+  }  
+  
+  path = country  
+  results = queries.do_search("geopath:%s" % path, options)
+  
+
+  query = "year:%s geopath:" % year
+  return render_to_response('country.html', {'browsepath' : path, 'query' : query, 'year' : year, 'results' : results}, context_instance=RequestContext(request))    
 
 
 

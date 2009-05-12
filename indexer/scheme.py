@@ -27,7 +27,7 @@ def loadScheme(schemefile):
   
 
 def fieldNameMappings(): 
-  """Returns a dictionary of field names mapped to varible names. The CVS
+  """Returns a dictionary of field names mapped to varible names. The CSV
   files (and the access databases) are very badly inconsistant, in terms of
   field order, field names and field existance (some data isn't availible or
   given).

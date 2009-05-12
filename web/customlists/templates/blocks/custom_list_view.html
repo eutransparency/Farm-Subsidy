@@ -1,0 +1,9 @@
+{% load currency %}
+<h3>Custom List</h3>
+{# {{ items }} #}
+<ul>
+{% for id,item in items.items %}
+  <li>{{ item.name }} - &euro;{{ item.amount|currency }}</li>
+{% endfor %}
+</ul>
+<strong>Total:</strong> &euro;{{ total|currency }}

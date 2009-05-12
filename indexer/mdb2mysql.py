@@ -116,7 +116,7 @@ def extractmdb2mysql(countryToProcess="all"):
       if table[0:9] == 'recipient':
         tabletype = 'recipient'
         
-      # *sigh*
+      # *sigh -- spelling mistake*
       if table[0:9] == 'recepient':
         tabletype = 'recipient'
         

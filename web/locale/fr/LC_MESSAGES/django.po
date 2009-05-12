@@ -1,0 +1,198 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-04-26 16:50+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: contrib/tagging/__init__.py:22
+#, python-format
+msgid "The model %s has already been registered."
+msgstr ""
+
+#: contrib/tagging/fields.py:69
+#, python-format
+msgid "%s can only be set on instances."
+msgstr ""
+
+#: contrib/tagging/forms.py:19
+msgid "Multiple tags were given."
+msgstr ""
+
+#: contrib/tagging/forms.py:22
+#, python-format
+msgid "A tag may be no more than %s characters long."
+msgstr ""
+
+#: contrib/tagging/forms.py:38
+#, python-format
+msgid "Each tag may be no more than %s characters long."
+msgstr ""
+
+#: contrib/tagging/models.py:58
+#, python-format
+msgid "No tags were given: \"%s\"."
+msgstr ""
+
+#: contrib/tagging/models.py:60
+#, python-format
+msgid "Multiple tags were given: \"%s\"."
+msgstr ""
+
+#: contrib/tagging/models.py:450
+msgid "name"
+msgstr ""
+
+#: contrib/tagging/models.py:456 contrib/tagging/models.py:466
+msgid "tag"
+msgstr ""
+
+#: contrib/tagging/models.py:457
+msgid "tags"
+msgstr ""
+
+#: contrib/tagging/models.py:467
+msgid "content type"
+msgstr ""
+
+#: contrib/tagging/models.py:468
+msgid "object id"
+msgstr ""
+
+#: contrib/tagging/models.py:476
+msgid "tagged item"
+msgstr ""
+
+#: contrib/tagging/models.py:477
+msgid "tagged items"
+msgstr ""
+
+#: contrib/tagging/utils.py:189
+msgid ""
+"If a list or tuple of tags is provided, they must all be tag names, Tag "
+"objects or Tag ids."
+msgstr ""
+
+#: contrib/tagging/utils.py:191
+msgid "The tag input given was invalid."
+msgstr ""
+
+#: contrib/tagging/utils.py:236
+#, python-format
+msgid "Invalid distribution algorithm specified: %s."
+msgstr ""
+
+#: contrib/tagging/views.py:33
+msgid "tagged_object_list must be called with a queryset or a model."
+msgstr ""
+
+#: contrib/tagging/views.py:39
+msgid "tagged_object_list must be called with a tag."
+msgstr ""
+
+#: contrib/tagging/views.py:43
+#, python-format
+msgid "No Tag found matching \"%s\"."
+msgstr ""
+
+#: contrib/tagging/templatetags/tagging_tags.py:19
+#, python-format
+msgid "tags_for_model tag was given an invalid model: %s"
+msgstr ""
+
+#: contrib/tagging/templatetags/tagging_tags.py:32
+#, python-format
+msgid "tag_cloud_for_model tag was given an invalid model: %s"
+msgstr ""
+
+#: contrib/tagging/templatetags/tagging_tags.py:56
+#, python-format
+msgid "tagged_objects tag was given an invalid model: %s"
+msgstr ""
+
+#: contrib/tagging/templatetags/tagging_tags.py:89
+#, python-format
+msgid "%s tag requires either three or five arguments"
+msgstr ""
+
+#: contrib/tagging/templatetags/tagging_tags.py:91
+#: contrib/tagging/templatetags/tagging_tags.py:143
+#: contrib/tagging/templatetags/tagging_tags.py:198
+#, python-format
+msgid "second argument to %s tag must be 'as'"
+msgstr ""
+
+#: contrib/tagging/templatetags/tagging_tags.py:94
+#: contrib/tagging/templatetags/tagging_tags.py:147
+#, python-format
+msgid "if given, fourth argument to %s tag must be 'with'"
+msgstr ""
+
+#: contrib/tagging/templatetags/tagging_tags.py:96
+#, python-format
+msgid "if given, fifth argument to %s tag must be 'counts'"
+msgstr ""
+
+#: contrib/tagging/templatetags/tagging_tags.py:141
+#, python-format
+msgid "%s tag requires either three or between five and seven arguments"
+msgstr ""
+
+#: contrib/tagging/templatetags/tagging_tags.py:155
+#, python-format
+msgid "%(tag)s tag's '%(option)s' option was not a valid integer: '%(value)s'"
+msgstr ""
+
+#: contrib/tagging/templatetags/tagging_tags.py:164
+#, python-format
+msgid "%(tag)s tag's '%(option)s' option was not a valid choice: '%(value)s'"
+msgstr ""
+
+#: contrib/tagging/templatetags/tagging_tags.py:170
+#, python-format
+msgid "%(tag)s tag was given an invalid option: '%(option)s'"
+msgstr ""
+
+#: contrib/tagging/templatetags/tagging_tags.py:175
+#, python-format
+msgid "%(tag)s tag was given a badly formatted option: '%(option)s'"
+msgstr ""
+
+#: contrib/tagging/templatetags/tagging_tags.py:196
+#, python-format
+msgid "%s tag requires exactly three arguments"
+msgstr ""
+
+#: contrib/tagging/templatetags/tagging_tags.py:221
+#, python-format
+msgid "%s tag requires exactly five arguments"
+msgstr ""
+
+#: contrib/tagging/templatetags/tagging_tags.py:223
+#, python-format
+msgid "second argument to %s tag must be 'in'"
+msgstr ""
+
+#: contrib/tagging/templatetags/tagging_tags.py:225
+#, python-format
+msgid "fourth argument to %s tag must be 'as'"
+msgstr ""
+
+#: groups/models.py:8
+msgid "Test"
+msgstr ""
+
+#: groups/models.py:9
+msgid "Tests"
+msgstr ""

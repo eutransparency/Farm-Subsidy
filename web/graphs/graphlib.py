@@ -54,9 +54,6 @@ def make_fig(request, type):
     gca().yaxis.set_major_formatter(formatter)
     # gca().yaxis.grid(which='major')
     
-
-
-    
     response = HttpResponse(mimetype="image/png")
     savefig(response, dpi=120)
     return response

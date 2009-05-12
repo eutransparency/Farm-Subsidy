@@ -75,7 +75,7 @@ caption {background:#eee;}
 
 
 /* forms.css */
-label {font-weight:bold;}
+label {font-weight:bold; vertical-align:top;}
 fieldset {padding:1.4em;margin:0 0 1.5em 0;border:1px solid #ccc;}
 legend {font-weight:bold;font-size:1.2em;}
 input.text, input.title, textarea, select {margin:0.5em 0;border:1px solid #bbb;}
@@ -102,5 +102,31 @@ textarea {width:390px;height:250px;padding:5px;}
 /* Home */
 #home ul {list-style-type:none; margin:0 0 2em 5px;}
 #home .ul {list-style-type:none;}
+
+
+/** Blocks **/
+
+.block ul {
+  margin:0;
+  list-style-type:none;
+}
+
+.block ul li {
+  margin:1em 0;
+}
+
+/** Recipient Pages **/
+#recipient_links_block p {
+  margin:0;
+}
+
+#recipient_links_block code {
+  background-color:#EEE;
+  border:1px solid #888;
+  display:block;
+  overflow:auto;
+  width:90%;
+  margin-bottom:2em;
+}
 
 

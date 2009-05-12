@@ -1,28 +1,45 @@
 {% extends 'base.html' %}
 
 {% load blocks %}
+{% load cache %}
 
 {% block title %}
 {% browsePathTitle browsepath%} {{country.name}}
 {% endblock %}
 
 {% block content %}
-<h2>EU Farm subsidies, {% browsePathHead browsepath%}</h2>
+<h2>EU Farm subsidies, {% browsePathHead browsepath%}, {{ year }}</h2>
 
 {% ifequal  country.code browsepath %}
   {% load countrystats %}
-  {% country_stats country.code %}  
+  {% cache 500 country_stats %}
+    {% country_stats country.code %}  
+  {% endcache %}
 {% endifequal %}
 
-{% load blocks %}
-{% regionBrowse country.code browsepath%}
+{% regionBrowse country.code browsepath %}
 
 <div class="section">
-<h3>Top 20 recipients</h3>  
-{% search "geopath:" browsepath 20 %}
-{% url countrybrowse country.code as browseurl %}
-<a href="{{ browseurl }}">
- Browse all {{ country.code }} recipients</a>
+  <h3>Top 20 recipients</h3>  
+  {% cache 500 countrytop20 %}
+  <table>
+    <thead>
+      <th>Name</th>
+      <th>Amount</th>
+    </thead>
+  {% for key,result in results.documents.items %}
+    {% url data.views.recipient  recipient_id=result.recipient_id_x country=result.country as recipient_url %}
+    <tr>
+    <td><a href="{{recipient_url}}/{{result.name|slugify|urlencode}}">{{ result.name }}</a></td>
+    <td>&euro;{{ result.amount }}</td>
+    <td>
+    </tr>
+  {% endfor %}
+  </table>
+  {% url countrybrowse country.code as browseurl %}
+  <a href="{{ browseurl }}">
+   Browse all {{ country.code }} recipients</a>
+  {% endcache %}
 </div>
 
 
@@ -32,7 +49,7 @@
 {% block right %}
 
 <div class="block">
-  <h5>Browse all recipients</h5>
+  <h3>Browse all recipients</h3>
     {% url countrybrowse country.code as browseurl %}
     <a href="{{ browseurl }}">By amount received</a>
 </div>

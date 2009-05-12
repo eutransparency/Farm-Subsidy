@@ -60,7 +60,7 @@ body {
   padding-right:1%;
 }
 
-#home #right {
+.onecol #right {
   display:none;
   width:0;
 }
@@ -73,7 +73,7 @@ body {
   padding-right:5%;
 }
 
-#home #content {
+.onecol #content {
   border:none;
   width:100%;
 }
@@ -165,7 +165,7 @@ body {
 }
 
 
-
+/** General styles **/
 
 .section_title {
   width:20%;
@@ -184,7 +184,6 @@ body {
 ul.error {
   list-style-position:inside;
 }
-
 
 .recipients {
   width:95%;
@@ -211,6 +210,11 @@ ul.error {
 
 .halfcol strong {
   float:left;
+}
+
+.thirdcol {
+  float:left;
+  width:33%;
 }
 
 .person {
@@ -274,4 +278,12 @@ ul.error {
 #head h1 a {
   text-decoration:none;
   color:#000000;
+}
+
+#right .block {
+  margin-bottom:2em;
+}
+
+#right .block h3 {
+  margin:0;
 }

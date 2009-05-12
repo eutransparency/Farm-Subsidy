@@ -1,8 +1,21 @@
 {% load currency %}
+{% if list_items.create %}
+  <form action="/lists/add_recipient" method="POST" accept-charset="utf-8">
+{% endif %}
 <table border="0" cellspacing="0" cellpadding="0" class="recipients">
 {% for key,result in results.documents.items %}
   {% url data.views.recipient  recipient_id=result.recipient_id_x country=result.country as recipient_url %}
   <tr>
+    
+    {% if list_items.create %}
+      {% load if_in %}
+        {% if result.doc_id|in_list:list_items.items %}
+          <td><input type="checkbox" name="r{{ result.doc_id }}" value="{{ result.doc_id }}" id="r{{ result.doc_id }}" checked></td>              
+        {% else %}
+          <td><input type="checkbox" name="r{{ result.doc_id }}" value="{{ result.doc_id }}" id="r{{ result.doc_id }}"></td>              
+        {% endif %}
+    {% endif %}
+    
     <td>
       <a href="{{recipient_url}}/{{result.name|slugify|urlencode}}">
         {{result.name}}
@@ -12,3 +25,7 @@
   </tr>
   {% endfor %}
 </table>
+{% if list_items.create %}
+  <input type="submit" name="add" value="Add to List" id="add">
+  </form>
+{% endif %}

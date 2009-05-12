@@ -11,6 +11,7 @@ import os
 import re
 import xapian
 from farmsubsidy import fsconf as fsconf
+from farmsubsidy.web.data.country_years import years
 import querylib
 import cPickle
 from farmsubsidy.queries import xapcache
@@ -24,29 +25,29 @@ def load_doc(doc_id, db=querylib.load_database()):
   """
   return db.get_document(int(doc_id))
 
-
-def get_payments_by_rid(rid, db=querylib.load_database()):
-  """Creates a query that searches on an RID for all payments
-  
-  - `rid` list of recipient IDs to be OR'd together.
-  
-  """
-  
-  DEFAULT_SEARCH_FLAGS = (
-          xapian.QueryParser.FLAG_BOOLEAN
-          )
-  
-  qp = xapian.QueryParser()
-  qp.set_default_op(xapian.Query.OP_OR)
-  
-  qp.add_boolean_prefix("id", "XRID:")
-  qp.add_boolean_prefix("type", "XTYPE:")
-  
-  rid_string = " OR ".join(['(id:%s)' % (v) for v in rid])
-  query = qp.parse_query('(%s) AND type:payment' % (rid_string), DEFAULT_SEARCH_FLAGS,)
-  
-  return query
-  
+# TODO delete this
+# def get_payments_by_rid(rid, db=querylib.load_database()):
+#   """Creates a query that searches on an RID for all payments
+#   
+#   - `rid` list of recipient IDs to be OR'd together.
+#   
+#   """
+#   
+#   DEFAULT_SEARCH_FLAGS = (
+#           xapian.QueryParser.FLAG_BOOLEAN
+#           )
+#   
+#   qp = xapian.QueryParser()
+#   qp.set_default_op(xapian.Query.OP_OR)
+#   
+#   qp.add_boolean_prefix("id", "XRID:")
+#   qp.add_boolean_prefix("type", "XTYPE:")
+#   
+#   rid_string = " OR ".join(['(id:%s)' % (v) for v in rid])
+#   query = qp.parse_query('(%s) AND type:payment' % (rid_string), DEFAULT_SEARCH_FLAGS,)
+#   
+#   return query
+#   
 
 def do_search(query, options={'len' : 100, 'page' : 0, 'len' : 50,}):  
   
@@ -57,9 +58,9 @@ def do_search(query, options={'len' : 100, 'page' : 0, 'len' : 50,}):
   
   query_string = query
   
-  if not 'allyears' in options:
-    query_string = query_string + " year:2007..2007"
-    
+  if 'year' in options:
+    query_string += " year:%(year)s..%(year)s" % {'year' : options['year'] }
+
   query_string = querylib.parse_query(query_string)
   (qp,valueranges) = querylib.load_queryparser()
   db = querylib.load_database()
@@ -173,24 +174,25 @@ def get_rset(rid=4):
 if __name__ == "__main__":
   # get_rset()
   
-  print querylib.get_term_freq('XCOUNTRY:UK')
-  print querylib.get_term_freq('XYEAR:2007')
+  # print querylib.get_term_freq('XCOUNTRY:UK')
+  # print querylib.get_term_freq('XYEAR:2007')
   
-  # options = {
-  #   'page' : 0,
-  #   'len' : 100,  
-  #   'sort_value' : fsconf.index_values['year'],
-  #   'allyears' : True
-  # }
-  # 
-  # results = do_search(" ".join(sys.argv[1:]), options)
-  # print results['decsription']  
-  # if results['spelling']:
-  #   print results['spelling']
-  # print results['info']
-  # for key in results['documents']:
-  #   meta = results['documents'][key]
-  #   print meta['name']
+  options = {
+    'page' : 0,
+    'len' : 100,  
+    'sort_value' : fsconf.index_values['year'],
+    'allyears' : True
+  }
+  
+  results = do_search(" ".join(sys.argv[1:]), options)
+  print results['description']  
+  if results['spelling']:
+    print results['spelling']
+  print results['info']
+  for key in results['documents']:
+    meta = results['documents'][key]
+    print meta['name']
+    print meta['doc_id']
 
 
 

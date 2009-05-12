@@ -11,37 +11,57 @@
 {% endif %}
 
 {% if results.documents.items %}
-<table border="0" cellspacing="5" cellpadding="5">
-  <tr>
-    <th>Name</th>
-    <th>Amount</th>
-    <th>Country</th>
-    <th>Scheme</th>
-    <th>Area</th>    
-  </tr>
-{% for key,result in results.documents.items %}
-  {% url data.views.recipient recipient_id=result.recipient_id_x country=result.country as recipient_url %}
-  <tr class="{% cycle 'odd' 'even' %}">
-    <td>
-      <a href="{{recipient_url}}/{{result.country}}/{{result.name|slugify|urlencode}}">
-        {{result.name}}
-      </a>
-    </td>
-    <td>&euro;{{result.amount|currency}}</td>
-    <td>{{result.country}}</td>
-    <td>{{result.scheme_name|title}}</td>
-    <td>{{result.geo2}}</td>    
-  </tr>
-{% endfor %}
-</table>
 
-{% load pager %}
-{% pager results %}
+  {% if list_items.create %}
+    <form action="/lists/add_recipient" method="POST" accept-charset="utf-8">
+  {% endif %}
+
+  <table border="0" cellspacing="5" cellpadding="5">
+    <tr>
+      <th>Name</th>
+      <th>Amount</th>
+      <th>Country</th>
+      <th>Scheme</th>
+      <th>Area</th>    
+    </tr>
+  {% for key,result in results.documents.items %}
+    {% url data.views.recipient recipient_id=result.recipient_id_x country=result.country as recipient_url %}
+    <tr class="{% cycle 'odd' 'even' %}">
+      
+      {% if list_items.create %}
+        {% load if_in %}
+          {% if result.doc_id|in_list:list_items.items %}
+            <td><input type="checkbox" name="r{{ result.doc_id }}" value="{{ result.doc_id }}" id="r{{ result.doc_id }}" checked></td>              
+          {% else %}
+            <td><input type="checkbox" name="r{{ result.doc_id }}" value="{{ result.doc_id }}" id="r{{ result.doc_id }}"></td>              
+          {% endif %}
+      {% endif %}
+      
+      <td>
+        <a href="{{recipient_url}}/{{result.country}}/{{result.name|slugify|urlencode}}">
+          {{result.name}}
+        </a>
+      </td>
+      <td>&euro;{{result.amount|currency}}</td>
+      <td>{{result.country}}</td>
+      <td>{{result.scheme_name|title}}</td>
+      <td>{{result.geo2}}</td>    
+    </tr>
+  {% endfor %}
+  </table>
+
+  {% if list_items.create %}
+    <input type="submit" name="add" value="Add to List" id="add">
+    </form>
+  {% endif %}
+
+
+  {% load pager %}
+  {% pager results %}
 
 
 {% else %}
-{{ results }}
-Sorry, no results found.
+  Sorry, no results found.
 {% endif %}
 {% endblock%}
 

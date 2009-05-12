@@ -13,9 +13,18 @@
 
   <div class="section">
   <h3>Breakdown of payments</h3>
+
+  {% if list_items.create %}
+    <form action="/lists/add_recipient" method="POST" accept-charset="utf-8">
+  {% endif %}
+
   <table border="0" cellspacing="5" cellpadding="5">
   <thead>  
     <tr>
+      {% if list_items.create %}
+        <th>Add to List</th>
+      {% endif %}
+      
       <th>Year</th>
       <th>Scheme</th>
       <th>Member state</th>
@@ -25,6 +34,15 @@
   {% for k,result in results.documents.items %}
 
       <tr class="{% cycle 'odd' 'even' %}">
+        {% if list_items.create %}
+          {% load if_in %}
+            {% if result.doc_id|in_list:list_items.items %}
+              <td><input type="checkbox" name="r{{ result.doc_id }}" value="{{ result.doc_id }}" id="r{{ result.doc_id }}" checked></td>              
+            {% else %}
+              <td><input type="checkbox" name="r{{ result.doc_id }}" value="{{ result.doc_id }}" id="r{{ result.doc_id }}"></td>              
+            {% endif %}
+        {% endif %}
+        
         <td><b>{{result.year}}</b></td>
         <td>{{result.scheme_name|title}}</td>
         <td>{{result.country}}</td>
@@ -33,6 +51,11 @@
 
   {% endfor %}
   </table>
+  {% if list_items.create %}
+    <input type="submit" name="add" value="Add to List" id="add">
+    </form>
+  {% endif %}
+  
   </div>
 
 

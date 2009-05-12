@@ -1,5 +1,6 @@
 <ul>
-{% for code,country in countries.items %}
-<li class="{{country.active}}"><a href="{% url data.views.country code %}">{{country.name}}</a></li>
-{% endfor %}
+  {% regroup countries|dictsort:"name" by name as countries %}
+  {% for country in countries %}
+    <li class="{{country.list.0.active }}"><a href="{% url data.views.country country.list.0.code %}">{{ country.list.0.name }}</a></li>
+  {% endfor %}
 </ul>

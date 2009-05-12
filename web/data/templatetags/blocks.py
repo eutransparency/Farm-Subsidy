@@ -72,15 +72,21 @@ def search(prefix, query, rlen=30, page=0, sort_value=fsconf.index_values['total
 register.inclusion_tag('blocks/results.html')(search)
 
 
-def countryMenu(country=None):
+def countryMenu(country='UK'):
   """returns a list of countries"""
-  countries = {}
+  countries = []
   for code,name in countryCodes.code2name.items():
-    countries[code] = {
-      'name' : name,
-    }
-  if country:
-    countries[country]['active'] = 'active'
+    if country == code:
+      countries.append({
+        'name' : name,
+        'code' : code,
+        'active' : 'acitve'
+      })
+    else:
+      countries.append({
+        'name' : name,
+        'code' : code,
+      })
   return {'countries' : countries}
 
 register.inclusion_tag('blocks/country-menu.html')(countryMenu)

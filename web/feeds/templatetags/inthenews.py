@@ -3,6 +3,7 @@ from django.template import Library, Node
 from feeds.models import *
 from tagging.utils import get_tag
 from tagging.models import TaggedItem
+from tagging.models import Tag
 
 
 
@@ -16,10 +17,12 @@ def latestnews(country=None, num=5, category='News', oneline=False):
   
   if country:
     query_tag = Tag.objects.filter(name=country)
+    print query_tag
     q = TaggedItem.objects.get_by_model(FeedItems, query_tag)
 
+
   q = q.order_by("-date")
-    
+  print q    
   return {'newsitems' : q[:num], 'oneline' : oneline}
 
 register.inclusion_tag('blocks/latest-news.html')(latestnews)
