@@ -37,9 +37,12 @@
         {% if list_items.create %}
           {% load if_in %}
             {% if result.doc_id|in_list:list_items.items %}
-              <td><input type="checkbox" name="r{{ result.doc_id }}" value="{{ result.doc_id }}" id="r{{ result.doc_id }}" checked></td>              
+              <td>
+                <input type="checkbox" name="del-{{ result.doc_id }}" value="{{ result.doc_id }}" id="del-{{ result.doc_id }}" checked>
+                <input type="hidden" name="cur-{{ result.doc_id }}" value="{{ result.doc_id }}" id="cur-{{ result.doc_id }}">
+              </td>
             {% else %}
-              <td><input type="checkbox" name="r{{ result.doc_id }}" value="{{ result.doc_id }}" id="r{{ result.doc_id }}"></td>              
+              <td><input type="checkbox" name="add-{{ result.doc_id }}" value="{{ result.doc_id }}" id="add-{{ result.doc_id }}"></td>              
             {% endif %}
         {% endif %}
         

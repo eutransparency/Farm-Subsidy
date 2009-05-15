@@ -41,6 +41,7 @@ def ip_country(request):
       if ip_country == "GB":
         ip_country = "UK"
       
+      
       request.session['ip_country'] = ip_country
   
       

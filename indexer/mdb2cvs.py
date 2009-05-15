@@ -62,7 +62,6 @@ def extractmdb2csv(countryToProcess="all"):
         file.close()
         file_all = open("%s/all-%s" % (fsconf.schemedir,tabletype),'a')
         file_all.write(fields+"\n")
-        file_all.close()
         
   
 if __name__ == '__main__':

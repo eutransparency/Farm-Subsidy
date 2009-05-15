@@ -24,7 +24,7 @@
     
 
 </head>
-<body id="{% block body_style %}{% endblock %}" class="{% block body_class %}{% endblock %}">
+<body id="{% block body_style %}{% endblock %}" class="{% block body_class %}{% endblock %} {% if list_items.create %}list_enabled{% endif %}">
   
 <div id="outer">  
     <div id="head">
@@ -56,8 +56,6 @@
       {% block right %}
         
       {% endblock %}
-      {% load customlist_list %}
-      {% list_items list_items.items %}
     </div>
     
     <div id="content">
@@ -93,7 +91,15 @@
 
 </div>
 
-{% block list %}{% endblock %}
+{% block list %}
+  {% if list_items.create %}
+  <div id="list">
+    {% load customlist_list %}
+    {% list_total list_items.items %}
+    <div class="list_items hide">{% list_items list_items.items %}</div>
+    </div>
+  {% endif %}
+{% endblock %}
     
     
 </body>

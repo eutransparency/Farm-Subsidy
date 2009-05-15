@@ -16,7 +16,7 @@ body {
 }
 
 .list_enabled #outer {
-  bottom:2em;
+  bottom:0;
 }
 
 #head {
@@ -71,6 +71,7 @@ body {
   margin:0;
   width:70%;
   padding-right:5%;
+  overflow:hidden;
 }
 
 .onecol #content {
@@ -82,6 +83,7 @@ body {
 #footer {
   clear:both;
   text-align:center;
+  padding-bottom:30px;
 }
 
 #footer ul {
@@ -193,12 +195,27 @@ ul.error {
   text-align:right;
 }
 
-#lists {
-  width:100%;
-  background-color:red;
-  height:2em;
+#list {
+  width:80%;
+  margin:0 10%;
+  background-color:#ccc;
+  border:1px solid #666;
+  border-bottom:none;
+  height:25px;
+/*  overflow:hidden;*/
   position:absolute;
   bottom:0;
+  text-align:right;
+}
+
+#list p {
+  padding-right:1em;
+  background-color:#eee;
+  width:25%;
+  position:absolute;
+  right:0;
+  height:25px;
+  cursor:pointer;
 }
 
 .halfcol {
@@ -287,3 +304,24 @@ ul.error {
 #right .block h3 {
   margin:0;
 }
+
+
+
+.list_items {
+  position:absolute;
+  bottom:25px;
+  right:-1px;
+  background-color:#eee;
+  border:1px solid #999;
+  width:26%;
+  float:right;
+  height:200px;
+}
+
+.list_items ul, .list_items ul li {
+  list-style-type:none;
+  padding:0;
+  margin:0;
+}
+
+.ui-effects-transfer { border: 2px dotted gray; }
