@@ -17,7 +17,7 @@
   {% endcache %}
 {% endifequal %}
 
-{% regionBrowse country.code browsepath %}
+{# {% regionBrowse country.code browsepath %} #}
 
 <div class="section">
   <h3>Top 20 recipients</h3>  
@@ -28,7 +28,7 @@
       <th>Amount</th>
     </thead>
   {% for key,result in results.documents.items %}
-    {% url data.views.recipient  recipient_id=result.recipient_id_x country=result.country as recipient_url %}
+    {% url data.views.recipient  recipient_id=result.global_id_x country=result.country as recipient_url %}
     <tr>
     <td><a href="{{recipient_url}}/{{result.name|slugify|urlencode}}">{{ result.name }}</a></td>
     <td>&euro;{{ result.amount }}</td>

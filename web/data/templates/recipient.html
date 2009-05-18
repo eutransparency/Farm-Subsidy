@@ -64,7 +64,7 @@
 
   <div class="section">
     {% load comments %}
-    {% recipient_comments results.documents.0.recipient_id %}
+    {% recipient_comments results.documents.0.global_id %}
   </div>
 
   <div class="section">
@@ -85,7 +85,7 @@
 
 {% block right %}
   {% load download_block %}
-  {% download_recipient results.documents.0.recipient_id %}
+  {% download_recipient results.documents.0.global_id %}
   
   {% load related %}
   {% get_related results.documents.0.doc_id %}

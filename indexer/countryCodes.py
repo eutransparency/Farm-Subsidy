@@ -27,7 +27,7 @@ def countryCodes():
   codes.append('SE')    
   codes.append('SK')
   codes.append('SL')
-  codes.append('UK')
+  codes.append('GB')
   return codes
 
 
@@ -55,7 +55,7 @@ code2name = {
 'SL'	:	'Slovenia',
 'ES'	:	'Spain',
 'SE'	:	'Sweden',
-'UK'	:	'United Kingdom',
+'GB'	:	'United Kingdom',
 }
 
 def filenameToCountryCode(filename):
@@ -106,7 +106,7 @@ def filenameToCountryCode(filename):
   if filename[0:6] == 'sweden':
     return 'SE'
   if filename[0:13] == 'unitedkingdom':
-    return 'UK'
+    return 'GB'
   else:
     raise Exception, "Could not work out country for %s!" % filename
   
