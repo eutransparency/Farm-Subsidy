@@ -59,7 +59,7 @@ def index(country=None, tabletype=None, table=None):
         meta['scheme'] = scheme.loadScheme("%s/%s" % (csvdir,name))
         meta['data'] = {}
         meta['database'] = name.split('.')[0]
-        meta['country'] = countryCodes.filenameToCountryCode(name[12:])
+        meta['country'] = name[12:]
 
         print meta['country']
         # TODO Add more options here.  Like the filename to index
