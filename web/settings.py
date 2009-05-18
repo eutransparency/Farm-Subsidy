@@ -81,6 +81,7 @@ TEMPLATE_DIRS = (
 
 
 INSTALLED_APPS = (
+    'django.contrib.humanize',
     'django.contrib.admin',
     'django.contrib.auth',
     # 'django.contrib.comments',
@@ -115,6 +116,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   'data.context_processors.ip_country',
   'data.context_processors.welcome_message',
   'customlists.context_processors.list_items',
+  'misc.context_processors.latest_tweet',
 )
 
 
@@ -126,3 +128,7 @@ DEFAULT_FROM_EMAIL = "team@farmsubsidy.org"
 
 
 CACHE_BACKEND = 'file:///var/tmp/django_cache'
+
+
+TWITTER_USER = "farmsubsidy"
+TWITTER_TIMEOUT = 3600

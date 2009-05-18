@@ -26,19 +26,18 @@ def fieldTypeMaps(field_value='field_value'):
   fields = collections.defaultdict(dict)
 
   fields['global_id'] = {
-    'prefix' : 'GID:',
-    'name' : 'gid',
+    'prefix' : 'XRID:',
+    'name' : 'id',
     'doc_body' : True,
   }
 
   fields['global_id_x'] = {
-    'prefix' : 'GIDX:',
-    'name' : 'gidx',
+    'prefix' : 'XRIDX:',
+    'name' : 'xid',
     'value' : fsconf.index_values['global_id_x'],
     'value_formatter': "%s"  % field_value,    
     'doc_body' : True,
   }
-
   
   fields['name'] = {
     'prefix' : 'XNAME:',
@@ -82,19 +81,6 @@ def fieldTypeMaps(field_value='field_value'):
     'geo_weight' : 0,
   }
 
-  fields['recipient_id'] = {
-    'prefix' : 'XRID:',
-    'name' : 'id',
-    'doc_body' : True,
-  }
-
-  fields['recipient_id_x'] = {
-    'prefix' : 'XRIDX',
-    'name' : 'xid',
-    'value' : fsconf.index_values['recipient_id_x'],
-    'value_formatter': "%s"  % field_value,
-    'doc_body' : True,
-  }
 
   fields['geo1'] = {
     'index' : True,
