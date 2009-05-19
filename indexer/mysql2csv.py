@@ -25,7 +25,13 @@ def mysql2csv(countryToProcess="all"):
 
     database = database[0]
     
-    country = countryCodes.filenameToCountryCode(database[len('farmsubsidy_'):])
+    print  countryCodes.countryCodes()
+    print database[len('farmsubsidy_'):]
+    print
+    if database[len('farmsubsidy_'):] in countryCodes.countryCodes():
+      country = database[len('farmsubsidy_'):]
+    else:
+      raise ValueError "Not a vilid country, or database not found"
     if countryToProcess != "all" and countryToProcess != country:
       continue
     

@@ -19,11 +19,13 @@ def countryCodes():
   codes.append('IE')
   codes.append('IT')
   codes.append('LT')
+  codes.append('MT')
   codes.append('LU')
   codes.append('LV')
   codes.append('NL')
   codes.append('PL')
   codes.append('PT')
+  codes.append('RO')
   codes.append('SE')    
   codes.append('SK')
   codes.append('SL')
@@ -48,9 +50,11 @@ code2name = {
 'LV'	:	'Latvia',
 'LT'	:	'Lithuania',
 'LU'	:	'Luxembourg',
+'MT'	:	'Malta',
 'NL'	:	'Netherland',
 'PL'	:	'Poland',
 'PT'	:	'Portugal',
+'RO'	:	'Romaina',
 'SK'	:	'Slovakia',
 'SL'	:	'Slovenia',
 'ES'	:	'Spain',
@@ -91,12 +95,16 @@ def filenameToCountryCode(filename):
     return 'LT'
   if filename[0:10] == 'luxembourg':
     return 'LU'
+  if filename[0:5] == 'matla':
+    return 'MT'
   if filename[0:10] == 'netherland':
     return 'NL'        
   if filename[0:6] == 'poland':
     return 'PL'
   if filename[0:8] == 'portugal':
     return 'PT'
+  if filename[0:3] == 'rom':
+    return 'RO'
   if filename[0:8] == 'slovakia':
     return 'SK'
   if filename[0:8] == 'slovenia':
