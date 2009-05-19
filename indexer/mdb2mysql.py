@@ -51,11 +51,11 @@ def extractmdb2mysql(countryToProcess="all"):
       
     print country
 
-    mysql_database_name = mysql_prefix+dbid
+    mysql_database_name = mysql_prefix+country
     
-    connection.query("drop database IF EXISTS %s;" % (mysql_database_name))
+#    connection.query("drop database IF EXISTS %s;" % (mysql_database_name))
         
-    connection.query("create database %s DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;" % (mysql_database_name))
+    connection.query("create database IF NOT EXISTS  %s DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;" % (mysql_database_name))
 
     connection.query("use %s;" % (mysql_database_name))
     
