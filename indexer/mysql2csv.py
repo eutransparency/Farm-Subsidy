@@ -42,7 +42,7 @@ def mysql2csv(countryToProcess="all"):
       if table[0:6] == 'scheme':
         scheme_table = table
         budgetline = False
-      if table[0:18] == 'budgetlinesd8digit':
+      if table[0:10] == 'budgetline':
         scheme_table = table
         budgetline = True
 

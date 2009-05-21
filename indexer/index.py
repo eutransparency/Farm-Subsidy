@@ -59,9 +59,9 @@ def index(country=None, tabletype=None, table=None):
         meta['scheme'] = scheme.loadScheme("%s/%s" % (csvdir,name))
         meta['data'] = {}
         meta['database'] = name.split('.')[0]
-        meta['country'] = name[12:]
+        meta['country'] = name[12:-7]
 
-        print meta['country']
+        print "country:",meta['country']
         # TODO Add more options here.  Like the filename to index
         if country is not None and country != meta['country']:
           continue
