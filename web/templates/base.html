@@ -34,10 +34,10 @@
       <h2>Discover who gets what from the Common Agricultural Policy</h2>
       
       <ul id="mainmenu">
-        <li><a href="/">Home</a></li>
-        <li><a href="/search">Search</a></li>
-        <li><a href="/blog">Blog</a></li>
-        <li><a href="/news">In The News</a></li>
+        <li><a href="/">Search / Browse</a></li>
+        <li><a href="/news">In The News</a> &amp; <a href="/blog">Blog</a></li>
+        <li><a href="/faq">FAQs</a></li>
+        <li><a href="/about">About</a></li>
       </ul>
       
       {% load user %}
@@ -58,7 +58,7 @@
       {% endblock %}
           {% if tweet %}
           <div class="twitter block">
-              <h3><a href="http://twitter.com/farmsubsidy">From Twitter</a></h3> 
+              <h3><a href="http://twitter.com/farmsubsidy">farmsubsudy</a> on Twitter</h3> 
               <p>{{ tweet.text|urlize }}<p>
           </div>
           {% endif %}

@@ -183,7 +183,7 @@ body {
 }
 
 
-ul.error {
+ul.error, .errorlist {
   list-style-position:inside;
 }
 
@@ -325,3 +325,9 @@ ul.error {
 }
 
 .ui-effects-transfer { border: 2px dotted gray; }
+
+
+.form p label {
+  float:left;
+  width:150px;
+}
