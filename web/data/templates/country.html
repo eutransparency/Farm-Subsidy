@@ -12,16 +12,13 @@
 
 {% ifequal  country.code browsepath %}
   {% load countrystats %}
-  {% cache 500 country_stats %}
     {% country_stats country.code %}  
-  {% endcache %}
 {% endifequal %}
 
 {# {% regionBrowse country.code browsepath %} #}
 
 <div class="section">
   <h3>Top 20 recipients</h3>  
-  {% cache 500 countrytop20 %}
   <table>
     <thead>
       <th>Name</th>
@@ -39,7 +36,6 @@
   {% url countrybrowse country.code as browseurl %}
   <a href="{{ browseurl }}">
    Browse all {{ country.code }} recipients</a>
-  {% endcache %}
 </div>
 
 

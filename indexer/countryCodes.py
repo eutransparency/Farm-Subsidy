@@ -104,7 +104,7 @@ def filenameToCountryCode(filename):
   if filename[0:8] == 'portugal':
     return 'PT'
   if filename[0:3] == 'rom':
-    return 'RO'
+    return 'ROM'
   if filename[0:8] == 'slovakia':
     return 'SK'
   if filename[0:8] == 'slovenia':
