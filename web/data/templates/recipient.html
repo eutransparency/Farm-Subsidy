@@ -85,8 +85,8 @@
 
 {% block right %}
   {% load download_block %}
-  {% download_recipient results.documents.0.global_id %}
-  
+  {% download_recipient results.documents.0.global_id_x %} 
+ 
   {% load related %}
   {% get_related results.documents.0.doc_id %}
   

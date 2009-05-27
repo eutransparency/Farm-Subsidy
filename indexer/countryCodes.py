@@ -7,6 +7,7 @@ def countryCodes():
   codes.append('AT')
   codes.append('BE')
   codes.append('BG')
+  codes.append('CY')
   codes.append('CZ')
   codes.append('DE')
   codes.append('DK')
@@ -37,6 +38,7 @@ code2name = {
 'AT'	:	'Austria',
 'BE'	:	'Belgium',
 'BG'	:	'Bulgaria',
+'CY'	:	'Cyprus',
 'CZ'	:	'Czech',
 'DK'	:	'Denmark',
 'EE'	:	'Estonia',
@@ -69,6 +71,8 @@ def filenameToCountryCode(filename):
     return 'BE'
   if filename[0:8] == 'bulgaria':
     return 'BG'
+  if filename[0:6] == 'cyprus':
+    return 'CY'
   if filename[0:5] == 'czech':
     return 'CZ'
   if filename[0:7] == 'denmark':
@@ -95,7 +99,7 @@ def filenameToCountryCode(filename):
     return 'LT'
   if filename[0:10] == 'luxembourg':
     return 'LU'
-  if filename[0:5] == 'matla':
+  if filename[0:5] == 'malta':
     return 'MT'
   if filename[0:10] == 'netherland':
     return 'NL'        
@@ -113,6 +117,8 @@ def filenameToCountryCode(filename):
     return 'ES'
   if filename[0:6] == 'sweden':
     return 'SE'
+  if filename[0:2] == 'gb':
+    return 'GB'
   if filename[0:13] == 'unitedkingdom':
     return 'GB'
   else:

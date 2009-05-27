@@ -71,7 +71,7 @@ def do_search(query, options={'len' : 100, 'page' : 0, 'len' : 50,}):
          xapian.QueryParser.FLAG_BOOLEAN |
          xapian.QueryParser.FLAG_PHRASE |
          xapian.QueryParser.FLAG_LOVEHATE |   
-         # xapian.QueryParser.FLAG_BOOLEAN_ANY_CASE |
+         xapian.QueryParser.FLAG_BOOLEAN_ANY_CASE |
          xapian.QueryParser.FLAG_WILDCARD |
          xapian.QueryParser.FLAG_SPELLING_CORRECTION
          # xapian.QueryParser.FLAG_PARTIAL 
@@ -156,7 +156,7 @@ def get_rset(rid=4):
   query = xapian.Query(xapian.Query.OP_ELITE_SET, [k for k,v in eset])
   
   enq.set_query(query)
-  enq.set_collapse_key(fsconf.index_values['recipient_id_x'])
+  enq.set_collapse_key(fsconf.index_values['global_id_x'])
   
   matches = enq.get_mset(1,6)
 

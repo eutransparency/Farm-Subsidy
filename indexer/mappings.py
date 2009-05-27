@@ -29,6 +29,8 @@ def fieldTypeMaps(field_value='field_value'):
     'prefix' : 'XRID:',
     'name' : 'id',
     'doc_body' : True,
+    'index' : True,
+    'termweight' : 1,
   }
 
   fields['global_id_x'] = {
@@ -37,6 +39,8 @@ def fieldTypeMaps(field_value='field_value'):
     'value' : fsconf.index_values['global_id_x'],
     'value_formatter': "%s"  % field_value,    
     'doc_body' : True,
+    'index' : True,
+    'termweight' : 1,
   }
   
   fields['name'] = {

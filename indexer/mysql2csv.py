@@ -75,7 +75,18 @@ def mysql2csv(countryToProcess="all"):
         if d[0] in year_guesses:
           print d[0]
           year_field = d[0]
+
+
+      #Guess at the scheme fields *sigh*      
+      c.execute("select * from %s LIMIT 1" % scheme_table)
           
+      scheme_name_guesses = ['Text', 'name_english']
+      for d in c.description:
+        if d[0] in scheme_name_guesses:
+          print d[0]
+          scheme_name_field = d[0]
+
+
 
       ## Make the total_amount field for each payment
       totals_query = """CREATE TEMPORARY TABLE totals
@@ -107,11 +118,14 @@ def mysql2csv(countryToProcess="all"):
         c.execute(scheme_index_query)
 
       else:
+
+        
+
         scheme_query = """CREATE TEMPORARY TABLE scheme_total
-        SELECT p.payment_id, s.name_english as scheme_name FROM %(payment)s p
+        SELECT p.payment_id, s.%(scheme_name)s as scheme_name FROM %(payment)s p
         INNER JOIN %(scheme_table)s s
         ON p.scheme1_id=s.scheme1_id
-        """ % {'scheme_table' : scheme_table, 'payment' : payment_table}
+        """ % {'scheme_table' : scheme_table, 'scheme_name' : scheme_name_field, 'payment' : payment_table}
         print "Making schemes"
         c.execute(scheme_query)
 

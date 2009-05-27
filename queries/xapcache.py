@@ -44,5 +44,7 @@ def clear_cache():
 if __name__ == "__main__":
   save_cache('foo', 'bar','tar')
   print load_cache('foo', 'bar')
+  if sys.argv[1] == "clear":
+    clear_cache()
   
   

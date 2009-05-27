@@ -1,3 +1,7 @@
+import sys
+sys.path.append('/var/www/farmsubsidy/web/feeds/')
+
+
 from models import *
 from django.template.loader import render_to_string
 from django.template import RequestContext

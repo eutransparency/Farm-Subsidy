@@ -22,7 +22,7 @@ def link_to_recipient(recipient):
   recipient_name = recipient['name']
   recipient_url = "%s%s/%s" % (
     "http://www.farmsubsidy.org",
-    reverse('recipient_view', kwargs={'recipient_id' : recipient['recipient_id_x'], 'country' : recipient['country']}),
+    reverse('recipient_view', kwargs={'recipient_id' : recipient['global_id_x'], 'country' : recipient['country']}),
     recipient['name']
     )
     

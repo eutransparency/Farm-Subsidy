@@ -32,7 +32,7 @@ def search(request):
     title = "Search results for %s" % query
   
     options = {
-      'collapse_key' : fsconf.index_values['recipient_id_x'], 
+      'collapse_key' : fsconf.index_values['global_id_x'], 
       'sort_value' : fsconf.index_values['amount'],
       'offset' : 0,
       'len' : 50,

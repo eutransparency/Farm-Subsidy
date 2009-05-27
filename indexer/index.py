@@ -140,7 +140,7 @@ def index_line(line,meta):
       
       if 'prefix' in fields[field]:
         if 'index' in fields[field]:
-          indexer.index_text(field_value,fields[field]['termweight'],fields[field]['prefix'])
+          indexer.index_text(field_value.lower(),fields[field]['termweight'],fields[field]['prefix'])
         else:
           doc.add_term(fields[field]['prefix']+field_value)
       
