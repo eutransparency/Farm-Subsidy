@@ -97,16 +97,18 @@ def recipient(request, recipient_id, country=None):
   }
   results = queries.do_search("xid:%s" % recipient_id, options)
   total = 0
+  result = None
   for key,result in results['documents'].items():
     total = total + float(result['amount'])
   
-  
-  
-  # search = SearchModelWrapper(results)  
-  return render_to_response('recipient.html', 
-  {'results' : results, 'title' : results, 'total' : total, 'form' : form},
-  context_instance=RequestContext(request))  
-  
+  if result and 'year' in result:
+    return render_to_response('recipient.html', 
+    {'results' : results, 'title' : results, 'total' : total, 'form' : form},
+    context_instance=RequestContext(request))  
+  else:
+    return render_to_response('recipient-indexing.html', 
+    context_instance=RequestContext(request))
+    
   
   
   
@@ -122,9 +124,9 @@ def country(request, country):
   options = {
     'len' : 20,
     'page' : 0,
-    # 'year' : year,
+    #'year' : year,
     'allyears' : True,
-    'collapse_key' : fsconf.index_values['recipient_id_x'], 
+    'collapse_key' : fsconf.index_values['global_id_x'], 
     'sort_value' : fsconf.index_values['amount'],
     'cache' : True,
     'offset' : 0,

@@ -1,4 +1,4 @@
-{% load currency %}
+{% load currency humanize %}
 {% if list_items.create %}
   <form action="/lists/add_recipient" method="POST" accept-charset="utf-8">
 {% endif %}
@@ -21,7 +21,7 @@
         {{result.name}}
       </a>  
     </td>
-    <td class="amount">&euro;{{result.total_amount|currency}}</td>
+    <td class="amount">&euro;{{result.total_amount|currency|intcomma }}</td>
   </tr>
   {% endfor %}
 </table>

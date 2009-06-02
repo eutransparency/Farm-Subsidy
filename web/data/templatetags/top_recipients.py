@@ -18,6 +18,8 @@ def top_recipients(location="EU", number=5):
     'page' : 0,
     'len' : number,
     'collapse_key' : fsconf.index_values['global_id_x'],  
+    'sort_value' : fsconf.index_values['amount'],
+    'cache' : True,
   }
   
   results = queries.do_search("%s amount:1000..1000000000" % country, options)

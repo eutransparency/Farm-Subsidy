@@ -9,11 +9,6 @@
   
     <title>{% block title %}{{title}}{% endblock %} | FarmSubsidy.org</title>
 
-    <script type="text/javascript" src="/media/js/jquery.js"></script>
-    <script type="text/javascript" src="/media/js/jquery.example.min.js"></script>
-    <script type="text/javascript" src="/media/js/jquery-ui-1.7.1.custom.min.js"></script>
-    <script src="/media/js/scripts.js" type="text/javascript" charset="utf-8"></script>
-
 
     <link rel="stylesheet" href="/media/css/layout.css" type="text/css"> 
     <link rel="stylesheet" href="/media/css/screen.css" type="text/css" media="screen, projection">
@@ -21,7 +16,14 @@
     <!--[if IE]>
       <link rel="stylesheet" href="/media/css/ie.css" type="text/css" media="screen, projection">
     <![endif]-->
-    
+ 
+    <script type="text/javascript" src="/media/js/jquery.js"></script>
+    <script type="text/javascript" src="/media/js/jquery.example.min.js"></script>
+    <script type="text/javascript" src="/media/js/jquery-ui-1.7.1.custom.min.js"></script>
+    <script src="/media/js/scripts.js" type="text/javascript" charset="utf-8"></script>
+
+
+   
 
 </head>
 <body id="{% block body_style %}{% endblock %}" class="{% block body_class %}{% endblock %} {% if list_items.create %}list_enabled{% endif %}">
@@ -58,7 +60,7 @@
       {% endblock %}
           {% if tweet %}
           <div class="twitter block">
-              <h3><a href="http://twitter.com/farmsubsidy">farmsubsudy</a> on Twitter</h3> 
+              <h3>Follow <a href="http://twitter.com/farmsubsidy">farmsubsidy.org</a> on Twitter</h3> 
               <p>{{ tweet.text|urlize }}<p>
           </div>
           {% endif %}

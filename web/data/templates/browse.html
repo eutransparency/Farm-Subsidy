@@ -19,9 +19,13 @@
   {% url data.views.recipient recipient_id=result.recipient_id_x country=result.country as recipient_url %}
   <tr class="{% cycle 'odd' 'even' %}">
     <td>
+      {% if recipient_url %} 
       <a href="{{recipient_url}}/{{result.country}}/{{result.name|slugify|urlencode}}">
         {{result.name}}
       </a>
+      {% else %}  
+        {{result.name}}
+      {% endif %}
     </td>
     <td>&euro;{{result.amount|currency}}</td>
     <td>{{result.country}}</td>
@@ -36,8 +40,7 @@
 
 
 {% else %}
-{{ results }}
-Sorry, no results found.
+Sorry, no results found. We're still indexing this data, it'll be here soon!
 {% endif %}
 {% endblock%}
 

@@ -19,8 +19,8 @@ urlpatterns = patterns('',
     (r'^comments/', include('django.contrib.comments.urls')),
     )
 
-urlpatterns += patterns('django.views',
-     (r'^media/(?P<path>.*)$', 'static.serve',
-     {'document_root': settings.MEDIA_ROOT}),
-
-)
+#urlpatterns += patterns('django.views',
+#     (r'^media/(?P<path>.*)$', 'static.serve',
+#     {'document_root': settings.MEDIA_ROOT}),
+#
+#)

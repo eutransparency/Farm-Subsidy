@@ -1,6 +1,5 @@
 <h3>Top Recipients for  {{ countryname }} </h3>
 <ul>
-  {# {{ results }} #}
   {% for k,document in results.documents.items %}
   
     {% url data.views.recipient recipient_id=document.global_id_x country=document.country as recipient_url %}

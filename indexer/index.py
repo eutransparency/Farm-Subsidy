@@ -54,57 +54,59 @@ def index(country=None, tabletype=None, table=None):
         # Get some information about the data
         meta = {}
         
-        data_file_path = scheme.mapSchemeToData(name)
+        meta['country'] = name[12:-7]
+        data_file_path, folder = scheme.mapSchemeToData(name, meta['country'])
                 
         meta['scheme'] = scheme.loadScheme("%s/%s" % (csvdir,name))
         meta['data'] = {}
         meta['database'] = name.split('.')[0]
-        meta['country'] = name[12:-7]
 
-        print "country:",meta['country']
         # TODO Add more options here.  Like the filename to index
         if country is not None and country != meta['country']:
           continue
       
+        print "country:",meta['country']
         print "\n %s" % name  
       
-
-        with open(data_file_path) as csvfile:
-          counter = csv.reader(csvfile)
-          linecount = 0
-          for countline in counter:
-            linecount = counter.line_num
-            
-          if linecount is 0:
-            print "No content in %s" % csvfile
-            continue
-          
-          pbar = progressbar.ProgressBar(maxval=linecount).start()
-
-          reader = csv.reader(csvfile)                    
-          csvfile.seek(0)
-          for line in reader:
-
-
-            for k,v in meta['scheme'].items():
-              meta['data'][k] = line[v]
+        for path in data_file_path:
+          print path
+          with open(path) as csvfile:
+            counter = csv.reader(csvfile)
+            linecount = 0
+            for countline in counter:
+              linecount = counter.line_num
               
-            meta['data']['country'] = meta['country'] #Because it's not always there
+            if linecount is 0:
+              print "No content in %s" % csvfile
+              continue
             
-            recipient_id = None
-            meta['linenumber'] = reader.line_num
-            
-            if options.test:
-              # Only loop 10 lines.  Just for testing!
-              if meta['linenumber'] > 10: 
-                break
-        
-            index_line(line, meta)
+            pbar = progressbar.ProgressBar(maxval=linecount).start()
+
+            reader = csv.reader(csvfile)                    
+            csvfile.seek(0)
+            for line in reader:
+              
+              for k,v in meta['scheme'].items():
+                meta['data'][k] = line[v]
+                
+              meta['data']['country'] = meta['country'] #Because it's not always there
+              
+              recipient_id = None
+              meta['linenumber'] = reader.line_num
+              
+              if options.test:
+                # Only loop 10 lines.  Just for testing!
+                if meta['linenumber'] > 10: 
+                  break
           
-            pbar.update(meta['linenumber'])
-        # pbar.finish()
-      database.flush()
-      xapcache.clear_cache()
+              index_line(line, meta)
+            
+              pbar.update(meta['linenumber'])
+            pbar.finish()
+            if folder:
+             os.remove(path)
+        database.flush()
+        xapcache.clear_cache()
 
 def index_line(line,meta):
   """The workhorse of the indexing.
@@ -159,7 +161,10 @@ def index_line(line,meta):
   docid = "XDOCID%s%s" % (meta['data']['global_id'],meta['data']['payment_id'])
   doc.add_term(docid)
   doc.set_data(format_doc(fields,meta,line))
-  database.replace_document(docid,doc)
+  if meta['data']['name']:
+    database.replace_document(docid,doc)
+  else:
+    database.delete_document(docid)
 
 
 def formatGeoPath(fields, meta, doc):

@@ -28,12 +28,12 @@ def load_info(country=None, format=True, year=fsconf.current_year):
 
           info['Total spending'] += " Million Euros"
           info['Total contribution'] += " Million Euros"
-          info['Contribution per citizen'] = "&euro;%s" % info['Contribution per citizen']
-          info['Spending per citizen'] = "&euro;%s" % info['Spending per citizen']
+          info['Contribution per citizen'] = "%s" % info['Contribution per citizen']
+          info['Spending per citizen'] = "%s" % info['Spending per citizen']
           
-          info['Spending per hectare'] = "&euro;%s" % info['Spending per hectare']
-          info['Spending per farm'] = "&euro;%s" % info['Spending per farm']
-          info['Spending per farm worker'] = "&euro;%s" % info['Spending per farm worker']
+          info['Spending per hectare'] = "%s" % info['Spending per hectare']
+          info['Spending per farm'] = "%s" % info['Spending per farm']
+          info['Spending per farm worker'] = "%s" % info['Spending per farm worker']
           
           info['Proportion of payments to top 10%'] += "%"
           info['Proportion of payments to top 20%'] += "%"

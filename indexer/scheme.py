@@ -180,13 +180,23 @@ def fieldNameMappings():
   return fieldMapping
     
   
-def mapSchemeToData(schemefile):
+def mapSchemeToData(schemefile, country):
   """Maps a given scheme file to the relivent data file"""
-  path = "%s/%s.csv" % (fsconf.csvdir, "/".join(schemefile.split('/')[-3:]).split('.')[0])
-  if os.path.exists(path):
-    return path
-  else:
-    raise Exception, "The scheme file %s has no data file mapping at %s" % (schemefile, path)
+  files = []
+  folder = False
+  path = fsconf.csvdir
+  if os.path.exists("%s/%s" % (path,country)):
+    print "working with a folder"
+    folder = True
+    for f in os.listdir("%s/%s" % (path,country)):
+      files.append("%s/%s/%s" % (path,country,f))
+  else:    
+    path = "%s/%s.csv" % (fsconf.csvdir, "/".join(schemefile.split('/')[-3:]).split('.')[0])
+    if os.path.exists(path):
+      files.append(path)
+    else:
+      raise Exception, "The scheme file %s has no data file mapping at %s" % (schemefile, path)
+  return files, folder  
 
 
 def calc_year(year,fragile=None):

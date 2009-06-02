@@ -19,23 +19,28 @@
 
 <div class="section">
   <h3>Top 20 recipients</h3>  
+<!-- {{ results }} -->
+  {% if results.documents %}
   <table>
     <thead>
       <th>Name</th>
       <th>Amount</th>
     </thead>
-  {% for key,result in results.documents.items %}
-    {% url data.views.recipient  recipient_id=result.global_id_x country=result.country as recipient_url %}
-    <tr>
-    <td><a href="{{recipient_url}}/{{result.name|slugify|urlencode}}">{{ result.name }}</a></td>
-    <td>&euro;{{ result.amount }}</td>
-    <td>
-    </tr>
-  {% endfor %}
-  </table>
-  {% url countrybrowse country.code as browseurl %}
-  <a href="{{ browseurl }}">
-   Browse all {{ country.code }} recipients</a>
+    {% for key,result in results.documents.items %}
+      {% url data.views.recipient  recipient_id=result.global_id_x country=result.country as recipient_url %}
+      <tr>
+      <td><a href="{{recipient_url}}/{{result.name|slugify|urlencode}}">{{ result.name }}</a></td>
+      <td>&euro;{{ result.amount }}</td>
+      <td>
+      </tr>
+    {% endfor %}
+    </table>
+    {% url countrybrowse country.code as browseurl %}
+    <a href="{{ browseurl }}">
+     Browse all {{ country.code }} recipients</a>
+  {% else %}
+    We're stil indexing this data, but it will be here soon!
+  {% endif %}  
 </div>
 
 
