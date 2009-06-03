@@ -48,7 +48,7 @@ def make_fig(request, type):
         for value in name_value_dict],
         size='xx-small')
     max_value = max([v[1] for v in name_value_dict])
-    tick_range = arange(0, max_value+max_value*1.1, round(max_value,1)/2)
+    tick_range = arange(0, max_value*1.1, round(max_value,1)/2)
     yticks(tick_range, size='xx-small')
     formatter = FixedFormatter([u"\u20ac%s" % locale.format(u'%d', float(x), True) for x in tick_range])
     gca().yaxis.set_major_formatter(formatter)
