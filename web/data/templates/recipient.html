@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load currency %}
+{% load blocks %}
+
 
 {% block title %}
   {{results.documents.0.name|title}} | {{results.documents.0.country}}
@@ -48,7 +50,7 @@
         
         <td><b>{{result.year}}</b></td>
         <td>{{result.scheme_name|title}}</td>
-        <td>{{result.country}}</td>
+        <td>{% code_to_name result.country %}</td>
         <td>&euro;{{result.amount|currency}}</td>
       </tr>
 
