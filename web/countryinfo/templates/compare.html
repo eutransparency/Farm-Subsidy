@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load blocks %}
+
+{% block content %}
+{% for cat,data in info.items %}
+  <h2>{{ cat }}</h2>
+  {% load graphs %}
+  {% graph "compare" data %}
+  
+  {% for country,value in data.items %}
+    <li>{% code_to_name country %} : {{ value }}</li>
+  {% endfor %}
+{% endfor %}
+{% endblock %}

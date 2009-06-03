@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+{% load blocks %}
 {% load currency %}
 
 {% block content %}
@@ -43,7 +44,7 @@
         </a>
       </td>
       <td>&euro;{{result.amount|currency}}</td>
-      <td>{{result.country}}</td>
+      <td>{% code_to_name result.country %}</td>
       <td>{{result.scheme_name|title}}</td>
       <td>{{result.geo2}}</td>    
     </tr>

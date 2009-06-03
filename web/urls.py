@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
     (r'', include('farmsubsidy.web.data.urls')),
     (r'', include('farmsubsidy.web.feeds.urls')),
+    (r'', include('farmsubsidy.web.countryinfo.urls')),
     (r'', include('farmsubsidy.web.graphs.urls')),
     (r'', include('farmsubsidy.web.customlists.urls')),
     (r'^api/', include('farmsubsidy.web.api.urls')),
@@ -19,8 +20,9 @@ urlpatterns = patterns('',
     (r'^comments/', include('django.contrib.comments.urls')),
     )
 
-#urlpatterns += patterns('django.views',
-#     (r'^media/(?P<path>.*)$', 'static.serve',
-#     {'document_root': settings.MEDIA_ROOT}),
-#
-#)
+if settings.DEBUG:
+  urlpatterns += patterns('django.views',
+      (r'^media/(?P<path>.*)$', 'static.serve',
+      {'document_root': settings.MEDIA_ROOT}),
+
+  )

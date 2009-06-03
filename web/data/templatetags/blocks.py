@@ -92,4 +92,8 @@ def countryMenu(country='UK'):
 register.inclusion_tag('blocks/country-menu.html')(countryMenu)
 
 
-
+def code_to_name(code):
+  if code == "UK":
+    code = "GB"
+  return countryCodes.code2name[code]
+register.simple_tag(code_to_name)

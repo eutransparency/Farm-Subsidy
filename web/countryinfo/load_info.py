@@ -44,7 +44,7 @@ def load_info(country=None, format=True, year=fsconf.current_year):
                 
                 
             except Exception,e:
-              print e
+              pass
           # info_sorted = []
           for key, value in info.items():
             del info[key]

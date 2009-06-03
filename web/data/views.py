@@ -52,6 +52,7 @@ def search(request):
     )  
   
   except Exception, e:
+    print e
     title = "Search"
     query = ''
     if 'error' in e[0]:

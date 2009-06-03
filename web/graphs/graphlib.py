@@ -39,6 +39,9 @@ def make_fig(request, type):
     # add bars
     i = 0
     for key in name_value_dict:
+      # if key[0] == "GB":
+      #   bar(i+0.25 , key[1], 0.5,  color='red', alpha=0.7, linewidth=0)
+      # else:
       bar(i+0.25 , key[1], 0.5,  color='grey', alpha=0.7, linewidth=0)
       i = i+1
 

@@ -19,6 +19,15 @@ def graph(graph_type, data):
     get_data = urlencode(values)
     url = reverse('graph', kwargs={'type':graph_type})
     
+  if graph_type == "compare":
+    # We want a graph with country/value data for this category
+    values = {}
+    for country, value in data.items():
+      values[country] = value
+      if country == "LV":
+        print country, value
+      get_data = urlencode(values)
+      url = reverse('graph', kwargs={'type':'recipient'})
   return {'url' : "%s?%s" % (url,get_data)}
 
 register.inclusion_tag('recipient-graph.html')(graph)
