@@ -16,7 +16,8 @@
     <th>Area</th>    
   </tr>
 {% for key,result in results.documents.items %}
-  {% url data.views.recipient recipient_id=result.recipient_id_x country=result.country as recipient_url %}
+  {% url data.views.recipient recipient_id=result.global_id_x country=result.country as recipient_url %}
+  <!-- {{ recipient_url }} -->
   <tr class="{% cycle 'odd' 'even' %}">
     <td>
       {% if recipient_url %} 
