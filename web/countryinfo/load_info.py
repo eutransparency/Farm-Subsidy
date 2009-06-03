@@ -1,9 +1,13 @@
+# encoding: utf-8
+
 import csv
 import re
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
 from farmsubsidy import fsconf
+from django.contrib.humanize.templatetags import humanize
+
 
 def load_info(country=None, format=True, year=fsconf.current_year):
   filepath = "%s/%s/basic_comparisons.csv" % (fsconf.statsdir, year)
@@ -12,42 +16,72 @@ def load_info(country=None, format=True, year=fsconf.current_year):
     for row in stats:
       if row['Country'] == country:
         info = row
-      
+
+        
         # delete unwanted elements
         del info['Country']
-        del info['Population']
-        del info['']
-        
+        # del info['Population']
+        # del info['']
         if format:
           # Format elements
           for k,v in info.items():
             try:
-              info[k] = locale.format('%.0f', float(info[k]), True)
-            except:
-              pass
-
-          info['Total spending'] += " Million Euros"
-          info['Total contribution'] += " Million Euros"
-          info['Contribution per citizen'] = "%s" % info['Contribution per citizen']
-          info['Spending per citizen'] = "%s" % info['Spending per citizen']
-          
-          info['Spending per hectare'] = "%s" % info['Spending per hectare']
-          info['Spending per farm'] = "%s" % info['Spending per farm']
-          info['Spending per farm worker'] = "%s" % info['Spending per farm worker']
-          
-          info['Proportion of payments to top 10%'] += "%"
-          info['Proportion of payments to top 20%'] += "%"
-          
+              info[k] = humanize.intcomma(info[k])
+              formatter = k[-2:]
+              print formatter
+              if formatter == " E":
+                new_k = k[:-2].strip()
+                info[new_k] = u"&euro;%s" % info[k]
+                del info[k]
+              if formatter == "EM":
+                new_k = k[:-2].strip()
+                info[new_k] = u"&euro;%s Million" % info[k]
+                del info[k]
+              if formatter == " %":
+                new_k = k[:-2].strip()
+                info[new_k] = u"%s%%" % info[k]
+                del info[k]
+                
+                
+            except Exception,e:
+              print e
           # info_sorted = []
           for key, value in info.items():
             del info[key]
             key = re.sub(" ", "_", key.lower())
             key = re.sub("%", "", key)
             info[key] = value
-          
+        
+  
         return info
   else:
     return stats
+
+def countries_by_category():
+  info = load_info()
+  cats = {}
+  for items in info:
+    country = items['Country']
+    for cat,value in items.items():
+      if cat:
+        if cat not in cats:
+          cats[cat] = {}
+        cats[cat][country] = value
+    # break
+  del cats['Country']
+  # for item in info:
+  return cats
+  print 
+  for cat,data in cats.items():
+    print cat, data['GB']
+  print 
+  # return info
+
+
+
+
+
+
 
 
 

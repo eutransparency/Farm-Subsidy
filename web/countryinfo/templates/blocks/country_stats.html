@@ -1,15 +1,15 @@
-{% load humanize %}
+
 <div class="section">
   <h3>The Basics</h3>
   <div class="clear">  
-    <p class="halfcol"><strong>Total contribution:</strong> &euro;{{ info.total_contribution|safe|intcomma }}            </p>
-    <p class="halfcol"><strong>Total spending:</strong> &euro;{{ info.total_spending|intcomma }}                     </p>
-    <p class="halfcol"><strong>Net budget balance:</strong> &euro;{{ info.net_budget_balance|safe|intcomma }}            </p>
-    <p class="halfcol"><strong>Contribution per citizen:</strong> &euro;{{ info.contribution_per_citizen|safe|intcomma }}</p>
-    <p class="halfcol"><strong>Spending per citizen:</strong> &euro;{{ info.spending_per_citizen|safe|intcomma }}        </p>
-    <p class="halfcol"><strong>Spending per farm:</strong> &euro;{{ info.spending_per_farm|intcomma|safe }}             </p>
-    <p class="halfcol"><strong>Spending per farm worker:</strong> &euro;{{ info.spending_per_farm_worker|safe|intcomma }}</p>
-    <p class="halfcol"><strong>Spending per hectare:</strong> &euro;{{ info.spending_per_hectare|safe|intcomma }}        </p>
+    <p class="halfcol"><strong>Total contribution:</strong> {{ info.total_contribution|safe }}            </p>
+    <p class="halfcol"><strong>Total spending:</strong> {{ info.total_spending|safe }}                     </p>
+    <p class="halfcol"><strong>Net budget balance:</strong> {{ info.net_budget_balance|safe }}            </p>
+    <p class="halfcol"><strong>Contribution per citizen:</strong> {{ info.contribution_per_citizen|safe }}</p>
+    <p class="halfcol"><strong>Spending per citizen:</strong> {{ info.spending_per_citizen|safe }}        </p>
+    <p class="halfcol"><strong>Spending per farm:</strong> {{ info.spending_per_farm|safe }}             </p>
+    <p class="halfcol"><strong>Spending per farm worker:</strong> {{ info.spending_per_farm_worker|safe }}</p>
+    <p class="halfcol"><strong>Spending per hectare:</strong> {{ info.spending_per_hectare|safe }}        </p>
   </div>
 </div>
 
@@ -18,7 +18,7 @@
   <div class="clear">
   <p class="halfcol"><strong>Proportion direct aids:</strong> {{ info.proportion_direct_aids|safe }}                       </p>
   <p class="halfcol"><strong>Proportion export subsidies:</strong> {{ info.proportion_export_subsidies|safe }}             </p>
-  <p class="halfcol"><strong>Proportion rural development:</strong> {{ info.rural_development|safe }}%                      </p>
+  <p class="halfcol"><strong>Proportion rural development:</strong> {{ info.rural_development|safe }}                      </p>
   <p class="halfcol"><strong>Proportion of payments to top 10%:</strong> {{ info.proportion_of_payments_to_top_10|safe }} </p>
   <p class="halfcol"><strong>Proportion of payments to top 20%:</strong> {{ info.proportion_of_payments_to_top_20|safe }}  </p>
   </div>
