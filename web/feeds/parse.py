@@ -13,7 +13,6 @@ allfeeds = feeds.Feeds.objects.filter(is_active=True)
 
 for f in allfeeds:
 
-
   try:
     last_mod = time.strptime(str(f.last_modified), "%Y-%m-%d %H:%M:%S")
   except:
@@ -43,8 +42,11 @@ for f in allfeeds:
           
           for tag in e.tags:
             if tag['term'][:3] == "pub":
-              date = time.strptime(str(tag['term']), "pub%Y%m%d")
-              date = time.strftime("%Y-%m-%d %H:%M:%S",date)
+              try:
+                date = time.strptime(str(tag['term']), "pub%Y%m%d")
+                date = time.strftime("%Y-%m-%d %H:%M:%S",date)
+              except:
+                print tag['term']
           
           tags = ", ".join([t.term for t in e.tags])
         else:
