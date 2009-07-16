@@ -31,7 +31,6 @@ for f in allfeeds:
       f.last_modified = datetime.datetime.utcfromtimestamp(calendar.timegm(d.modified))
       f.save()
 
-  
     for e in d.entries:
 
       if len(feeds.FeedItems.objects.filter(guid=e.guid)) == 0:      
