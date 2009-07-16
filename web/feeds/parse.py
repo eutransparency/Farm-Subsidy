@@ -36,7 +36,6 @@ for f in allfeeds:
       if len(feeds.FeedItems.objects.filter(guid=e.guid)) == 0:      
         date = datetime.datetime(*e.updated_parsed[:7])
       
-      
         if 'tags' in e:
           
           for tag in e.tags:
