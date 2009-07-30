@@ -1,9 +1,10 @@
 {% extends "base.html" %}
-{% load pagination_tags %}
+{% load pagination_tags humanize %}
 {% block content %}
     {% autopaginate items 10 %}
     {% for item in items %}
       <h3><a href="{{ item.url }}">{{ item.title }}</a></h3>
+      <p class="meta quiet">{{ item.date|naturalday }} {% if item.author %}&mdash; {{ item.author }}{% endif %}</p>
       <p>{{ item.description|safe }}</p>
     {% endfor %}
     <h4 class="pager">{% paginate %}</h4>

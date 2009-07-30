@@ -55,7 +55,11 @@ for f in allfeeds:
         else:
           summary = ''
           
-                  
+        if 'author' in e:
+          author = e.author
+        else:
+          author = ''
+          
         item = feeds.FeedItems(
            title = e.title[:80],
            description=summary,
@@ -63,7 +67,8 @@ for f in allfeeds:
            guid=e.guid,
            feed=f,
            url = e.link,
-           tags = tags
+           tags = tags,
+           author = author
            )
         item.save()  
   

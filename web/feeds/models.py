@@ -36,7 +36,7 @@ class FeedItems(models.Model):
     date = models.DateTimeField()
     url = models.URLField()
     tags = TagField()
-    
+    author = models.TextField(blank=True, null=True)    
     
     def __unicode__(self):
       return self.title
