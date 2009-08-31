@@ -7,7 +7,7 @@ body {
 }
 
 #outer {
-  position:absolute;
+  border-top:5px solid #104C29;
   padding:0 10%;
   top:0;
   left:0;
@@ -20,35 +20,74 @@ body {
 }
 
 #head {
-  border-bottom:1px solid black;
+  border-bottom:1px dotted #A7A9AC;
   position:relative;
-  margin:2em 0 0.5em 0;
+  margin:0 0 0.5em 0;
+  padding-bottom:1em;
 }
 
-#head h1 img {
-  margin-right:-20px;  
-}
+#home #head h1 span { display:none; }
 
 #head h2 {
-  font-size:1.2em
+  font-size:1em;
+  color:#104C29;
 }
 
-
-#mainmenu {
-  list-style-type:none;
-  position:absolute;
-  top:0;
-  right:0;
+#home #head h2 {
+  font-size:1.6em;
 }
 
-#mainmenu li {
-  float:left;
-  padding-left:2em;
+#outer ul {
+list-style-type:none;
+margin-left:20px;
+padding-left:0;
 }
+
+#outer ul li {
+list-style-image:url('/media/images/bulletsmall.png');
+list-style-position:outside;
+padding-left:10px;
+}
+
+#head #mainmenu {
+list-style-type:none;
+padding:0 1em;
+position:absolute;
+right:0;
+top:0;
+}
+
+ul#mainmenu li {
+list-style-image:none;
+padding:0 0 0 0.3em;
+float:left;
+}
+
+#head #mainmenu li a {
+display:block;
+padding:1em 1.5em;
+}
+
+#mainmenu li a, #mainmenu li a:visited {
+color:#104C29;
+font-weight:bold;
+text-decoration:none;
+}
+
+#mainmenu li.selected a, #mainmenu li.selected a:visited {
+-moz-background-clip:border;
+-moz-background-inline-policy:continuous;
+-moz-background-origin:padding;
+-moz-border-radius-bottomleft:12px;
+-moz-border-radius-bottomright:12px;
+background:#104C29 none repeat scroll 0 0;
+color:#FFFFFF;
+}
+
 
 #user_menu {
   position:absolute;
-  top: 2em;
+  bottom: 0.5em;
   right:0;
 }
 
@@ -81,9 +120,17 @@ body {
 
 
 #footer {
+  background-color:#104C29;
+  border-top:10px solid #A7A9AC;
   clear:both;
   text-align:center;
   padding-bottom:30px;
+  padding-top:1em;
+  color:#FFFFFF;
+}
+
+#footer a {
+  color:#FFFFFF;
 }
 
 #footer ul {
@@ -117,10 +164,6 @@ body {
   position:absolute;
   right:30%;
   top:6em;
-}
-
-#home #search_form label {
-  font-weight:normal;
 }
 
 #home #search_form .submit {
@@ -288,8 +331,13 @@ ul.error, .errorlist {
 
 #head h1 {
   font-variant:small-caps;
-  font-size:2em;
+  font-size:2.8em;
   font-weight:bold;
+  padding-top:5px;
+}
+
+#home #head h1 {
+  padding-top:2em;
 }
 
 #head h1 a {
@@ -330,4 +378,16 @@ ul.error, .errorlist {
 .form p label {
   float:left;
   width:150px;
+}
+
+
+
+#latest_news {
+-moz-background-clip:border;
+-moz-background-inline-policy:continuous;
+-moz-background-origin:padding;
+background:#FFFFAA none repeat scroll 0 0;
+border-bottom:1px dotted #A7A9AC;
+border-top:1px dotted #A7A9AC;
+padding:0.3em 1em;
 }

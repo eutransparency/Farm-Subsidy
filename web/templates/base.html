@@ -32,14 +32,16 @@
     <div id="head">
       <h1><a href={% url data.views.home %}>
         {% block logo %}<img src="/media/images/logo-small.png" width="83" height="58"> {% endblock %}
-        farmsubsidy.org</a></h1>
+        <span>farmsubsidy.org</span></a></h1>
       <h2>Discover who gets what from the Common Agricultural Policy</h2>
       
       <ul id="mainmenu">
-        <li><a href="/">Search / Browse</a></li>
-        <li><a href="/news">In The News</a> &amp; <a href="/blog">Blog</a></li>
-        <li><a href="/faq">FAQs</a></li>
-        <li><a href="/about">About</a></li>
+        {% load active_url %}
+        <li class="{% active request "^/(?!faq|about|blog|news)" %}"><a href="/" >Search / Browse</a></li>
+        <li class="{% active request "^/faq/" %}"><a href="/faq/">FAQs</a></li>
+        <li class="{% active request "^/about/" %}"><a href="/about/">About</a></li>
+        <li class="{% active request "^/blog/" %}"><a href="/blog/">Blog</a></li>
+        <li class="{% active request "^/news/" %}"><a href="/news/">In The News</a></li>
       </ul>
       
       {% load user %}
@@ -76,29 +78,29 @@
       {% endblock %}
     </div>
     
-    {% block footer %}
-      <div id="footer" class="clear">
-      <hr>      
-
-      <ul id="footer_menu">
-        <li><a href="/">Home</a></li>
-        <li><a href="/search">Search</a></li>
-        <li><a href="/blog">Blog</a></li>
-        <li><a href="/news">In The News</a></li>
-        
-      </ul>
-      <ul id="footer_meta">
-        <li><a href="/legal">Legal / Privacy Policy</a></li>
-        <li><a href="/about#contactus">Contact Us</a></li>
-      </ul>
-      
-      <p>FarmSubsidy.org is a project of <a href="http://www.followthemoney.eu/" title="Monitoring the European Union Budget | FollowTheMoney.eu" target="_blank">FollowTheMoney.eu</a></p>
-      
-      
-    </div>
-  {% endblock %}
 
 </div>
+
+  {% block footer %}
+    <div id="footer" class="clear">
+    <ul id="footer_menu">
+      <li><a href="/">Home</a></li>
+      <li><a href="/search">Search</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/news">In The News</a></li>
+      
+    </ul>
+    <ul id="footer_meta">
+      <li><a href="/legal">Legal / Privacy Policy</a></li>
+      <li><a href="/about#contactus">Contact Us</a></li>
+    </ul>
+    
+    <p>FarmSubsidy.org is a project of <a href="http://www.followthemoney.eu/" title="Monitoring the European Union Budget | FollowTheMoney.eu" target="_blank">FollowTheMoney.eu</a></p>
+    
+    
+  </div>
+{% endblock %}
+
 
 {% block list %}
   {% if list_items.create %}

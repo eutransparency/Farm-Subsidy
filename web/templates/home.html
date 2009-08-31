@@ -4,7 +4,7 @@
 {% block body_style %}home{% endblock %}
 
 {% block logo %}
-  <img src="media/images/logo-big.png" width="160" height="120"> 
+  <img src="media/images/logo-big.png" width="435" height="130"> 
 {% endblock %}
 
 {% block title %}Home{% endblock %}
@@ -33,7 +33,50 @@
       <div class="halfbox">
         {% top_recipients ip_country 5 %}        
       </div>
-      <div class="box">
+      <div class="box section_content">
+        <h3 style="padding-top:1em">Mailing list</h3>
+
+
+
+        <form method="post" action="http://app.icontact.com/icp/signup.php" name="icpsignup" accept-charset="UTF-8" onsubmit="return verifyRequired();">
+        <input name="redirect" value="http://www.icontact.com/www/signup/thanks.html" type="hidden">
+        <input name="errorredirect" value="http://www.icontact.com/www/signup/error.html" type="hidden">
+        <script type="text/javascript">
+
+        if (document.location.protocol === "https:")
+
+        	document.icpsignup.action = "https://app.icontact.com/icp/signup.php";
+        function verifyRequired() {
+          if (document.icpsignup["fields_email"].value == "") {
+            document.icpsignup["fields_email"].focus();
+            alert("The Email field is required.");
+            return false;
+          }
+
+
+        return true;
+        }
+        </script>
+        <div id="SignUp">
+          <p>Enter your email below to sign up for the farmsubsidy.org newsletter.</p>
+          <label for="fields_email">Email:</label>&nbsp;<input type="text" name="fields_email" value="" id="fields_email" size="50">
+          <input name="Submit" value="Submit" type="submit">
+            <input name="listid" value="3290" type="hidden">
+            <input name="specialid:3290" value="OMN5" type="hidden">
+            <input name="clientid" value="161514" type="hidden">
+            <input name="formid" value="278" type="hidden">
+            <input name="reallistid" value="1" type="hidden">
+            <input name="doubleopt" value="1" type="hidden">
+        </div>
+        </form>
+
+
+
+
+
+
+
+
       </div>
     </div>
     <div class="col2">
