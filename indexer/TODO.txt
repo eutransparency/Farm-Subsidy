@@ -1,0 +1,32 @@
+# TODO #
+
+* Add line number and file name to xapian document.
+* Add remaining fields to xapian index.
+
+
+* Newsletter (http://code.google.com/p/django-mailer/)
+* Make geo paths work properly!
+
+## Half done ##
+
+* Geo Fields (needs confirm)
+* ‘Deep link’ Message - Jack to workout text
+* User Accounts
+* Recipient Comments (needs CSS and more)
+
+
+## Custom Lists ##
+
+### Models ###
+
+#### List ####
+* Name
+* Country
+* User ID
+* Published
+* Public
+
+#### items ####
+
+* List ID
+* RIDX
