@@ -4,13 +4,13 @@
 import os
 import tempfile
 import matplotlib
-matplotlib.use('Agg')  # force the antigrain backend
 from matplotlib import rc
-from matplotlib.backends.backend_agg import FigureCanvasAgg
 from matplotlib.figure import Figure
 from matplotlib.cbook import iterable
 import matplotlib.numerix as nx
-from pylab import *
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+matplotlib.use('Agg')  # force the antigrain backend
+# from pylab import *
 from django.http import HttpResponse
 from pylab import figure, show, rand
 from matplotlib.patches import Ellipse

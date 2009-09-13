@@ -1,6 +1,0 @@
-<ul>
-  {% regroup countries|dictsort:"name" by name as countries %}
-  {% for country in countries %}
-    <li class="{{country.list.0.active }}"><a href="{% url data.views.country country.list.0.code %}">{{ country.list.0.name }}</a></li>
-  {% endfor %}
-</ul>

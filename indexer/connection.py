@@ -13,7 +13,7 @@ Manages connections to the farmsubsidy database, for use by the indexing scripts
 import psycopg2
 
 # TODO change this to a configparser and create connection.cfg
-DBNAME = 'farmsubsidy' 
+DBNAME = 'farmjango' 
 USER = 'farmsubsidy_writer'
 HOST = 'localhost'
 PASSWORD = 'netopia'

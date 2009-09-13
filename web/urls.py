@@ -10,14 +10,14 @@ admin.autodiscover()
 urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
     (r'', include('farmsubsidy.web.data.urls')),
-    (r'', include('farmsubsidy.web.feeds.urls')),
-    (r'', include('farmsubsidy.web.countryinfo.urls')),
-    (r'', include('farmsubsidy.web.graphs.urls')),
-    (r'', include('farmsubsidy.web.customlists.urls')),
-    (r'^api/', include('farmsubsidy.web.api.urls')),
-    (r'^accounts/', include('registration.urls')),
-    (r'^profiles/', include('profiles.urls')),
-    (r'^comments/', include('django.contrib.comments.urls')),
+    # (r'', include('farmsubsidy.web.feeds.urls')),
+    # (r'', include('farmsubsidy.web.countryinfo.urls')),
+    # (r'', include('farmsubsidy.web.graphs.urls')),
+    # (r'', include('farmsubsidy.web.customlists.urls')),
+    # (r'^api/', include('farmsubsidy.web.api.urls')),
+    # (r'^accounts/', include('registration.urls')),
+    # (r'^profiles/', include('profiles.urls')),
+    # (r'^comments/', include('django.contrib.comments.urls')),
     )
 
 if settings.DEBUG:

@@ -7,7 +7,7 @@ from django.core import serializers
 import pyfo
 import cPickle
 
-from farmsubsidy.queries import queries
+from queries import queries
 import farmsubsidy.fsconf as fsconf
 
 

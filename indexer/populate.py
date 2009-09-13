@@ -47,8 +47,9 @@ def clean_files(file_path):
     
     print "Cleaning up %s" % filename
     
-    print "\t - Renaming %(filename)s to %(filename)s.orig" % {'filename':filename}
-    os.rename(file_path, "%s.orig" % file_path)
+    if not os.path.exists("%s.orig" % file_path):
+      print "\t - Renaming %(filename)s to %(filename)s.orig" % {'filename':filename}
+      os.rename(file_path, "%s.orig" % file_path)
     
     print "\t - Removeing first line"
     subprocess.call("sed '1d' %(filename)s.orig > %(filename)s-latin" % {'filename':file_path}, shell=True)
@@ -68,23 +69,23 @@ def clean_files(file_path):
 def indexes(opp):
   
   indexes = {
-    'payments' : [
+    'data_payments' : [
       ('year', 'year', 'btree'),
       ('globalrecipientidx', 'globalrecipientidx', 'btree'),
       ('amounteuro', 'amounteuro', 'btree'),
       ('countrypayment', 'countrypayment', 'btree'),
       ('payments_globalschemeid', 'globalschemeid', 'btree'),
       ],
-    'recipients' : [
+    'data_recipients' : [
       # ('country', 'country', 'btree'),
       ('recipient_globalrecipientidx', 'globalrecipientidx', 'btree'),
       ('globalrecipientid', 'globalrecipientid', 'btree'),
       ],
-    'schemes' : [
+    'data_schemes' : [
     ('scheme_globalschemeid', 'globalschemeid', 'btree'),
     ('budgetlines8digit', 'budgetlines8digit', 'btree'),
     ],
-    'totals' : [
+    'data_totals' : [
     ('totals_year', 'year', 'btree'),
     ('gid', 'global_id', 'btree'),
     ('amount', 'amount_euro', 'btree'),
@@ -133,7 +134,7 @@ def totals(country):
     
   # Delete all totals from this country first:
   print "\t - Deleting old totals for %s" % country
-  sql = "DELETE FROM totals WHERE countrypayment='%s'" % country
+  sql = "DELETE FROM data_totals WHERE countrypayment='%s'" % country
   c.execute(sql)
   conn.commit()  
   
@@ -141,8 +142,8 @@ def totals(country):
   # SUM all payments for the country and group by globalrecipientidx then year
   print "\t - Making new totals for %s" % country
   sql = """
-  INSERT INTO totals SELECT p.globalrecipientidx, SUM(p.amounteuro), p.year, p.countrypayment 
-  FROM payments p 
+  INSERT INTO data_totals SELECT p.globalrecipientidx, SUM(p.amounteuro), p.year, p.countrypayment 
+  FROM data_payments p 
   WHERE  p.countrypayment='%s'
   GROUP BY p.globalrecipientidx, p.year, p.countrypayment
   """ % country
@@ -182,15 +183,15 @@ def process_country(country):
   
   - `country`: String of the ISO country code
   """
-  if country and country not in countryCodes.countryCodes():
+  if country and country not in countryCodes.country_codes():
     print "%s is not a country!" % country
     return
-  tables = ['payments', 'recipients', 'schemes']
+  tables = ['data_payments', 'data_recipients', 'data_schemes']
   
   conn,c = connection.connect()
   
   for table in tables:
-    data_path = "%s/%s/%s.csv" % (fsconf.csvdir, country, table)
+    data_path = "%s/%s/%s.csv" % (fsconf.csvdir, country, table.split('_')[1])
     
     clean_files(data_path)
     
@@ -217,14 +218,14 @@ def process_country(country):
 if __name__ == "__main__":
   countries = sys.argv[1:]
   if len(countries) == 0:
-    countries = countryCodes.countryCodes()
+    countries = countryCodes.country_codes()
     print "No country specified, working on all countries in countrycodes()"
   # try:      
   indexes('delete')
   for country in countries:
     process_country(country.upper())
   indexes('create')    
-  vacuum(('totals', 'payments', 'recipients', 'schemes')) 
+  vacuum(('data_totals', 'data_payments', 'data_recipients', 'data_schemes')) 
   # except:
   #   try:
   #     indexes('create')

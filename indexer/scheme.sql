@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS payments;
+DROP TABLE IF EXISTS data_payments;
 
-CREATE TABLE payments
+CREATE TABLE data_payments
 (
   paymentid integer,  
   globalpaymentid varchar(10),
@@ -8,18 +8,18 @@ CREATE TABLE payments
   globalrecipientid varchar(10),
   globalrecipientidx varchar(10),
   globalschemeid varchar(10),
-  amounteuro money,
-  amountnationalcurrency money,
+  amounteuro numeric,
+  amountnationalcurrency numeric,
   year int,
   countrypayment varchar(2)
 )
 WITH (OIDS=FALSE);
-ALTER TABLE payments OWNER TO farmsubsidy;
+ALTER TABLE data_payments OWNER TO farmsubsidy;
 
 
 
-DROP TABLE IF EXISTS recipients;
-CREATE TABLE recipients
+DROP TABLE IF EXISTS data_recipients;
+CREATE TABLE data_recipients
 (
   
   
@@ -45,22 +45,11 @@ CREATE TABLE recipients
   lat double precision,
   lng double precision  
 ) WITH (OIDS=FALSE);
-ALTER TABLE recipients OWNER TO farmsubsidy;
-
--- CREATE INDEX country
---    ON recipients USING btree (country);
---    
-
--- CREATE INDEX recipient_globalrecipientidx
---    ON recipients USING btree (globalrecipientidx);
--- 
--- CREATE INDEX globalrecipientid
---    ON recipients USING btree (globalrecipientid);
+ALTER TABLE data_recipients OWNER TO farmsubsidy;
 
 
-
-DROP TABLE IF EXISTS schemes;
-CREATE TABLE schemes
+DROP TABLE IF EXISTS data_schemes;
+CREATE TABLE data_schemes
 (
   globalschemeid varchar,
   CONSTRAINT globalschemeid PRIMARY KEY (globalschemeid),
@@ -69,18 +58,18 @@ CREATE TABLE schemes
   budgetlines8digit varchar(10),
   countrypayment varchar(2)  
 ) WITH (OIDS=FALSE);
-ALTER TABLE recipients OWNER TO farmsubsidy;
+ALTER TABLE data_schemes OWNER TO farmsubsidy;
 
 
 
 
-DROP TABLE IF EXISTS totals;
-CREATE TABLE totals
+DROP TABLE IF EXISTS data_totals;
+CREATE TABLE data_totals
 (
   global_id character varying(10) NOT NULL,
-  amount_euro money,
+  amount_euro numeric,
   "year" integer,
   countrypayment varchar(2)    
 )
 WITH (OIDS=FALSE);
-ALTER TABLE totals OWNER TO postgres;
+ALTER TABLE data_totals OWNER TO farmsubsidy;

@@ -28,7 +28,6 @@ def load_info(country=None, format=True, year=fsconf.current_year):
             try:
               info[k] = humanize.intcomma(info[k])
               formatter = k[-2:]
-              print formatter
               if formatter == " E":
                 new_k = k[:-2].strip()
                 info[new_k] = u"&euro;%s" % info[k]

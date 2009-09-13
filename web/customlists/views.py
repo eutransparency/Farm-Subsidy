@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
-from farmsubsidy.queries import queries
+from queries import queries
 import simplejson
 import cPickle
 

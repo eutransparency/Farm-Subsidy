@@ -1,15 +1,17 @@
 from django.conf.urls.defaults import *
-from web import settings
 from farmsubsidy.indexer import countryCodes
+import views
 
-countries = "|".join(countryCodes.countryCodes())
+
+countries = []
+for country in countryCodes.country_codes():
+  countries.append(country)
+  countries.append(country.lower())
+
+countries = "|".join(countries)
 
 
-urlpatterns = patterns('web.data.views',
-    url(r'^$', 'home', name='home'),
-    url(r'^search', 'search'),
-    url(r'^(?P<country>%s)/region/(?P<browsepath>[^$]+)' % countries, 'regionbrowse'),    
-    url(r'^(?P<country>%s)/browse' % countries, 'countrybrowse', name='countrybrowse'),
-    url(r'^(?P<country>%s)/recipient/(?P<recipient_id>[^/]+)' % countries, 'recipient', name='recipient_view' ),
-    url(r'^(%s)' % countries, 'country'),
-    )
+urlpatterns = patterns('data.views',
+  url(r'^(?P<country>%s)/$' % countries, 'country', name='country'),
+  url(r'^(?P<country>%s)/(?P<year>\d+)/$' % countries, 'country', name='country_year'),
+)

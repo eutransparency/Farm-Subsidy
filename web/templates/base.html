@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
-  {% load blocks %}
+
   {% load i18n %}
   {% load cache %}
   {% load humanize %}  
@@ -30,7 +30,7 @@
   
 <div id="outer">  
     <div id="head">
-      <h1><a href={% url data.views.home %}>
+      <h1><a href="/">
         {% block logo %}<img src="/media/images/logo-small.png" width="83" height="58"> {% endblock %}
         <span>farmsubsidy.org</span></a></h1>
       <h2>Discover who gets what from the Common Agricultural Policy</h2>
@@ -44,8 +44,8 @@
         <li class="{% active request "^/news/" %}"><a href="/news/">In The News</a></li>
       </ul>
       
-      {% load user %}
-      {% user_menu user %}
+      {# {% load user %} #}
+      {# {% user_menu user %} #}
       
       {% block message %}
         {% ifequal display_welcome_message "1" %}
@@ -70,6 +70,7 @@
     </div>
     
     <div id="content">
+      <h2>{% block page_title %}{% endblock %}</h2>
       {% block error %}
 
       {% endblock %}
@@ -102,15 +103,15 @@
 {% endblock %}
 
 
-{% block list %}
-  {% if list_items.create %}
-  <div id="list">
-    {% load customlist_list %}
-    {% list_total list_items.items %}
-    <div class="list_items hide">{% list_items list_items.items %}</div>
-    </div>
-  {% endif %}
-{% endblock %}
+{# {% block list %} #}
+{#   {% if list_items.create %} #}
+{#   <div id="list"> #}
+{#     {% load customlist_list %} #}
+{#     {% list_total list_items.items %} #}
+{#     <div class="list_items hide">{% list_items list_items.items %}</div> #}
+{#     </div> #}
+{#   {% endif %} #}
+{# {% endblock %} #}
     
     
 </body>

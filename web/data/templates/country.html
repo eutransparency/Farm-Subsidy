@@ -1,66 +1,107 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load humanize %}
 
-{% load blocks %}
-{% load cache %}
 
 {% block title %}
-{% browsePathTitle browsepath%} {{country.name}}
+  {{ country.name }}
+{% endblock %}
+
+{% block page_title %}
+  EU Farm subsidies for {{ country.name }}{% ifnotequal selected_year 0 %} in {{ selected_year }}{% else %}, All years{% endifnotequal %}
 {% endblock %}
 
 {% block content %}
-<h2>EU Farm subsidies, {% browsePathHead browsepath%}, {{ year }}</h2>
 
-{% ifequal  country.code browsepath %}
-  {% load countrystats %}
-    {% country_stats country.code %}  
+
+{% for year in years %}
+  {% ifequal year.year selected_year  %}
+    <strong>{{ year.year }}</strong>
+  {% else %}
+    {% url country_year country=country.code year=year.year as year_url %}
+    <a href="{{ year_url }}">{{ year.year }}</a>
+  {% endifequal %}
+{% endfor %}
+<br />
+{% ifequal selected_year 0 %}
+  All Years
+{% else %}
+  <a href="{% url country_year country=country.code year=0 %}" class="selected">All Years</a>
 {% endifequal %}
+<p></p>
 
-{# {% regionBrowse country.code browsepath %} #}
+{% load countrystats %}
+{% country_stats country.code selected_year %}
 
-<div class="section">
-  <h3>Top 20 recipients</h3>  
-<!-- {{ results }} -->
-  {% if results.documents %}
+
+
+<div class="block top_schemes halfcol">
+  <h3>Top Schemes</h3>
   <table>
     <thead>
       <th>Name</th>
       <th>Amount</th>
     </thead>
-    {% for key,result in results.documents.items %}
-      {% url data.views.recipient  recipient_id=result.global_id_x country=result.country as recipient_url %}
-      <tr>
-      <td><a href="{{recipient_url}}/{{result.name|slugify|urlencode}}">{{ result.name }}</a></td>
-      <td>&euro;{{ result.amount }}</td>
-      <td>
-      </tr>
-    {% endfor %}
-    </table>
-    {% url countrybrowse country.code as browseurl %}
-    <a href="{{ browseurl }}">
-     Browse all {{ country.code }} recipients</a>
-  {% else %}
-    We're stil indexing this data, but it will be here soon!
-  {% endif %}  
+  {% for scheme in top_schemes %}
+    <tr>
+      <td>{{ scheme.name }}</td>
+      <td>&euro;{{ scheme.amount_euro|floatformat:2|intcomma }}</td>
+    </tr>
+  {% endfor %}
+  </table>
 </div>
+{#  TODO Add 'See all' here #}
+<div class="block top_regions halfcol">
+  <h3>Top Regions</h3>
+  <table>
+    <thead>
+      <th>Name</th>
+      <th>Amount</th>
+    </thead>
+  {% for region in top_regions %}
+    <tr>
+      <td>{{ region.name }}</td>
+      <td>&euro;{{ region.amount_euro|floatformat:2|intcomma }}</td>
+    </tr>
+  {% endfor %}
+  </table>
+</div>
+{# TODO Add 'See all' here#}
+
+<div class="block top_recipients">
+  <h3>Top Recipients</h3>
+  <table>  
+    <thead>
+      <th>Name</th>
+      <th>Amount</th>
+    </thead>
+    <tbody>
+      {% for r in top_recipients %}
+        <tr>
+          {# {{ r.globalrecipientidx }} #}
+          <td>{{ r.name }}</td>
+          <td>&euro;{{ r.amount_euro|floatformat:2|intcomma }}</td>
+        </tr>
+      {% endfor %}
+      
+    </tbody>
+  </table>
+</div>
+{# TODO Add 'See all' here #}
 
 
 {% endblock %}
-
+  
 
 {% block right %}
+  {% load transparency_index %}
 
-<div class="block">
-  <h3>Browse all recipients</h3>
-    {% url countrybrowse country.code as browseurl %}
-    <a href="{{ browseurl }}">By amount received</a>
-</div>
+  {% transparency_index country.code %}
 
-{% load transparency_index %}
-{% transparency_index country.code %}
 
-{% load inthenews %}
-{% latestnews country.code %}
+  {% load inthenews %}
 
-{{block.super}}
+  {% latestnews country.code %}
 
+  {{block.super}}
+  
 {% endblock %}

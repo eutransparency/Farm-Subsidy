@@ -1,5 +1,10 @@
 # Django settings for farmjango project.
 
+import sys
+sys.path.append('web')
+
+
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -65,6 +70,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',    
     'pagination.middleware.PaginationMiddleware',
     'misc.middleware.Middleware',
+    'django.middleware.transaction.TransactionMiddleware',
     # 'django.middleware.cache.FetchFromCacheMiddleware',
     
 )
@@ -76,7 +82,6 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     '/var/www/farmsubsidy/web/templates',
-    '/var/www/farmsubsidy/web/groups/templates',
 )
 
 
@@ -92,15 +97,16 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.syndication',
-    'farmsubsidy.web.api',
-    'farmsubsidy.web.comments',
+    # 'farmsubsidy.web.api',
+    # 'farmsubsidy.web.comments',
     'farmsubsidy.web.countryinfo',
-    'farmsubsidy.web.customlists',
+    # 'farmsubsidy.web.customlists',
     'farmsubsidy.web.data',
     'farmsubsidy.web.feeds',
-    'farmsubsidy.web.graphs',
+    # 'farmsubsidy.web.graphs',
     'farmsubsidy.web.misc',
     'pagination',
+    'tagging',
     'registration',
     'profiles',
 )
@@ -113,10 +119,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   "django.core.context_processors.media",
   "django.core.context_processors.request",
   'data.context_processors.country',
-  'data.context_processors.ip_country',
-  'data.context_processors.welcome_message',
-  'customlists.context_processors.list_items',
-  'misc.context_processors.latest_tweet',
+  # 'data.context_processors.ip_country',
+  # 'data.context_processors.welcome_message',
+  # 'customlists.context_processors.list_items',
+  # 'misc.context_processors.latest_tweet',
 )
 
 
@@ -132,3 +138,5 @@ CACHE_BACKEND = 'file:///var/tmp/django_cache'
 
 TWITTER_USER = "farmsubsidy"
 TWITTER_TIMEOUT = 3600
+
+DEFAULT_CHARSET = "utf-8" 

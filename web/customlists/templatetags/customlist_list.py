@@ -1,5 +1,5 @@
 from django.template import Library, Node
-from farmsubsidy.queries import queries
+from queries import queries
 
 register = Library() 
 

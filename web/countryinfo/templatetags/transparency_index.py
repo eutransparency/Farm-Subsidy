@@ -4,9 +4,10 @@ from web.countryinfo.transparency import transparency_score, transparency_list
 register = Library()
 
 def transparency_index(country):
-  score = transparency_score(country)
-  score['country'] = country
-  return {'score' : score, 'country' : country}
+  if country != "EU":
+    score = transparency_score(country)
+    score['country'] = country
+    return {'score' : score, 'country' : country}
   
 register.inclusion_tag('blocks/transparency_index.html')(transparency_index)
 
