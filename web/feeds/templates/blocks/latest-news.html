@@ -9,6 +9,7 @@
       <h3>Recent news stories</h3>
       <ul>
         {% for item in newsitems %}
+        {{ item.date }}
         <li><a href="{{ item.url }}" target="_blank">{{ item }}</a></li>
         {% endfor %}
       </ul>  

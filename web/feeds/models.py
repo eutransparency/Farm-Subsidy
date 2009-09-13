@@ -29,7 +29,7 @@ class Feeds(models.Model):
   
 
 class FeedItems(models.Model):
-    title = models.CharField(max_length=80)
+    title = models.CharField(max_length=300)
     description = models.TextField(blank=True)
     guid = models.CharField(blank=False, max_length=1000)
     feed = models.ForeignKey(Feeds)
