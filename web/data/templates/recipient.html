@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}
+  {{ recipient.name }} | {{ country.name }}
+{% endblock %}
+
+{% block page_title %}
+  {{ recipient.name }}
+{% endblock %}
+
+
+{% block content %}
+  
+  {# Only show the graph if there is more than one payment #}
+  {% if payments.1 %}
+    {% load graphs %}
+    {% graph "recipient_graph" recipient.globalrecipientidx %}
+  {% endif %}
+  
+  
+  
+  <ul>
+  {% for payment in payments %}
+    <li>{{ payment.year }} &mdash; {{ payment.globalschemeid.nameenglish }} &mdash; &euro;{{ payment.amounteuro|floatformat:2|intcomma }}</li>
+  {% endfor %}
+  </ul>
+{% endblock %}

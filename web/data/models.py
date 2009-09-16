@@ -28,20 +28,23 @@ class recipient(models.Model):
     lng = models.FloatField()
     class Meta:
         db_table = u'data_recipients'
+    
+    def __unicode__(self):
+      return "%s (%s)" % (self.globalrecipientidx, self.name)
 
 class payment(models.Model):
     paymentid = models.IntegerField()
     globalpaymentid = models.CharField(max_length=10, primary_key=True)
     globalrecipientid = models.ForeignKey(recipient, db_column='globalrecipientid')
     globalrecipientidx = models.CharField(max_length=10)
-    globalschemeid = models.CharField(max_length=10)
+    globalschemeid = models.ForeignKey('scheme', db_column='globalschemeid')
     amounteuro = models.TextField() # This field type is a guess.
     amountnationalcurrency = models.TextField() # This field type is a guess.
     year = models.IntegerField()
     countrypayment = models.CharField(max_length=2)
     class Meta:
         db_table = u'data_payments'
-
+        
 
 class scheme(models.Model):
     globalschemeid = models.CharField(max_length=-1, primary_key=True)
@@ -53,10 +56,11 @@ class scheme(models.Model):
         db_table = u'data_schemes'
 
 class total(models.Model):
-    global_id = models.ForeignKey(recipient, db_column='globalrecipientidx')
+    global_id = models.CharField(max_length=-1, primary_key=True)
     amount_euro = models.TextField() # This field type is a guess.
     year = models.IntegerField()
     countrypayment = models.CharField(max_length=2)
+    nameenglish = models.TextField()    
     class Meta:
         db_table = u'data_totals'
 

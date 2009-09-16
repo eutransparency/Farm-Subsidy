@@ -29,6 +29,9 @@
 {% endifequal %}
 <p></p>
 
+{% load graphs %}
+{% graph "country_years" country.code %}
+
 {% load countrystats %}
 {% country_stats country.code selected_year %}
 
@@ -77,16 +80,16 @@
     <tbody>
       {% for r in top_recipients %}
         <tr>
-          {# {{ r.globalrecipientidx }} #}
-          <td>{{ r.name }}</td>
+          {% url recipient_view country.code r.globalrecipientidx as recipient_url %}
+          <td><a href="{{ recipient_url }}">{{ r.name }}</a></td>
           <td>&euro;{{ r.amount_euro|floatformat:2|intcomma }}</td>
         </tr>
       {% endfor %}
       
     </tbody>
   </table>
+  <a href="{% url browse country=country.code browse_type="recipient" year=selected_year sort="amount" %}">View All</a>
 </div>
-{# TODO Add 'See all' here #}
 
 
 {% endblock %}
@@ -95,7 +98,7 @@
 {% block right %}
   {% load transparency_index %}
 
-  {% transparency_index country.code %}
+  {% transparency_index country %}
 
 
   {% load inthenews %}

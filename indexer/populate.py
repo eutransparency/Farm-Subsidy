@@ -52,7 +52,8 @@ def clean_files(file_path):
       os.rename(file_path, "%s.orig" % file_path)
     
     print "\t - Removeing first line"
-    subprocess.call("sed '1d' %(filename)s.orig > %(filename)s-latin" % {'filename':file_path}, shell=True)
+    # subprocess.call("sed '1d' %(filename)s.orig > %(filename)s-latin" % {'filename':file_path}, shell=True)
+    subprocess.call("cat %(filename)s.orig > %(filename)s-latin" % {'filename':file_path}, shell=True)
     
     print "\t - Converting %s to UTF8" % filename
     subprocess.call('iconv -f latin1 -t utf-8 %(filename)s-latin > %(filename)s' % {'filename':file_path}, shell=True)
@@ -142,11 +143,13 @@ def totals(country):
   # SUM all payments for the country and group by globalrecipientidx then year
   print "\t - Making new totals for %s" % country
   sql = """
-  INSERT INTO data_totals SELECT p.globalrecipientidx, SUM(p.amounteuro), p.year, p.countrypayment 
-  FROM data_payments p 
-  WHERE  p.countrypayment='%s'
-  GROUP BY p.globalrecipientidx, p.year, p.countrypayment
-  """ % country
+  INSERT INTO data_totals 
+  SELECT DISTINCT ON (p.globalrecipientidx, year) 
+      p.globalrecipientidx, SUM(p.amounteuro), p.year, p.countrypayment, MIN(r.name)
+      FROM data_payments p, data_recipients r 
+      WHERE  p.globalrecipientidx IS NOT NULL AND r.globalrecipientidx=p.globalrecipientidx 
+      AND p.countrypayment='%s'
+      GROUP BY p.globalrecipientidx, p.year, p.countrypayment  """ % country
   c.execute(sql)
   conn.commit()  
   
@@ -206,10 +209,13 @@ def process_country(country):
       DELIMITERS ';' 
       CSV;
     """ % locals()
-    
+  
     print "COPYing %s" % table
-    c.execute(sql)
+    c.execute(sql)  
     conn.commit()    
+      
+      
+      
   # make totals once all the tables are COPY'd  
   totals(country)
     
@@ -219,6 +225,7 @@ if __name__ == "__main__":
   countries = sys.argv[1:]
   if len(countries) == 0:
     countries = countryCodes.country_codes()
+    del countries['EU']
     print "No country specified, working on all countries in countrycodes()"
   # try:      
   indexes('delete')

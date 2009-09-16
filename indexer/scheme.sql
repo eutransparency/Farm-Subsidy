@@ -69,7 +69,8 @@ CREATE TABLE data_totals
   global_id character varying(10) NOT NULL,
   amount_euro numeric,
   "year" integer,
-  countrypayment varchar(2)    
+  countrypayment varchar(2),
+  nameenglish text   
 )
 WITH (OIDS=FALSE);
 ALTER TABLE data_totals OWNER TO farmsubsidy;

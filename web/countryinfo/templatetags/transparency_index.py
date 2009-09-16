@@ -1,12 +1,14 @@
 from django.template import Library, Node
 from web.countryinfo.transparency import transparency_score, transparency_list
+from indexer import countryCodes
 
 register = Library()
 
 def transparency_index(country):
-  if country != "EU":
-    score = transparency_score(country)
-    score['country'] = country
+  if country['code'] != "EU":
+    score = transparency_score(country['code'])
+    print score
+    score['country'] = country['code']
     return {'score' : score, 'country' : country}
   
 register.inclusion_tag('blocks/transparency_index.html')(transparency_index)

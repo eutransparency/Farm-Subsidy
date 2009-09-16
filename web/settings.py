@@ -71,6 +71,7 @@ MIDDLEWARE_CLASSES = (
     'pagination.middleware.PaginationMiddleware',
     'misc.middleware.Middleware',
     'django.middleware.transaction.TransactionMiddleware',
+    'misc.debugfooter.DebugFooter',
     # 'django.middleware.cache.FetchFromCacheMiddleware',
     
 )
@@ -103,7 +104,7 @@ INSTALLED_APPS = (
     # 'farmsubsidy.web.customlists',
     'farmsubsidy.web.data',
     'farmsubsidy.web.feeds',
-    # 'farmsubsidy.web.graphs',
+    'farmsubsidy.web.graphs',
     'farmsubsidy.web.misc',
     'pagination',
     'tagging',
@@ -122,7 +123,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   # 'data.context_processors.ip_country',
   # 'data.context_processors.welcome_message',
   # 'customlists.context_processors.list_items',
-  # 'misc.context_processors.latest_tweet',
+  'misc.context_processors.latest_tweet',
 )
 
 

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}
+  Browse
+{% endblock %}
+
+{% block content %}
+
+  {% load pagination_tags %}
+  {% autopaginate data 30 %}
+
+  <table>
+    <thead>
+      <th>Name</th>
+      <th>Amount</th>
+    </thead>
+    <tbody>
+      {% for item in data %}
+      <tr>
+        {% url recipient_view country.code item.global_id as recipient_url %}
+        <td><a href="{{ recipient_url }}">{{ item.nameenglish }}</a></td>
+        <td>&euro;{{ item.amount_euro|floatformat:2|intcomma }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <h4 class="pager">{% paginate %}</h4>
+{% endblock %}
