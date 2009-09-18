@@ -2,11 +2,32 @@
 {% load humanize %}
 
 {% block title %}
-  Browse
+  Browse {{ country.name }} {{ browse_type|title }}s{% ifnotequal selected_year 0 %} in {{ selected_year }}{% else %}, All years{% endifnotequal %}
+{% endblock %}
+
+{% block page_title %}
+  Browse {{ country.name }} {{ browse_type|title }}s{% ifnotequal selected_year 0 %} in {{ selected_year }}{% else %}, All years{% endifnotequal %}
 {% endblock %}
 
 {% block content %}
-
+  <div class="country_selector">  
+    {% for year in years %}
+      {% ifequal year.year selected_year  %}
+        <strong>{{ year.year }}</strong>
+      {% else %}
+        {% url browse country=country.code browse_type=browse_type year=year.year sort=sort as year_url %}
+        <a href="{{ year_url }}">{{ year.year }}</a>
+      {% endifequal %}
+    {% endfor %}
+    <br />
+    {% ifequal selected_year 0 %}
+      All Years
+    {% else %}
+      <a href="{% url browse country=country.code browse_type=browse_type year='0' sort=sort %}" class="selected">All Years</a>
+    {% endifequal %}
+  </div>
+  
+  
   {% load pagination_tags %}
   {% autopaginate data 30 %}
 
@@ -19,7 +40,7 @@
       {% for item in data %}
       <tr>
         {% url recipient_view country.code item.global_id as recipient_url %}
-        <td><a href="{{ recipient_url }}">{{ item.nameenglish }}</a></td>
+        <td><a href="{{ recipient_url }}">{{ item.name }}</a></td>
         <td>&euro;{{ item.amount_euro|floatformat:2|intcomma }}</td>
       </tr>
       {% endfor %}

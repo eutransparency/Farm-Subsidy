@@ -62,21 +62,46 @@ def recipient(request, country, recipient_id):
     },
     context_instance=RequestContext(request)
   )  
+
+def scheme(request, country, globalschemeid):
+  """
+  Show a single scheme and a list of top recipients to get payments under it
+  
+  - `country` ISO country, as defined by countryCodes
+  - ``globalschemeid` globalschemeid from the data_schemes table in the database
+  """ 
+  
+  scheme = models.scheme.objects.get(globalschemeid=globalschemeid)
+  totals = models.data.objects.amount_years(country=country, scheme=globalschemeid)
+  top_recipients = models.data.objects.browse_recipients(country, year=0, scheme=globalschemeid)
+  
+  return render_to_response(
+    'scheme.html', 
+    {
+    'scheme' : scheme,
+    'totals' : totals,
+    'top_recipients' : top_recipients,
+    },
+    context_instance=RequestContext(request)
+  )  
   
 
-def browse(request, country, browse_type, year, sort='amount'):
+def browse(request, country, browse_type, year=DEFAULT_YEAR, sort='amount'):
   if browse_type == "recipient":
-    data = models.total.objects.aggregate(Sum('year'))
-    # .filter(countrypayment=country).order_by('-amount_euro')
+    data = models.data.objects.browse_recipients(country, year, sort)
+  if browse_type == "scheme":
+    data = models.data.objects.browse_schemes(country, year, sort)
   
-  print data
-  # if int(year) != 0:
-  #   data.filter(year=year)
-
+  years = models.data.objects.years(country=country)
+    
   return render_to_response(
     'browse.html', 
     {
     'data' : data,
+    'years' : years,
+    'sort' : sort,
+    'browse_type' : browse_type,
+    'selected_year' : int(year),    
     },
     context_instance=RequestContext(request)
   )  

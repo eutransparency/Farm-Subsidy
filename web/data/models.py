@@ -64,7 +64,7 @@ class total(models.Model):
     class Meta:
         db_table = u'data_totals'
 
-class data(models.Model):
+`class data(models.Model):
   class Meta:
       abstract = True
   
@@ -72,6 +72,7 @@ class data(models.Model):
   name = models.TextField()
   amount_euro = models.TextField()
   year = models.TextField()
+  globalschemeid = models.TextField()
   
   
   

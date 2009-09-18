@@ -12,25 +12,27 @@
 
 {% block content %}
 
-
-{% for year in years %}
-  {% ifequal year.year selected_year  %}
-    <strong>{{ year.year }}</strong>
-  {% else %}
-    {% url country_year country=country.code year=year.year as year_url %}
-    <a href="{{ year_url }}">{{ year.year }}</a>
-  {% endifequal %}
-{% endfor %}
-<br />
-{% ifequal selected_year 0 %}
-  All Years
-{% else %}
-  <a href="{% url country_year country=country.code year=0 %}" class="selected">All Years</a>
-{% endifequal %}
-<p></p>
-
 {% load graphs %}
 {% graph "country_years" country.code %}
+
+<div class="country_selector">  
+  {% for year in years %}
+    {% ifequal year.year selected_year  %}
+      <strong>{{ year.year }}</strong>
+    {% else %}
+      {% url country_year country=country.code year=year.year as year_url %}
+      <a href="{{ year_url }}">{{ year.year }}</a>
+    {% endifequal %}
+  {% endfor %}
+  <br />
+  {% ifequal selected_year 0 %}
+    All Years
+  {% else %}
+    <a href="{% url country_year country=country.code year=0 %}" class="selected">All Years</a>
+  {% endifequal %}
+</div>
+
+
 
 {% load countrystats %}
 {% country_stats country.code selected_year %}
@@ -46,13 +48,15 @@
     </thead>
   {% for scheme in top_schemes %}
     <tr>
-      <td>{{ scheme.name }}</td>
+      {% url scheme_view country=country.code globalschemeid=scheme.globalschemeid as scheme_url %}
+      <td><a href="{{ scheme_url }}">{{ scheme.name }}</a></td>
       <td>&euro;{{ scheme.amount_euro|floatformat:2|intcomma }}</td>
     </tr>
   {% endfor %}
   </table>
+  <a href="{% url browse country=country.code browse_type="scheme" year=selected_year sort="amount" %}">View All</a>
+  {# AT/browse/scheme/ #}
 </div>
-{#  TODO Add 'See all' here #}
 <div class="block top_regions halfcol">
   <h3>Top Regions</h3>
   <table>

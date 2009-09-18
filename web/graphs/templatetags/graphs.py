@@ -11,13 +11,15 @@ def graph(graph_type, data):
   
   if graph_type == "country_years":
     url = reverse('country_graph', kwargs={'country':data})
-    print url
     return {'url' : "%s" % (url)}
 
+  if graph_type == "scheme_years":
+    url = reverse('scheme_graph', kwargs={'globalschemeid':data})
+    return {'url' : "%s" % (url)}
+    
 
   if graph_type == "recipient_graph":
     url = reverse('recipient_graph', kwargs={'recipient_id':data})
-    print url
     return {'url' : "%s" % (url)}
     
     
