@@ -48,14 +48,13 @@
     </thead>
   {% for scheme in top_schemes %}
     <tr>
-      {% url scheme_view country=country.code globalschemeid=scheme.globalschemeid as scheme_url %}
+      {% url scheme_view country=scheme.country globalschemeid=scheme.globalschemeid as scheme_url %}
       <td><a href="{{ scheme_url }}">{{ scheme.name }}</a></td>
       <td>&euro;{{ scheme.amount_euro|floatformat:2|intcomma }}</td>
     </tr>
   {% endfor %}
   </table>
   <a href="{% url browse country=country.code browse_type="scheme" year=selected_year sort="amount" %}">View All</a>
-  {# AT/browse/scheme/ #}
 </div>
 <div class="block top_regions halfcol">
   <h3>Top Regions</h3>
@@ -66,13 +65,13 @@
     </thead>
   {% for region in top_regions %}
     <tr>
-      <td>{{ region.name }}</td>
-      <td>&euro;{{ region.amount_euro|floatformat:2|intcomma }}</td>
+      <td>{{ region.name|title }}</td>
+      <td>&euro;{{ region.total|floatformat:2|intcomma }}</td>
     </tr>
   {% endfor %}
   </table>
+  <a href="{% url browse country=country.code browse_type="location" year=selected_year sort="amount" %}">View All</a>
 </div>
-{# TODO Add 'See all' here#}
 
 <div class="block top_recipients">
   <h3>Top Recipients</h3>

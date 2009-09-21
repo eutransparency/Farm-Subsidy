@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}
+    {{ scheme.nameenglish }}
+{% endblock %}
+
+{% block page_title %}
+    {{ scheme.nameenglish }}
+{% endblock %}
+
+{% block content %}
+
+  {% load graphs %}
+  {% graph "scheme_years" scheme.globalschemeid %}
+
+
+  <table>
+    <thead>
+      <th>Year</th>
+      <th>Amount</th>
+    </thead>
+    <tbody>
+      {% for year in totals %}
+      <tr>
+        <td>{{ year.year }}</td>
+        <td>&euro;{{ year.amount_euro|floatformat:2|intcomma }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+
+  {% load pagination_tags %}
+  {% autopaginate top_recipients 30 %}
+  
+  <h3>Top Recipients</h3>
+  <table>
+    <thead>
+      <th>Name</th>
+      <th>Amount</th>
+    </thead>
+    <tbody>
+      {% for recipient in top_recipients %}
+      <tr>
+        {% url recipient_view country.code recipient.globalrecipientidx as recipient_url %}
+        <td><a href="{{ recipient_url }}">{{ recipient.name }}</a></td>
+        <td>&euro;{{ recipient.amount_euro|floatformat:2|intcomma }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <h4 class="pager">{% paginate %}</h4>
+
+
+{% endblock %}

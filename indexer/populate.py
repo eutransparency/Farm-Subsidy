@@ -23,7 +23,8 @@ import csv
 import codecs
 import subprocess
 
-from farmsubsidy import fsconf
+sys.path.append('..')
+import fsconf
 import countryCodes
 import connection
 
@@ -78,7 +79,10 @@ def indexes(opp):
       ('payments_globalschemeid', 'globalschemeid', 'btree'),
       ],
     'data_recipients' : [
-      # ('country', 'country', 'btree'),
+      ('C', 'countrypayment', 'btree'),
+      ('G1', 'geo1', 'btree'),
+      ('G2', 'geo2', 'btree'),
+      ('G3', 'geo3', 'btree'),
       ('recipient_globalrecipientidx', 'globalrecipientidx', 'btree'),
       ('globalrecipientid', 'globalrecipientid', 'btree'),
       ],
@@ -89,6 +93,7 @@ def indexes(opp):
     'data_totals' : [
     ('totals_year', 'year', 'btree'),
     ('gid', 'global_id', 'btree'),
+    ('country', 'countrypayment', 'btree'),
     ('amount', 'amount_euro', 'btree'),
     ]
   }
@@ -152,6 +157,33 @@ def totals(country):
       GROUP BY p.globalrecipientidx, p.year, p.countrypayment  """ % country
   c.execute(sql)
   conn.commit()  
+  
+  print "\t - Deleting old location totals for %s" % country
+  sql = "DELETE FROM data_locations WHERE country='%s'" % country
+  c.execute(sql)
+  conn.commit()  
+  
+  fields = ['countrypayment', 'geo1', 'geo2', 'geo3', 'geo4']
+  for i,parent in enumerate(fields[0:-1]):
+    # print "%s=%s" % (p, fields[i+1])  
+    child = fields[i+1]
+    
+    # Location totals
+    print "\t - Making %s location totals for %s" % (child, country)
+    sql = """
+    INSERT INTO data_locations 
+      SELECT r.countrypayment, p.year, LOWER(r.%(child)s) as N, LOWER(r.%(parent)s) AS P, SUM(p.amounteuro)
+      FROM data_recipients r
+      JOIN data_payments p
+      ON r.globalrecipientid = p.globalrecipientid
+      WHERE p.countrypayment = '%(country)s' AND r.%(child)s IS NOT NULL
+      GROUP BY N,p.year, P, r.countrypayment
+      ORDER BY N DESC
+        """ % locals()
+    c.execute(sql)
+    conn.commit()  
+
+  
   
 def vacuum(tables):
   """

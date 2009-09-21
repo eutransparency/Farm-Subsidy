@@ -1,6 +1,7 @@
 # Django settings for farmjango project.
 
 import sys
+sys.path.append('/var/www/')
 sys.path.append('web')
 
 
@@ -71,7 +72,8 @@ MIDDLEWARE_CLASSES = (
     'pagination.middleware.PaginationMiddleware',
     'misc.middleware.Middleware',
     'django.middleware.transaction.TransactionMiddleware',
-    'misc.debugfooter.DebugFooter',
+    # 'misc.debugfooter.DebugFooter',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     # 'django.middleware.cache.FetchFromCacheMiddleware',
     
 )
@@ -110,6 +112,7 @@ INSTALLED_APPS = (
     'tagging',
     'registration',
     'profiles',
+    # 'debug_toolbar',
 )
 
 
@@ -140,4 +143,6 @@ CACHE_BACKEND = 'file:///var/tmp/django_cache'
 TWITTER_USER = "farmsubsidy"
 TWITTER_TIMEOUT = 3600
 
-DEFAULT_CHARSET = "utf-8" 
+DEFAULT_CHARSET = "utf8" 
+
+INTERNAL_IPS = ('127.0.0.1',)

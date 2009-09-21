@@ -64,7 +64,25 @@ class total(models.Model):
     class Meta:
         db_table = u'data_totals'
 
-`class data(models.Model):
+
+class locations(models.Model):
+    country = models.CharField(max_length=2)
+    year = models.IntegerField()
+    name = models.TextField(primary_key=True)    
+    parent_name = models.TextField()    
+    total = models.TextField() # This field type is a guess.
+
+    objects = farmdata.LocationManager()
+    
+    class Meta:
+        db_table = u'data_locations'
+        managed = False
+
+    def __unicode__(self):
+      return "%s (%s)" % (self.name, self.parent_name)
+    
+
+class data(models.Model):
   class Meta:
       abstract = True
   
@@ -73,6 +91,7 @@ class total(models.Model):
   amount_euro = models.TextField()
   year = models.TextField()
   globalschemeid = models.TextField()
+  country = models.TextField()
   
   
   

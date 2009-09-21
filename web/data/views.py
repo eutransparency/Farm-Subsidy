@@ -1,9 +1,10 @@
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from django.db.models import Sum
+from django.db.models import Sum, Count
 import models
 from farmsubsidy import fsconf
+from farmsubsidy.indexer import countryCodes
 
 DEFAULT_YEAR = fsconf.default_year
 
@@ -24,8 +25,11 @@ def country(request, country, year=DEFAULT_YEAR):
   years = models.data.objects.years(country=country)
   
   top_recipients = models.data.objects.top_recipients(country, limit=10, year=year)
-  top_schemes = models.data.objects.top_schemes(country, limit=10, year=year)
-  top_regions = models.data.objects.top_regions(country, limit=10, year=year)
+  top_schemes = models.data.objects.top_schemes(country, limit=10, year=year)  
+  top_regions = models.locations.objects.locations(country=country, parent=country, year=year, limit=10)
+
+
+  
   
   return render_to_response(
     'country.html', 
@@ -87,13 +91,19 @@ def scheme(request, country, globalschemeid):
   
 
 def browse(request, country, browse_type, year=DEFAULT_YEAR, sort='amount'):
+  
   if browse_type == "recipient":
     data = models.data.objects.browse_recipients(country, year, sort)
   if browse_type == "scheme":
     data = models.data.objects.browse_schemes(country, year, sort)
-  
-  years = models.data.objects.years(country=country)
+  if browse_type == "location":
+    data = models.locations.objects.locations(country=country, parent=country, year=year, limit=None)
     
+    
+  years = models.data.objects.years(country=country)
+  
+
+  
   return render_to_response(
     'browse.html', 
     {
@@ -107,7 +117,36 @@ def browse(request, country, browse_type, year=DEFAULT_YEAR, sort='amount'):
   )  
 
 
+def location(request, country, name, year="0"):
+  if year == "0":
+    location = models.locations.objects.filter(name=name, country=country)[:1]
+  else:
+    location = models.locations.objects.filter(name=name, country=country, year=year)
 
+    
+  if len(location) > 0:
+    location = location[0]
+  else:
+    location = []
   
+  number_recipients = models.recipient.objects.filter(geo1__iexact=name).aggregate(Count('geo1'))
+  location_recipients = models.data.objects.browse_recipients(country=country, year=year, location=('geo1', name), limit=10)
+  years = models.locations.objects.location_years(country=country, name=name)
+  sub_location = models.locations.objects.locations(country=country, parent=name.lower(), year=year, limit=None)
+
+
+  return render_to_response(
+    'location.html', 
+    {
+    'location' : location,
+    'location_recipients' : location_recipients,
+    'number_recipients' : number_recipients,
+    'sub_location' : sub_location,
+    'years' : years,
+    'selected_year' : int(year),        
+    },
+    context_instance=RequestContext(request)
+  )  
   
+
   

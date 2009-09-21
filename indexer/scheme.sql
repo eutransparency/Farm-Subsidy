@@ -74,3 +74,17 @@ CREATE TABLE data_totals
 )
 WITH (OIDS=FALSE);
 ALTER TABLE data_totals OWNER TO farmsubsidy;
+
+
+
+DROP TABLE IF EXISTS data_locations;
+CREATE TABLE data_locations
+(
+  country varchar(2),
+  year integer,
+  name text,
+  parent_name text,
+  total numeric
+)
+WITH (OIDS=FALSE);
+ALTER TABLE data_totals OWNER TO farmsubsidy;

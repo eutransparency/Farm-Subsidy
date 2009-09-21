@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}
+    {{ location.name|title }} | {{ country.name }} | {% ifequal selected_year 0  %}
+      All Years
+    {% else %}
+      in {{ selected_year }}
+    {% endifequal %}
+    
+{% endblock %}
+
+{% block page_title %}
+    {{ location.name|title }}, {{ country.name }}  
+    {% ifequal selected_year 0  %}
+      All years
+    {% else %}
+      in {{ selected_year }}
+    {% endifequal %}
+    
+{% endblock %}
+
+{% block content %}
+
+  {% if years.1 %}
+  <div class="country_selector">
+    {% for year in years %}
+      {% ifequal year.year selected_year  %}
+        <strong>{{ year.year }}</strong>
+      {% else %}
+        {% url location_view country=location.country name=location.name year=year.year as year_url %}
+        <a href="{{ year_url }}">{{ year.year }}</a>
+      {% endifequal %}
+    {% endfor %}
+    <br />
+    {% ifequal selected_year 0 %}
+      All Years
+    {% else %}
+
+    {% endifequal %}
+  </div>
+  {% endif %}  
+  
+  {{ number_recipients.geo1__count }} recipients got &euro;{{ location.total|floatformat:2|intcomma }} 
+   {% ifequal selected_year 0  %}
+    over all years
+  {% else %}
+    in {{ selected_year }}
+  {% endifequal %}
+  
+
+  {% for l in sub_location %}
+  <p>  {{ l.name }}</p>
+  {% endfor %}
+  
+  <div class="block top_recipients">
+    <h3>Top Recipients</h3>
+    <table>  
+      <thead>
+        <th>Name</th>
+        <th>Amount</th>
+      </thead>
+      <tbody>
+        {% for r in location_recipients %}
+          <tr>
+            {% url recipient_view country.code r.globalrecipientidx as recipient_url %}
+            <td><a href="{{ recipient_url }}">{{ r.name }}</a></td>
+            <td>&euro;{{ r.amount_euro|floatformat:2|intcomma }}</td>
+          </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+    <a href="{% url browse country=country.code browse_type="recipient" year=selected_year sort="amount" %}">View All</a>
+  </div>
+  
+  
+  
+  
+  
+{% endblock %}
