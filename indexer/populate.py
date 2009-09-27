@@ -68,7 +68,9 @@ def clean_files(file_path):
     print e
   
 
-def indexes(opp):
+def indexes(opp, tables=None):
+  
+  
   
   indexes = {
     'data_payments' : [
@@ -100,27 +102,31 @@ def indexes(opp):
   
   conn,c = connection.connect()
 
-
+  if tables is None:
+    tables = [table for table in indexes]
+  
   if opp == "delete":
     for table in indexes:
-      print "Indexes for %s" % table
-      for index in indexes[table]:
-        try:
-          print "\t - Deleting index %s on %s" % (index[0], table)
-          c.execute("DROP INDEX %s" % (index[0]))
-          conn.commit()  
-        except:
-          pass
+      if table in tables:
+        print "Indexes for %s" % table
+        for index in indexes[table]:
+          try:
+            print "\t - Deleting index %s on %s" % (index[0], table)
+            c.execute("DROP INDEX %s" % (index[0]))
+            conn.commit()  
+          except:
+            pass
       
   
   if opp == "create":
     for table in indexes:
-      print "Indexes for %s" % table
-      for index in indexes[table]:
-        print "\t - Creating index %s on %s" % (index[0], table)
-        c.execute("CREATE INDEX %s ON %s USING %s (%s)" % (index[0], table, index[2], index[1]))
-        conn.commit()  
-  # sys.exit()
+      if table in tables:      
+        print "Indexes for %s" % table
+        for index in indexes[table]:
+          print "\t - Creating index %s on %s" % (index[0], table)
+          c.execute("CREATE INDEX %s ON %s USING %s (%s)" % (index[0], table, index[2], index[1]))
+          conn.commit()  
+    # sys.exit()
 
 
 def totals(country):
@@ -278,10 +284,14 @@ if __name__ == "__main__":
   indexes('delete')
   for country in countries:
     process_country(country.upper())
-  indexes('create')
+  indexes('create', ['data_schemes', 'data_payments', 'data_recipents'])
+
   for country in countries:
       totals(country)
-      
+  
+  indexes('create', ['data_totals'])
+  
+  
   vacuum(('data_totals', 'data_payments', 'data_recipients', 'data_schemes')) 
   # except:
   #   try:
