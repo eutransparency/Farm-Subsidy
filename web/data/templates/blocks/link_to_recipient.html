@@ -1,0 +1,7 @@
+<div class="block" id="recipient_links_block">
+  <h3>Link to this</h3>
+  {% for name,url in links %}
+  <p>Copy &amp; paste this into {{ name }}</p>
+    <code>{{ url }}</code>
+  {% endfor %}
+</div>

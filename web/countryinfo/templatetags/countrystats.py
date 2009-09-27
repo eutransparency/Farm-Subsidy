@@ -1,6 +1,6 @@
 from django.template import Library, Node
 from web.countryinfo.load_info import load_info
-from farmsubsidy import fsconf
+import fsconf
 
 register = Library()
 

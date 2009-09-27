@@ -400,3 +400,20 @@ padding:0.3em 1em;
   text-align:center;
   margin-bottom:1em;
 }
+
+
+.comment {
+  border-bottom:#999 dotted 1px;
+  clear:both;
+  overflow:auto;
+}
+
+
+.comment .info {
+  float:left;
+  width:150px;
+}
+
+.comment .message {
+  float:left;
+}

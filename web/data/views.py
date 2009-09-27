@@ -3,8 +3,8 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.db.models import Sum, Count
 import models
-from farmsubsidy import fsconf
-from farmsubsidy.indexer import countryCodes
+import fsconf
+from indexer import countryCodes
 
 DEFAULT_YEAR = fsconf.default_year
 

@@ -8,7 +8,7 @@ import sys
 #Set up Paths
 
 #Path to root of the project (where the indexer is),
-project_path = '/var/www/farmsubsidy/'
+project_path = '/var/www/stage.farmsubsidy.org/'
 
 # absolute path to the data (folder containing mdb and csv folders)
 datadir = project_path + "data"

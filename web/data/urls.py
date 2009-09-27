@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import *
-from farmsubsidy.indexer import countryCodes
+from indexer import countryCodes
 import views
 
 

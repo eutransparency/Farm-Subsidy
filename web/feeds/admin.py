@@ -1,5 +1,5 @@
 from django.contrib import admin
-from farmsubsidy.web.feeds.models import *
+from web.feeds.models import *
 
 class FeedsAdmin(admin.ModelAdmin):
   list_display  = ('title','url', 'is_active', 'category',)

@@ -1,5 +1,5 @@
 import random
-from fishsubsidy.indexer import countryCodes
+from indexer import countryCodes
 
 
 def country(request):

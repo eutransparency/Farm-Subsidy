@@ -1,8 +1,8 @@
 import csv
 import sys
 
-from farmsubsidy.indexer import countryCodes
-from farmsubsidy import fsconf
+from indexer import countryCodes
+import fsconf
 
 def open_index():
   filepath = "%s/transparency/index.csv" % (fsconf.statsdir)

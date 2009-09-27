@@ -1,7 +1,8 @@
 # Django settings for farmjango project.
+import fsconf
 
 import sys
-sys.path.append('/var/www/')
+# sys.path.append('/var/www/')
 sys.path.append('web')
 
 
@@ -20,7 +21,7 @@ DATABASE_NAME = 'farmjango'             # Or path to database file if using sqli
 DATABASE_USER = 'farmsubsidy_writer'             # Not used with sqlite3.
 DATABASE_PASSWORD = 'netopia'         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+DATABASE_PORT = '5433'             # Set to empty string for default. Not used with sqlite3.
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -41,7 +42,7 @@ USE_I18N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '/var/www/farmsubsidy/web/media/'
+MEDIA_ROOT = fsconf.project_path + 'web/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -64,7 +65,7 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    # 'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -74,7 +75,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.transaction.TransactionMiddleware',
     # 'misc.debugfooter.DebugFooter',
     # 'debug_toolbar.middleware.DebugToolbarMiddleware',
-    # 'django.middleware.cache.FetchFromCacheMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     
 )
 
@@ -84,7 +85,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/var/www/farmsubsidy/web/templates',
+    fsconf.project_path + 'web/templates',
 )
 
 
@@ -92,7 +93,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'django.contrib.admin',
     'django.contrib.auth',
-    # 'django.contrib.comments',
+    'django.contrib.comments',
     'django.contrib.contenttypes',
     'django.contrib.flatpages',
     'django.contrib.markup',
@@ -101,18 +102,19 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.syndication',
     # 'farmsubsidy.web.api',
-    # 'farmsubsidy.web.comments',
-    'farmsubsidy.web.countryinfo',
+    'web.comments',
+    'web.countryinfo',
     # 'farmsubsidy.web.customlists',
-    'farmsubsidy.web.data',
-    'farmsubsidy.web.feeds',
-    'farmsubsidy.web.graphs',
-    'farmsubsidy.web.misc',
+    'web.data',
+    'web.feeds',
+    'web.graphs',
+    'web.misc',
     'pagination',
     'tagging',
     'registration',
     'profiles',
-    # 'debug_toolbar',
+    'debug_toolbar',
+    'web.listmaker',
 )
 
 
@@ -123,8 +125,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   "django.core.context_processors.media",
   "django.core.context_processors.request",
   'data.context_processors.country',
-  # 'data.context_processors.ip_country',
-  # 'data.context_processors.welcome_message',
+  'data.context_processors.ip_country',
   # 'customlists.context_processors.list_items',
   'misc.context_processors.latest_tweet',
 )
@@ -146,3 +147,6 @@ TWITTER_TIMEOUT = 3600
 DEFAULT_CHARSET = "utf8" 
 
 INTERNAL_IPS = ('127.0.0.1',)
+
+
+COMMENTS_APP = 'web.comments'

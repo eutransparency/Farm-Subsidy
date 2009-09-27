@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load humanize %}
+{% load humanize markup %}
 
 {% block title %}
   {{ recipient.name }} | {{ country.name }}
@@ -25,4 +25,78 @@
     <li>{{ payment.year }} &mdash; {{ payment.globalschemeid.nameenglish }} &mdash; &euro;{{ payment.amounteuro|floatformat:2|intcomma }}</li>
   {% endfor %}
   </ul>
+  
+  
+  
+  
+  <div class="section">
+    {% load comments i18n %}
+    {% get_comment_list for recipient as comment_list %}
+    {% for comment in comment_list %}
+      <div class="comment">
+        <div class="info col">        
+          <h4>{{ comment.user }}</h4>
+          {{ comment.submit_date|date:"H.i" }} {{ comment.submit_date|naturalday }}
+        </div>    
+        <div class="message col">
+          {{ comment.comment|markdown:"safe" }}
+        </div>
+      </div>
+    {% endfor %}
+    
+  </div>
+
+  <div class="section">
+    <h3>Add information for this recipient</h3>
+    <p>e.g. is the recipient a subsidiary of another company, is it an organic farm.  Please include links where possible.</p>
+    
+    {% if user.is_authenticated %}
+    {% get_comment_form for recipient as form %}
+    <form action="{% comment_form_target %}" method="post">
+      {% if next %}<input type="hidden" name="next" value="{{ next }}" />{% endif %}
+      {% for field in form %}
+        {% if field.is_hidden %}
+          {{ field }}
+        {% else %}
+          {% if field.errors %}{{ field.errors }}{% endif %}
+          <p
+            {% if field.errors %} class="error"{% endif %}
+            {% ifequal field.name "honeypot" %} style="display:none;"{% endifequal %}>
+            {{ field.label_tag }} {{ field }}
+
+          </p>
+        {% endif %}
+      {% endfor %}
+      <p class="submit">
+        <input type="submit" name="post" class="submit-post" value="{% trans "Post" %}" />
+        <input type="submit" name="preview" class="submit-preview" value="{% trans "Preview" %}" />
+      </p>
+    </form>
+    
+    {% else %}
+        <a href="{% url registration_register %}">Create an account</a> or <a href="{% url auth_login %}">Log in</a> to add information.
+    {% endif %}
+  </div>
+  
+  
+  
+  
+  
+{% endblock %}
+
+
+{% block right %}
+  
+<h1>{{ recipient.countryrecipient }}</h1>
+{# {% load download_block %} #}
+{# {% download_recipient results.documents.0.global_id_x %}  #}
+
+{# {% load related %} #}
+{# {% get_related results.documents.0.doc_id %} #}
+
+{% load recipient_blocks %}  
+{% recipient_links recipient %}
+{# {% link_to_recipient recipient %} #}
+
+
 {% endblock %}

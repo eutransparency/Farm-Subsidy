@@ -52,15 +52,15 @@ def clean_files(file_path):
       print "\t - Renaming %(filename)s to %(filename)s.orig" % {'filename':filename}
       os.rename(file_path, "%s.orig" % file_path)
     
-    print "\t - Removeing first line"
-    # subprocess.call("sed '1d' %(filename)s.orig > %(filename)s-latin" % {'filename':file_path}, shell=True)
-    subprocess.call("cat %(filename)s.orig > %(filename)s-latin" % {'filename':file_path}, shell=True)
+      print "\t - Removeing first line"
+      # subprocess.call("sed '1d' %(filename)s.orig > %(filename)s-latin" % {'filename':file_path}, shell=True)
+      subprocess.call("cat %(filename)s.orig > %(filename)s-latin" % {'filename':file_path}, shell=True)
     
-    print "\t - Converting %s to UTF8" % filename
-    subprocess.call('iconv -f latin1 -t utf-8 %(filename)s-latin > %(filename)s' % {'filename':file_path}, shell=True)
+      print "\t - Converting %s to UTF8" % filename
+      subprocess.call('iconv -f latin1 -t utf-8 %(filename)s-latin > %(filename)s' % {'filename':file_path}, shell=True)
     
-    print "\t - Cleaning up"
-    os.remove("%s-latin" % file_path)
+      print "\t - Cleaning up"
+      os.remove("%s-latin" % file_path)
     
     
     
@@ -172,7 +172,7 @@ def totals(country):
     print "\t - Making %s location totals for %s" % (child, country)
     sql = """
     INSERT INTO data_locations 
-      SELECT r.countrypayment, p.year, LOWER(r.%(child)s) as N, LOWER(r.%(parent)s) AS P, SUM(p.amounteuro)
+      SELECT UPPER(r.countrypayment), p.year, LOWER(r.%(child)s) as N, LOWER(r.%(parent)s) AS P, SUM(p.amounteuro)
       FROM data_recipients r
       JOIN data_payments p
       ON r.globalrecipientid = p.globalrecipientid
@@ -183,6 +183,22 @@ def totals(country):
     c.execute(sql)
     conn.commit()  
 
+
+  print "\t - Deleting old years for %s" % country
+  sql = "DELETE FROM data_years WHERE country='%s'" % country
+  c.execute(sql)
+  conn.commit()  
+
+
+  print "\t - Creating years for %s" % country
+  sql = """INSERT INTO data_years SELECT '%(country)s',year, count(*), SUM(amounteuro) 
+           FROM data_payments 
+           WHERE countrypayment='%(country)s' 
+           GROUP BY year""" % locals()
+  c.execute(sql)
+  conn.commit()  
+  
+  
   
   
 def vacuum(tables):
@@ -221,7 +237,11 @@ def process_country(country):
   if country and country not in countryCodes.country_codes():
     print "%s is not a country!" % country
     return
-  tables = ['data_payments', 'data_recipients', 'data_schemes']
+  tables = [
+    'data_recipients', 
+    'data_payments', 
+    'data_schemes'
+    ]
   
   conn,c = connection.connect()
   
@@ -245,11 +265,6 @@ def process_country(country):
     print "COPYing %s" % table
     c.execute(sql)  
     conn.commit()    
-      
-      
-      
-  # make totals once all the tables are COPY'd  
-  totals(country)
     
 
 
@@ -263,7 +278,10 @@ if __name__ == "__main__":
   indexes('delete')
   for country in countries:
     process_country(country.upper())
-  indexes('create')    
+  indexes('create')
+  for country in countries:
+      totals(country)
+      
   vacuum(('data_totals', 'data_payments', 'data_recipients', 'data_schemes')) 
   # except:
   #   try:

@@ -99,13 +99,21 @@
   
 
 {% block right %}
-  {% load transparency_index %}
 
+<div class="block">
+  <h3>Browse all recipients</h3>
+    <ul>
+    <li><a href="{% url browse country=country.code browse_type="recipient" year=selected_year sort="amount" %}">By Recipients</a></li>
+    <li><a href="{% url browse country=country.code browse_type="location" year=selected_year sort="amount" %}">By Region</a></li>
+    <li><a href="{% url browse country=country.code browse_type="scheme" year=selected_year sort="amount" %}">By Scheme</a></li>
+    </ul>
+</div>
+
+
+  {% load transparency_index %}
   {% transparency_index country %}
 
-
   {% load inthenews %}
-
   {% latestnews country.code %}
 
   {{block.super}}

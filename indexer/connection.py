@@ -14,19 +14,21 @@ import psycopg2
 
 # TODO change this to a configparser and create connection.cfg
 DBNAME = 'farmjango' 
-USER = 'farmsubsidy_writer'
+USER = 'farmsubsidy'
 HOST = 'localhost'
 PASSWORD = 'netopia'
+PORT = '5432'
 
 
 def connect():
   conn = psycopg2.connect(
-    "dbname='%(dbname)s' user='%(user)s' host='%(host)s' password='%(password)s'" 
+    "dbname='%(dbname)s' user='%(user)s' host='%(host)s' port=%(PORT)s password='%(password)s'" 
     % {
       'dbname' : DBNAME, 
       'user' : USER, 
       'host' : HOST, 
       'password' : PASSWORD, 
+      'PORT' : PORT, 
     })
   cur = conn.cursor()
   return conn, cur

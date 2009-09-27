@@ -1,8 +1,8 @@
 # encoding: utf-8
 from django.db import models
 from django.db import connection, backend, models
-from farmsubsidy.indexer import countryCodes
-from farmsubsidy import fsconf
+from indexer import countryCodes
+import fsconf
 
 
 DEFAULT_YEAR = fsconf.default_year
@@ -22,13 +22,13 @@ class FarmDataManager(models.Manager):
     
     extra_and = ""
     if country and country != "EU":
-      extra_and += " AND countrypayment = '%s'" % country
+      extra_and += " AND country = '%s'" % country
     
     
     cursor = connection.cursor()
     cursor.execute("""
       SELECT year as y
-      FROM data_payments p 
+      FROM data_years 
       WHERE year IS NOT NULL %(extra_and)s
       GROUP BY y
       ORDER BY y ASC 
@@ -304,7 +304,7 @@ class LocationManager(models.Manager):
 
     cursor = connection.cursor()
     sql = """
-    SELECT LOWER(t.geo1) as name, MIN(l.total) as total, l.country, MAX(t.N) AS count, (l.total/t.N) AS avg
+    SELECT t.geo1 as name, MIN(l.total) as total, l.country, MAX(t.N) AS count, (l.total/t.N) AS avg
     FROM (
       SELECT COUNT(*) AS N, geo1 
       FROM data_recipients 
@@ -313,13 +313,13 @@ class LocationManager(models.Manager):
     JOIN (
       SELECT SUM(total) as total, name, country 
       FROM data_locations 
-      WHERE UPPER(country) IN (%(countries)s) 
-      AND LOWER(parent_name) IN (%(parents)s) 
-      AND LOWER(name) != LOWER(parent_name)
+      WHERE country IN (%(countries)s) 
+      AND parent_name IN (%(parents)s) 
+      AND name != parent_name
       %(extra_and)s 
       GROUP BY name, country
       )  AS l
-    ON LOWER(l.name)=LOWER(t.geo1)
+    ON l.name=t.geo1
     GROUP BY t.geo1, avg, l.country
     ORDER BY total DESC      
     %(limit)s

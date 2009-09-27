@@ -5,7 +5,7 @@ import re
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
-from farmsubsidy import fsconf
+import fsconf
 from django.contrib.humanize.templatetags import humanize
 
 

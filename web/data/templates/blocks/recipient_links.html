@@ -1,0 +1,8 @@
+<div class="block" id="external_links_block">
+<h3>Other links</h3>
+<ul>
+  {% for name,url in links %}
+    <li><a href="{{ url }}" target="_blank">{{ name }}</a></li>
+  {% endfor %}
+</ul>
+</div>
