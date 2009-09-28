@@ -4,19 +4,23 @@
 import os
 import tempfile
 import matplotlib
+
+matplotlib.use('Agg')  # force the antigrain backend
+from matplotlib.backends.backend_agg import FigureCanvasAgg
+
+
+
 from matplotlib import rc
 from matplotlib.figure import Figure
 from matplotlib.cbook import iterable
 import matplotlib.numerix as nx
-matplotlib.use('Agg')  # force the antigrain backend
-from matplotlib.backends.backend_agg import FigureCanvasAgg
+
 from pylab import *
 from matplotlib.patches import Ellipse
 from pylab import figure, show, rand
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.pyplot import show
-
 
 
 from django.http import HttpResponse
@@ -29,7 +33,7 @@ def format_ticks(a,b):
   from django.contrib.humanize.templatetags import humanize
   from django.template.defaultfilters import floatformat
   
-  return u"€%s" % humanize.intcomma(floatformat(a))
+  return u"%s" % humanize.intcomma(floatformat(a))
 
 
 def make_fig(request, type):
@@ -99,7 +103,6 @@ def recipient(request, recipient_id):
   
   
   for i,payment in enumerate(payments):
-    print dir(payment)
     bar(i+0.25,payment.amounteuro, 0.5, color='grey', alpha=0.7, linewidth=0)
 
   xticks(arange(0.5, len(payments)),

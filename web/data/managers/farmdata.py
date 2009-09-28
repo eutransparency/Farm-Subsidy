@@ -67,15 +67,18 @@ class FarmDataManager(models.Manager):
   def top_schemes(self, country=None, year=DEFAULT_YEAR, limit=5):
     extra_and = ""
     if country and country != "EU":
-      extra_and += " AND country = '%s'" % country
+      extra_and += " AND p.countrypayment = '%s'" % country
     if year and str(year) != "0":
-      extra_and += " AND year='%s'" % year
+      extra_and += " AND p.year='%s'" % year
     
     cursor = connection.cursor()
     cursor.execute("""
-    SELECT name, '', amount as total, globalschemeid, country
-    FROM data_scheme_totals
-    WHERE amount IS NOT NULL %(extra_and)s
+    SELECT MAX(s.nameenglish), MAX(s.budgetlines8digit), SUM(p.amounteuro) as total, s.globalschemeid, MAX(p.countrypayment)
+    FROM data_schemes s
+    JOIN data_payments p
+    ON s.globalschemeid = p.globalschemeid
+    WHERE p.amounteuro IS NOT NULL %(extra_and)s
+    GROUP BY s.globalschemeid
     ORDER BY total DESC
     LIMIT %(limit)s
     """ % locals())
@@ -196,22 +199,24 @@ class FarmDataManager(models.Manager):
   def browse_schemes(self, country, year, sort):
     extra_and = ""
     if country and country != "EU":
-      extra_and += " AND country = '%s'" % country    
+      extra_and += " AND p.countrypayment = '%s'" % country    
     if year and int(year) != 0:
       extra_and += " AND year = '%s'" % year    
     
     cursor = connection.cursor()
     cursor.execute("""
-    SELECT amount, name, globalschemeid
-    FROM data_scheme_totals
-    WHERE name IS NOT NULL %(extra_and)s
-    ORDER BY amount DESC
+    SELECT SUM(p.amounteuro) as E, MAX(s.nameenglish)
+    FROM data_payments p
+    JOIN data_schemes s
+    ON (p.globalschemeid = s.globalschemeid)
+    WHERE s.nameenglish IS NOT NULL %(extra_and)s
+    GROUP BY s.globalschemeid
+    ORDER BY E DESC
     """ % locals())
     
     result_list = []
     for row in cursor.fetchall():
       p = self.model(amount_euro = row[0], name=row[1])
-      p.globalschemeid = row[2]
       result_list.append(p)
     return result_list
 
@@ -255,7 +260,6 @@ class LocationManager(models.Manager):
       extra_and += " AND country = '%s'" % country
 
     # name = smart_unicode(name)
-    print name
     
     cursor = connection.cursor()
     cursor.execute("""
@@ -314,7 +318,7 @@ class LocationManager(models.Manager):
       %(extra_and)s 
       GROUP BY name, country
       )  AS l
-    ON l.name=t.geo1
+    ON l.name=LOWER(t.geo1)
     GROUP BY t.geo1, avg, l.country
     ORDER BY total DESC      
     %(limit)s
@@ -323,7 +327,6 @@ class LocationManager(models.Manager):
     
     result_list = []
     for row in cursor.fetchall():
-      print dir(self.model)
       p = self.model(name=row[0], total=row[1], country=row[2])
       p.count = row[3]
       p.avg = row[4]

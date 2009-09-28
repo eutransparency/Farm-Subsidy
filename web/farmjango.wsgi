@@ -1,16 +1,25 @@
 import os, sys
+import site
 
-#Calculate the path based on the location of the WSGI script.
-apache_configuration= os.path.dirname(__file__)
-project = os.path.dirname(apache_configuration)
-workspace = os.path.dirname(project)
-sys.path.append(workspace) 
+prev_sys_path = list(sys.path)
 
-sys.path.append('/var/www')
-sys.path.append('/var/www/farmsubsidy')
-sys.path.append('/var/www/farmsubsidy/web')
+sys.path.append('/var/www/stage.farmsubsidy.org/')
+sys.path.append('/var/www/stage.farmsubsidy.org/web')
+vepath = '/var/www/stage.farmsubsidy.org/lib/python2.6/site-packages'
+site.addsitedir(vepath)
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'web.settings'
+
+new_sys_path = [] 
+for item in list(sys.path): 
+    if item not in prev_sys_path: 
+        new_sys_path.append(item) 
+        sys.path.remove(item) 
+sys.path[:0] = new_sys_path
+
+import sys
+for p in sys.path:
+  print >> sys.stderr, "*********************************%s" % p
 
 
 import django.core.handlers.wsgi

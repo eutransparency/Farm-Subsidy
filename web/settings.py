@@ -1,10 +1,11 @@
 # Django settings for farmjango project.
-import fsconf
 
 import sys
 # sys.path.append('/var/www/')
-sys.path.append('web')
-sys.path.append('.')
+sys.path.append('..')
+
+import fsconf
+
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -17,7 +18,7 @@ MANAGERS = ADMINS
 
 DATABASE_ENGINE = 'postgresql_psycopg2'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
 DATABASE_NAME = 'farmjango'             # Or path to database file if using sqlite3.
-DATABASE_USER = 'farmsubsidy'             # Not used with sqlite3.
+DATABASE_USER = 'farmsubsidy_writer_stage'             # Not used with sqlite3.
 DATABASE_PASSWORD = 'netopia'         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = '5432'             # Set to empty string for default. Not used with sqlite3.
@@ -64,16 +65,16 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    # 'django.middleware.cache.UpdateCacheMiddleware',
+    #'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',    
     'pagination.middleware.PaginationMiddleware',
     'web.misc.middleware.Middleware',
-    'django.middleware.transaction.TransactionMiddleware',  
+    'django.middleware.transaction.TransactionMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-    # 'django.middleware.cache.FetchFromCacheMiddleware',
+    #'django.middleware.cache.FetchFromCacheMiddleware',
     
 )
 
@@ -125,7 +126,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   'data.context_processors.country',
   'data.context_processors.ip_country',
   # 'customlists.context_processors.list_items',
-  'web.misc.context_processors.latest_tweet',
+  'misc.context_processors.latest_tweet',
 )
 
 
@@ -136,7 +137,7 @@ AUTH_PROFILE_MODULE = "misc.Profile"
 DEFAULT_FROM_EMAIL = "team@farmsubsidy.org"
 
 
-CACHE_BACKEND = 'file:///var/tmp/django_cache'
+CACHE_BACKEND = 'file:///var/tmp/django_cache_stage'
 
 
 TWITTER_USER = "farmsubsidy"

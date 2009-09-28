@@ -7,7 +7,6 @@ register = Library()
 def transparency_index(country):
   if country['code'] != "EU":
     score = transparency_score(country['code'])
-    print score
     score['country'] = country['code']
     return {'score' : score, 'country' : country}
   
