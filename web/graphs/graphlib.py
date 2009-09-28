@@ -8,8 +8,8 @@ from matplotlib import rc
 from matplotlib.figure import Figure
 from matplotlib.cbook import iterable
 import matplotlib.numerix as nx
-from matplotlib.backends.backend_agg import FigureCanvasAgg
 matplotlib.use('Agg')  # force the antigrain backend
+from matplotlib.backends.backend_agg import FigureCanvasAgg
 from pylab import *
 from matplotlib.patches import Ellipse
 from pylab import figure, show, rand

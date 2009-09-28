@@ -169,7 +169,7 @@ def totals(country):
   c.execute(sql)
   conn.commit()  
   
-  fields = ['countrypayment', 'geo1', 'geo2', 'geo3', 'geo4']
+  fields = ['countryrecipient', 'geo1', 'geo2', 'geo3', 'geo4']
   for i,parent in enumerate(fields[0:-1]):
     # print "%s=%s" % (p, fields[i+1])  
     child = fields[i+1]
@@ -178,7 +178,7 @@ def totals(country):
     print "\t - Making %s location totals for %s" % (child, country)
     sql = """
     INSERT INTO data_locations 
-      SELECT UPPER(r.countrypayment), p.year, LOWER(r.%(child)s) as N, LOWER(r.%(parent)s) AS P, SUM(p.amounteuro)
+      SELECT UPPER(r.countryrecipient), p.year, LOWER(r.%(child)s) as N, LOWER(r.%(parent)s) AS P, SUM(p.amounteuro)
       FROM data_recipients r
       JOIN data_payments p
       ON r.globalrecipientid = p.globalrecipientid
@@ -203,9 +203,23 @@ def totals(country):
            GROUP BY year""" % locals()
   c.execute(sql)
   conn.commit()  
-  
-  
-  
+
+
+
+  print "\t - Creating scheme totals for %s" % country
+  sql = """INSERT INTO data_scheme_totals 
+           SELECT MIN(p.countrypayment), p.year, MAX(s.nameenglish), SUM(p.amounteuro) as E, p.globalschemeid
+           FROM data_payments p
+           JOIN data_schemes s
+           ON (p.globalschemeid = s.globalschemeid)
+           WHERE s.nameenglish IS NOT NULL AND p.countrypayment = '%(country)s'
+           GROUP BY p.year, p.globalschemeid
+            """ % locals()
+  c.execute(sql)
+  conn.commit()  
+
+
+
   
 def vacuum(tables):
   """

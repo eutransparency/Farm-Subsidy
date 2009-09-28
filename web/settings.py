@@ -4,6 +4,7 @@ import fsconf
 import sys
 # sys.path.append('/var/www/')
 sys.path.append('web')
+sys.path.append('.')
 
 
 
@@ -18,10 +19,10 @@ MANAGERS = ADMINS
 
 DATABASE_ENGINE = 'postgresql_psycopg2'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
 DATABASE_NAME = 'farmjango'             # Or path to database file if using sqlite3.
-DATABASE_USER = 'farmsubsidy_writer'             # Not used with sqlite3.
+DATABASE_USER = 'farmsubsidy'             # Not used with sqlite3.
 DATABASE_PASSWORD = 'netopia'         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = '5433'             # Set to empty string for default. Not used with sqlite3.
+DATABASE_PORT = '5432'             # Set to empty string for default. Not used with sqlite3.
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -65,17 +66,16 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.middleware.cache.UpdateCacheMiddleware',
+    # 'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',    
     'pagination.middleware.PaginationMiddleware',
-    'misc.middleware.Middleware',
-    'django.middleware.transaction.TransactionMiddleware',
-    # 'misc.debugfooter.DebugFooter',
-    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
+    'web.misc.middleware.Middleware',
+    'django.middleware.transaction.TransactionMiddleware',  
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'django.middleware.cache.FetchFromCacheMiddleware',
     
 )
 
@@ -127,7 +127,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   'data.context_processors.country',
   'data.context_processors.ip_country',
   # 'customlists.context_processors.list_items',
-  'misc.context_processors.latest_tweet',
+  'web.misc.context_processors.latest_tweet',
 )
 
 

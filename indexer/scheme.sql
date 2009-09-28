@@ -100,3 +100,14 @@ CREATE TABLE data_years
 )
 WITH (OIDS=FALSE);
 
+DROP TABLE IF EXISTS data_scheme_totals;
+CREATE TABLE data_scheme_totals
+(
+  country varchar(2),
+  year integer,
+  name text,
+  amount numeric,
+  globalschemeid varchar
+)
+WITH (OIDS=FALSE);
+

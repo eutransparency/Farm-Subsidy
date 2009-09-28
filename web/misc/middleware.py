@@ -1,5 +1,5 @@
 import datetime
-import settings
+import web.settings
 
 class Middleware(object):
   def process_response(self, request, response):
