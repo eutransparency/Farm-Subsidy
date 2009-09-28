@@ -314,7 +314,7 @@ class LocationManager(models.Manager):
       %(extra_and)s 
       GROUP BY name, country
       )  AS l
-    ON l.name=t.geo1
+    ON l.name=LOWER(t.geo1)
     GROUP BY t.geo1, avg, l.country
     ORDER BY total DESC      
     %(limit)s
