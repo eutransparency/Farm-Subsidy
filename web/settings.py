@@ -7,7 +7,6 @@ sys.path.append('web')
 sys.path.append('.')
 
 
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
