@@ -33,7 +33,7 @@ def format_ticks(a,b):
   from django.contrib.humanize.templatetags import humanize
   from django.template.defaultfilters import floatformat
   
-  return u"%s" % humanize.intcomma(floatformat(a))
+  return u"€%s" % humanize.intcomma(floatformat(a))
 
 
 def make_fig(request, type):
