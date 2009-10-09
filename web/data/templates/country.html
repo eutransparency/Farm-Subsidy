@@ -15,7 +15,7 @@
 {% load graphs %}
 {% graph "country_years" country.code %}
 
-<div class="country_selector">  
+<div class="year_selector">  
   {% for year in years %}
     {% ifequal year.year selected_year  %}
       <strong>{{ year.year }}</strong>

@@ -18,16 +18,26 @@
     {% graph "recipient_graph" recipient.globalrecipientidx %}
   {% endif %}
   
-  
-  
-  <ul>
-  {% for payment in payments %}
-    <li>{{ payment.year }} &mdash; {{ payment.globalschemeid.nameenglish }} &mdash; &euro;{{ payment.amounteuro|floatformat:2|intcomma }}</li>
-  {% endfor %}
-  </ul>
-  
-  
-  
+  <table>
+    <thead>
+      <th>Year</th>
+      <th>Scheme</th>
+      <th>Total</th>
+    </thead>
+    {% for payment in payments %}
+      <tr>
+        <td>{{ payment.year }} </td>
+        <td>
+          {% if payment.schemeid %}
+            <a href="{% url scheme_view payment.country payment.schemeid %}">{{ payment.name }}</a>
+          {% else %}
+            {{ payment.name }}
+          {% endif %}
+        </td>
+        <td>&euro;{{ payment.amount_euro|floatformat:2|intcomma }}</td>
+      </tr>
+    {% endfor %}
+  </table>
   
   <div class="section">
     {% load comments i18n %}
@@ -78,25 +88,20 @@
     {% endif %}
   </div>
   
-  
-  
-  
-  
 {% endblock %}
 
 
 {% block right %}
-  
-<h1>{{ recipient.countryrecipient }}</h1>
-{# {% load download_block %} #}
-{# {% download_recipient results.documents.0.global_id_x %}  #}
 
-{# {% load related %} #}
-{# {% get_related results.documents.0.doc_id %} #}
+<h3>Related</h3>
+<ul>
+{% for k,r in related.documents.items %}
+  <li><a href="{% url recipient_view r.countrypayment r.global_id %}">{{ r.name|title }}</a></li>
+{% endfor %}
+</ul>
+
 
 {% load recipient_blocks %}  
 {% recipient_links recipient %}
-{# {% link_to_recipient recipient %} #}
-
 
 {% endblock %}

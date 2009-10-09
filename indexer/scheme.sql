@@ -110,4 +110,3 @@ CREATE TABLE data_scheme_totals
   globalschemeid varchar
 )
 WITH (OIDS=FALSE);
-

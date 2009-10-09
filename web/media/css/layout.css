@@ -151,7 +151,12 @@ color:#FFFFFF;
 
 /** Home Styles */
 
-#home #search_form #q {
+#search_form {
+  position: relative;
+  height:5em;  
+}
+
+#search_form #q {
   font-size:1.4em;
   height:20px;
   padding:5px;
@@ -160,13 +165,14 @@ color:#FFFFFF;
   float:left;
 }
 
-#home #search_form .description {
+#search_form .description {
   position:absolute;
+
   right:30%;
-  top:6em;
+  bottom:1em;
 }
 
-#home #search_form .submit {
+#search_form .submit {
   float:left;
   font-size:1.4em;
   height:32px;
@@ -396,7 +402,7 @@ border-top:1px dotted #A7A9AC;
 padding:0.3em 1em;
 }
 
-.country_selector {
+.year_selector {
   text-align:center;
   margin-bottom:1em;
 }

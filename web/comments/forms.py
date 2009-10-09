@@ -18,18 +18,6 @@ class CommentFormWithOwners(CommentForm):
     return CommentWithOwner
 
   def get_comment_create_data(self):
-    
-    # print self
-    # 
-    # # Use the data of the superclass, and add in the title field
-    # # print self
-    # # data = super(CommentFormWithOwners, self).get_comment_create_data()
-    # 
-    # data['owner'] = self.cleaned_data['owner']
-    # 
-    # return data
-
-
 
     return dict(
         content_type = ContentType.objects.get_for_model(self.target_object),

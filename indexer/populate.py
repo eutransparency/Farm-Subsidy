@@ -97,7 +97,21 @@ def indexes(opp, tables=None):
     ('gid', 'global_id', 'btree'),
     ('country', 'countrypayment', 'btree'),
     ('amount', 'amount_euro', 'btree'),
-    ]
+    ],
+    'data_years' : [
+    ('years_c', 'country', 'btree'),
+    ('years_y', 'year', 'btree'),
+    ],
+    'data_locations' : [
+    ('locations_c', 'country', 'btree'),
+    ('locations_y', 'year', 'btree'),
+    ('locations_name', 'name', 'btree'),
+    ],
+    'data_scheme_totals' : [
+    ('scheme_totals_c', 'country', 'btree'),
+    ('scheme_totals_y', 'year', 'btree'),
+    ('scheme_totals_sid', 'globalschemeid', 'btree'),
+    ],
   }
   
   conn,c = connection.connect()
@@ -163,6 +177,16 @@ def totals(country):
       GROUP BY p.globalrecipientidx, p.year, p.countrypayment  """ % country
   c.execute(sql)
   conn.commit()  
+
+  sql = """
+  INSERT INTO data_totals 
+  SELECT global_id, SUM(amount_euro), '0', countrypayment, MAX(nameenglish)
+  FROM data_totals
+  WHERE countrypayment =%(country)s
+  GROUP BY global_id, countrypayment      
+      """ % country
+  c.execute(sql)
+  conn.commit()  
   
   print "\t - Deleting old location totals for %s" % country
   sql = "DELETE FROM data_locations WHERE country='%s'" % country
@@ -171,7 +195,6 @@ def totals(country):
   
   fields = ['countryrecipient', 'geo1', 'geo2', 'geo3', 'geo4']
   for i,parent in enumerate(fields[0:-1]):
-    # print "%s=%s" % (p, fields[i+1])  
     child = fields[i+1]
     
     # Location totals
@@ -183,7 +206,7 @@ def totals(country):
       JOIN data_payments p
       ON r.globalrecipientid = p.globalrecipientid
       WHERE p.countrypayment = '%(country)s' AND r.%(child)s IS NOT NULL
-      GROUP BY N,p.year, P, r.countrypayment
+      GROUP BY N,p.year, P, r.countryrecipient
       ORDER BY N DESC
         """ % locals()
     c.execute(sql)
@@ -303,7 +326,7 @@ if __name__ == "__main__":
   for country in countries:
       totals(country)
   
-  indexes('create', ['data_totals'])
+  indexes('create', ['data_totals', 'data_years', 'data_locations', 'data_scheme_totals'])
   
   
   vacuum(('data_totals', 'data_payments', 'data_recipients', 'data_schemes')) 

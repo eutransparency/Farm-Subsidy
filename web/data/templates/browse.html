@@ -60,7 +60,7 @@
         
         
                 
-        {% ifequal browse_type "location"  %}
+        {% ifequal browse_type "recipient"  %}
           {% url recipient_view country.code item.global_id as recipient_url %}          
           <td><a href="{{ recipient_url }}">{{ item.name|title }}</a></td>
           <td>&euro;{{ item.amount_euro|floatformat:2|intcomma }}</td>

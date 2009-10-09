@@ -45,21 +45,20 @@ class FarmDataManager(models.Manager):
     extra_and = ""
     if country and country != "EU":
       extra_and += " AND t.countrypayment = '%s'" % country
-    if year and str(year) != "0":
-      extra_and += " AND year='%s'" % year
-      
+    # if year and str(year) != "0":
+    #   extra_and += " AND year='%s'" % year
     cursor = connection.cursor()
     cursor.execute("""
-      SELECT max(t.nameenglish), SUM(t.amount_euro), MAX(t.global_id) 
+      SELECT t.nameenglish, t.amount_euro AS T, t.global_id, t.countrypayment
       FROM data_totals t
-      WHERE t.nameenglish IS NOT NULL %(extra_and)s
-      GROUP BY t.global_id
-      ORDER BY SUM(t.amount_euro) DESC LIMIT %(limit)s;
+      WHERE t.nameenglish IS NOT NULL
+      AND year=%(year)s %(extra_and)s
+      ORDER BY T DESC LIMIT %(limit)s;
     """ % locals())
     
     result_list = []
     for row in cursor.fetchall():
-        p = self.model(name=row[0], amount_euro=row[1], globalrecipientidx=row[2])
+        p = self.model(name=row[0], amount_euro=row[1], globalrecipientidx=row[2], country=row[3])
         result_list.append(p)
     return result_list
   
@@ -178,10 +177,9 @@ class FarmDataManager(models.Manager):
       """ % locals())
     else: 
       cursor.execute("""
-      SELECT SUM(amount_euro) as E, MAX(nameenglish), global_id
+      SELECT amount_euro AS E, nameenglish, global_id
       FROM data_totals
       WHERE nameenglish IS NOT NULL %(extra_and)s
-      GROUP BY global_id
       ORDER BY E DESC
       """ % locals())
     
@@ -243,7 +241,41 @@ class FarmDataManager(models.Manager):
       result_list.append(p)
     return result_list
 
-  
+  def recipient_payments(self, globalrecipientidx, group=False):
+    
+    if group:
+      sql = """
+        SELECT SUM(p.amounteuro), p.year, MAX(s.nameenglish), MAX(s.globalschemeid), p.countrypayment
+        FROM data_payments p 
+        JOIN data_schemes s
+        ON p.globalschemeid=s.globalschemeid
+        WHERE p.globalrecipientidx='%(globalrecipientidx)s' 
+        GROUP BY p.year, p.countrypayment
+        ORDER BY p.year ASC
+      """ % locals()
+    else:
+      sql = """
+        SELECT SUM(p.amounteuro), p.year, s.nameenglish, MAX(s.globalschemeid), p.countrypayment
+        FROM data_payments p 
+        JOIN data_schemes s
+        ON p.globalschemeid=s.globalschemeid
+        WHERE p.globalrecipientidx='%(globalrecipientidx)s' 
+        GROUP BY p.year, s.nameenglish, p.countrypayment
+        ORDER BY p.year ASC
+      """ % locals()
+
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    
+    result_list = []
+    for row in cursor.fetchall():
+      p = self.model(amount_euro=row[0], year=row[1], name=row[2], country=row[4])
+      p.schemeid = row[3]
+      result_list.append(p)
+    return result_list
+
+
+
 
 
 class LocationManager(models.Manager):
@@ -255,7 +287,6 @@ class LocationManager(models.Manager):
       extra_and += " AND country = '%s'" % country
 
     # name = smart_unicode(name)
-    print name
     
     cursor = connection.cursor()
     cursor.execute("""
@@ -299,34 +330,43 @@ class LocationManager(models.Manager):
 
     cursor = connection.cursor()
     sql = """
-    SELECT t.geo1 as name, MIN(l.total) as total, l.country, MAX(t.N) AS count, (l.total/t.N) AS avg
-    FROM (
-      SELECT COUNT(*) AS N, geo1 
-      FROM data_recipients 
-      GROUP BY geo1
-      ) AS t
-    JOIN (
-      SELECT SUM(total) as total, name, country 
-      FROM data_locations 
-      WHERE country IN (%(countries)s) 
-      AND parent_name IN (%(parents)s) 
-      AND name != parent_name
-      %(extra_and)s 
-      GROUP BY name, country
-      )  AS l
-    ON l.name=LOWER(t.geo1)
-    GROUP BY t.geo1, avg, l.country
-    ORDER BY total DESC      
+    SELECT name, SUM(total) AS t, country, MAX(recipients)
+    FROM data_locations
+    WHERE country IN (%(countries)s) 
+    AND parent_name IN (%(parents)s) 
+    %(extra_and)s
+    GROUP BY name, country
+    ORDER BY t DESC
     %(limit)s
     """ % locals()
+    # sql = """
+    # SELECT t.geo1 as name, MIN(l.total) as total, l.country, MAX(t.N) AS count, (l.total/t.N) AS avg
+    # FROM (
+    #   SELECT COUNT(*) AS N, geo1 
+    #   FROM data_recipients 
+    #   GROUP BY geo1
+    #   ) AS t
+    # JOIN (
+    #   SELECT SUM(total) as total, name, country 
+    #   FROM data_locations 
+    #   WHERE country IN (%(countries)s) 
+    #   AND parent_name IN (%(parents)s) 
+    #   AND name != parent_name
+    #   %(extra_and)s 
+    #   GROUP BY name, country
+    #   )  AS l
+    # ON l.name=LOWER(t.geo1)
+    # GROUP BY t.geo1, avg, l.country
+    # ORDER BY total DESC      
+    # %(limit)s
+    # """ % locals()
     cursor.execute(sql)
     
     result_list = []
     for row in cursor.fetchall():
-      print dir(self.model)
       p = self.model(name=row[0], total=row[1], country=row[2])
       p.count = row[3]
-      p.avg = row[4]
+      p.avg = p.total/p.count
       result_list.append(p)
     return result_list
     

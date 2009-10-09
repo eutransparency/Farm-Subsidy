@@ -1,8 +1,10 @@
 $(function() {
   
-  $('#q').example(function() {
-    return $(this).attr('title');
-  });
+  if ($('#q').val() == '') {
+    $('#q').example(function() {
+      return $(this).attr('title');
+    });
+  }
   
   $('.welcome_message').append('<a href="#" id="welcome_message_close">X</a>')
   

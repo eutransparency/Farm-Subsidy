@@ -40,4 +40,4 @@ def ip_country(request):
   else:
     ip_country = request.session.get('ip_country',None)
 
-  return {'ip_country' : ip_country }
+  return {'ip_country' : {'ip_country' : ip_country, 'ip_country_name' : countryCodes.country_codes(ip_country)['name']}, }

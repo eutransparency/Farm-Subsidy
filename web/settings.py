@@ -1,27 +1,10 @@
 # Django settings for farmjango project.
 
 import sys
+from local_settings import *
 # sys.path.append('/var/www/')
-sys.path.append('..')
+sys.path.append('web')
 
-import fsconf
-
-
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
-
-ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
-)
-
-MANAGERS = ADMINS
-
-DATABASE_ENGINE = 'postgresql_psycopg2'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = 'farmjango'             # Or path to database file if using sqlite3.
-DATABASE_USER = 'farmsubsidy_writer_stage'             # Not used with sqlite3.
-DATABASE_PASSWORD = 'netopia'         # Not used with sqlite3.
-DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = '5432'             # Set to empty string for default. Not used with sqlite3.
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -105,6 +88,7 @@ INSTALLED_APPS = (
     'web.countryinfo',
     # 'farmsubsidy.web.customlists',
     'web.data',
+    'web.search',
     'web.feeds',
     'web.graphs',
     'web.misc',
@@ -113,7 +97,7 @@ INSTALLED_APPS = (
     'registration',
     'profiles',
     'debug_toolbar',
-    'web.listmaker',
+    # 'web.listmaker',
 )
 
 
@@ -135,9 +119,6 @@ ACCOUNT_ACTIVATION_DAYS = 7
 LOGIN_REDIRECT_URL = "/"
 AUTH_PROFILE_MODULE = "misc.Profile"
 DEFAULT_FROM_EMAIL = "team@farmsubsidy.org"
-
-
-CACHE_BACKEND = 'file:///var/tmp/django_cache_stage'
 
 
 TWITTER_USER = "farmsubsidy"

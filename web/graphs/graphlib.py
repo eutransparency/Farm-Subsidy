@@ -81,7 +81,7 @@ def make_fig(request, type):
 def recipient(request, recipient_id):
   figure(figsize=(1, 1), linewidth=0) # image dimensions  
 
-  payments = FarmData.payment.objects.filter(globalrecipientidx=recipient_id).order_by('year')
+  payments = FarmData.data.objects.recipient_payments(globalrecipientidx=recipient_id, group=True)
   
   fig = plt.figure()
   fig.set_figsize_inches(5,2)  
@@ -103,7 +103,7 @@ def recipient(request, recipient_id):
   
   
   for i,payment in enumerate(payments):
-    bar(i+0.25,payment.amounteuro, 0.5, color='grey', alpha=0.7, linewidth=0)
+      bar(i+0.25,payment.amount_euro, 0.5, color='grey', alpha=0.7, linewidth=0)
 
   xticks(arange(0.5, len(payments)),
       [('%s' % item.year) 
@@ -115,7 +115,7 @@ def recipient(request, recipient_id):
 
   gca().yaxis.set_major_formatter(formatter)
 
-  gca().yaxis.set_major_locator(MaxNLocator(nbins=3, symmetric=True))
+  gca().yaxis.set_major_locator(MaxNLocator(nbins=3, symmetric=True, prune=None))
   
   
   response = HttpResponse(mimetype="image/png")

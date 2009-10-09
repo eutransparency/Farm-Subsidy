@@ -12,6 +12,7 @@ countries = "|".join(countries)
 
 
 urlpatterns = patterns('data.views',
+  url(r'^$', 'home', name='home'),
   url(r'^(?P<country>%s)/$' % countries, 'country', name='country'),
   url(r'^(?P<country>%s)/(?P<year>\d+)/$' % countries, 'country', name='country_year'),
   url(r'^(?P<country>%s)/recipient/(?P<recipient_id>[^/]+)' % countries, 'recipient', name='recipient_view' ),
@@ -22,3 +23,6 @@ urlpatterns = patterns('data.views',
   url(r'^(?P<country>%s)/browse/(?P<browse_type>(recipient|scheme|location))' % countries, 'browse', name='browse_default' ),
   
 )
+
+
+  # url(r'^(?P<country>%s)/$' % countries, 'country', name='country'),

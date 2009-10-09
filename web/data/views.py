@@ -5,8 +5,23 @@ from django.db.models import Sum, Count
 import models
 import fsconf
 from indexer import countryCodes
+from search import queries
+import context_processors
 
 DEFAULT_YEAR = fsconf.default_year
+
+def home(request):
+  
+  ip_country = context_processors.ip_country(request)['ip_country']
+  top_eu = models.data.objects.top_recipients(limit=10, year=DEFAULT_YEAR)
+  top_for_ip = models.data.objects.top_recipients(ip_country['ip_country'], limit=10, year=DEFAULT_YEAR)
+  
+  return render_to_response(
+    'home.html', 
+    locals(),
+    context_instance=RequestContext(request)
+  )  
+  
 
 
 def country(request, country, year=DEFAULT_YEAR):
@@ -56,13 +71,16 @@ def recipient(request, country, recipient_id):
   country = country.upper()
   
   recipient = models.recipient.objects.filter(globalrecipientidx=recipient_id)[0]
-  payments = models.payment.objects.filter(globalrecipientidx=recipient_id).select_related().order_by('year')
+  payments = models.data.objects.recipient_payments(globalrecipientidx=recipient_id)
+  related = queries.get_rset(recipient_id)
+  # related = "queries.get_rset()"
   
   return render_to_response(
     'recipient.html', 
     {
     'recipient' : recipient,
     'payments' : payments,
+    'related' : related,
     },
     context_instance=RequestContext(request)
   )  
