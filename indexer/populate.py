@@ -201,7 +201,7 @@ def totals(country):
     print "\t - Making %s location totals for %s" % (child, country)
     sql = """
     INSERT INTO data_locations 
-      SELECT UPPER(r.countryrecipient), p.year, LOWER(r.%(child)s) as N, LOWER(r.%(parent)s) AS P, SUM(p.amounteuro)
+      SELECT UPPER(r.countryrecipient), p.year, LOWER(r.%(child)s) as N, LOWER(r.%(parent)s) AS P, SUM(p.amounteuro), COUNT(r.*)
       FROM data_recipients r
       JOIN data_payments p
       ON r.globalrecipientid = p.globalrecipientid

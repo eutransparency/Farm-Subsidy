@@ -116,17 +116,21 @@ class FarmDataManager(models.Manager):
   def amount_years(self, country=None, scheme=None):
     extra_and = ""
     if country and country != "EU":
-      extra_and += " AND countrypayment = '%s'" % country    
+      extra_and += " AND country = '%s'" % country    
+      table = "data_totals"
     if scheme:
       extra_and += " AND globalschemeid = '%s'" % scheme
+      table = "data_scheme_totals"
+    
+    sql = """
+      SELECT SUM(amount), year
+      FROM %(table)s y
+      WHERE year IS NOT NULL %(extra_and)s
+      GROUP BY year
+      ORDER BY year ASC
+      """ % locals()
     cursor = connection.cursor()
-    cursor.execute("""
-    SELECT SUM(amounteuro), year
-    FROM data_payments p
-    WHERE year IS NOT NULL %(extra_and)s
-    GROUP BY year
-    ORDER BY year ASC
-    """ % locals())
+    cursor.execute(sql)
 
     result_list = []
     for row in cursor.fetchall():

@@ -84,7 +84,7 @@
       {% for r in top_recipients %}
         <tr>
           {% url recipient_view country.code r.globalrecipientidx as recipient_url %}
-          <td><a href="{{ recipient_url }}">{{ r.name }}</a></td>
+          <td><a href="{{ recipient_url }}">{{ r.name|title }}</a></td>
           <td>&euro;{{ r.amount_euro|floatformat:2|intcomma }}</td>
         </tr>
       {% endfor %}

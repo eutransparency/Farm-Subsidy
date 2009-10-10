@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     # (r'^api/', include('farmsubsidy.web.api.urls')),
     (r'^accounts/', include('registration.urls')),
     # (r'^profiles/', include('profiles.urls')),
+    # (r'', include('profiles.urls')),
     )
 
 if settings.DEBUG:
