@@ -56,7 +56,7 @@ MIDDLEWARE_CLASSES = (
     'pagination.middleware.PaginationMiddleware',
     'web.misc.middleware.Middleware',
     'django.middleware.transaction.TransactionMiddleware',
-    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     #'django.middleware.cache.FetchFromCacheMiddleware',
     
 )
@@ -96,7 +96,7 @@ INSTALLED_APPS = (
     'tagging',
     'registration',
     'profiles',
-    # 'debug_toolbar',
+    'debug_toolbar',
     # 'web.listmaker',
     
 )
