@@ -2,7 +2,7 @@
 {% load humanize %}
 
 {% block title %}
-    {{ location.name|title }} | {{ country.name }} | {% ifequal selected_year 0  %}
+    {{ location.name }} | {{ country.name }} | {% ifequal selected_year 0  %}
       All Years
     {% else %}
       in {{ selected_year }}
@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block page_title %}
-    {{ location.name|title }}, {{ country.name }}  
+    {{ location.name }}, {{ country.name }}  
     {% ifequal selected_year 0  %}
       All years
     {% else %}
@@ -64,7 +64,7 @@
         {% for r in location_recipients %}
           <tr>
             {% url recipient_view country.code r.globalrecipientidx as recipient_url %}
-            <td><a href="{{ recipient_url }}">{{ r.name|title }}</a></td>
+            <td><a href="{{ recipient_url }}">{{ r.name }}</a></td>
             <td>&euro;{{ r.amount_euro|floatformat:2|intcomma }}</td>
           </tr>
         {% endfor %}

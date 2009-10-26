@@ -87,7 +87,7 @@
             <ul>
               {% if custom_list.list_items.items %}
                 {% for docid, item in custom_list.list_items.items %}
-                  <li>{{ item.name|title }} &mdash; {{ item.amount }}</li>
+                  <li>{{ item.name }} &mdash; {{ item.amount }}</li>
                 {% endfor %}
               {% else %}
                <strong>There are no items in your list yet.</strong>

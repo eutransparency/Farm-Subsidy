@@ -96,7 +96,7 @@
 <h3>Related</h3>
 <ul>
 {% for k,r in related.documents.items %}
-  <li><a href="{% url recipient_view r.countrypayment r.global_id %}">{{ r.name|title }}</a></li>
+  <li><a href="{% url recipient_view r.countrypayment r.global_id %}">{{ r.name }}</a></li>
 {% endfor %}
 </ul>
 

@@ -2,11 +2,11 @@
 {% load humanize %}
 
 {% block title %}
-  Browse {{ country.name }} {{ browse_type|title }}s{% ifnotequal selected_year 0 %} in {{ selected_year }}{% else %}, All years{% endifnotequal %}
+  Browse {{ country.name }} {{ browse_type }}s{% ifnotequal selected_year 0 %} in {{ selected_year }}{% else %}, All years{% endifnotequal %}
 {% endblock %}
 
 {% block page_title %}
-  Browse {{ country.name }} {{ browse_type|title }}s{% ifnotequal selected_year 0 %} in {{ selected_year }}{% else %}, All years{% endifnotequal %}
+  Browse {{ country.name }} {{ browse_type }}s{% ifnotequal selected_year 0 %} in {{ selected_year }}{% else %}, All years{% endifnotequal %}
 {% endblock %}
 
 {% block content %}
@@ -45,7 +45,7 @@
       <tr>
         {% ifequal browse_type "location"  %}
           {% url location_view item.country item.name as recipient_url %}
-          <td><a href="{{ recipient_url }}">{{ item.name|title }}</a></td>
+          <td><a href="{{ recipient_url }}">{{ item.name }}</a></td>
           <td>&euro;{{ item.total|floatformat:2|intcomma }}</td>
           <td>{{ item.count|floatformat|intcomma }}</td>
           <td>&euro;{{ item.avg|floatformat:2|intcomma }}</td>
@@ -54,7 +54,7 @@
 
         {% ifequal browse_type "scheme"  %}
           {% url scheme_view country.code item.globalschemeid as scheme_url %}
-          <td><a href="{{ scheme_url }}">{{ item.name|title }}</a></td>
+          <td><a href="{{ scheme_url }}">{{ item.name }}</a></td>
           <td>&euro;{{ item.amount_euro|floatformat:2|intcomma }}</td>
         {% endifequal %}
         
@@ -62,7 +62,7 @@
                 
         {% ifequal browse_type "recipient"  %}
           {% url recipient_view country.code item.global_id as recipient_url %}          
-          <td><a href="{{ recipient_url }}">{{ item.name|title }}</a></td>
+          <td><a href="{{ recipient_url }}">{{ item.name }}</a></td>
           <td>&euro;{{ item.amount_euro|floatformat:2|intcomma }}</td>
           
         {% endifequal %}
