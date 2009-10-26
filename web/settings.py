@@ -137,3 +137,4 @@ COMMENTS_APP = 'web.comments'
 DEBUG_TOOLBAR_CONFIG = {
 'INTERCEPT_REDIRECTS' : False
 }
+
