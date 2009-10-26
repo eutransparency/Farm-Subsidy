@@ -5,11 +5,11 @@ queries.py
 
 Created by Sym on 2009-02-25.
 """
+import xapian
 if __name__ == "__main__":
   import sys
   sys.path.append('../..')
 import cPickle
-import xapian
 
 import fsconf as fsconf
 
@@ -46,6 +46,7 @@ def search(query_string, options={'len' : 100, 'page' : 0, 'len' : 50,}, db=fsco
   
     
   """
+  
   db = xapian.Database(db)  
   qp = xapian.QueryParser()
   qp.set_default_op(xapian.Query.OP_AND)  

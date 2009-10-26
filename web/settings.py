@@ -3,7 +3,7 @@
 import sys
 from local_settings import *
 # sys.path.append('/var/www/')
-sys.path.append('web')
+sys.path.append('..')
 
 
 # Local time zone for this installation. Choices can be found here:
@@ -56,7 +56,7 @@ MIDDLEWARE_CLASSES = (
     'pagination.middleware.PaginationMiddleware',
     'web.misc.middleware.Middleware',
     'django.middleware.transaction.TransactionMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     #'django.middleware.cache.FetchFromCacheMiddleware',
     
 )
@@ -86,7 +86,7 @@ INSTALLED_APPS = (
     # 'farmsubsidy.web.api',
     'web.comments',
     'web.countryinfo',
-    # 'farmsubsidy.web.customlists',
+    'web.customlists',
     'web.data',
     'web.search',
     'web.feeds',
@@ -96,9 +96,11 @@ INSTALLED_APPS = (
     'tagging',
     'registration',
     'profiles',
-    'debug_toolbar',
+    # 'debug_toolbar',
     # 'web.listmaker',
+    
 )
+
 
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -109,7 +111,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   "django.core.context_processors.request",
   'data.context_processors.country',
   'data.context_processors.ip_country',
-  # 'customlists.context_processors.list_items',
+  'customlists.context_processors.custom_list',
   'misc.context_processors.latest_tweet',
 )
 
@@ -130,3 +132,8 @@ INTERNAL_IPS = ('127.0.0.1',)
 
 
 COMMENTS_APP = 'web.comments'
+
+
+DEBUG_TOOLBAR_CONFIG = {
+'INTERCEPT_REDIRECTS' : False
+}

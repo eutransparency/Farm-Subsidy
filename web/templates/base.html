@@ -21,8 +21,10 @@
     <script type="text/javascript" src="/media/js/jquery.example.min.js"></script>
     <script type="text/javascript" src="/media/js/jquery-ui-1.7.1.custom.min.js"></script>
     <script src="/media/js/scripts.js" type="text/javascript" charset="utf-8"></script>
-
-
+  {% if custom_list.active %}
+    <link rel="stylesheet" href="/media/css/custom_lists.css" type="text/css" media="screen, projection">
+    <script src="/media/js/custom_lists.js" type="text/javascript" charset="utf-8"></script>
+  {% endif %}
    
 
 </head>
@@ -42,6 +44,7 @@
         <li class="{% active request "^/about/" %}"><a href="/about/">About</a></li>
         <li class="{% active request "^/blog/" %}"><a href="/blog/">Blog</a></li>
         <li class="{% active request "^/news/" %}"><a href="/news/">In The News</a></li>
+        <li class="{% active request "^/lists/" %}"><a href="/lists/">Custom Lists</a></li>
       </ul>
       
       {# {% load user %} #}
@@ -60,12 +63,44 @@
       {% block right %}
         
       {% endblock %}
-          {% if tweet %}
-          <div class="twitter block">
-              <h3>Follow <a href="http://twitter.com/farmsubsidy">farmsubsidy.org</a> on Twitter</h3> 
-              <p>{{ tweet.text|urlize }}<p>
+
+      {% if tweet %}
+      <div class="twitter block">
+          <h3>Follow <a href="http://twitter.com/farmsubsidy">farmsubsidy.org</a> on Twitter</h3> 
+          <p>{{ tweet.text|urlize }}<p>
+      </div>
+      {% endif %}
+
+
+      {% block list %}
+        {% if custom_list.active %}
+        <div id="list_standard">
+          <div id="list_content">
+            
+
+          <h3>Custom List</h3>
+          {# {% load customlist_list %} #}
+          {# {% list_total list_items.items %} #}
+          {# <div class="list_items hide">{% list_items list_items.items %}</div> #}
+          <p>The total for your list is: <strong>&euro;{{ custom_list.total }}</strong></p>
+          <div id="list_items">
+            <ul>
+              {% if custom_list.list_items.items %}
+                {% for docid, item in custom_list.list_items.items %}
+                  <li>{{ item.name|title }} &mdash; {{ item.amount }}</li>
+                {% endfor %}
+              {% else %}
+               <strong>There are no items in your list yet.</strong>
+               <li>You can browse though this site and add items with a checkbox next to them.</li>
+              {% endif %}
+            </ul>
           </div>
-          {% endif %}
+          </div>
+          </div>
+        
+          
+        {% endif %}
+      {% endblock %}
       
     </div>
     
@@ -99,20 +134,9 @@
     <p>FarmSubsidy.org is a project of <a href="http://www.followthemoney.eu/" title="Monitoring the European Union Budget | FollowTheMoney.eu" target="_blank">FollowTheMoney.eu</a></p>
     
     
-  </div>
-{% endblock %}
+    </div>
+  {% endblock %}
 
-
-{# {% block list %} #}
-{#   {% if list_items.create %} #}
-{#   <div id="list"> #}
-{#     {% load customlist_list %} #}
-{#     {% list_total list_items.items %} #}
-{#     <div class="list_items hide">{% list_items list_items.items %}</div> #}
-{#     </div> #}
-{#   {% endif %} #}
-{# {% endblock %} #}
-    
     
 </body>
 </html>

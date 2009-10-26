@@ -70,8 +70,6 @@ def clean_files(file_path):
 
 def indexes(opp, tables=None):
   
-  
-  
   indexes = {
     'data_payments' : [
       ('year', 'year', 'btree'),
@@ -131,10 +129,10 @@ def indexes(opp, tables=None):
           except:
             pass
       
-  
   if opp == "create":
     for table in indexes:
       if table in tables:      
+        print table
         print "Indexes for %s" % table
         for index in indexes[table]:
           print "\t - Creating index %s on %s" % (index[0], table)
@@ -182,9 +180,9 @@ def totals(country):
   INSERT INTO data_totals 
   SELECT global_id, SUM(amount_euro), '0', countrypayment, MAX(nameenglish)
   FROM data_totals
-  WHERE countrypayment =%(country)s
+  WHERE countrypayment ='%(country)s'
   GROUP BY global_id, countrypayment      
-      """ % country
+      """ % locals()
   c.execute(sql)
   conn.commit()  
   
@@ -193,9 +191,27 @@ def totals(country):
   c.execute(sql)
   conn.commit()  
   
+  print "\t - Deleting old recipient locations for %s" % country
+  sql = "DELETE FROM data_recipient_locations WHERE country='%s'" % country
+  c.execute(sql)
+  conn.commit()  
+  
   fields = ['countryrecipient', 'geo1', 'geo2', 'geo3', 'geo4']
-  for i,parent in enumerate(fields[0:-1]):
+  for i, parent in enumerate(fields[0:-1]):
     child = fields[i+1]
+    
+    print "\t Making recipient locations for %s" % child
+    
+    sql = """
+    INSERT INTO data_recipient_locations 
+    SELECT DISTINCT ON (globalrecipientidx) globalrecipientidx, LOWER(%(child)s), countryrecipient 
+    FROM data_recipients
+    WHERE countryrecipient = '%(country)s'
+    """ % locals()
+    
+    c.execute(sql)
+    conn.commit()  
+    
     
     # Location totals
     print "\t - Making %s location totals for %s" % (child, country)
@@ -312,6 +328,10 @@ def process_country(country):
 
 
 if __name__ == "__main__":
+  
+  # indexes('create', ['data_totals'])
+  # sys.exit()
+  
   countries = sys.argv[1:]
   if len(countries) == 0:
     countries = countryCodes.country_codes()
@@ -321,7 +341,7 @@ if __name__ == "__main__":
   indexes('delete')
   for country in countries:
     process_country(country.upper())
-  indexes('create', ['data_schemes', 'data_payments', 'data_recipents'])
+  indexes('create', ['data_schemes', 'data_payments', 'data_recipients'])
 
   for country in countries:
       totals(country)

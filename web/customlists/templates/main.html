@@ -9,7 +9,7 @@
   Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 </div>  
 <div class="halfcol">
-  {% if list_items.create %}
+  {% if custom_list.active %}
     {% if list_items.items %}
       {% for item in list_items.items.items %}
         <li>{{ item }}</li>
@@ -17,9 +17,13 @@
     {% else %}
       There is nothing in your list yet, to add items browse the site like normal select the recipients you want to add.
     {% endif %}
+    <form action="" method="POST" accept-charset="utf-8">
+      <p><input type="submit" name="delete_list" value="Delete your list"></p>
+    </form>  
+    
   {% else %}
     <form action="" method="POST" accept-charset="utf-8">
-      <p><input type="submit" value="Create a List"></p>
+      <p><input type="submit" name="create_list" value="Create a List"></p>
     </form>  
   {% endif %}
 </div>

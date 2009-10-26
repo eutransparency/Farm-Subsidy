@@ -1,0 +1,61 @@
+/* First define what a list without JS should look like */
+
+#outer {
+  bottom:10px;
+  overflow:auto;
+}
+
+#list {
+  width:100%;
+
+  background-color:#ccc;
+  border:1px solid #666;
+  border-bottom:none;
+  height:25px;
+/*  overflow:hidden;*/
+  position:fixed;
+  bottom:0;
+  text-align:center;
+}
+
+#list #list_content {
+  width:80%;
+  margin:0 10%;  
+  position:relative;
+}
+
+
+#list h3 {
+  display:none;
+}
+
+#list #list_content p {
+  padding-right:1em;
+  background-color:#eee;
+  width:24%;
+  position:absolute;
+  right:0;
+  height:25px;
+  cursor:pointer;
+}
+
+
+#list #list_content #list_items {
+  position:relative;
+  bottom:202px;
+  right:-1px;
+  background-color:#eee;
+  border:1px solid #999;
+  width:25%;
+  float:right;
+  height:200px;
+}
+
+.list_items ul, #list_items ul li {
+  list-style-type:none;
+  padding:0;
+  margin:0;
+}
+
+.ui-effects-transfer { border: 2px dotted gray; }
+

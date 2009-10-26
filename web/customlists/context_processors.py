@@ -1,7 +1,7 @@
-def list_items(request):
-  # del request.session['create_list']
-  # del request.session['list_items']
-  create = request.session.get('create_list', False)
-  items = request.session.get('list_items', [])
-  list_items = {'create' : create, 'items' : items}
-  return {'list_items' : list_items}
+def custom_list(request):
+  custom_list = {}
+  if request.session.get('create_list', False):
+    custom_list['active'] = True
+    custom_list['list_items'] = request.session.get('custom_list_items', {})
+    custom_list['total'] = request.session.get('custom_list_items_total', 0)    
+  return {'custom_list' : custom_list}

@@ -12,7 +12,7 @@ def transparency_score(country):
   index = open_index()
   for i,row in enumerate(index):
     if row[0] == country:
-      
+      i = i+1
       if 4 <= i <= 20 or 24 <= i <= 30:
           suffix = "th"
       else:

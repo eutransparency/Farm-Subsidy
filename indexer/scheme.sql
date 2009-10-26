@@ -85,6 +85,16 @@ CREATE TABLE data_locations
   name text,
   parent_name text,
   total numeric
+  recipients numeric
+)
+WITH (OIDS=FALSE);
+
+DROP TABLE IF EXISTS data_recipient_locations;
+CREATE TABLE data_recipient_locations
+(
+  global_id character varying(20) NOT NULL,
+  location text,
+  country varchar(2)
 )
 WITH (OIDS=FALSE);
 

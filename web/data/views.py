@@ -42,9 +42,6 @@ def country(request, country, year=DEFAULT_YEAR):
   top_recipients = models.data.objects.top_recipients(country, limit=10, year=year)
   top_schemes = models.data.objects.top_schemes(country, limit=10, year=year)  
   top_regions = models.locations.objects.locations(country=country, parent=country, year=year, limit=10)
-
-
-  
   
   return render_to_response(
     'country.html', 
@@ -136,29 +133,28 @@ def browse(request, country, browse_type, year=DEFAULT_YEAR, sort='amount'):
 
 
 def location(request, country, name, year="0"):
-  if year == "0":
-    location = models.locations.objects.filter(name=name, country=country)[:1]
-  else:
-    location = models.locations.objects.filter(name=name, country=country, year=year)
-
-    
+  location = models.locations.objects.locations(country=country, parent=country, year=year, limit=None)
+  
   if len(location) > 0:
     location = location[0]
   else:
     location = []
   
-  number_recipients = models.recipient.objects.filter(geo1__iexact=name).aggregate(Count('geo1'))
-  location_recipients = models.data.objects.browse_recipients(country=country, year=year, location=('geo1', name), limit=10)
+
+  
+  # number_recipients = models.recipient.objects.filter(geo1__iexact=name).aggregate(Count('geo1'))
+  # number_recipients = 99
+  location_recipients = models.locations.objects.recipients_by_location(country=country, year=year, location=name, limit=10)
   years = models.locations.objects.location_years(country=country, name=name)
   sub_location = models.locations.objects.locations(country=country, parent=name.lower(), year=year, limit=None)
 
-
+  
   return render_to_response(
     'location.html', 
     {
     'location' : location,
     'location_recipients' : location_recipients,
-    'number_recipients' : number_recipients,
+    # 'number_recipients' : number_recipients,
     'sub_location' : sub_location,
     'years' : years,
     'selected_year' : int(year),        

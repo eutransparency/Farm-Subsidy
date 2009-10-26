@@ -36,12 +36,12 @@
     {% ifequal selected_year 0 %}
       All Years
     {% else %}
-
+      <a href="{% url location_view country=location.country name=location.name %}" class="selected">All Years</a>
     {% endifequal %}
   </div>
   {% endif %}  
   
-  {{ number_recipients.geo1__count }} recipients got &euro;{{ location.total|floatformat:2|intcomma }} 
+  {{ location.count|floatformat:2|intcomma }} recipients got &euro;{{ location.total|floatformat:2|intcomma }} 
    {% ifequal selected_year 0  %}
     over all years
   {% else %}
@@ -64,7 +64,7 @@
         {% for r in location_recipients %}
           <tr>
             {% url recipient_view country.code r.globalrecipientidx as recipient_url %}
-            <td><a href="{{ recipient_url }}">{{ r.name }}</a></td>
+            <td><a href="{{ recipient_url }}">{{ r.name|title }}</a></td>
             <td>&euro;{{ r.amount_euro|floatformat:2|intcomma }}</td>
           </tr>
         {% endfor %}

@@ -8,7 +8,7 @@ class recipient(models.Model):
     recipientid = models.CharField(max_length=10)
     recipientidx = models.CharField(max_length=10)
     globalrecipientid = models.CharField(max_length=10,primary_key=True)
-    globalrecipientidx = models.CharField(max_length=10)
+    globalrecipientidx = models.ForeignKey('total', db_column='globalrecipientidx')
     name = models.TextField()
     address1 = models.TextField()
     address2 = models.TextField()

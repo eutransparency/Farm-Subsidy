@@ -65,7 +65,7 @@
     </thead>
   {% for region in top_regions %}
     <tr>
-      <td>{{ region.name|title }}</td>
+      <td><a href="{% url location_view region.country region.name %}">{{ region.name|title }}</a></td>
       <td>&euro;{{ region.total|floatformat:2|intcomma }}</td>
     </tr>
   {% endfor %}
@@ -79,6 +79,9 @@
     <thead>
       <th>Name</th>
       <th>Amount</th>
+    {% if custom_list.active %}
+      <th>Add To List</th>
+    {% endif %}
     </thead>
     <tbody>
       {% for r in top_recipients %}
@@ -86,6 +89,11 @@
           {% url recipient_view country.code r.globalrecipientidx as recipient_url %}
           <td><a href="{{ recipient_url }}">{{ r.name|title }}</a></td>
           <td>&euro;{{ r.amount_euro|floatformat:2|intcomma }}</td>
+          {% if custom_list.active %}
+            {% with r.globalrecipientidx as recipient_id %}            
+              <td>{% include "blocks/recipient_toggle.html" %}</td>
+            {% endwith %}
+          {% endif %}
         </tr>
       {% endfor %}
       

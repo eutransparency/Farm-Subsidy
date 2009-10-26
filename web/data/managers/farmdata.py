@@ -117,7 +117,7 @@ class FarmDataManager(models.Manager):
     extra_and = ""
     if country and country != "EU":
       extra_and += " AND country = '%s'" % country    
-      table = "data_totals"
+      table = "data_years"
     if scheme:
       extra_and += " AND globalschemeid = '%s'" % scheme
       table = "data_scheme_totals"
@@ -168,17 +168,6 @@ class FarmDataManager(models.Manager):
       ORDER BY E DESC
       %(limit)s
       """ % locals())
-    elif location:
-      cursor.execute("""
-      SELECT SUM(p.amounteuro) as E, MIN(r.name), MAX(r.countryrecipient) 
-      FROM data_recipients r
-      JOIN data_payments p
-      ON r.globalrecipientidx=p.globalrecipientidx
-      WHERE LOWER(r.geo1)='tirol' AND p.countrypayment='AT'
-      GROUP BY r.globalrecipientidx
-      ORDER BY E DESC
-      %(limit)s
-      """ % locals())
     else: 
       cursor.execute("""
       SELECT amount_euro AS E, nameenglish, global_id
@@ -189,7 +178,7 @@ class FarmDataManager(models.Manager):
     
     result_list = []
     for row in cursor.fetchall():
-      p = self.model(amount_euro = row[0], name=row[1], globalrecipientidx=row[2])
+      p = self.model(amount_euro = row[0], name=row[2], globalrecipientidx=row[1])
       result_list.append(p)
     return result_list
 
@@ -310,7 +299,6 @@ class LocationManager(models.Manager):
 
 
   def locations(self, country="EU", parent=None, year=DEFAULT_YEAR, limit=10):
-    
     if country == "EU":
       countries = countryCodes.country_codes()
     else:
@@ -343,27 +331,6 @@ class LocationManager(models.Manager):
     ORDER BY t DESC
     %(limit)s
     """ % locals()
-    # sql = """
-    # SELECT t.geo1 as name, MIN(l.total) as total, l.country, MAX(t.N) AS count, (l.total/t.N) AS avg
-    # FROM (
-    #   SELECT COUNT(*) AS N, geo1 
-    #   FROM data_recipients 
-    #   GROUP BY geo1
-    #   ) AS t
-    # JOIN (
-    #   SELECT SUM(total) as total, name, country 
-    #   FROM data_locations 
-    #   WHERE country IN (%(countries)s) 
-    #   AND parent_name IN (%(parents)s) 
-    #   AND name != parent_name
-    #   %(extra_and)s 
-    #   GROUP BY name, country
-    #   )  AS l
-    # ON l.name=LOWER(t.geo1)
-    # GROUP BY t.geo1, avg, l.country
-    # ORDER BY total DESC      
-    # %(limit)s
-    # """ % locals()
     cursor.execute(sql)
     
     result_list = []
@@ -373,5 +340,34 @@ class LocationManager(models.Manager):
       p.avg = p.total/p.count
       result_list.append(p)
     return result_list
+    
+    
+  def recipients_by_location(self, country, location, year=0, limit=10, offset=0):
+    sql = """
+    SELECT * FROM 
+          (SELECT t.amount_euro as E, t.global_id, t.nameenglish
+          FROM data_totals t
+          WHERE t.countrypayment='%(country)s' 
+          AND t.year=%(year)s
+          ORDER BY E DESC
+          LIMIT %(limit)s
+          OFFSET %(offset)s) AS TOTALS
+    JOIN data_recipient_locations r
+    ON TOTALS.global_id=r.global_id
+    """ % locals()
+
+    cursor = connection.cursor()
+    cursor.execute(sql)
+  
+    result_list = []
+    for row in cursor.fetchall():
+      p = self.model(name=row[2])
+      p.amount_euro = row[0]
+      p.global_id = row[1]
+      result_list.append(p)
+    return result_list
+    
+    
+    
     
     
