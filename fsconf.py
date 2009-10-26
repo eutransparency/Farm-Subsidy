@@ -42,7 +42,7 @@ mysql_prefix = "farmsubsidy_"
 mysql_user = "farmsubsidy"
 mysql_pass = "farmsubsidy"
 
-current_year = "2007"
+current_year = "2008"
 
 
 # Xapian database values
