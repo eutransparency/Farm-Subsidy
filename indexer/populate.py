@@ -166,15 +166,30 @@ def totals(country):
   # SUM all payments for the country and group by globalrecipientidx then year
   print "\t - Making new totals for %s" % country
   sql = """
-  INSERT INTO data_totals 
-  SELECT DISTINCT ON (p.globalrecipientidx, year) 
-      p.globalrecipientidx, SUM(p.amounteuro), p.year, p.countrypayment, MIN(r.name)
-      FROM data_payments p, data_recipients r 
-      WHERE  p.globalrecipientidx IS NOT NULL AND r.globalrecipientidx=p.globalrecipientidx 
-      AND p.countrypayment='%s'
-      GROUP BY p.globalrecipientidx, p.year, p.countrypayment  """ % country
+  INSERT INTO data_totals
+   SELECT p.globalrecipientidx, SUM(p.amounteuro), p.year, p.countrypayment
+   FROM data_payments p
+   GROUP BY p.globalrecipientidx, p.year, p.countrypayment
+  """ % country
   c.execute(sql)
   conn.commit()  
+
+  # INSERT names from recipient table in to the data_totals table.
+  # #This is done in a different process for speed (the joins are *slow* otherwise
+  sql = """
+  UPDATE data_totals as T SET nameenglish=R.name FROM 
+    (SELECT MAX(r.name) as name, t.global_id as global_id 
+     FROM data_recipients r
+     JOIN data_totals t
+     ON r.globalrecipientidx=t.global_id
+     GROUP BY t.global_id) as R 
+  WHERE T.global_id=R.global_id
+  AND R.countrypayment='%s'
+  """ % country
+  c.execute(sql)
+  conn.commit()  
+
+
 
   sql = """
   INSERT INTO data_totals 
