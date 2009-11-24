@@ -124,11 +124,12 @@ def indexes(opp, tables=None):
         for index in indexes[table]:
           try:
             print "\t - Deleting index %s on %s" % (index[0], table)
-            c.execute("DROP INDEX %s" % (index[0]))
-            conn.commit()  
-          except:
-            pass
-      
+            c.execute("DROP INDEX %s; COMMIT" % (index[0]))
+            conn.commit()
+          except Exception, e:
+            # We need to commit anyway, else the next DROP will fail
+            conn.commit()
+  
   if opp == "create":
     for table in indexes:
       if table in tables:      
@@ -166,30 +167,15 @@ def totals(country):
   # SUM all payments for the country and group by globalrecipientidx then year
   print "\t - Making new totals for %s" % country
   sql = """
-  INSERT INTO data_totals
-   SELECT p.globalrecipientidx, SUM(p.amounteuro), p.year, p.countrypayment
-   FROM data_payments p
-   GROUP BY p.globalrecipientidx, p.year, p.countrypayment
-  """ % country
+  INSERT INTO data_totals 
+  SELECT DISTINCT ON (p.globalrecipientidx, year) 
+      p.globalrecipientidx, SUM(p.amounteuro), p.year, p.countrypayment, MIN(r.name)
+      FROM data_payments p, data_recipients r 
+      WHERE  p.globalrecipientidx IS NOT NULL AND r.globalrecipientidx=p.globalrecipientidx 
+      AND p.countrypayment='%s'
+      GROUP BY p.globalrecipientidx, p.year, p.countrypayment  """ % country
   c.execute(sql)
   conn.commit()  
-
-  # INSERT names from recipient table in to the data_totals table.
-  # #This is done in a different process for speed (the joins are *slow* otherwise
-  sql = """
-  UPDATE data_totals as T SET nameenglish=R.name FROM 
-    (SELECT MAX(r.name) as name, t.global_id as global_id 
-     FROM data_recipients r
-     JOIN data_totals t
-     ON r.globalrecipientidx=t.global_id
-     GROUP BY t.global_id) as R 
-  WHERE T.global_id=R.global_id
-  AND R.countrypayment='%s'
-  """ % country
-  c.execute(sql)
-  conn.commit()  
-
-
 
   sql = """
   INSERT INTO data_totals 
