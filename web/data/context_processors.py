@@ -57,7 +57,7 @@ def breadcrumb(request):
                  'url' : reverse('country', args=[country['code']])},
                  ]})
 
-    if path[2] == "location":
+    if 'location' in path and path[2] == "location":
         locations = path[3:]
         year = locations.pop(0)
         location_breadcrumbs = []
