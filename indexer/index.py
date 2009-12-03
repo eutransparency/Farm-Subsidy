@@ -34,12 +34,13 @@ def index(country):
     FROM data_recipients r
     JOIN data_totals t
     ON t.global_id=r.globalrecipientidx
-    WHERE t.year=0 AND r.name IS NOT NULL AND r.countryrecipient='%(country)s'
+    WHERE t.year=0 AND r.name IS NOT NULL AND r.countrypayment='%(country)s'
   """ % locals()
   
   
   c.execute(sql)
-    
+  if c.rowcount == 0:
+      raise ValueError, "No records matched for %s" % country
   pbar = progressbar.ProgressBar(maxval=c.rowcount).start()
   row = c.fetchone()
   while row:
@@ -79,7 +80,7 @@ def index(country):
   pbar.finish()
 
 if __name__ == "__main__":
-  index('GB')
+  index('LU')
   
   
   

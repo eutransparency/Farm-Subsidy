@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import *
 from web import settings
 from indexer import countryCodes
-# Uncomment the next two lines to enable the admin:
+# Uncomment the next two lines to enable the adminn:
 from django.contrib import admin
 admin.autodiscover()
 
@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     (r'', include('web.data.urls')),
     (r'search', include('web.search.urls')),
     (r'', include('web.feeds.urls')),
+    (r'', include('web.misc.urls')),
     # (r'', include('farmsubsidy.web.countryinfo.urls')),
     (r'', include('web.graphs.urls')),
     (r'^comments/', include('django.contrib.comments.urls')),

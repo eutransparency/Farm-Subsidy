@@ -1,6 +1,5 @@
 from django.template import Library, Node
 
-
 register = Library()
 
 def user_menu(user):

@@ -39,6 +39,19 @@
     {% endfor %}
   </table>
   
+  {% if related.documents.items %}
+    <div class="section">
+      <h3>Related</h3>
+      <p>The following recipients might be related to {{ recipient.name }}</p>
+      <ul>
+      {% for k,r in related.documents.items %}
+        <li><a href="{% url recipient_view r.countrypayment r.global_id r.name|slugify %}">{{ r.name }}</a></li>
+      {% endfor %}
+      </ul>
+    
+    </div>
+  {% endif %}
+  
   <div class="section">
     {% load comments i18n %}
     {% get_comment_list for recipient as comment_list %}
@@ -93,12 +106,6 @@
 
 {% block right %}
 
-<h3>Related</h3>
-<ul>
-{% for k,r in related.documents.items %}
-  <li><a href="{% url recipient_view r.countrypayment r.global_id %}">{{ r.name }}</a></li>
-{% endfor %}
-</ul>
 
 
 {% load recipient_blocks %}  

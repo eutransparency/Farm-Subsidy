@@ -1,4 +1,5 @@
 import random
+from django.core.urlresolvers import reverse
 from indexer import countryCodes
 
 
@@ -41,3 +42,39 @@ def ip_country(request):
     ip_country = request.session.get('ip_country',None)
 
   return {'ip_country' : {'ip_country' : ip_country, 'ip_country_name' : countryCodes.country_codes(ip_country)['name']}, }
+
+def breadcrumb(request):
+    breadcrumb = []
+    
+    path = request.META['PATH_INFO'].split('/')
+    
+    # First make the country breadcrumb:
+    if path[1] in countryCodes.country_codes():
+        country = countryCodes.country_codes(path[1])
+        breadcrumb.append({
+            'country' : [
+                {'name' : country['name'], 
+                 'url' : reverse('country', args=[country['code']])},
+                 ]})
+
+    if path[2] == "location":
+        locations = path[3:]
+        year = locations.pop(0)
+        location_breadcrumbs = []
+        while locations:
+            item = {
+                'name' : locations[-1], 
+                'url' : reverse('location_view', kwargs={'country' : country['code'], 'year' : year,'name' : "/".join(locations)})
+                }
+            location_breadcrumbs.append(item)
+            locations.pop()
+        location_breadcrumbs[0]['class'] = 'selected'
+        location_breadcrumbs.reverse()
+        breadcrumb.append({'locations' : location_breadcrumbs})
+
+    return {'breadcrumbs' : breadcrumb}
+
+
+
+
+

@@ -52,11 +52,11 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',    
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'pagination.middleware.PaginationMiddleware',
     'web.misc.middleware.Middleware',
     'django.middleware.transaction.TransactionMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     #'django.middleware.cache.FetchFromCacheMiddleware',
     
 )
@@ -96,12 +96,10 @@ INSTALLED_APPS = (
     'tagging',
     'registration',
     'profiles',
-    'debug_toolbar',
+    # 'debug_toolbar',
     # 'web.listmaker',
     
 )
-
-
 
 TEMPLATE_CONTEXT_PROCESSORS = (
   "django.core.context_processors.auth",
@@ -112,10 +110,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   'data.context_processors.country',
   'data.context_processors.ip_country',
   'customlists.context_processors.custom_list',
-  'misc.context_processors.latest_tweet',
+  # 'misc.context_processors.latest_tweet',
+  'misc.context_processors.google_api_key',
+  'data.context_processors.breadcrumb',
 )
-
-
 
 ACCOUNT_ACTIVATION_DAYS = 7
 LOGIN_REDIRECT_URL = "/"
@@ -135,6 +133,5 @@ COMMENTS_APP = 'web.comments'
 
 
 DEBUG_TOOLBAR_CONFIG = {
-'INTERCEPT_REDIRECTS' : False
+  'INTERCEPT_REDIRECTS' : False,
 }
-

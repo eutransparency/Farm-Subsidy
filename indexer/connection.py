@@ -9,14 +9,15 @@ Created by Sym on 2009-08-02.
 Manages connections to the farmsubsidy database, for use by the indexing scripts.
 
 """
-
 import psycopg2
+
 
 # TODO change this to a configparser and create connection.cfg
 DBNAME = 'farmjango' 
 USER = 'farmsubsidy'
+#HOST = '192.168.0.4'
 HOST = 'localhost'
-PASSWORD = 'netopia'
+PASSWORD = '1'
 PORT = '5432'
 
 

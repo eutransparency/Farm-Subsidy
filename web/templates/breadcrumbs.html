@@ -1,0 +1,11 @@
+{% for item in breadcrumbs %}
+  {% for heading, content in item.items %}
+    <p>
+    <strong>{{ heading|title }}</strong>
+    {% for url in content %}      
+      <li><a href="{{ url.url }}" class="{{ url.class }}">{{ url.name|title }}</a></li>
+    {% endfor %}
+    </p>
+  {% endfor %}
+  
+{% endfor %}

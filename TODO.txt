@@ -1,0 +1,3 @@
+Denormalization:
+
+Scheme totals: 

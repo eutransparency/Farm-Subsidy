@@ -57,7 +57,7 @@ def country(request, country, year=DEFAULT_YEAR):
 
 
 
-def recipient(request, country, recipient_id):
+def recipient(request, country, recipient_id, name):
   """
   View for recipient page.
   
@@ -69,8 +69,7 @@ def recipient(request, country, recipient_id):
   
   recipient = models.recipient.objects.filter(globalrecipientidx=recipient_id)[0]
   payments = models.data.objects.recipient_payments(globalrecipientidx=recipient_id)
-  related = queries.get_rset(recipient_id)
-  # related = "queries.get_rset()"
+  related = queries.simmlar_name(recipient.name)
   
   return render_to_response(
     'recipient.html', 
@@ -132,30 +131,37 @@ def browse(request, country, browse_type, year=DEFAULT_YEAR, sort='amount'):
   )  
 
 
-def location(request, country, name, year="0"):
-  location = models.locations.objects.locations(country=country, parent=country, year=year, limit=None)
-  
-  if len(location) > 0:
-    location = location[0]
-  else:
-    location = []
-  
+def location(request, country, year="0", name=None):
 
+  sub_location_sort = request.GET.get('sublocation', 'amount')
   
-  # number_recipients = models.recipient.objects.filter(geo1__iexact=name).aggregate(Count('geo1'))
-  # number_recipients = 99
-  location_recipients = models.locations.objects.recipients_by_location(country=country, year=year, location=name, limit=10)
-  years = models.locations.objects.location_years(country=country, name=name)
-  sub_location = models.locations.objects.locations(country=country, parent=name.lower(), year=year, limit=None)
+  location_path = name.split('/')
+  location_path.insert(0, country.lower())
 
+  while location_path[-1] == '' or None:
+    location_path.pop()  
+
+  location_path_string = "/".join(location_path)
+  location_name = location_path.pop()
+  parent_path_string = "/".join(location_path)
+  location_parent = location_path.pop()
+    
+  location = models.locations.objects.locations(country=country, parent=parent_path_string, name=location_name)
+  location_recipients = models.locations.objects.recipients_by_location(country=country, year=year, location=location_name, limit=10)
+  years = models.locations.objects.location_years(country=country, name=location_name)
+  sub_location = models.locations.objects.locations(country=country, parent=location_path_string, year=year, limit=None, sort=sub_location_sort)
   
+  for i in sub_location:
+      i.path = "/".join([name, i.name])
+   
   return render_to_response(
     'location.html', 
     {
     'location' : location,
+    'location_path_name' : name,
     'location_recipients' : location_recipients,
-    # 'number_recipients' : number_recipients,
     'sub_location' : sub_location,
+    'sub_location_sort' : sub_location_sort,
     'years' : years,
     'selected_year' : int(year),        
     },

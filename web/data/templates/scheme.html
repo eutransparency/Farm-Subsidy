@@ -42,7 +42,7 @@
     <tbody>
       {% for recipient in top_recipients %}
       <tr>
-        {% url recipient_view country.code recipient.globalrecipientidx as recipient_url %}
+        {% url recipient_view country.code recipient.globalrecipientidx recipient.name|slugify as recipient_url %}
         <td><a href="{{ recipient_url }}">{{ recipient.name }}</a></td>
         <td>&euro;{{ recipient.amount_euro|floatformat:2|intcomma }}</td>
       </tr>

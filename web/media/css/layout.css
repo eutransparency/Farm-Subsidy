@@ -6,6 +6,17 @@ body {
   height:100%;
 }
 
+#topbar {
+  background:#104C29;
+  color:#FFF;
+  padding:0 10%;
+}
+
+#topbar form {
+  text-align:right;
+  clear:both;
+}
+
 #outer {
   border-top:5px solid #104C29;
   padding:0 10%;
@@ -80,6 +91,8 @@ text-decoration:none;
 -moz-background-origin:padding;
 -moz-border-radius-bottomleft:12px;
 -moz-border-radius-bottomright:12px;
+-webkit-border-bottom-right-radius:12px;
+-webkit-border-bottom-left-radius:12px;
 background:#104C29 none repeat scroll 0 0;
 color:#FFFFFF;
 }

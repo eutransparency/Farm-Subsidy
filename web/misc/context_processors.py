@@ -3,7 +3,7 @@ from django.conf import settings
 from django.core.cache import cache
 import twitter
 
-def latest_tweet( request ):
+def latest_tweet(request):
     tweet = cache.get( 'tweet' )
 
     # if tweet:
@@ -20,4 +20,6 @@ def latest_tweet( request ):
         return {"tweet" : e}
       else:
         return {"tweet" : ''}
-      
+
+def google_api_key(request):
+    return {'GOOGLE_MAPS_API_KEY' : settings.GOOGLE_MAPS_API_KEY}

@@ -7,8 +7,8 @@ from managers import farmdata
 class recipient(models.Model):
     recipientid = models.CharField(max_length=10)
     recipientidx = models.CharField(max_length=10)
-    globalrecipientid = models.CharField(max_length=10,primary_key=True)
-    globalrecipientidx = models.ForeignKey('total', db_column='globalrecipientidx')
+    globalrecipientid = models.CharField(max_length=10)
+    globalrecipientidx = models.CharField(max_length=10,primary_key=True)
     name = models.TextField()
     address1 = models.TextField()
     address2 = models.TextField()
@@ -47,7 +47,7 @@ class payment(models.Model):
         
 
 class scheme(models.Model):
-    globalschemeid = models.CharField(max_length=-1, primary_key=True)
+    globalschemeid = models.CharField(max_length=40, primary_key=True)
     namenationallanguage = models.TextField()
     nameenglish = models.TextField()
     budgetlines8digit = models.CharField(max_length=10)
@@ -56,13 +56,23 @@ class scheme(models.Model):
         db_table = u'data_schemes'
 
 class total(models.Model):
-    global_id = models.CharField(max_length=-1, primary_key=True)
+    global_id = models.CharField(max_length=40, primary_key=True)
     amount_euro = models.TextField() # This field type is a guess.
     year = models.IntegerField()
     countrypayment = models.CharField(max_length=2)
     nameenglish = models.TextField()    
     class Meta:
         db_table = u'data_totals'
+
+class counts(models.Model):
+    country = models.CharField(blank=True, max_length=100)
+    year = models.IntegerField()
+    type = models.CharField(max_length=40)
+    value = models.CharField(blank=True, max_length=100, primary_key=True)
+    count = models.IntegerField()
+    
+    class Meta:
+        db_table = u'data_counts'
 
 
 class locations(models.Model):

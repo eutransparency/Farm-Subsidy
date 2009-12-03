@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block page_title %}
-  Browse {{ country.name }} {{ browse_type }}s{% ifnotequal selected_year 0 %} in {{ selected_year }}{% else %}, All years{% endifnotequal %}
+  Browse <a href="{% url country country.code %}">{{ country.name }}</a> {{ browse_type }}s{% ifnotequal selected_year 0 %} in {{ selected_year }}{% else %}, All years{% endifnotequal %}
 {% endblock %}
 
 {% block content %}
@@ -30,6 +30,10 @@
   
   {% load pagination_tags %}
   {% autopaginate data 30 %}
+
+  {% ifequal browse_type "location"  %}
+    <img src='http://maps.google.com/maps/api/staticmap?size=400x400&sensor=false{% for l in data %}&markers={{ l.latlng }}{% endfor %}&key={{ GOOGLE_MAPS_API_KEY }}' />
+  {% endifequal %}
 
   <table>
     <thead>

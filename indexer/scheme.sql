@@ -84,8 +84,9 @@ CREATE TABLE data_locations
   year integer,
   name text,
   parent_name text,
-  total numeric
-  recipients numeric
+  total numeric,
+  recipients numeric,
+  latlng point
 )
 WITH (OIDS=FALSE);
 
@@ -110,6 +111,7 @@ CREATE TABLE data_years
 )
 WITH (OIDS=FALSE);
 
+
 DROP TABLE IF EXISTS data_scheme_totals;
 CREATE TABLE data_scheme_totals
 (
@@ -118,5 +120,17 @@ CREATE TABLE data_scheme_totals
   name text,
   amount numeric,
   globalschemeid varchar
+)
+WITH (OIDS=FALSE);
+
+
+DROP TABLE IF EXISTS data_counts;
+CREATE TABLE data_counts
+(
+  country varchar(2),
+  year integer,
+  type text,
+  value text,
+  count integer
 )
 WITH (OIDS=FALSE);

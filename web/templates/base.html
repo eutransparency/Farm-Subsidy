@@ -29,7 +29,45 @@
 
 </head>
 <body id="{% block body_style %}{% endblock %}" class="{% block body_class %}{% endblock %} {% if list_items.create %}list_enabled{% endif %}">
-  
+  <div id="topbar">
+    
+    <form method="post" action="http://app.icontact.com/icp/signup.php" name="icpsignup" accept-charset="UTF-8" onsubmit="return verifyRequired();">
+    <input name="redirect" value="http://www.icontact.com/www/signup/thanks.html" type="hidden">
+    <input name="errorredirect" value="http://www.icontact.com/www/signup/error.html" type="hidden">
+    <script type="text/javascript">
+
+    if (document.location.protocol === "https:")
+
+    	document.icpsignup.action = "https://app.icontact.com/icp/signup.php";
+    function verifyRequired() {
+      if (document.icpsignup["fields_email"].value == "") {
+        document.icpsignup["fields_email"].focus();
+        alert("The Email field is required.");
+        return false;
+      }
+
+
+    return true;
+    }
+    </script>
+    <div id="SignUp">
+      <label for="fields_email">Join the farmsubsidy.org newsletter. Email:</label>&nbsp;<input type="text" name="fields_email" value="" id="fields_email" size="20">
+      <input name="Submit" value="Submit" type="submit">
+        <input name="listid" value="3290" type="hidden">
+        <input name="specialid:3290" value="OMN5" type="hidden">
+        <input name="clientid" value="161514" type="hidden">
+        <input name="formid" value="278" type="hidden">
+        <input name="reallistid" value="1" type="hidden">
+        <input name="doubleopt" value="1" type="hidden">
+    </div>
+    </form>
+    
+    
+    
+    
+    
+    
+  </div>
 <div id="outer">  
     <div id="head">
       <h1><a href="/">
@@ -47,8 +85,8 @@
         <li class="{% active request "^/lists/" %}"><a href="/lists/">Custom Lists</a></li>
       </ul>
       
-      {# {% load user %} #}
-      {# {% user_menu user %} #}
+      {% load user %}
+      {% user_menu user %}
       
       {% block message %}
         {% ifequal display_welcome_message "1" %}

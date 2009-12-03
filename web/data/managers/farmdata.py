@@ -1,6 +1,7 @@
 # encoding: utf-8
 from django.db import models
 from django.db import connection, backend, models
+import re
 from indexer import countryCodes
 import fsconf
 
@@ -178,7 +179,7 @@ class FarmDataManager(models.Manager):
     
     result_list = []
     for row in cursor.fetchall():
-      p = self.model(amount_euro = row[0], name=row[2], globalrecipientidx=row[1])
+      p = self.model(amount_euro = row[0], name=row[1], globalrecipientidx=row[2])
       result_list.append(p)
     return result_list
 
@@ -279,7 +280,7 @@ class LocationManager(models.Manager):
     if country and country != "EU":
       extra_and += " AND country = '%s'" % country
 
-    # name = smart_unicode(name)
+    name = re.sub("'","\\'",name)
     
     cursor = connection.cursor()
     cursor.execute("""
@@ -298,7 +299,7 @@ class LocationManager(models.Manager):
 
 
 
-  def locations(self, country="EU", parent=None, year=DEFAULT_YEAR, limit=10):
+  def locations(self, country="EU", parent=None, name=None, year=DEFAULT_YEAR, limit=10, sort='amount'):
     if country == "EU":
       countries = countryCodes.country_codes()
     else:
@@ -309,9 +310,13 @@ class LocationManager(models.Manager):
       parent = [code.lower() for code in countryCodes.country_codes()]
     else:
       parent = [parent.lower()]
-
-    parents = ",".join("'%s'" % country for country in parent)    
+     
+    parents = r",".join(r"'%s'" % re.sub("'","\\'", location) for location in parent)    
     extra_and = ""
+    
+    if name:
+        extra_and += " AND name='%s'" % re.escape(name)
+    
     if year and int(year) != 0:
       extra_and += " AND year = '%s'" % year    
     
@@ -319,51 +324,65 @@ class LocationManager(models.Manager):
       limit = "LIMIT %s" % limit
     else:
       limit = ""
-
+    
+    if sort == 'avg':
+        sort_by = 'avg DESC'
+    elif sort == 'recipients':
+        sort_by = 'r DESC'
+    elif sort == 'name':
+        sort_by = 'name ASC'
+    else:
+        sort_by = 't DESC'
+    
     cursor = connection.cursor()
-    sql = """
-    SELECT name, SUM(total) AS t, country, MAX(recipients)
+    cursor.execute("""
+    SELECT *, A.t/A.r as avg FROM
+    (SELECT name, SUM(total) AS t, country, MAX(recipients) as r, latlng::varchar as ll
     FROM data_locations
     WHERE country IN (%(countries)s) 
     AND parent_name IN (%(parents)s) 
+    AND name NOT IN (LOWER(%(countries)s))
     %(extra_and)s
-    GROUP BY name, country
-    ORDER BY t DESC
-    %(limit)s
-    """ % locals()
-    cursor.execute(sql)
-    
+    GROUP BY ll, name, country
+    %(limit)s) as A
+    ORDER BY %(sort_by)s
+    """ % locals())
     result_list = []
     for row in cursor.fetchall():
       p = self.model(name=row[0], total=row[1], country=row[2])
       p.count = row[3]
-      p.avg = p.total/p.count
+      try:
+          p.latlng = row[4][1:-1]
+      except:
+          p.latlng = []
+          
+      p.avg = row[5]
       result_list.append(p)
     return result_list
     
     
   def recipients_by_location(self, country, location, year=0, limit=10, offset=0):
-    sql = """
-    SELECT * FROM 
-          (SELECT t.amount_euro as E, t.global_id, t.nameenglish
-          FROM data_totals t
-          WHERE t.countrypayment='%(country)s' 
-          AND t.year=%(year)s
-          ORDER BY E DESC
-          LIMIT %(limit)s
-          OFFSET %(offset)s) AS TOTALS
-    JOIN data_recipient_locations r
-    ON TOTALS.global_id=r.global_id
-    """ % locals()
-
+    
+    
     cursor = connection.cursor()
-    cursor.execute(sql)
-  
+    cursor.execute("""
+    SELECT * FROM 
+        (SELECT DISTINCT ON (t.global_id) * FROM
+            (SELECT global_id, MAX(location), MAX(country) FROM data_recipient_locations
+            WHERE location='%(location)s'
+            GROUP BY global_id
+            LIMIT %(limit)s
+            OFFSET %(offset)s) as r
+        join data_totals t
+        ON t.global_id=r.global_id) as l
+    ORDER BY l.amount_euro DESC
+    """% {'location' : re.sub("'", "\\'", location), 'limit' : limit, 'offset' : offset})
+    
     result_list = []
     for row in cursor.fetchall():
-      p = self.model(name=row[2])
-      p.amount_euro = row[0]
-      p.global_id = row[1]
+      p = self.model(name=row[7])
+      p.amount_euro = row[4]
+      p.global_id = row[0]
       result_list.append(p)
     return result_list
     

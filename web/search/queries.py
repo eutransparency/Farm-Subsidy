@@ -10,7 +10,7 @@ if __name__ == "__main__":
   import sys
   sys.path.append('../..')
 import cPickle
-
+import re
 import fsconf as fsconf
 
 
@@ -102,6 +102,17 @@ def search(query_string, options={'len' : 100, 'page' : 0, 'len' : 50,}, db=fsco
 def calcPages(page,resultlen):
   """docstring for calcPages"""
   return resultlen*(page)
+
+def simmlar_name(name, db=fsconf.xapianDbPath):
+    options={
+        'len' : 5,
+        'page' : 0,
+        'offset' : 0
+        }
+    results = search("name:%s" % " OR ".join(re.sub('  ', ' ', name).split(" ")), options) or {'documents' : {0 : {'name' : ''}}}
+    if results['documents'][0]['name'] == name:
+        del results['documents'][0]
+    return results 
 
 
 def get_rset(rid='GB131541', db=fsconf.xapianDbPath):
