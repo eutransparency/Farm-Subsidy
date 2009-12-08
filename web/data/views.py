@@ -41,7 +41,7 @@ def country(request, country, year=DEFAULT_YEAR):
   
   top_recipients = models.data.objects.top_recipients(country, limit=10, year=year)
   top_schemes = models.data.objects.top_schemes(country, limit=10, year=year)  
-  top_regions = models.locations.objects.locations(country=country, parent=country, year=year, limit=10)
+  top_regions = models.locations.objects.sub_locations(country=country, limit=10)
   
   return render_to_response(
     'country.html', 
@@ -131,39 +131,23 @@ def browse(request, country, browse_type, year=DEFAULT_YEAR, sort='amount'):
   )  
 
 
-def location(request, country, year="0", name=None):
+def location(request, country, geo1=None,geo2=None,geo3=None,geo4=None):
 
   sub_location_sort = request.GET.get('sublocation', 'amount')
   
-  location_path = name.split('/')
-  location_path.insert(0, country.lower())
-
-  while location_path[-1] == '' or None:
-    location_path.pop()  
-
-  location_path_string = "/".join(location_path)
-  location_name = location_path.pop()
-  parent_path_string = "/".join(location_path)
-  location_parent = location_path.pop()
-    
-  location = models.locations.objects.locations(country=country, parent=parent_path_string, name=location_name)
-  location_recipients = models.locations.objects.recipients_by_location(country=country, year=year, location=location_name, limit=10)
-  years = models.locations.objects.location_years(country=country, name=location_name)
-  sub_location = models.locations.objects.locations(country=country, parent=location_path_string, year=year, limit=None, sort=sub_location_sort)
+  location = models.locations.objects.location(country=country, geo1=geo1, geo2=geo2, geo3=geo3, geo4=geo4)
+  sub_location = models.locations.objects.sub_locations(country=country, geo1=geo1,geo2=geo2,geo3=geo3,geo4=geo4, limit=None, sort=sub_location_sort)
+  location_recipients = models.locations.objects.recipients_by_location(country=country, geo1=geo1,geo2=geo2,geo3=geo3,geo4=geo4, limit=10)
   
-  for i in sub_location:
-      i.path = "/".join([name, i.name])
    
   return render_to_response(
     'location.html', 
     {
     'location' : location,
-    'location_path_name' : name,
     'location_recipients' : location_recipients,
     'sub_location' : sub_location,
-    'sub_location_sort' : sub_location_sort,
-    'years' : years,
-    'selected_year' : int(year),        
+    # 'sub_location_sort' : sub_location_sort,
+    # 'selected_year' : int(year),        
     },
     context_instance=RequestContext(request)
   )  

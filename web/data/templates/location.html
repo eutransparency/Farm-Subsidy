@@ -2,16 +2,25 @@
 {% load humanize %}
 
 {% block title %}
-    {{ location.0.name|title }} | {{ country.name|title }}
+  {% if location.0.name %}
+      {{ location.0.name|title }}, {{ country.name }}
+  {% else %}
+    All locations in {{ country.name }}
+  {% endif %}
+
 {% endblock %}
 
 {% block page_title %}
-    {{ location.0.name|title }}, {{ country.name }}
+    {% if location.name %}
+        {{ location.name|title }}, {{ country.name }}
+    {% else %}
+      All locations in {{ country.name }}
+    {% endif %}
 {% endblock %}
 
 {% block content %}
 
-  {{ location_totals.count|floatformat:2|intcomma }} recipients received &euro;{{ location_totals.total|floatformat:2|intcomma }}  
+  <p>{{ location.recipients|intcomma }} recipients received &euro;{{ location.total|floatformat:2|intcomma }}  </p>
   {% if sub_location %}
     {% if sub_location.0.latlng %}
       <img src='http://maps.google.com/maps/api/staticmap?size=400x400&sensor=false{% for l in sub_location %}&markers={{ l.latlng }}{% endfor %}&key={{ GOOGLE_MAPS_API_KEY }}' />
@@ -28,10 +37,11 @@
           
         </thead>
         <tbody>
+          {% load cleanurl %}
           {% for l in sub_location %}
             <tr>
               <td>
-                <a href="{% url location_view country=country.code year=selected_year name=l.path %}">{{ l.name|title }} ({{ l.count }})</a>
+                <a href="{% cleanurl location_view country.code l.geo1 l.geo2 l.geo3 l.geo4 %}">{{ l.name|title }}</a>
                 <td>&euro;{{ l.total|floatformat:2|intcomma }}</td>
                 <td>{{ l.count|floatformat|intcomma }}</td>
                 <td>&euro;{{ l.avg|floatformat:2|intcomma }}</td>
@@ -62,7 +72,7 @@
 
       </tbody>
     </table>
-    <a href="{% url browse country=country.code browse_type="recipient" year=selected_year sort="amount" %}">View All</a>
+    <a href="">View All</a>
   </div>
   
   

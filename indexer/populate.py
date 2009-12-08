@@ -75,11 +75,9 @@ def indexes(opp, tables=None):
             ('year', 'year', 'btree'),
             ('globalrecipientidx', 'globalrecipientidx', 'btree'),
             ('amounteuro', 'amounteuro', 'btree'),
-            ('countrypayment', 'countrypayment', 'btree'),
             ('payments_globalschemeid', 'globalschemeid', 'btree'),
             ],
         'data_recipients' : [
-            ('C', 'countrypayment', 'btree'),
             ('G1', 'geo1', 'btree'),
             ('G2', 'geo2', 'btree'),
             ('G3', 'geo3', 'btree'),
@@ -101,12 +99,13 @@ def indexes(opp, tables=None):
         ('years_y', 'year', 'btree'),
         ],
         'data_locations' : [
-        ('locations_c', 'country', 'btree'),
-        ('locations_y', 'year', 'btree'),
-        ('locations_name', 'name', 'btree'),
+        ('locations_type', 'location_type', 'btree'),
+        ('locations_geo1', 'geo1', 'btree'),
+        ('locations_geo2', 'geo2', 'btree'),
+        ('locations_geo3', 'geo3', 'btree'),
+        ('locations_geo4', 'geo4', 'btree'),
         ],
         'data_scheme_totals' : [
-        ('scheme_totals_c', 'country', 'btree'),
         ('scheme_totals_y', 'year', 'btree'),
         ('scheme_totals_sid', 'globalschemeid', 'btree'),
         ],
@@ -197,45 +196,30 @@ def totals(country):
     c.execute(sql)
     conn.commit()    
     
-    fields = ['countrypayment', 'geo1', 'geo2', 'geo3', 'geo4']
-    while fields:
-        child = fields.pop()
+    geo_columns = ['geo1', 'geo2', 'geo3', 'geo4']
+    while geo_columns:
+        columns = []
+        for i in range(0,4):
+            try:
+                columns.append(geo_columns[i])
+            except:
+                columns.append('NULL')
+        columns_str = ", ".join("LOWER(%s)" % i for i in columns)
+        group_by_str = ", ".join(geo_columns)
+        column_type = geo_columns.pop()    
 
-
-        
-        print "\t Making recipient locations for %s" % child
-        
         sql = """
-        INSERT INTO data_recipient_locations 
-        SELECT globalrecipientidx, LOWER(%(child)s), countryrecipient 
-        FROM data_recipients
-        WHERE countrypayment = '%(country)s' 
-        AND %(child)s IS NOT NULL
-        AND globalrecipientidx IS NOT NULL
-        GROUP BY globalrecipientidx, %(child)s, countryrecipient
+        INSERT INTO data_locations
+        SELECT '%(column_type)s','%(country)s',%(columns_str)s, count(*) , SUM(t.amount_euro)
+        FROM data_recipients r
+        JOIN data_totals t
+        ON r.globalrecipientidx=t.global_id
+        WHERE %(column_type)s IS NOT NULL
+        AND t.year = '0'
+        GROUP BY %(group_by_str)s
         """ % locals()
         
-        c.execute(sql)
-        conn.commit()    
-        
-        
-        # Location totals
-        print "\t - Making %s location totals for %s" % (child, country)
-        
-        concats = "||'/'||".join("r.%s" % i for i in fields) or 'r.countrypayment'
-        groups = ",".join("r.%s" % i for i in fields) or 'r.countrypayment'
-        
-        sql = """
-        INSERT INTO data_locations 
-            SELECT UPPER(r.countrypayment), p.year, LOWER(r.%(child)s) as N, 
-              LOWER(%(concats)s) AS P, SUM(p.amounteuro), COUNT(r.*)
-            FROM data_recipients r
-            JOIN data_payments p
-            ON r.globalrecipientid = p.globalrecipientid
-            WHERE p.countrypayment = '%(country)s' AND r.%(child)s IS NOT NULL
-            GROUP BY r.%(child)s,%(groups)s,p.year, P, r.countrypayment
-            ORDER BY N DESC
-                """ % locals()
+        print "\t - Making location totals for %s" % column_type
         c.execute(sql)
         conn.commit()    
 
@@ -273,6 +257,8 @@ def totals(country):
                         """ % locals()
     c.execute(sql)
     conn.commit()    
+
+
 
 def counts(country):
     """
@@ -413,7 +399,7 @@ if __name__ == "__main__":
 
     for country in countries:
             totals(country)
-            counts(country)
+            # counts(country)
     
     indexes('create', ['data_totals', 'data_years', 'data_locations', 'data_scheme_totals'])
     

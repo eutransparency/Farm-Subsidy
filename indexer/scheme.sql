@@ -80,24 +80,25 @@ WITH (OIDS=FALSE);
 DROP TABLE IF EXISTS data_locations;
 CREATE TABLE data_locations
 (
+  location_type varchar(10),
   country varchar(2),
-  year integer,
-  name text,
-  parent_name text,
-  total numeric,
+  geo1 text,
+  geo2 text,
+  geo3 text,
+  geo4 text,
   recipients numeric,
-  latlng point
+  total numeric
 )
 WITH (OIDS=FALSE);
 
-DROP TABLE IF EXISTS data_recipient_locations;
-CREATE TABLE data_recipient_locations
-(
-  global_id character varying(20) NOT NULL,
-  location text,
-  country varchar(2)
-)
-WITH (OIDS=FALSE);
+-- DROP TABLE IF EXISTS data_recipient_locations;
+-- CREATE TABLE data_recipient_locations
+-- (
+--   global_id character varying(20) NOT NULL,
+--   location text,
+--   country varchar(2)
+-- )
+-- WITH (OIDS=FALSE);
 
 
 

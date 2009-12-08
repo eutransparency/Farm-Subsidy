@@ -65,12 +65,12 @@
     </thead>
   {% for region in top_regions %}
     <tr>
-      <td><a href="{% url location_view region.country region.name %}">{{ region.name }}</a></td>
+      <td><a href="{% url location_view country=region.country geo1=region.geo1 %}">{{ region.geo1 }}</a></td>
       <td>&euro;{{ region.total|floatformat:2|intcomma }}</td>
     </tr>
   {% endfor %}
   </table>
-  <a href="{% url browse country=country.code browse_type="location" year=selected_year sort="amount" %}">View All</a>
+  <a href="{% url location_view country=country.code %}">View All</a>
 </div>
 
 <div class="block top_recipients">

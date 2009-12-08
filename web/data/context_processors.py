@@ -58,19 +58,25 @@ def breadcrumb(request):
                  ]})
 
     if 'location' in path and path[2] == "location":
+        geos = ['geo1','geo2','geo3','geo4',]
         locations = path[3:]
-        year = locations.pop(0)
         location_breadcrumbs = []
         while locations:
+            kwargs = {'country' : country['code'],}
+            for i, geo in enumerate(geos):
+                try:
+                    kwargs[geo] = locations[i]
+                except:
+                    pass
             item = {
                 'name' : locations[-1], 
-                'url' : reverse('location_view', kwargs={'country' : country['code'], 'year' : year,'name' : "/".join(locations)})
+                'url' : reverse('location_view', kwargs=kwargs)
                 }
             location_breadcrumbs.append(item)
             locations.pop()
         location_breadcrumbs[0]['class'] = 'selected'
         location_breadcrumbs.reverse()
-        breadcrumb.append({'locations' : location_breadcrumbs})
+        breadcrumb.append({'Sub-Locations' : location_breadcrumbs})
 
     return {'breadcrumbs' : breadcrumb}
 
