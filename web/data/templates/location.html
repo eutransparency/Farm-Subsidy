@@ -19,8 +19,10 @@
 {% endblock %}
 
 {% block content %}
-
-  <p>{{ location.recipients|intcomma }} recipients received &euro;{{ location.total|floatformat:2|intcomma }}  </p>
+  {% if location.recipients %}    
+    <p>{{ location.recipients|intcomma }} recipients received &euro;{{ location.total|floatformat:2|intcomma }}  </p>
+  {% endif %} 
+  
   {% if sub_location %}
     {% if sub_location.0.latlng %}
       <img src='http://maps.google.com/maps/api/staticmap?size=400x400&sensor=false{% for l in sub_location %}&markers={{ l.latlng }}{% endfor %}&key={{ GOOGLE_MAPS_API_KEY }}' />

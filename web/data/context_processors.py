@@ -57,7 +57,7 @@ def breadcrumb(request):
                  'url' : reverse('country', args=[country['code']])},
                  ]})
 
-    if 'location' in path and path[2] == "location":
+    if 'location' in path and path[2] == "location" and len(path) >= 4:
         geos = ['geo1','geo2','geo3','geo4',]
         locations = path[3:]
         location_breadcrumbs = []
@@ -77,7 +77,6 @@ def breadcrumb(request):
         location_breadcrumbs[0]['class'] = 'selected'
         location_breadcrumbs.reverse()
         breadcrumb.append({'Sub-Locations' : location_breadcrumbs})
-
     return {'breadcrumbs' : breadcrumb}
 
 
