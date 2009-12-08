@@ -334,8 +334,10 @@ class LocationManager(models.Manager):
         p.name=p.__dict__.get(p.location_type, '')
 
         result_list.append(p)
-      return result_list[0]
-
+      try:
+          return result_list[0]
+      except:
+          pass
 
   def sub_locations(self, country="EU", geo1=None,geo2=None,geo3=None,geo4=None, limit=10, sort='amount'):
     if country == "EU":
