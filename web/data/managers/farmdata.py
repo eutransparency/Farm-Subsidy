@@ -437,6 +437,13 @@ class LocationManager(models.Manager):
 
 
   def recipients_by_location(self, country, geo1=None,geo2=None,geo3=None,geo4=None, limit=10, offset=0):
+      
+        if country == "EU":
+          countries = countryCodes.country_codes()
+        else:
+          countries = [country]
+        countries = ",".join("'%s'" % country for country in countries)
+      
         if geo1:
           columns_available = [('geo1', geo1), ('geo2', geo2), ('geo3', geo3), ('geo4', geo4)]
           sql_columns = []
@@ -464,7 +471,7 @@ class LocationManager(models.Manager):
         cursor.execute("""
         SELECT * FROM 
             (SELECT globalrecipientidx as global_id, name, geo1, geo2, geo3, geo4 FROM data_recipients
-            WHERE countrypayment = '%(country)s'
+            WHERE countrypayment IN (%(countries)s)
             %(sql_where)s
             ) AS R
             JOIN data_totals T
