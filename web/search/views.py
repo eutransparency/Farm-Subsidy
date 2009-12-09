@@ -18,8 +18,6 @@ def results(request):
   
   form = forms.searchForm(request.GET)
   
-  print form.is_bound
-  
   return render_to_response(
     'results.html', 
     locals(),
