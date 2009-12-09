@@ -22,7 +22,7 @@
   <tbody>
     {% for i,result in results.documents.items %}
     <tr class="{% cycle 'odd' 'even' %}">
-      <td><a href="{% url recipient_view result.countrypayment result.global_id %}">{{ result.name }}</a></td>
+      <td><a href="{% url recipient_view result.countrypayment result.global_id result.name|slugify %}">{{ result.name }}</a></td>
       <td>&euro;{{ result.amount_euro|floatformat:2|intcomma }}</td>
       
     </tr>
