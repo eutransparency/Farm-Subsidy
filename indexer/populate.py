@@ -167,10 +167,11 @@ def totals(country):
     print "\t - Making new totals for %s" % country
     sql = """
     INSERT INTO data_totals 
-    SELECT DISTINCT ON (p.globalrecipientidx, year) 
-            p.globalrecipientidx, SUM(p.amounteuro), p.year, p.countrypayment, MIN(r.name)
-            FROM data_payments p, data_recipients r 
-            WHERE    p.globalrecipientidx IS NOT NULL AND r.globalrecipientidx=p.globalrecipientidx 
+    SELECT  p.globalrecipientidx, SUM(p.amounteuro), p.year, p.countrypayment, MIN(r.name)
+            FROM data_payments p
+            JOIN data_recipients r 
+            ON r.globalrecipientidx=p.globalrecipientidx 
+            WHERE p.globalrecipientidx IS NOT NULL
             AND p.countrypayment='%s'
             GROUP BY p.globalrecipientidx, p.year, p.countrypayment    """ % country
     c.execute(sql)
