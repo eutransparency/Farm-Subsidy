@@ -1,6 +1,7 @@
 from django.template import RequestContext
 from django import forms
 from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.contrib import auth
 from registration.forms import RegistrationForm
@@ -18,11 +19,14 @@ def login(request):
     username = request.POST.get('username', None)
     password = request.POST.get('password', None)
     user = auth.authenticate(username=username, password=password)
-
+    
     if user is not None:
         if user.is_active:
             auth.login(request, user)
             return HttpResponseRedirect(reverse('home'))  
+    if registration_form.is_valid():
+        new_user = registration_form.save()
+        return HttpResponseRedirect(reverse('registration_complete'))
   
   return render_to_response('login.html', 
     {'login_form': login_form, 'registration_form': registration_form,}, 
@@ -36,7 +40,7 @@ def register(request):
       form = UserCreationForm(request.POST)
       if form.is_valid():
           new_user = form.save()
-          return HttpResponseRedirect("/")
+          return HttpResponseRedirect(success_url or reverse('registration_complete'))
   else:
       form = UserCreationForm()
   return render_to_response("user/register.html", {

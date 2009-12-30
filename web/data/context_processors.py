@@ -56,7 +56,8 @@ def breadcrumb(request):
                 {'name' : country['name'], 
                  'url' : reverse('country', args=[country['code']])},
                  ]})
-
+    
+    # Locations
     if 'location' in path and path[2] == "location" and len(path) >= 4:
         geos = ['geo1','geo2','geo3','geo4',]
         locations = path[3:]
@@ -77,6 +78,20 @@ def breadcrumb(request):
         location_breadcrumbs[0]['class'] = 'selected'
         location_breadcrumbs.reverse()
         breadcrumb.append({'Sub-Locations' : location_breadcrumbs})
+
+
+    # Schemes
+    if 'scheme' in path and path[2] == 'scheme':
+        scheme_breadcrumbs = []
+        item = {
+            'name' : 'All Schemes', 
+            'url' : reverse('browse_default', kwargs={'country' : country['code'], 'browse_type' : 'scheme'})
+            }
+        print item
+        scheme_breadcrumbs.append(item)
+        breadcrumb.append({'Schemes' : scheme_breadcrumbs})
+
+
     return {'breadcrumbs' : breadcrumb}
 
 
