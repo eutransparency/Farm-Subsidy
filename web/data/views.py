@@ -69,6 +69,7 @@ def recipient(request, country, recipient_id, name):
   
   recipient = models.recipient.objects.filter(globalrecipientidx=recipient_id)[0]
   payments = models.data.objects.recipient_payments(globalrecipientidx=recipient_id)
+  payment_years = list(set(payment.year for payment in payments))
   related = queries.simmlar_name(recipient.name)
   
   return render_to_response(
@@ -76,6 +77,7 @@ def recipient(request, country, recipient_id, name):
     {
     'recipient' : recipient,
     'payments' : payments,
+    'payment_years' : payment_years,
     'related' : related,
     },
     context_instance=RequestContext(request)

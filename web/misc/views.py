@@ -32,19 +32,3 @@ def login(request):
     {'login_form': login_form, 'registration_form': registration_form,}, 
     context_instance = RequestContext(request)
   )
-  
-
-
-def register(request):
-  if request.method == 'POST':
-      form = UserCreationForm(request.POST)
-      if form.is_valid():
-          new_user = form.save()
-          return HttpResponseRedirect(success_url or reverse('registration_complete'))
-  else:
-      form = UserCreationForm()
-  return render_to_response("user/register.html", {
-      'form': form,
-  })
-
-  

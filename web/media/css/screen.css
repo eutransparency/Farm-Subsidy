@@ -29,6 +29,7 @@ h1 {font-size:3em;line-height:1;margin-bottom:0;}
 h2 {font-size:2em;margin-bottom:0.75em;clear:both;color:#104C29;}
 h3 {font-size:1.5em;line-height:1;margin-bottom:0.3em;color:#4E5911;}
 h4 {font-size:1.2em;line-height:1.25;margin-bottom:1.25em;}
+.block h4 {font-size:1.2em;line-height:1.25;margin:0.5em 0 0 0;color:#4E5911;}
 h5 {font-size:1em;font-weight:bold;margin-bottom:1.5em;}
 h6 {font-size:1em;font-weight:bold;}
 h1 img, h2 img, h3 img, h4 img, h5 img, h6 img {margin:0;}

@@ -166,23 +166,29 @@ def totals(country):
     # SUM all payments for the country and group by globalrecipientidx then year
     print "\t - Making new totals for %s" % country
     sql = """
+    BEGIN;
     INSERT INTO data_totals 
-    SELECT  p.globalrecipientidx, SUM(p.amounteuro), p.year, p.countrypayment, MIN(r.name)
-            FROM data_payments p
-            JOIN data_recipients r 
-            ON r.globalrecipientidx=p.globalrecipientidx 
-            WHERE p.globalrecipientidx IS NOT NULL
-            AND p.countrypayment='%s'
-            GROUP BY p.globalrecipientidx, p.year, p.countrypayment    """ % country
+    SELECT pay.globalrecipientidx, pay.totalamount, pay.year, pay.countrypayment, r.name FROM 
+    	(SELECT globalrecipientidx, SUM(amounteuro) as totalamount, year, countrypayment 
+    	FROM data_payments 
+    	WHERE countrypayment='%s'
+    	GROUP BY globalrecipientidx, year, countrypayment
+    	LIMIT 10) as pay
+    JOIN data_recipients r
+    ON r.globalrecipientidx=pay.globalrecipientidx;
+    COMMIT;
+    """ % country
     c.execute(sql)
     conn.commit()    
 
     sql = """
+    BEGIN;
     INSERT INTO data_totals 
     SELECT global_id, SUM(amount_euro), '0', countrypayment, MAX(nameenglish)
     FROM data_totals
     WHERE countrypayment ='%(country)s'
-    GROUP BY global_id, countrypayment            
+    GROUP BY global_id, countrypayment;
+    COMMIT;              
             """ % locals()
     c.execute(sql)
     conn.commit()    
@@ -210,6 +216,7 @@ def totals(country):
         column_type = geo_columns.pop()    
 
         sql = """
+        BEGIN;
         INSERT INTO data_locations
         SELECT '%(column_type)s','%(country)s',%(columns_str)s, count(*) , SUM(t.amount_euro)
         FROM data_recipients r
@@ -217,7 +224,8 @@ def totals(country):
         ON r.globalrecipientidx=t.global_id
         WHERE %(column_type)s IS NOT NULL
         AND t.year = '0'
-        GROUP BY %(group_by_str)s
+        GROUP BY %(group_by_str)s;
+        COMMIT;
         """ % locals()
         
         print "\t - Making location totals for %s" % column_type
@@ -248,13 +256,16 @@ def totals(country):
     conn.commit()    
 
     print "\t - Creating scheme totals for %s" % country
-    sql = """INSERT INTO data_scheme_totals 
+    sql = """
+    BEGIN;
+    INSERT INTO data_scheme_totals 
                      SELECT MIN(p.countrypayment), p.year, MAX(s.nameenglish), SUM(p.amounteuro) as E, p.globalschemeid
                      FROM data_payments p
                      JOIN data_schemes s
                      ON (p.globalschemeid = s.globalschemeid)
                      WHERE s.nameenglish IS NOT NULL AND p.countrypayment = '%(country)s'
-                     GROUP BY p.year, p.globalschemeid
+                     GROUP BY p.year, p.globalschemeid;
+                     COMMIT;
                         """ % locals()
     c.execute(sql)
     conn.commit()    

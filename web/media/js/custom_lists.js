@@ -27,11 +27,12 @@ $(function() {
   $('#add').hide()
 
   $("input:checkbox.custom_list_toggle").click(function() {
-    id = $(this).attr('id')  
+    id = $(this).attr('name')  
     if ($(this).attr('checked')) {
 
         $.getJSON("/lists/ajax/add/" + id, function(data){
-          total = data.total        
+          total = data.total
+          console.debug(total)
         });
         
         $(this).parent().parent().toggle('transfer', {to : '#list p strong'}, function() {

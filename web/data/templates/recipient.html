@@ -12,8 +12,8 @@
 
 {% block content %}
   
-  {# Only show the graph if there is more than one payment #}
-  {% if payments.1 %}
+  {# Only show the graph if there is more than one payment_year #}
+  {% if payment_years.1 %}
     {% load graphs %}
     {% graph "recipient_graph" recipient.globalrecipientidx %}
   {% endif %}

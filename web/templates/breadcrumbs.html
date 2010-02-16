@@ -1,11 +1,14 @@
-{% for item in breadcrumbs %}
-  {% for heading, content in item.items %}
-    <p>
-    <strong>{{ heading|title }}</strong>
-    {% for url in content %}      
-      <li><a href="{{ url.url }}" class="{{ url.class }}">{{ url.name|title }}</a></li>
+<div class="block">
+  <h3>Navigation</h3>
+  {% for item in breadcrumbs %}
+    {% for heading, content in item.items %}
+      <h4>{{ heading|title }}</h4>
+      <ul>
+      {% for url in content %}      
+        <li><a href="{{ url.url }}" class="{{ url.class }}">{{ url.name|title }}</a></li>
+      {% endfor %}
+      </ul>
     {% endfor %}
-    </p>
+
   {% endfor %}
-  
-{% endfor %}
+</div>

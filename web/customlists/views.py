@@ -42,6 +42,7 @@ def add_to_list(request):
       if key[:4] == "add-":
         document = FarmData.recipient.objects.select_related().get(globalrecipientidx=docid[4:])
         # document = dict(cPickle.loads(document.get_data()))
+        print document
         list_items[docid] = {'name' : document.name, 'amount' : document.globalrecipientidx.amount_euro}
       if key[:4] == "cur-":
         # The item is currently in the list, now check if it should be deleted
@@ -66,8 +67,8 @@ def ajax_add_del(request, action, docid):
   docid = docid[4:]
   list_items = request.session['custom_list_items']
   if action == "add":
-    document = FarmData.recipient.objects.select_related().get(globalrecipientidx=docid)
-    list_items[docid] = {'name' : document.name, 'amount' : document.globalrecipientidx.amount_euro}
+    document = FarmData.data.objects.single_recipient_total(globalrecipientidx=docid)
+    list_items[docid] = {'name' : document.nameenglish, 'amount' : document.amount_euro}
     
   if action == "del":
     del list_items[docid]

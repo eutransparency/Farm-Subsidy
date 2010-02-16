@@ -111,7 +111,7 @@ def simmlar_name(name, db=fsconf.xapianDbPath):
         }
     name = re.sub('&','', name)
     results = search("name:%s" % " OR ".join(re.sub('  ', ' ', name).split(" ")), options) or {'documents' : {0 : {'name' : ''}}}
-    if results['documents'][0]['name'] == name:
+    if len(results['documents']) > 0 and results['documents'][0]['name'] == name:
         del results['documents'][0]
     return results 
 

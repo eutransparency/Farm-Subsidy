@@ -249,12 +249,11 @@ class FarmDataManager(models.Manager):
       """ % locals()
     else:
       sql = """
-        SELECT SUM(p.amounteuro), p.year, s.nameenglish, MAX(s.globalschemeid), p.countrypayment
+        SELECT p.amounteuro, p.year, s.nameenglish, s.globalschemeid, p.countrypayment
         FROM data_payments p 
         JOIN data_schemes s
         ON p.globalschemeid=s.globalschemeid
-        WHERE p.globalrecipientidx='%(globalrecipientidx)s' 
-        GROUP BY p.year, s.nameenglish, p.countrypayment
+        WHERE p.globalrecipientidx='%(globalrecipientidx)s'
         ORDER BY p.year ASC
       """ % locals()
 
@@ -269,7 +268,20 @@ class FarmDataManager(models.Manager):
     return result_list
 
 
+  def single_recipient_total(self, globalrecipientidx):
+      cursor = connection.cursor()
+      cursor.execute("""
+      SELECT * FROM data_totals WHERE global_id = '%s' AND year='0'
+      """ % (globalrecipientidx))
 
+      result_list = []
+      for row in cursor.fetchall():
+        p = self.model()
+        p.global_id = row[0] 
+        p.amount_euro = row[1]
+        p.nameenglish = row[4]
+        result_list.append(p)
+      return result_list[0]
 
 
 class LocationManager(models.Manager):
@@ -417,7 +429,7 @@ class LocationManager(models.Manager):
         %(limit)s) as A
         ORDER BY %(sort_by)s
     """ % locals())
-
+    
     result_list = []
     for row in cursor.fetchall():
       p = self.model()

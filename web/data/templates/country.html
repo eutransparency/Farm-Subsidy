@@ -12,8 +12,9 @@
 
 {% block content %}
 
-{% load graphs %}
-{% graph "country_years" country.code %}
+{% if years.1 %}  
+  {% load graphs %}
+  {% graph "country_years" country.code %}
 
 <div class="year_selector">  
   {% for year in years %}
@@ -32,6 +33,7 @@
   {% endifequal %}
 </div>
 
+{% endif %}
 
 
 {% load countrystats %}
@@ -65,7 +67,7 @@
     </thead>
   {% for region in top_regions %}
     <tr>
-      <td><a href="{% url location_view country=region.country geo1=region.geo1 %}">{{ region.geo1 }}</a></td>
+      <td><a href="{% url location_view country=region.country geo1=region.geo1 %}">{{ region.geo1|title }}</a></td>
       <td>&euro;{{ region.total|floatformat:2|intcomma }}</td>
     </tr>
   {% endfor %}
@@ -74,7 +76,7 @@
 </div>
 
 <div class="block top_recipients">
-  <h3>Top Recipients</h3>
+  <h3 style="clear:both"">Top Recipients</h3>
   <table>  
     <thead>
       <th>Name</th>
@@ -86,7 +88,7 @@
     <tbody>
       {% for r in top_recipients %}
         <tr>
-          {% url recipient_view country.code r.globalrecipientidx as recipient_url %}
+          {% url recipient_view r.country r.globalrecipientidx r.name as recipient_url %}
           <td><a href="{{ recipient_url }}">{{ r.name }}</a></td>
           <td>&euro;{{ r.amount_euro|floatformat:2|intcomma }}</td>
           {% if custom_list.active %}

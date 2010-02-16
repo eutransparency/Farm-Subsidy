@@ -96,9 +96,7 @@ INSTALLED_APPS = (
     'tagging',
     'registration',
     'profiles',
-    # 'debug_toolbar',
-    # 'web.listmaker',
-    
+    'devserver'    
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -135,3 +133,5 @@ COMMENTS_APP = 'web.comments'
 DEBUG_TOOLBAR_CONFIG = {
   'INTERCEPT_REDIRECTS' : False,
 }
+
+EMAIL_PORT = 1025

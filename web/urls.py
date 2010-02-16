@@ -18,10 +18,9 @@ urlpatterns = patterns('',
     (r'^comments/', include('django.contrib.comments.urls')),
     
     (r'', include('web.customlists.urls')),
-    # (r'^api/', include('farmsubsidy.web.api.urls')),
     (r'^accounts/', include('registration.urls')),
-    # (r'^profiles/', include('profiles.urls')),
-    # (r'', include('profiles.urls')),
+
+    # (r'^api/', include('farmsubsidy.web.api.urls')),
     )
 
 if settings.DEBUG:
@@ -29,4 +28,4 @@ if settings.DEBUG:
       (r'^media/(?P<path>.*)$', 'static.serve',
       {'document_root': settings.MEDIA_ROOT}),
 
-  )
+)
