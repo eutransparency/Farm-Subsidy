@@ -172,8 +172,7 @@ def totals(country):
     	(SELECT globalrecipientidx, SUM(amounteuro) as totalamount, year, countrypayment 
     	FROM data_payments 
     	WHERE countrypayment='%s'
-    	GROUP BY globalrecipientidx, year, countrypayment
-    	LIMIT 10) as pay
+    	GROUP BY globalrecipientidx, year, countrypayment) as pay
     JOIN data_recipients r
     ON r.globalrecipientidx=pay.globalrecipientidx;
     COMMIT;
