@@ -37,6 +37,11 @@
         <td>&euro;{{ payment.amount_euro|floatformat:2|intcomma }}</td>
       </tr>
     {% endfor %}
+    <tr>
+      <td></td>
+      <td style="text-align:right;"><strong>Total:</strong></td>
+      <td>&euro;{{ recipient_total|floatformat:2|intcomma }}</td>
+    </tr>
   </table>
   
   {% if related.documents.items %}

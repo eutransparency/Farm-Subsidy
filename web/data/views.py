@@ -69,6 +69,7 @@ def recipient(request, country, recipient_id, name):
   
   recipient = models.recipient.objects.filter(globalrecipientidx=recipient_id)[0]
   payments = models.data.objects.recipient_payments(globalrecipientidx=recipient_id)
+  recipient_total = float(sum([i.amount_euro for i in payments]))
   payment_years = list(set(payment.year for payment in payments))
   related = queries.simmlar_name(recipient.name)
   
@@ -77,6 +78,7 @@ def recipient(request, country, recipient_id, name):
     {
     'recipient' : recipient,
     'payments' : payments,
+    'recipient_total' : recipient_total,
     'payment_years' : payment_years,
     'related' : related,
     },

@@ -223,6 +223,7 @@ def totals(country):
         ON r.globalrecipientidx=t.global_id
         WHERE %(column_type)s IS NOT NULL
         AND t.year = '0'
+        and countryrecipient='%(country)s'
         GROUP BY %(group_by_str)s;
         COMMIT;
         """ % locals()
@@ -264,7 +265,7 @@ def totals(country):
                      ON (p.globalschemeid = s.globalschemeid)
                      WHERE s.nameenglish IS NOT NULL AND p.countrypayment = '%(country)s'
                      GROUP BY p.year, p.globalschemeid;
-                     COMMIT;
+     COMMIT;
                         """ % locals()
     c.execute(sql)
     conn.commit()    
