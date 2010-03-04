@@ -232,12 +232,13 @@ class Populate(object):
         sql = """
         BEGIN;
         INSERT INTO data_scheme_totals 
-                         SELECT MIN(p.countrypayment), p.year, COALESCE(MAX(s.nameenglish), MAX(s.namenationallanguage)) as name, SUM(p.amounteuro) as E, MAX(p.globalschemeid)
-                         FROM data_payments p
-                         JOIN data_schemes s
-                         ON (p.globalschemeid = s.globalschemeid)
-                         WHERE p.countrypayment = '%(country)s'
-                         GROUP BY p.year, s.nameenglish, s.namenationallanguage;
+                         SELECT MIN(p.countrypayment), p.year, 
+                         COALESCE(NULLIF(MAX(s.nameenglish), ''), NULLIF(MAX(s.namenationallanguage), '')) as name, SUM(p.amounteuro) as E, MAX(p.globalschemeid)
+                          FROM data_payments p
+                          JOIN data_schemes s
+                          ON (p.globalschemeid = s.globalschemeid)
+                          WHERE p.countrypayment = '%(country)s'
+                          GROUP BY p.year, s.nameenglish, s.namenationallanguage;
          COMMIT;
                             """ % locals()
         self.c.execute(sql)
