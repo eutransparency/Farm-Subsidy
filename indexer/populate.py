@@ -259,7 +259,7 @@ def totals(country):
     sql = """
     BEGIN;
     INSERT INTO data_scheme_totals 
-                     SELECT MIN(p.countrypayment), p.year, MAX(s.nameenglish), SUM(p.amounteuro) as E, p.globalschemeid
+                     SELECT MIN(p.countrypayment), p.year, COALESCE(MAX(s.nameenglish), MAX(s.namenationallanguage)), SUM(p.amounteuro) as E, p.globalschemeid
                      FROM data_payments p
                      JOIN data_schemes s
                      ON (p.globalschemeid = s.globalschemeid)
