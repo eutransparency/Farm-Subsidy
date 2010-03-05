@@ -109,7 +109,7 @@ class Populate(object):
         """
         self.country = country
         
-        funcs = [self.totals, self.locations, self.years]
+        funcs = [self.totals, self.locations, self.years, sefl.data_scheme_totals]
         for f in funcs:
             f(self.country)
         
