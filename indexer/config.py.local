@@ -1,7 +1,0 @@
-# TODO change this to a configparser and create connection.cfg
-DBNAME = '' 
-USER = ''
-#HOST = ''
-HOST = ''
-PASSWORD = ''
-PORT = '5432'

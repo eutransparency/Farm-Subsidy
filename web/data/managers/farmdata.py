@@ -144,11 +144,11 @@ class FarmDataManager(models.Manager):
     extra_and = ""
     if country and country != "EU":
       if scheme:
-        extra_and += " AND p.countrypayment = '%s'" % country    
+        extra_and += " AND p.countrypayment = '%s'" % country
       else:
-        extra_and += " AND countrypayment = '%s'" % country    
+        extra_and += " AND countrypayment = '%s'" % country
     if year and int(year) != 0:
-      extra_and += " AND year = '%s'" % year    
+      extra_and += " AND year = '%s'" % year
 
     if limit is not None:
       limit = "LIMIT %s" % limit

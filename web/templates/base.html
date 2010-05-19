@@ -10,20 +10,20 @@
     <title>{% block title %}{{title}}{% endblock %} | FarmSubsidy.org</title>
 
 
-    <link rel="stylesheet" href="/media/css/layout.css" type="text/css"> 
-    <link rel="stylesheet" href="/media/css/screen.css" type="text/css" media="screen, projection">
-    <link rel="stylesheet" href="/media/css/print.css" type="text/css" media="print"> 
+    <link rel="stylesheet" href="{{ MEDIA_URL }}/css/layout.css" type="text/css"> 
+    <link rel="stylesheet" href="{{ MEDIA_URL }}/css/screen.css" type="text/css" media="screen, projection">
+    <link rel="stylesheet" href="{{ MEDIA_URL }}/css/print.css" type="text/css" media="print"> 
     <!--[if IE]>
       <link rel="stylesheet" href="/media/css/ie.css" type="text/css" media="screen, projection">
     <![endif]-->
  
-    <script type="text/javascript" src="/media/js/jquery.js"></script>
-    <script type="text/javascript" src="/media/js/jquery.example.min.js"></script>
-    <script type="text/javascript" src="/media/js/jquery-ui-1.7.1.custom.min.js"></script>
-    <script src="/media/js/scripts.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.example.min.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery-ui-1.7.1.custom.min.js"></script>
+    <script src="{{ MEDIA_URL }}/js/scripts.js" type="text/javascript" charset="utf-8"></script>
   {% if custom_list.active %}
     <link rel="stylesheet" href="/media/css/custom_lists.css" type="text/css" media="screen, projection">
-    <script src="/media/js/custom_lists.js" type="text/javascript" charset="utf-8"></script>
+    <script src="{{ MEDIA_URL }}/js/custom_lists.js" type="text/javascript" charset="utf-8"></script>
   {% endif %}
    
 
@@ -85,8 +85,8 @@
         <li class="{% active request "^/lists/" %}"><a href="/lists/">Custom Lists</a></li>
       </ul>
       
-      {% load user %}
-      {% user_menu user %}
+      {# {% load user %} #}
+      {# {% user_menu user %} #}
       
       {% block message %}
         {% ifequal display_welcome_message "1" %}
@@ -110,35 +110,35 @@
       {# {% endif %} #}
 
 
-      {% block list %}
-        {% if custom_list.active %}
-        <div id="list_standard">
-          <div id="list_content">
-            
-
-          <h3>Custom List</h3>
-          {# {% load customlist_list %} #}
-          {# {% list_total list_items.items %} #}
-          {# <div class="list_items hide">{% list_items list_items.items %}</div> #}
-          <p>The total for your list is: <strong>&euro;{{ custom_list.total }}</strong></p>
-          <div id="list_items">
-            <ul>
-              {% if custom_list.list_items.items %}
-                {% for docid, item in custom_list.list_items.items %}
-                  <li>{{ item.name }} &mdash; {{ item.amount }}</li>
-                {% endfor %}
-              {% else %}
-               <strong>There are no items in your list yet.</strong>
-               <li>You can browse though this site and add items with a checkbox next to them.</li>
-              {% endif %}
-            </ul>
-          </div>
-          </div>
-          </div>
-        
-          
-        {% endif %}
-      {% endblock %}
+      {# {% block list %} #}
+      {#   {% if custom_list.active %} #}
+      {#   <div id="list_standard"> #}
+      {#     <div id="list_content"> #}
+      {#        #}
+      {#  #}
+      {#     <h3>Custom List</h3> #}
+      {#     {# {% load customlist_list %} #}
+      {#     {# {% list_total list_items.items %} #}
+      {#     {# <div class="list_items hide">{% list_items list_items.items %}</div> #}
+      {#     <p>The total for your list is: <strong>&euro;{{ custom_list.total }}</strong></p> #}
+      {#     <div id="list_items"> #}
+      {#       <ul> #}
+      {#         {% if custom_list.list_items.items %} #}
+      {#           {% for docid, item in custom_list.list_items.items %} #}
+      {#             <li>{{ item.name }} &mdash; {{ item.amount }}</li> #}
+      {#           {% endfor %} #}
+      {#         {% else %} #}
+      {#          <strong>There are no items in your list yet.</strong> #}
+      {#          <li>You can browse though this site and add items with a checkbox next to them.</li> #}
+      {#         {% endif %} #}
+      {#       </ul> #}
+      {#     </div> #}
+      {#     </div> #}
+      {#     </div> #}
+      {#    #}
+      {#      #}
+      {#   {% endif %} #}
+      {# {% endblock %} #}
       
     </div>
     

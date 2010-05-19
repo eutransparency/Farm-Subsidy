@@ -11,9 +11,17 @@ Manages connections to the farmsubsidy database, for use by the indexing scripts
 """
 import psycopg2
 from config import *
+import ConfigParser
+config = ConfigParser.ConfigParser()
+config.read('pgloader.conf')
 
-
-def connect():
+HOST = config.get('pgsql', 'host')
+PORT = config.get('pgsql', 'port')
+DBNAME = config.get('pgsql', 'base')
+USER = config.get('pgsql', 'user')
+PASSWORD = config.get('pgsql', 'pass')
+                              
+def connect():                
   conn = psycopg2.connect(
     "dbname='%(dbname)s' user='%(user)s' host='%(host)s' port=%(PORT)s password='%(password)s'" 
     % {

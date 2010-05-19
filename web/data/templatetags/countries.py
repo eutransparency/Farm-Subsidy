@@ -1,5 +1,4 @@
 from django.template import Library, Node
-from django.core.urlresolvers import reverse
 from indexer import countryCodes
 register = Library()
 

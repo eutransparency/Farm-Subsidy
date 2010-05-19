@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS data_payments;
+DROP TABLE IF EXISTS data_payments_raw;
 
-CREATE TABLE data_payments
+CREATE TABLE data_payments_raw
 (
   paymentid integer,  
   globalpaymentid varchar(20),
@@ -18,8 +18,8 @@ WITH (OIDS=FALSE);
 
 
 
-DROP TABLE IF EXISTS data_recipients;
-CREATE TABLE data_recipients
+DROP TABLE IF EXISTS data_recipients_raw;
+CREATE TABLE data_recipients_raw
 (
   
   
@@ -48,8 +48,8 @@ CREATE TABLE data_recipients
 
 
 
-DROP TABLE IF EXISTS data_schemes;
-CREATE TABLE data_schemes
+DROP TABLE IF EXISTS data_schemes_raw;
+CREATE TABLE data_schemes_raw
 (
   globalschemeid varchar,
   CONSTRAINT globalschemeid PRIMARY KEY (globalschemeid),
@@ -62,76 +62,76 @@ CREATE TABLE data_schemes
 
 
 
-
-DROP TABLE IF EXISTS data_totals;
-CREATE TABLE data_totals
-(
-  global_id character varying(20) NOT NULL,
-  amount_euro numeric,
-  "year" integer,
-  countrypayment varchar(2),
-  nameenglish text   
-)
-WITH (OIDS=FALSE);
-
-
-
-
-DROP TABLE IF EXISTS data_locations;
-CREATE TABLE data_locations
-(
-  location_type varchar(10),
-  country varchar(2),
-  geo1 text,
-  geo2 text,
-  geo3 text,
-  geo4 text,
-  recipients numeric,
-  total numeric
-)
-WITH (OIDS=FALSE);
-
--- DROP TABLE IF EXISTS data_recipient_locations;
--- CREATE TABLE data_recipient_locations
+-- 
+-- DROP TABLE IF EXISTS data_totals;
+-- CREATE TABLE data_totals
 -- (
 --   global_id character varying(20) NOT NULL,
---   location text,
---   country varchar(2)
+--   amount_euro numeric,
+--   "year" integer,
+--   countrypayment varchar(2),
+--   nameenglish text   
 -- )
 -- WITH (OIDS=FALSE);
-
-
-
-DROP TABLE IF EXISTS data_years;
-CREATE TABLE data_years
-(
-  country varchar(2),
-  year integer,
-  recipients integer,
-  amount numeric
-)
-WITH (OIDS=FALSE);
-
-
-DROP TABLE IF EXISTS data_scheme_totals;
-CREATE TABLE data_scheme_totals
-(
-  country varchar(2),
-  year integer,
-  name text,
-  amount numeric,
-  globalschemeid varchar
-)
-WITH (OIDS=FALSE);
-
-
-DROP TABLE IF EXISTS data_counts;
-CREATE TABLE data_counts
-(
-  country varchar(2),
-  year integer,
-  type text,
-  value text,
-  count integer
-)
-WITH (OIDS=FALSE);
+-- 
+-- 
+-- 
+-- 
+-- DROP TABLE IF EXISTS data_locations;
+-- CREATE TABLE data_locations
+-- (
+--   location_type varchar(10),
+--   country varchar(2),
+--   geo1 text,
+--   geo2 text,
+--   geo3 text,
+--   geo4 text,
+--   recipients numeric,
+--   total numeric
+-- )
+-- WITH (OIDS=FALSE);
+-- 
+-- -- DROP TABLE IF EXISTS data_recipient_locations;
+-- -- CREATE TABLE data_recipient_locations
+-- -- (
+-- --   global_id character varying(20) NOT NULL,
+-- --   location text,
+-- --   country varchar(2)
+-- -- )
+-- -- WITH (OIDS=FALSE);
+-- 
+-- 
+-- 
+-- DROP TABLE IF EXISTS data_years;
+-- CREATE TABLE data_years
+-- (
+--   country varchar(2),
+--   year integer,
+--   recipients integer,
+--   amount numeric
+-- )
+-- WITH (OIDS=FALSE);
+-- 
+-- 
+-- DROP TABLE IF EXISTS data_scheme_totals;
+-- CREATE TABLE data_scheme_totals
+-- (
+--   country varchar(2),
+--   year integer,
+--   name text,
+--   amount numeric,
+--   globalschemeid varchar
+-- )
+-- WITH (OIDS=FALSE);
+-- 
+-- 
+-- DROP TABLE IF EXISTS data_counts;
+-- CREATE TABLE data_counts
+-- (
+--   country varchar(2),
+--   year integer,
+--   type text,
+--   value text,
+--   count integer
+-- )
+-- WITH (OIDS=FALSE);

@@ -27,11 +27,6 @@ USE_I18N = True
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = fsconf.project_path + 'web/media/'
 
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash if there is a path component (optional in other cases).
-# Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = 'media'
-
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
@@ -44,7 +39,7 @@ SECRET_KEY = 'dm195c_n(qv4!x-o7!5akh$q19vvrw$o6@2p_&^e(()qi6zojl'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
     'django.template.loaders.app_directories.load_template_source',
-#     'django.template.loaders.eggs.load_template_source',
+    'django.template.loaders.eggs.load_template_source',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -96,7 +91,8 @@ INSTALLED_APPS = (
     'tagging',
     'registration',
     'profiles',
-    'devserver'    
+    'devserver',   
+    'treebeard',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

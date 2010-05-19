@@ -51,8 +51,8 @@
   {% for scheme in top_schemes %}
     <tr>
       {% url scheme_view country=scheme.country globalschemeid=scheme.globalschemeid as scheme_url %}
-      <td><a href="{{ scheme_url }}">{{ scheme.name }}</a></td>
-      <td>&euro;{{ scheme.amount_euro|floatformat:2|intcomma }}</td>
+      <td><a href="{{ scheme_url }}">{{ scheme.scheme.nameenglish }}</a></td>
+      <td>&euro;{{ scheme.scheme_total|floatformat:2|intcomma }}</td>
     </tr>
   {% endfor %}
   </table>
@@ -67,7 +67,8 @@
     </thead>
   {% for region in top_regions %}
     <tr>
-      <td><a href="{% url location_view country=region.country geo1=region.geo1 %}">{{ region.geo1|title }}</a></td>
+      {# <td><a href="{% url location_view country=region.country geo1=region.geo1 %}">{{ region.geo1|title }}</a></td> #}
+      <td>{{ region.name|title }}</td>
       <td>&euro;{{ region.total|floatformat:2|intcomma }}</td>
     </tr>
   {% endfor %}
@@ -90,12 +91,7 @@
         <tr>
           {% url recipient_view r.country r.globalrecipientidx r.name as recipient_url %}
           <td><a href="{{ recipient_url }}">{{ r.name }}</a></td>
-          <td>&euro;{{ r.amount_euro|floatformat:2|intcomma }}</td>
-          {% if custom_list.active %}
-            {% with r.globalrecipientidx as recipient_id %}            
-              <td>{% include "blocks/recipient_toggle.html" %}</td>
-            {% endwith %}
-          {% endif %}
+          <td>&euro;{{ r.payment_total|floatformat:2|intcomma }} ({{ r.total }})</td>
         </tr>
       {% endfor %}
       

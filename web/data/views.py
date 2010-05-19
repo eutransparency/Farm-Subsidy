@@ -13,12 +13,16 @@ DEFAULT_YEAR = fsconf.default_year
 def home(request):
   
   ip_country = context_processors.ip_country(request)['ip_country']
-  top_eu = models.data.objects.top_recipients(limit=10, year=DEFAULT_YEAR)
-  top_for_ip = models.data.objects.top_recipients(ip_country['ip_country'], limit=10, year=DEFAULT_YEAR)
+  print ip_country
+  top_eu = models.Recipient.objects.top_recipients()
+  top_for_ip = models.Recipient.objects.top_recipients(country=ip_country['ip_country'])
   
   return render_to_response(
     'home.html', 
-    locals(),
+    {
+    'top_eu' : top_eu,
+    'top_for_ip' : top_for_ip,
+    },
     context_instance=RequestContext(request)
   )  
   
@@ -37,11 +41,12 @@ def country(request, country, year=DEFAULT_YEAR):
   """
   country = country.upper()
   
-  years = models.data.objects.years(country=country)
+  # years = models.data.objects.years(country=country)
   
-  top_recipients = models.data.objects.top_recipients(country, limit=10, year=year)
-  top_schemes = models.data.objects.top_schemes(country, limit=10, year=year)  
-  top_regions = models.locations.objects.sub_locations(country=country, limit=10)
+  top_recipients = models.Recipient.objects.top_recipients(country=country, year=year)
+  top_schemes = models.SchemeYear.objects.top_schemes(country, year=year)
+  top_regions = models.Location.objects.filter(geo_type='geo1').order_by('-total')
+  print top_regions
   
   return render_to_response(
     'country.html', 
@@ -49,7 +54,7 @@ def country(request, country, year=DEFAULT_YEAR):
     'top_recipients' : top_recipients,
     'top_schemes' : top_schemes,
     'top_regions' : top_regions,
-    'years' : years,
+    # 'years' : years,
     'selected_year' : int(year),
     },
     context_instance=RequestContext(request)
