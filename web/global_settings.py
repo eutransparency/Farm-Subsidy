@@ -1,10 +1,6 @@
 # Django settings for farmjango project.
-
-import sys
-from local_settings import *
-# sys.path.append('/var/www/')
-sys.path.append('..')
-
+import os 
+PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -25,7 +21,7 @@ USE_I18N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = fsconf.project_path + 'web/media/'
+MEDIA_ROOT = PROJECT_PATH + 'web/media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -62,7 +58,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    fsconf.project_path + 'web/templates',
+    PROJECT_PATH + 'web/templates',
 )
 
 
@@ -94,7 +90,6 @@ INSTALLED_APPS = (
     'devserver',   
     'treebeard',
     'haystack',
-    'xapian_tests',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -124,18 +119,12 @@ DEFAULT_CHARSET = "utf8"
 
 INTERNAL_IPS = ('127.0.0.1',)
 
-
 COMMENTS_APP = 'web.comments'
-
-
-DEBUG_TOOLBAR_CONFIG = {
-  'INTERCEPT_REDIRECTS' : False,
-}
 
 EMAIL_PORT = 1025
 
 HAYSTACK_SITECONF = 'search_conf'
 HAYSTACK_SEARCH_ENGINE = 'xapian'
-HAYSTACK_XAPIAN_PATH = fsconf.project_path+'xapian.db'
+HAYSTACK_XAPIAN_PATH = PROJECT_PATH+'xapian.db'
 HAYSTACK_BATCH_SIZE = 100000
 HAYSTACK_INCLUDE_SPELLING = True
