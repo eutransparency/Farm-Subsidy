@@ -12,6 +12,7 @@ if __name__ == "__main__":
 import cPickle
 import re
 import fsconf as fsconf
+from django.conf import settings
 
 
 def load_doc(doc_id, db=None):
@@ -116,29 +117,15 @@ def simmlar_name(name, db=fsconf.xapianDbPath):
     return results 
 
 
-def get_rset(rid='GB131541', db=fsconf.xapianDbPath):
+def get_rset(rid='GB1', db=fsconf.xapianDbPath):
   db = xapian.Database(db) 
-  
-  qp = xapian.QueryParser()
-  qp.set_default_op(xapian.Query.OP_AND)  
-  qp.add_prefix('id', 'XDOCID:')
-  qp.set_database(db)
- 
-  DEFAULT_SEARCH_FLAGS = (
-         xapian.QueryParser.FLAG_BOOLEAN |
-         xapian.QueryParser.FLAG_PHRASE |
-         xapian.QueryParser.FLAG_LOVEHATE |   
-         xapian.QueryParser.FLAG_BOOLEAN_ANY_CASE |
-         xapian.QueryParser.FLAG_WILDCARD |
-         xapian.QueryParser.FLAG_SPELLING_CORRECTION
-         # xapian.QueryParser.FLAG_PARTIAL 
-         )
+   
 
-  query = qp.parse_query("id:%s" % rid, DEFAULT_SEARCH_FLAGS )
+  query = xapian.Query("Qdata.recipient.GB131289")
   enq = xapian.Enquire(db)
   enq.set_query(query)
   
-  matches = enq.get_mset(0, 2)
+  matches = enq.get_mset(0, 10000000)
   
   
   rset = xapian.RSet()
@@ -149,18 +136,14 @@ def get_rset(rid='GB131541', db=fsconf.xapianDbPath):
   query = xapian.Query(xapian.Query.OP_ELITE_SET, [k for k,v in eset])
   enq.set_query(query)
   
+  print dir(rset)
+  print rset
+  
   matches = enq.get_mset(1,6)
 
-  results = {}
-  results['description'] = "Parsed query is: %s" % query.get_description()
-  results['documents'] = {}
-  results['size'] = matches.get_matches_estimated()
-
   for k,m in enumerate(matches):
-    results['documents'][k] = dict(cPickle.loads(m.document.get_data()))
-    results['documents'][k]['doc_id'] = m.document.get_docid()
-  
-  return results
+    print k,m.get_document(), m.get_docid()
+
 
 if __name__ == "__main__":
   results = get_rset(" ".join(sys.argv[1:]))

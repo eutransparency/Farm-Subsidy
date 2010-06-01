@@ -89,9 +89,8 @@
     <tbody>
       {% for r in top_recipients %}
         <tr>
-          {% url recipient_view r.country r.globalrecipientidx r.name as recipient_url %}
-          <td><a href="{{ recipient_url }}">{{ r.name }}</a></td>
-          <td>&euro;{{ r.payment_total|floatformat:2|intcomma }} ({{ r.total }})</td>
+          <td><a href="{{ r.get_absolute_url }}">{{ r.name }}</a></td>
+          <td>&euro;{{ r.total|floatformat:2|intcomma }}</td>
         </tr>
       {% endfor %}
       

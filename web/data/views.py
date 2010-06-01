@@ -44,16 +44,16 @@ def country(request, country, year=DEFAULT_YEAR):
   # years = models.data.objects.years(country=country)
   
   top_recipients = models.Recipient.objects.top_recipients(country=country, year=year)
-  top_schemes = models.SchemeYear.objects.top_schemes(country, year=year)
-  top_regions = models.Location.objects.filter(geo_type='geo1').order_by('-total')
-  print top_regions
+  # top_schemes = models.SchemeYear.objects.top_schemes(country, year=year)
+  # top_regions = models.Location.objects.filter(geo_type='geo1').order_by('-total')
+  # print top_regions
   
   return render_to_response(
     'country.html', 
     {
     'top_recipients' : top_recipients,
-    'top_schemes' : top_schemes,
-    'top_regions' : top_regions,
+    # 'top_schemes' : top_schemes,
+    # 'top_regions' : top_regions,
     # 'years' : years,
     'selected_year' : int(year),
     },
@@ -72,11 +72,10 @@ def recipient(request, country, recipient_id, name):
   """
   country = country.upper()
   
-  recipient = models.recipient.objects.filter(globalrecipientidx=recipient_id)[0]
-  payments = models.data.objects.recipient_payments(globalrecipientidx=recipient_id)
-  recipient_total = float(sum([i.amount_euro for i in payments]))
+  recipient = models.Recipient.objects.get(globalrecipientidx=recipient_id)
+  payments = models.Payment.objects.filter(recipient=recipient_id).order_by('year')
+  recipient_total = recipient.total
   payment_years = list(set(payment.year for payment in payments))
-  related = queries.simmlar_name(recipient.name)
   
   return render_to_response(
     'recipient.html', 
@@ -85,7 +84,6 @@ def recipient(request, country, recipient_id, name):
     'payments' : payments,
     'recipient_total' : recipient_total,
     'payment_years' : payment_years,
-    'related' : related,
     },
     context_instance=RequestContext(request)
   )  

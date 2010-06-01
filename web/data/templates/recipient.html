@@ -12,12 +12,37 @@
 
 {% block content %}
   
+  <div class="section">
+    <h3>Recipient Information</h3>
+    <div class="halfcolleft">
+    <h4>Address</h4>
+
+    {% if recipient.address1 %}{{ recipient.address1|title }}<br />{% endif %}
+    {% if recipient.address2 %}{{ recipient.address2|title }}<br />{% endif %}
+    {% if recipient.address3 %}{{ recipient.address3|title }}<br />{% endif %}
+    {% if recipient.town %}{{ recipient.town|title }}<br />{% endif %}
+    {% if recipient.address4 %}{{ recipient.address4|title }}<br />{% endif %}
+    {% if recipient.zipcode %}{{ recipient.zipcode|slice:"3:" }}<br />{% endif %}    
+    </div>
+
+    <div class="halfcolleft">
+    <h4>Location</h4>
+    {% if recipient.geo4 %}{{ recipient.geo4|title }}<br />{% endif %}
+    {% if recipient.geo3 %}{{ recipient.geo3|title }}<br />{% endif %}
+    {% if recipient.geo2 %}{{ recipient.geo2|title }}<br />{% endif %}
+    {% if recipient.geo1 %}{{ recipient.geo1|title }}<br />{% endif %}
+    </div>
+    <div class="clear"></div>
+  </div>
+  
+
   {# Only show the graph if there is more than one payment_year #}
   {% if payment_years.1 %}
     {% load graphs %}
     {% graph "recipient_graph" recipient.globalrecipientidx %}
   {% endif %}
-  
+  <div class="section">  
+    <h3>Payments</h3>
   <table>
     <thead>
       <th>Year</th>
@@ -28,13 +53,13 @@
       <tr>
         <td>{{ payment.year }} </td>
         <td>
-          {% if payment.schemeid %}
-            <a href="{% url scheme_view payment.country payment.schemeid %}">{{ payment.name }}</a>
-          {% else %}
-            {{ payment.name }}
-          {% endif %}
+          {# {% if payment.schemeid %} #}
+            {# <a href="{% url scheme_view payment.country payment.schemeid %}">{{ payment.scheme.name }}</a> #}
+          {# {% else %} #}
+            {{ payment.scheme.nameenglish }}
+          {# {% endif %} #}
         </td>
-        <td>&euro;{{ payment.amount_euro|floatformat:2|intcomma }}</td>
+        <td>&euro;{{ payment.amounteuro|floatformat:2|intcomma }}</td>
       </tr>
     {% endfor %}
     <tr>
@@ -43,20 +68,23 @@
       <td>&euro;{{ recipient_total|floatformat:2|intcomma }}</td>
     </tr>
   </table>
-  
-  {% if related.documents.items %}
+  </div>
+  {% load more_like_this %}
+  {# {% more_like_this recipient as related_content for "data.recipient" limit 2 %} #}
+  {% more_like_this recipient as related_content limit 3 %}
+  {% if related_content %}
     <div class="section">
       <h3>Related</h3>
       <p>The following recipients might be related to {{ recipient.name }}</p>
       <ul>
-      {% for k,r in related.documents.items %}
-        <li><a href="{% url recipient_view r.countrypayment r.global_id r.name|slugify %}">{{ r.name }}</a></li>
+      {% for item in related_content %}
+        <li><a href="{{ item.object.get_absolute_url }}">{{ item.object.name }}</a></li>
       {% endfor %}
       </ul>
     
     </div>
   {% endif %}
-  
+
   <div class="section">
     {% load comments i18n %}
     {% get_comment_list for recipient as comment_list %}

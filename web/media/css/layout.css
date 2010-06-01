@@ -265,6 +265,14 @@ ul.error, .errorlist {
   text-align:right;
 }
 
+.halfcolleft {
+  width:44%;
+  padding-right:5%;
+  float:left;
+  text-align:left;
+  overflow:auto;
+}
+
 .halfcol h3 {
   text-align:left;
 }

@@ -82,17 +82,19 @@ INSTALLED_APPS = (
     'web.comments',
     'web.countryinfo',
     'web.customlists',
-    'web.data',
-    'web.search',
-    'web.feeds',
-    'web.graphs',
-    'web.misc',
+    'data',
+    'search',
+    'feeds',
+    'graphs',
+    'misc',
     'pagination',
     'tagging',
     'registration',
     'profiles',
     'devserver',   
     'treebeard',
+    'haystack',
+    'xapian_tests',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -131,3 +133,9 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 
 EMAIL_PORT = 1025
+
+HAYSTACK_SITECONF = 'search_conf'
+HAYSTACK_SEARCH_ENGINE = 'xapian'
+HAYSTACK_XAPIAN_PATH = fsconf.project_path+'xapian.db'
+HAYSTACK_BATCH_SIZE = 100000
+HAYSTACK_INCLUDE_SPELLING = True

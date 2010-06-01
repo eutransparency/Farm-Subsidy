@@ -1,3 +1,4 @@
-Denormalization:
+Recipients page: 
 
-Scheme totals: 
+* Link to scheme
+* Reinstate related recipients (using haystack)

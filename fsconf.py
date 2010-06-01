@@ -57,4 +57,4 @@ index_values = {
 }
 
 
-default_year = 2008
+default_year = 0
