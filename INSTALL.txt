@@ -1,0 +1,34 @@
+INSTALL
+
+Installing farmsubsidy:
+
+1) Git clone the project:
+> git clone git@git.farmsubsidy.talusdesign.co.uk:farmsubsidy.git
+> git checkout 2.0
+> cd farmsubsidy
+
+2) Set up a virtualenv and install pip:
+
+> virtualenv --no-site-packages .
+> source bin/activate
+> easy_install pip
+> pip install -r requirements.txt
+
+Sometimes matplotlib attempts install before numpy.
+In this case manually install numpy first:
+
+> pip install numpy
+
+3) Set up Django:
+
+> cd web
+> python manage.py syncdb
+
+4) Add fixtures:
+
+To save the pain of actually loading all the data in to the system (for the
+larger countries this involves some horrid hackery to make it not take a week),
+there is a fixtures file with one recipient in fixtures/test_data.json.  This 
+can be loaded with:
+
+> python manage.py loaddata fixtures/test_data.json
