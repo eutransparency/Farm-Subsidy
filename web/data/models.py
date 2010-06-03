@@ -34,8 +34,8 @@ class Recipient(models.Model):
     def __unicode__(self):
         return "%s (%s)" % (self.pk, self.name)
     
-    class Meta():
-        managed = False
+    # class Meta():
+    #     managed = False
     
     def get_absolute_url(self):
         return reverse('recipient_view', args=[self.countrypayment, self.pk, slugify(self.name)])
@@ -56,8 +56,8 @@ class Payment(models.Model):
     year = models.IntegerField(db_index=True)
     countrypayment = models.CharField(max_length=4, default=None, db_index=True)
 
-    class Meta():
-        managed = False
+    # class Meta():
+    #     managed = False
 
 
 class Scheme(models.Model):
@@ -67,8 +67,8 @@ class Scheme(models.Model):
     budgetlines8digit = models.CharField(max_length=10, null=True)
     countrypayment = models.CharField(max_length=2)
 
-    class Meta():
-        managed = False
+    # class Meta():
+    #     managed = False
 
 
 class TotalYear(models.Model):

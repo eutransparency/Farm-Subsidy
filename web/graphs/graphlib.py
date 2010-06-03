@@ -6,14 +6,12 @@ import tempfile
 import matplotlib
 
 matplotlib.use('Agg')  # force the antigrain backend
-from matplotlib.backends.backend_agg import FigureCanvasAgg
-
-
+# from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 from matplotlib import rc
 from matplotlib.figure import Figure
 from matplotlib.cbook import iterable
-import matplotlib.numerix as nx
+# import matplotlib.numerix as nx
 
 from pylab import *
 from matplotlib.patches import Ellipse

@@ -2,10 +2,10 @@ from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.db.models import Sum, Count
-import models
 from django.conf import settings
 from data import countryCodes
 import context_processors
+import models
 
 DEFAULT_YEAR = settings.DEFAULT_YEAR
 

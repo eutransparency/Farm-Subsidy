@@ -1,11 +1,5 @@
 # Django settings for farmjango project.
 
-import sys
-sys.path.append('..')
-
-import fsconf
-
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -23,7 +17,12 @@ DATABASE_HOST = ''             # Set to empty string for localhost. Not used wit
 DATABASE_PORT = '5432'             # Set to empty string for default. Not used with sqlite3.
 
 
-# List of callables that know how to import templates from various sources.
-
 CACHE_BACKEND = 'file:///var/tmp/farmsubsidy_cache_stage'
 
+GOOGLE_MAPS_API_KEY = ""
+
+
+# 'Lite' settings, for non-xapian search
+HAYSTACK_SEARCH_ENGINE = 'whoosh'
+HAYSTACK_WHOOSH_PATH = ROOT_PATH + '/whoosh'
+MEDIA_URL = "/media"
