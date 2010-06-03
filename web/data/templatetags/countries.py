@@ -1,5 +1,5 @@
 from django.template import Library, Node
-from indexer import countryCodes
+from data import countryCodes
 register = Library()
 
 def country_menu():

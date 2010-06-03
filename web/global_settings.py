@@ -1,6 +1,7 @@
 # Django settings for farmjango project.
 import os 
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
+ROOT_PATH = os.path.split(PROJECT_PATH)[0]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -21,7 +22,7 @@ USE_I18N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = PROJECT_PATH + 'web/media/'
+MEDIA_ROOT = PROJECT_PATH + '/media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -58,9 +59,8 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    PROJECT_PATH + 'web/templates',
+    PROJECT_PATH + '/templates',
 )
-
 
 INSTALLED_APPS = (
     'django.contrib.humanize',
@@ -77,7 +77,6 @@ INSTALLED_APPS = (
     # 'farmsubsidy.web.api',
     'web.comments',
     'web.countryinfo',
-    'web.customlists',
     'data',
     'search',
     'feeds',
@@ -125,6 +124,10 @@ EMAIL_PORT = 1025
 
 HAYSTACK_SITECONF = 'search_conf'
 HAYSTACK_SEARCH_ENGINE = 'xapian'
-HAYSTACK_XAPIAN_PATH = PROJECT_PATH+'xapian.db'
+HAYSTACK_XAPIAN_PATH = ROOT_PATH + '/xapian.db'
 HAYSTACK_BATCH_SIZE = 100000
 HAYSTACK_INCLUDE_SPELLING = True
+
+DEFAULT_YEAR = 0
+STATS_YEAR = 2008
+STATS_DIR = ROOT_PATH + '/data/stats'

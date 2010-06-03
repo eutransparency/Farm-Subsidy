@@ -2,11 +2,11 @@
 from django.db import models
 from django.db import connection, backend, models
 import re
-from indexer import countryCodes
-import fsconf
+from data import countryCodes
+from django.conf import settings
 
 
-DEFAULT_YEAR = fsconf.default_year
+DEFAULT_YEAR = settings.DEFAULT_YEAR
 
 """
 Various SQL queries.  Accessable via models.data.objects.[functionname]

@@ -5,7 +5,6 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
-from web.search import queries
 import simplejson
 import cPickle
 from data import models as FarmData

@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import *
-from indexer import countryCodes
+from data import countryCodes
 import views
 
 

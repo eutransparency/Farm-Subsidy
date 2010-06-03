@@ -1,6 +1,6 @@
 from django.template import Library, Node
 from web.countryinfo.transparency import transparency_score, transparency_list
-from indexer import countryCodes
+from data import countryCodes
 
 register = Library()
 

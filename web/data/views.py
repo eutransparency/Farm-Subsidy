@@ -3,12 +3,11 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.db.models import Sum, Count
 import models
-import fsconf
-from indexer import countryCodes
-from search import queries
+from django.conf import settings
+from data import countryCodes
 import context_processors
 
-DEFAULT_YEAR = fsconf.default_year
+DEFAULT_YEAR = settings.DEFAULT_YEAR
 
 def home(request):
   
@@ -73,7 +72,7 @@ def recipient(request, country, recipient_id, name):
   country = country.upper()
   
   recipient = models.Recipient.objects.get(globalrecipientidx=recipient_id)
-  payments = models.Payment.objects.filter(recipient=recipient_id).order_by('year')
+  payments = models.Payment.objects.select_related().filter(recipient=recipient_id).order_by('year')
   recipient_total = recipient.total
   payment_years = list(set(payment.year for payment in payments))
   

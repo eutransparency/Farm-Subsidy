@@ -1,11 +1,12 @@
 import csv
 import sys
 
-from indexer import countryCodes
-import fsconf
+from data import countryCodes
+from django.conf import settings
 
 def open_index():
-  filepath = "%s/transparency/index.csv" % (fsconf.statsdir)
+  filepath = "%s/transparency/index.csv" % (settings.STATS_DIR)
+  print filepath
   return csv.reader(open(filepath, "U"))
   
 def transparency_score(country):

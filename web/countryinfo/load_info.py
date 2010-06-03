@@ -5,12 +5,12 @@ import re
 import locale
 locale.setlocale(locale.LC_ALL, '')
 
-import fsconf
+from django.conf import settings
 from django.contrib.humanize.templatetags import humanize
 
 
-def load_info(country=None, format=True, year=fsconf.current_year):
-  filepath = "%s/%s/basic_comparisons.csv" % (fsconf.statsdir, year)
+def load_info(country=None, format=True, year=settings.STATS_YEAR):
+  filepath = "%s/%s/basic_comparisons.csv" % (settings.STATS_DIR, year)
   stats = csv.DictReader(open(filepath, "U"))
   if country:
     for row in stats:

@@ -1,22 +1,28 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 
-import queries
+from haystack.query import SearchQuerySet
+
+
 import forms
 
-def results(request):
+def search(request, q=None):
+  form = forms.SearchForm()
   
+  if request.POST:
+      # initial redirect, to get linkable URLs
+      return HttpResponseRedirect(reverse('search', args=[request.POST.get('q')]))
   
-  
-  query = request.GET.get('q','')
-  results = queries.search(query)
-  total = float()
-  for i,doc in results['documents'].items():
-    total += float(doc['amount_euro'])
-  
-  
-  form = forms.searchForm(request.GET)
+  if q:
+      form = forms.SearchForm(initial={'q' : q})
+      sqs = SearchQuerySet()
+      sqs = sqs.filter(content=q)
+      # sqs = sqs.exclude(name__startswith="unknown")
+      sqs = sqs.facet('scheme').facet('country').load_all()
+      sqs = sqs.boost('windsor', 10)
+      print sqs
   
   return render_to_response(
     'results.html', 

@@ -2,28 +2,29 @@
 {% load humanize %}
 
 {% block title %}
-  Search for {{ query }}
+  Search for {{ q }}
 {% endblock %}
 
 {% block content %}
 
-<form action="/search" method="get" accept-charset="utf-8" id="search_form">
+{# {{ sqs.facet_counts }} #}
+
+<form action="{% url search %}" method="POST" accept-charset="utf-8" id="search_form">
   <h2><label for="search" class="section_title">{{ form.q.label }}</label></h2>
   {{ form.q }}
   <div class="description">{{ form.q.help_text|safe }}</div>
   <input type="submit" value="Go" class="submit">
 </form>
-  
   <table>
     <thead>
       <th>Name</th>
       <th>Amount (All years)</th>
     </thead>
   <tbody>
-    {% for i,result in results.documents.items %}
+    {% for result in sqs %}
     <tr class="{% cycle 'odd' 'even' %}">
-      <td><a href="{% url recipient_view result.countrypayment result.global_id result.name|slugify %}">{{ result.name }}</a></td>
-      <td>&euro;{{ result.amount_euro|floatformat:2|intcomma }}</td>
+      <td><a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a></td>
+      <td>&euro;{{ result.object.total|floatformat:2|intcomma }}</td>
       
     </tr>
     {% endfor %}    

@@ -1,6 +1,6 @@
 import random
 from django.core.urlresolvers import reverse
-from indexer import countryCodes
+from data import countryCodes
 
 
 def country(request):
