@@ -14,7 +14,7 @@
 {% latestnews "" 1 "Blog" 1 %}
 
 <div class="section">
-  <form action="/search" method="get" accept-charset="utf-8" id="search_form">
+  <form action="/search/" method="POST" accept-charset="utf-8" id="search_form">
     <h2><label for="search" class="section_title">Search</label></h2>
     <input type="text" name="q" value="" id="q" title="Enter a company name or place">
     <div class="description">e.g. <a href="/search?q=nestle">Nestle</a> or <a href="/search?q=windsor">Windsor</a></div>
@@ -30,7 +30,7 @@
         <h3>Top Recipients for Europe</h3>
         <ul>
         {% for r in top_eu %}
-          <li><a href="{% url recipient_view country=r.countrypayment recipient_id=r.globalrecipientidx name=r.name|slugify %}">{{ r.name }}</a></li>
+          <li><a href="{{ r.get_absolute_url }}">{{ r.name }}</a></li>
         {% endfor %}
         </ul>
       </div>
@@ -38,7 +38,7 @@
         <h3>Top Recipients for {{ ip_country.ip_country_name }}</h3>
         <ul>
         {% for r in top_for_ip %}
-          <li><a href="{% url recipient_view country=r.countrypayment recipient_id=r.globalrecipientidx name=r.name|slugify %}">{{ r.name }}</a></li>
+          <li><a href="{{ r.get_absolute_url }}">{{ r.name }}</a></li>
         {% endfor %}
         </ul>
         

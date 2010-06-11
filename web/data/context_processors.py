@@ -81,13 +81,12 @@ def breadcrumb(request):
 
 
     # Schemes
-    if 'scheme' in path and path[2] == 'scheme':
+    if 'scheme' in path and len(path) >= 5:
         scheme_breadcrumbs = []
         item = {
             'name' : 'All Schemes', 
-            'url' : reverse('browse_default', kwargs={'country' : country['code'], 'browse_type' : 'scheme'})
+            'url' : reverse('all_schemes', kwargs={'country' : country['code'], })
             }
-        print item
         scheme_breadcrumbs.append(item)
         breadcrumb.append({'Schemes' : scheme_breadcrumbs})
 

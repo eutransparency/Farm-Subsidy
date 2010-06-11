@@ -37,7 +37,7 @@
 
 
 {% load countrystats %}
-{% country_stats country.code selected_year %}
+{% country_stats country.code 2008 %}
 
 
 
@@ -50,13 +50,12 @@
     </thead>
   {% for scheme in top_schemes %}
     <tr>
-      {% url scheme_view country=scheme.country globalschemeid=scheme.globalschemeid as scheme_url %}
-      <td><a href="{{ scheme_url }}">{{ scheme.scheme.nameenglish }}</a></td>
-      <td>&euro;{{ scheme.scheme_total|floatformat:2|intcomma }}</td>
+      <td><a href="{{ scheme.get_absolute_url }}">{{ scheme.nameenglish }}</a></td>
+      <td>&euro;{{ scheme.total|floatformat:2|intcomma }}</td>
     </tr>
   {% endfor %}
   </table>
-  <a href="{% url browse country=country.code browse_type="scheme" year=selected_year sort="amount" %}">View All</a>
+  <a href="{% url all_schemes country=country.code %}">View All</a>
 </div>
 <div class="block top_regions halfcol">
   <h3>Top Regions</h3>

@@ -2,30 +2,37 @@ from django.conf.urls.defaults import *
 from data import countryCodes
 import views
 
+def country_url(pattern, *args, **kwargs):
+    """
+    Wrap url() with a URL that always prepends a list of countries (upper and
+    lower case)
+    """
+    countries = countryCodes.country_codes()
+    countries = "|".join(countries)
+    return url(r'^(?i)(?P<country>%s)/%s' % (countries, pattern), *args, **kwargs)
 
-countries = []
-for country in countryCodes.country_codes():
-  countries.append(country)
-  countries.append(country.lower())
-
-countries = "|".join(countries)
-
+countries = ''
 
 urlpatterns = patterns('data.views',
   url(r'^$', 'home', name='home'),
-  url(r'^(?P<country>%s)/$' % countries, 'country', name='country'),
-  url(r'^(?P<country>%s)/(?P<year>\d+)/$' % countries, 'country', name='country_year'),
-  url(r'^(?P<country>%s)/recipient/(?P<recipient_id>[^/]+)/(?P<name>(.*))/' % countries, 'recipient', name='recipient_view' ),
-  
-  url(r'^(?P<country>%s)/location/(?P<geo1>[^/]+)/(?P<geo2>[^/]+)/(?P<geo3>[^/]+)/(?P<geo4>[^/]+)' % countries, 'location', name='location_view' ),
-  url(r'^(?P<country>%s)/location/(?P<geo1>[^/]+)/(?P<geo2>[^/]+)/(?P<geo3>[^/]+)' % countries, 'location', name='location_view' ),
-  url(r'^(?P<country>%s)/location/(?P<geo1>[^/]+)/(?P<geo2>[^/]+)' % countries, 'location', name='location_view' ),
-  url(r'^(?P<country>%s)/location/(?P<geo1>[^/]+)' % countries, 'location', name='location_view' ),
-  url(r'^(?P<country>%s)/location' % countries, 'location', name='location_view' ),
-  
-  url(r'^(?P<country>%s)/scheme/(?P<globalschemeid>[^/]+)' % countries, 'scheme', name='scheme_view' ),
-  url(r'^(?P<country>%s)/browse/(?P<browse_type>(recipient|scheme|location))/(?P<year>\d+)/(?P<sort>(amount|name))' % countries, 'browse', name='browse' ),
-  url(r'^(?P<country>%s)/browse/(?P<browse_type>(recipient|scheme|location))' % countries, 'browse', name='browse_default' ),
+  country_url(r'$', 'country', name='country'),
+  country_url(r'(?P<year>\d+)/$', 'country', name='country_year'),
+  country_url(r'recipient/(?P<recipient_id>[^/]+)/(?P<name>(.*))/', 'recipient', name='recipient_view' ),
+
+  country_url(r'location/(?P<geo1>[^/]+)/(?P<geo2>[^/]+)/(?P<geo3>[^/]+)/(?P<geo4>[^/]+)', 'location', name='location_view' ),
+  country_url(r'location/(?P<geo1>[^/]+)/(?P<geo2>[^/]+)/(?P<geo3>[^/]+)', 'location', name='location_view' ),
+  country_url(r'location/(?P<geo1>[^/]+)/(?P<geo2>[^/]+)', 'location', name='location_view' ),
+  country_url(r'location/(?P<geo1>[^/]+)', 'location', name='location_view' ),
+  country_url(r'location', 'location', name='location_view' ),
+
+  # Schemes
+  country_url(r'scheme/$', 'all_schemes', name='all_schemes'),
+  country_url(r'scheme/(?P<globalschemeid>[^/]+)/(?P<name>(.*))/', 'scheme', name='scheme_view'),
+
+
+  country_url(r'browse/', 'browse', name='browse' ),
+  country_url(r'browse/(?P<browse_type>(recipient|scheme|location))/(?P<year>\d+)/(?P<sort>(amount|name))', 'browse', name='browse' ),
+  country_url(r'browse/(?P<browse_type>(recipient|scheme|location))', 'browse', name='browse_default' ),
   
 )
 

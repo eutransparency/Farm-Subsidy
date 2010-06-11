@@ -12,7 +12,6 @@ DEFAULT_YEAR = settings.DEFAULT_YEAR
 def home(request):
   
   ip_country = context_processors.ip_country(request)['ip_country']
-  print ip_country
   top_eu = models.Recipient.objects.top_recipients()
   top_for_ip = models.Recipient.objects.top_recipients(country=ip_country['ip_country'])
   
@@ -29,7 +28,7 @@ def home(request):
 
 def country(request, country, year=DEFAULT_YEAR):
   """
-  Provides all the variables for the country pages at, for example "/AT"
+  Provides all the variables for the country pages at, for example "/AT/"
   
   Querysets:
   
@@ -43,7 +42,7 @@ def country(request, country, year=DEFAULT_YEAR):
   # years = models.data.objects.years(country=country)
   
   top_recipients = models.Recipient.objects.top_recipients(country=country, year=year)
-  # top_schemes = models.SchemeYear.objects.top_schemes(country, year=year)
+  top_schemes = models.Scheme.objects.top_schemes(country)
   # top_regions = models.Location.objects.filter(geo_type='geo1').order_by('-total')
   # print top_regions
   
@@ -51,7 +50,7 @@ def country(request, country, year=DEFAULT_YEAR):
     'country.html', 
     {
     'top_recipients' : top_recipients,
-    # 'top_schemes' : top_schemes,
+    'top_schemes' : top_schemes,
     # 'top_regions' : top_regions,
     # 'years' : years,
     'selected_year' : int(year),
@@ -87,7 +86,27 @@ def recipient(request, country, recipient_id, name):
     context_instance=RequestContext(request)
   )  
 
-def scheme(request, country, globalschemeid):
+
+def all_schemes(request, country='EU'):
+    """
+    Scheme browser (replaces generic 'browse' function for schemes)
+    """
+
+    schemes = models.Scheme.objects.all().order_by('-total')
+    
+    if country != 'EU':
+        schemes = schemes.filter(countrypayment=country)
+
+    return render_to_response(
+        'all_schemes.html', 
+        {
+            'schemes' : schemes,
+        },
+        context_instance=RequestContext(request)
+    )  
+    
+
+def scheme(request, country, globalschemeid, name):
   """
   Show a single scheme and a list of top recipients to get payments under it
   
@@ -95,46 +114,40 @@ def scheme(request, country, globalschemeid):
   - ``globalschemeid` globalschemeid from the data_schemes table in the database
   """ 
   
-  scheme = models.scheme.objects.get(globalschemeid=globalschemeid)
-  totals = models.data.objects.amount_years(country=country, scheme=globalschemeid)
-  top_recipients = models.data.objects.browse_recipients(country, year=0, scheme=globalschemeid)
+  scheme = models.Scheme.objects.get(globalschemeid=globalschemeid)
+  
+  # To add one day
+  # scheme_years = models.SchemeYear.objects.filter(globalschemeid=globalschemeid)
+
+  top_recipients = models.Recipient.objects.filter(
+                        payment__scheme=globalschemeid
+                    ).annotate(scheme_total=Sum('payment__amounteuro')).order_by('-scheme_total').distinct()
   
   return render_to_response(
     'scheme.html', 
     {
     'scheme' : scheme,
-    'totals' : totals,
+    # 'totals' : totals,
     'top_recipients' : top_recipients,
     },
     context_instance=RequestContext(request)
   )  
   
 
-def browse(request, country, browse_type, year=DEFAULT_YEAR, sort='amount'):
-  
-  if browse_type == "recipient":
-    data = models.data.objects.browse_recipients(country, year, sort)
-  if browse_type == "scheme":
-    data = models.data.objects.browse_schemes(country, year, sort)
-  if browse_type == "location":
-    data = models.locations.objects.locations(country=country, parent=country, year=year, limit=None)
-    
-    
-  years = models.data.objects.years(country=country)
-  
+def browse(request, country):
+    """
+    Browse recipients, sorted / filtered by various things using django-filter
+    """
 
+    recipients = models.Recipient.objects.filter(countrypayment=country, total__isnull=False).distinct().order_by('-total')
   
-  return render_to_response(
-    'browse.html', 
-    {
-    'data' : data,
-    'years' : years,
-    'sort' : sort,
-    'browse_type' : browse_type,
-    'selected_year' : int(year),    
-    },
-    context_instance=RequestContext(request)
-  )  
+    return render_to_response(
+        'browse.html', 
+        {
+            'recipients' : recipients,
+        },
+        context_instance=RequestContext(request)
+    )  
 
 
 def location(request, country, geo1=None,geo2=None,geo3=None,geo4=None):

@@ -19,7 +19,7 @@ class RecipientManager(models.Manager):
         if int(year) == 0:
             recipients = self.all()
             recipients = recipients.exclude(total=None)
-            if country:
+            if country and country != 'EU':
                 recipients = recipients.filter(countrypayment=country)
             recipients = recipients.order_by('-total')[:10]
             return recipients

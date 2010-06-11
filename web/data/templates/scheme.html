@@ -10,41 +10,21 @@
 {% endblock %}
 
 {% block content %}
-
-    {% load graphs %}
-    {% graph "scheme_years" scheme.globalschemeid %}
-
-  <table>
-    <thead>
-      <th>Year</th>
-      <th>Amount</th>
-    </thead>
-    <tbody>
-      {% for year in totals %}
-      <tr>
-        <td>{{ year.year }}</td>
-        <td>&euro;{{ year.amount_euro|floatformat:2|intcomma }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
   
-
   {% load pagination_tags %}
   {% autopaginate top_recipients 30 %}
   
-  <h3>Top Recipients</h3>
+  <h3>All Recipients</h3>
   <table>
     <thead>
       <th>Name</th>
-      <th>Amount</th>
+      <th>Total (for this scheme, all years)</th>
     </thead>
     <tbody>
       {% for recipient in top_recipients %}
       <tr>
-        {% url recipient_view country.code recipient.globalrecipientidx recipient.name|slugify as recipient_url %}
-        <td>{% include "includes/recipient_link.html" %}</td>
-        <td>&euro;{{ recipient.amount_euro|floatformat:2|intcomma }}</td>
+        <td><a href="{{ recipient.get_absolute_url }}">{{ recipient.name }}</a></td>
+        <td>&euro;{{ recipient.scheme_total|floatformat:2|intcomma }}</td>
       </tr>
       {% endfor %}
     </tbody>

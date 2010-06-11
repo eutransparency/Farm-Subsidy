@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from treebeard.mp_tree import MP_Node
 
 from managers.recipients import RecipientManager
+from managers.schemes import SchemeManager
 
 class Recipient(models.Model):
     recipientid = models.CharField(max_length=10)
@@ -66,10 +67,21 @@ class Scheme(models.Model):
     nameenglish = models.TextField(db_index=True)
     budgetlines8digit = models.CharField(max_length=10, null=True)
     countrypayment = models.CharField(max_length=2)
+    total = models.FloatField()
+    
+    objects = SchemeManager()
+    
+    def get_absolute_url(self):
+        return reverse('scheme_view', args=[self.countrypayment, 
+                                            self.pk, 
+                                            slugify(self.nameenglish)])
 
-    # class Meta():
-    #     managed = False
-
+class SchemeYear(models.Model):
+    globalschemeid = models.CharField(blank=True, max_length=40, db_index=True)
+    nameenglish = models.TextField(blank=True)
+    countrypayment = models.CharField(blank=True, max_length=2)
+    year = models.IntegerField(blank=True, null=True)
+    total = models.FloatField()
 
 class TotalYear(models.Model):
     recipient = models.ForeignKey(Recipient, db_index=True)
