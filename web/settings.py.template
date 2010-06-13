@@ -1,5 +1,7 @@
 # Django settings for farmjango project.
 
+from global_settings import *
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
