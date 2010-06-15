@@ -14,7 +14,7 @@
 {% latestnews "" 1 "Blog" 1 %}
 
 <div class="section">
-  <form action="/search/" method="POST" accept-charset="utf-8" id="search_form">
+  <form action="{% url search %}" method="POST" accept-charset="utf-8" id="search_form">
     <h2><label for="search" class="section_title">Search</label></h2>
     <input type="text" name="q" value="" id="q" title="Enter a company name or place">
     <div class="description">e.g. <a href="/search?q=nestle">Nestle</a> or <a href="/search?q=windsor">Windsor</a></div>
@@ -33,6 +33,7 @@
           <li><a href="{{ r.get_absolute_url }}">{{ r.name }}</a></li>
         {% endfor %}
         </ul>
+        <a href="{% url browse 'EU' %}">See All</a>
       </div>
       <div class="halfbox">
         <h3>Top Recipients for {{ ip_country.ip_country_name }}</h3>
@@ -41,7 +42,9 @@
           <li><a href="{{ r.get_absolute_url }}">{{ r.name }}</a></li>
         {% endfor %}
         </ul>
-        
+        {% with ip_country.ip_country as country_code %}
+        <a href="{% url browse country_code %}">See All</a>
+        {% endwith %}
       </div>
       <div class="box content">
         {# <object width="400" height="230"> #}

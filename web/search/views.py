@@ -22,7 +22,11 @@ def search(request, q=None):
       sqs = sqs.auto_query(q)
       sqs = sqs.exclude(name__startswith="unknown")
       sqs = sqs.facet('scheme').facet('country').load_all()
-  
+      
+      total = 0
+      for t in sqs:
+          total += t.object.total
+
   return render_to_response(
     'results.html', 
     locals(),

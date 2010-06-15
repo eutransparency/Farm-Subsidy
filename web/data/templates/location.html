@@ -66,8 +66,7 @@
       <tbody>
         {% for r in location_recipients %}
           <tr>
-            {% url recipient_view country.code r.global_id r.name as recipient_url %}
-            <td><a href="{{ recipient_url }}">{{ r.name|title }}</a></td>
+            <td><a href="{{ r.get_absolude_url }}">{{ r.name|title }}</a></td>
             <td>&euro;{{ r.amount_euro|floatformat:2|intcomma }}</td>
           </tr>
         {% endfor %}

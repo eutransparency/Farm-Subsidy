@@ -2,53 +2,35 @@
 {% load humanize %}
 
 {% block title %}
-  Browse {{ country.name }} {{ browse_type }}s{% ifnotequal selected_year 0 %} in {{ selected_year }}{% else %}, All years{% endifnotequal %}
+    Browse {{ country.name }} {{ browse_type }}, All years
 {% endblock %}
 
 {% block page_title %}
-  Browse <a href="{% url country country.code %}">{{ country.name }}</a> {{ browse_type }}s{% ifnotequal selected_year 0 %} in {{ selected_year }}{% else %}, All years{% endifnotequal %}
+    Browse <a href="{% url country country.code %}">{{ country.name }}</a>, All years
 {% endblock %}
 
 {% block content %}
-  <div class="country_selector">  
-    {% for year in years %}
-      {% ifequal year.year selected_year  %}
-        <strong>{{ year.year }}</strong>
-      {% else %}
-        {% url browse country=country.code browse_type=browse_type year=year.year sort=sort as year_url %}
-        <a href="{{ year_url }}">{{ year.year }}</a>
-      {% endifequal %}
-    {% endfor %}
-    <br />
-    {% ifequal selected_year 0 %}
-      All Years
-    {% else %}
-      {# <a href="{% url browse country=country.code browse_type=browse_type year='0' sort=sort %}" class="selected">All Years</a> #}
-    {% endifequal %}
-  </div>
-  
-  {% load pagination_tags %}
-  {% autopaginate recipients 30 as recipients %}
 
-  <table>
-    <thead>
-      <th>Name</th>
-      <th>Amount</th>
-    </thead>
-    <tbody>
-      {% for recipient in recipients %}
-      <tr>
-          <td><a href="{{ recipient.get_absolute_url }}">{{ recipient.name }}</a></td>
-          <td>&euro;{{ recipient.total|floatformat:2|intcomma }}</td>
+    {% load pagination_tags %}
+    {% autopaginate recipients 30 as recipients %}
 
-
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  <h4 class="pager">{% paginate %}</h4>
+    <table>
+        <thead>
+            <th>Name</th>
+            <th>Amount</th>
+        </thead>
+        <tbody>
+            {% for recipient in recipients %}
+                <tr>
+                    <td><a href="{{ recipient.get_absolute_url }}">{{ recipient.name }}</a></td>
+                    <td>&euro;{{ recipient.total|floatformat:2|intcomma }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h4 class="pager">{% paginate %}</h4>
 {% endblock %}
 
 {% block right %}
-  {% include "breadcrumbs.html" %}
+    {% include "breadcrumbs.html" %}
 {% endblock %}
