@@ -164,7 +164,7 @@ def location(request, country, slug=None):
       kwargs[p.geo_type] = p.name
       print p.geo_type, p.name
   print kwargs
-  location_recipients = models.Recipient.objects.all()
+  location_recipients = models.Recipient.objects.all()[:10]
   # location_recipients = location_recipients.filter(**kwargs)
 
   

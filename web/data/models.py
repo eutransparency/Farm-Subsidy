@@ -100,11 +100,12 @@ class Location(MP_Node):
     recipients = models.IntegerField(blank=True, null=True)
     total = models.FloatField()
     average = models.FloatField()
-
+    lat = models.FloatField()
+    lon = models.FloatField()
+    
     def __unicode__(self):
         return self.name
     
     def get_absolute_url(self):
-        print "tetset"
         return reverse('location_view', args=[self.country, self.slug])
     
