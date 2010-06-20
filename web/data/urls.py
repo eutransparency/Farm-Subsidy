@@ -20,8 +20,8 @@ urlpatterns = patterns('data.views',
   country_url(r'recipient/(?P<recipient_id>[^/]+)/(?P<name>(.*))/', 'recipient', name='recipient_view' ),
 
   # Locations
-  country_url(r'location/(?P<slug>(.*))/', 'location', name='location_view' ),
-  country_url(r'location/', 'location', name='location_view' ),
+  country_url(r'location/(?P<slug>(.*))/$', 'location', name='location_view' ),
+  country_url(r'location/', 'all_locations', name='location_view' ),
 
   # Schemes
   country_url(r'scheme/$', 'all_schemes', name='all_schemes'),

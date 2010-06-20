@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}
+  {% if location.0.name %}
+      {{ location.0.name|title }}, {{ country.name }}
+  {% else %}
+    All locations in {{ country.name }}
+  {% endif %}
+
+{% endblock %}
+
+{% block page_title %}
+    {% if location.name %}
+        {{ location.name|title }}, {{ country.name }}
+    {% else %}
+      All locations in {{ country.name }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Total (All years)</th>
+                <th>Recipients</th>
+                <th>Average</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for location in locations  %}
+                <tr>
+                    <td><a href="{{ location.get_absolute_url }}">{{ location.name }}</a></td>
+                    <td>&euro;{{ location.total|floatformat:2|intcomma }}</td>
+                    <td>{{ location.recipients }}</td>
+                    <td>&euro;{{ location.average|floatformat:2|intcomma }}</td>
+                    <td>
+                </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+  
+  
+{% endblock %}
+
+
+
+{% block right %}
+    {% include "breadcrumbs.html" %}
+{% endblock %}

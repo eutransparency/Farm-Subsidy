@@ -27,7 +27,7 @@
   <div class="section_content">
     <div class="col1">
       <div class="halfbox">
-        <h3>Top Recipients for Europe</h3>
+        <h3>Top Recipients for <a href="{% url country 'EU' %}">Europe</a></h3>
         <ul>
         {% for r in top_eu %}
           <li><a href="{{ r.get_absolute_url }}">{{ r.name }}</a></li>
@@ -36,7 +36,7 @@
         <a href="{% url browse 'EU' %}">See All</a>
       </div>
       <div class="halfbox">
-        <h3>Top Recipients for {{ ip_country.ip_country_name }}</h3>
+        <h3>Top Recipients for <a href="{% url country ip_country.ip_country %}">{{ ip_country.ip_country_name }}</a></h3>
         <ul>
         {% for r in top_for_ip %}
           <li><a href="{{ r.get_absolute_url }}">{{ r.name }}</a></li>

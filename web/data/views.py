@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.template import RequestContext
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.db.models import Sum, Count
 from django.conf import settings
 
@@ -152,34 +152,48 @@ def browse(request, country):
         context_instance=RequestContext(request)
     )  
 
+def all_locations(request, country):
+    locations = models.Location.objects.all()
+    kwargs = {'geo_type' : 'geo1'}
+    if country != "EU":
+        kwargs['country'] = country
+    locations = locations.filter(**kwargs)
+
+    return render_to_response(
+        'all_locations.html', 
+        {
+            'locations' : locations,
+        },
+        context_instance=RequestContext(request)
+    )  
 
 def location(request, country, slug=None):
 
-  # sub_location_sort = request.GET.get('sublocation', 'amount')
-  
-  location = models.Location.objects.filter(country=country, slug=slug)
-  # sub_location = models.locations.objects.sub_locations(country=country, geo1=geo1,geo2=geo2,geo3=geo3,geo4=geo4, limit=None, sort=sub_location_sort)
-  kwargs = {}
-  for p in location[0].get_ancestors():
-      kwargs[p.geo_type] = p.name
-      print p.geo_type, p.name
-  print kwargs
-  location_recipients = models.Recipient.objects.all()[:10]
-  # location_recipients = location_recipients.filter(**kwargs)
+    location = get_object_or_404(models.Location, country=country, slug=slug)
+    # sub_location = models.locations.objects.sub_locations(country=country, geo1=geo1,geo2=geo2,geo3=geo3,geo4=geo4, limit=None, sort=sub_location_sort)
+    kwargs = {}
+    for p in location.get_ancestors():
+        kwargs[p.geo_type] = p.name
+        print p.geo_type, p.name
+    location_recipients = models.Recipient.objects.all()[:10]
+    # location_recipients = location_recipients.filter(**kwargs)
 
-  
-   
-  return render_to_response(
+
+    sub_locations = location.get_children()
+    print sub_locations
+    
+    
+    return render_to_response(
     'location.html', 
     {
     'location' : location,
     'location_recipients' : location_recipients,
-    # 'sub_location' : sub_location,
+    'sub_locations' : sub_locations,
     # 'sub_location_sort' : sub_location_sort,
     # 'selected_year' : int(year),        
     },
     context_instance=RequestContext(request)
-  )  
+    )  
   
 
   

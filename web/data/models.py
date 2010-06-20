@@ -107,5 +107,6 @@ class Location(MP_Node):
         return self.name
     
     def get_absolute_url(self):
+        print reverse('location_view', args=[self.country, self.slug])
         return reverse('location_view', args=[self.country, self.slug])
     

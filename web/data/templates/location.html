@@ -23,10 +23,14 @@
     <p>{{ location.recipients|intcomma }} recipients received &euro;{{ location.total|floatformat:2|intcomma }}  </p>
   {% endif %} 
   
-  {% if sub_location %}
-    {% if sub_location.0.latlng %}
-      <img src='http://maps.google.com/maps/api/staticmap?size=400x400&sensor=false{% for l in sub_location %}&markers={{ l.latlng }}{% endfor %}&key={{ GOOGLE_MAPS_API_KEY }}' />
-    {% endif %}      
+  {% if sub_locations %}
+    <img src='http://maps.google.com/maps/api/staticmap?size=400x400&sensor=false
+        {% for l in sub_locations %}
+            {% ifnotequal l.lat 0 %}
+                &markers={{ l.lat }},{{ l.lon }}|label:{{ l.name }}
+            {% endifnotequal %}
+        {% endfor %}
+        &key={{ GOOGLE_MAPS_API_KEY }}' />
   
     <div class="block top_recipients">
       <h3>Sub-locations</h3>
@@ -39,14 +43,13 @@
           
         </thead>
         <tbody>
-          {% load cleanurl %}
-          {% for l in sub_location %}
+          {% for sub_location in sub_locations %}
             <tr>
               <td>
-                <a href="{% cleanurl location_view country.code l.geo1 l.geo2 l.geo3 l.geo4 %}">{{ l.name|title }}</a>
-                <td>&euro;{{ l.total|floatformat:2|intcomma }}</td>
-                <td>{{ l.count|floatformat|intcomma }}</td>
-                <td>&euro;{{ l.avg|floatformat:2|intcomma }}</td>
+                <a href="{{ sub_location.get_absolute_url }}">{{ sub_location.name|title }}</a>
+                <td>&euro;{{ sub_location.total|floatformat:2|intcomma }}</td>
+                <td>{{ sub_location.recipients|floatformat|intcomma }}</td>
+                <td>&euro;{{ sub_location.average|floatformat:2|intcomma }}</td>
               </td>
             </tr>
           {% endfor %}
