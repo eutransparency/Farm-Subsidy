@@ -175,7 +175,6 @@ def location(request, country, slug=None):
     kwargs = {}
     for p in location.get_ancestors():
         kwargs[p.geo_type] = p.name
-        print p.geo_type, p.name
     location_recipients = models.Recipient.objects.all()[:10]
     location_recipients = models.Recipient.objects.recipents_for_location(slug)
     print "---"
@@ -184,7 +183,6 @@ def location(request, country, slug=None):
 
 
     sub_locations = location.get_children()
-    print sub_locations
     
     
     return render_to_response(

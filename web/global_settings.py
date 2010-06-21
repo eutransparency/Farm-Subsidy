@@ -89,6 +89,7 @@ INSTALLED_APPS = (
     'devserver',   
     'treebeard',
     'haystack',
+    'listmaker',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

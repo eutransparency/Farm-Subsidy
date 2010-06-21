@@ -6,7 +6,6 @@ from django.conf import settings
 
 def open_index():
   filepath = "%s/transparency/index.csv" % (settings.STATS_DIR)
-  print filepath
   return csv.reader(open(filepath, "U"))
   
 def transparency_score(country):

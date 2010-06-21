@@ -40,7 +40,7 @@ class Command(BaseCommand):
         # Geo1 totals
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT geo1, SUM(total) as total, COUNT(*) as count, MAX(lat) as lat, MAX(lng) lng
+            SELECT geo1, SUM(total) as total, COUNT(*) as count, MAX(lat) as lat, MAX(lng) as lng
             FROM data_recipient
             WHERE countrypayment='%s'
             AND geo1 IS NOT NULL
@@ -52,7 +52,7 @@ class Command(BaseCommand):
         # Geo2 totals
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT geo2, SUM(total) as total, COUNT(*) as count, MAX(lat) as lat, MAX(lng) lng
+            SELECT geo2, SUM(total) as total, COUNT(*) as count, MAX(lat) as lat, MAX(lng) as lng
             FROM data_recipient
             WHERE countrypayment='%s'
             AND geo2 IS NOT NULL
@@ -63,7 +63,7 @@ class Command(BaseCommand):
         # Geo3 totals
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT geo3, SUM(total) as total, COUNT(*) as count, MAX(lat) as lat, MAX(lng) lng
+            SELECT geo3, SUM(total) as total, COUNT(*) as count, MAX(lat) as lat, MAX(lng) as lng
             FROM data_recipient
             WHERE countrypayment='%s'
             AND geo3 IS NOT NULL
@@ -74,7 +74,7 @@ class Command(BaseCommand):
         # Geo4 totals
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT geo4, SUM(total) as total, COUNT(*) as count, MAX(lat) as lat, MAX(lng) lng
+            SELECT geo4, SUM(total) as total, COUNT(*) as count, MAX(lat) as lat, MAX(lng) as lng
             FROM data_recipient
             WHERE countrypayment='%s'
             AND geo4 IS NOT NULL
@@ -106,7 +106,6 @@ class Command(BaseCommand):
             if geo1 != location[0]:
                 geo1 = location[0]
                 if geo1 != "":
-                    print geo1
                     geo1_obj = Location().add_root(geo_type='geo1', 
                                     name=geo1, 
                                     country=self.country,
@@ -121,7 +120,6 @@ class Command(BaseCommand):
             if geo2 != location[1]:
                  geo2 = location[1]
                  if geo2 != "" and geo2 is not None:
-                     print "\t %s" % geo2
                      geo2_obj = geo1_obj.add_child(geo_type='geo2',
                                     name=geo2, 
                                     country=self.country,
@@ -137,7 +135,6 @@ class Command(BaseCommand):
             if geo3 != location[2]:
                 geo3 = location[2]
                 if geo2 != "" and geo3 != "" and geo3 is not None:
-                    print "\t\t %s" % geo3
                     geo3_obj = geo2_obj.add_child(geo_type='geo3',
                                     name=geo3, 
                                     country=self.country,
@@ -154,7 +151,6 @@ class Command(BaseCommand):
             if geo4 != location[3]:
                 geo4 = location[3]
                 if geo2 != "" and geo3 != "" and geo4 != "" and geo4 is not None:
-                    print "\t\t\t %s" % geo4
                     geo4_obj = geo3_obj.add_child(geo_type='geo4',
                                     name=geo4, 
                                     country=self.country,
