@@ -35,10 +35,8 @@ class RecipientManager(models.Manager):
         for l in location.get_ancestors():
             geos.append(l)
         geos.append(location)
-        print geos
         kwargs = {}
         for i, g in enumerate(geos):
             i = i + 1
             kwargs["geo%s__iexact" % i] = g.name
-        print kwargs
         return self.filter(**kwargs)
