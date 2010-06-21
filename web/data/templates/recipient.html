@@ -27,10 +27,10 @@
 
     <div class="halfcolleft">
     <h4>Location</h4>
-    {% if recipient.geo4 %}{{ recipient.geo4|title }}<br />{% endif %}
-    {% if recipient.geo3 %}{{ recipient.geo3|title }}<br />{% endif %}
-    {% if recipient.geo2 %}{{ recipient.geo2|title }}<br />{% endif %}
-    {% if recipient.geo1 %}{{ recipient.geo1|title }}<br />{% endif %}
+    {% if recipient.geo4 %}<a href="{{ recipient.geo4_url }}">{{ recipient.geo1_url }}--{{ recipient.geo4|title }}</a><br />{% endif %}
+    {% if recipient.geo3 %}<a href="{{ recipient.geo3_url }}">{{ recipient.geo3|title }}</a><br />{% endif %}
+    {% if recipient.geo2 %}<a href="{{ recipient.geo2_url }}">{{ recipient.geo2|title }}</a><br />{% endif %}
+    {% if recipient.geo1 %}<a href="{{ recipient.geo1_url }}">{{ recipient.geo1|title }}</a><br />{% endif %}
     </div>
     <div class="clear"></div>
   </div>

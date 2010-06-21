@@ -40,7 +40,28 @@ class Recipient(models.Model):
     
     def get_absolute_url(self):
         return reverse('recipient_view', args=[self.countrypayment, self.pk, slugify(self.name)])
+    
+    def geo_url(self, geo_type):
+        """
+        Returns a URL (from reverse()) for a location.
+        """
 
+        geos = [self.geo1,self.geo2,self.geo3,self.geo4,]
+        slug = "/".join([slugify(n) for n in geos[:geo_type]])
+        return reverse('location_view', args=[self.countrypayment, slug])
+    
+    def geo1_url(self):
+        return self.geo_url(1)
+
+    def geo2_url(self):
+        return self.geo_url(2)
+
+    def geo3_url(self):
+        return self.geo_url(3)
+
+    def geo4_url(self):
+        return self.geo_url(4)
+    
 class Payment(models.Model):
     paymentid = models.TextField()
     globalpaymentid = models.CharField(max_length=10, primary_key=True)

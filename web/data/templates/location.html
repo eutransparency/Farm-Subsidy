@@ -69,7 +69,7 @@
       <tbody>
         {% for r in location_recipients %}
           <tr>
-            <td><a href="{{ r.get_absolude_url }}">{{ r.name|title }}</a></td>
+            <td><a href="{{ r.get_absolute_url }}">{{ r.name|title }}</a></td>
             <td>&euro;{{ r.total|floatformat:2|intcomma }}</td>
           </tr>
         {% endfor %}

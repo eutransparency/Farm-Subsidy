@@ -24,17 +24,21 @@ class RecipientManager(models.Manager):
             recipients = recipients.order_by('-total')[:10]
             return recipients
         
-    def recipents_for_location(self, slug):
+    def recipents_for_location(self, location):
         """
         Given a location slug, retuen all recipients where the geo fields match.
         
         Location slugs are paths like a/b/c, where a=geo1, b-geo2 etc.
         """
         
-        geos = slug.split('/')
+        geos = []
+        for l in location.get_ancestors():
+            geos.append(l)
+        geos.append(location)
+        print geos
         kwargs = {}
         for i, g in enumerate(geos):
             i = i + 1
-            kwargs["geo%s__iexact" % i] = g
+            kwargs["geo%s__iexact" % i] = g.name
         print kwargs
         return self.filter(**kwargs)
