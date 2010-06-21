@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.db.models import Sum, Count
 from django.conf import settings
 
+from misc.helpers import country_template
 from data import countryCodes
 import context_processors
 import models
@@ -176,7 +177,10 @@ def location(request, country, slug=None):
         kwargs[p.geo_type] = p.name
         print p.geo_type, p.name
     location_recipients = models.Recipient.objects.all()[:10]
-    # location_recipients = location_recipients.filter(**kwargs)
+    location_recipients = models.Recipient.objects.recipents_for_location(slug)
+    print "---"
+    print location_recipients
+    print "---"
 
 
     sub_locations = location.get_children()
@@ -184,7 +188,7 @@ def location(request, country, slug=None):
     
     
     return render_to_response(
-    'location.html', 
+    country_template('location.html', country), 
     {
     'location' : location,
     'location_recipients' : location_recipients,

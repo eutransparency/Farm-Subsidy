@@ -23,3 +23,18 @@ class RecipientManager(models.Manager):
                 recipients = recipients.filter(countrypayment=country)
             recipients = recipients.order_by('-total')[:10]
             return recipients
+        
+    def recipents_for_location(self, slug):
+        """
+        Given a location slug, retuen all recipients where the geo fields match.
+        
+        Location slugs are paths like a/b/c, where a=geo1, b-geo2 etc.
+        """
+        
+        geos = slug.split('/')
+        kwargs = {}
+        for i, g in enumerate(geos):
+            i = i + 1
+            kwargs["geo%s__iexact" % i] = g
+        print kwargs
+        return self.filter(**kwargs)
