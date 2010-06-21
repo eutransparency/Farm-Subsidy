@@ -115,7 +115,7 @@ class Command(BaseCommand):
     def handle(self, **options):
         self.country = options.get('country')
         
+        self.recipients()
         self.schemes()
         self.payments()
-        self.recipients()
         
