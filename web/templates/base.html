@@ -3,100 +3,95 @@
 <html lang="en">
 <head>
 
-  {% load i18n %}
-  {% load cache %}
-  {% load humanize %}
-  
+    {% load i18n %}
+    {% load cache %}
+    {% load humanize %}
+
     <title>{% block title %}{{title}}{% endblock %} | FarmSubsidy.org</title>
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.1.1/build/cssreset/reset-min.css">
     <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}/css/main.css">    
-    <!--
-    <link rel="stylesheet" href="{{ MEDIA_URL }}/css/layout.css" type="text/css"> 
-    <link rel="stylesheet" href="{{ MEDIA_URL }}/css/screen.css" type="text/css" media="screen, projection">
-    <link rel="stylesheet" href="{{ MEDIA_URL }}/css/print.css" type="text/css" media="print"> 
-    -->
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.js"></script>
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.example.min.js"></script>
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery-ui-1.7.1.custom.min.js"></script>
     <script src="{{ MEDIA_URL }}/js/scripts.js" type="text/javascript" charset="utf-8"></script>
 
-  {% if custom_list.active %}
-    <link rel="stylesheet" href="/media/css/custom_lists.css" type="text/css" media="screen, projection">
-    <script src="{{ MEDIA_URL }}/js/custom_lists.js" type="text/javascript" charset="utf-8"></script>
-  {% endif %}
-   
+    {% if custom_list.active %}
+        <link rel="stylesheet" href="/media/css/custom_lists.css" type="text/css" media="screen, projection">
+        <script src="{{ MEDIA_URL }}/js/custom_lists.js" type="text/javascript" charset="utf-8"></script>
+    {% endif %}
 
 </head>
+
 <body id="{% block body_style %}{% endblock %}" class="{% block body_class %}{% endblock %} {% if list_items.create %}list_enabled{% endif %}">
-  <div id="topbar">
-
+    
+{# Topbar #}
+<div id="topbar">
     <form method="post" action="http://app.icontact.com/icp/signup.php" name="icpsignup" accept-charset="UTF-8" onsubmit="return verifyRequired();">
-    <input name="redirect" value="http://www.icontact.com/www/signup/thanks.html" type="hidden">
-    <input name="errorredirect" value="http://www.icontact.com/www/signup/error.html" type="hidden">
-    <script type="text/javascript">
+        <fieldset>
+            <input name="redirect" value="http://www.icontact.com/www/signup/thanks.html" type="hidden">
+            <input name="errorredirect" value="http://www.icontact.com/www/signup/error.html" type="hidden">
+            <input name="listid" value="3290" type="hidden">
+            <input name="specialid:3290" value="OMN5" type="hidden">
+            <input name="clientid" value="161514" type="hidden">
+            <input name="formid" value="278" type="hidden">
+            <input name="reallistid" value="1" type="hidden">
+            <input name="doubleopt" value="1" type="hidden">
+        </fieldset>
+        <script type="text/javascript">
+            if (document.location.protocol === "https:"){
+                document.icpsignup.action = "https://app.icontact.com/icp/signup.php";
+            }
+            function verifyRequired() {
+                if (document.icpsignup["fields_email"].value == "") {
+                    document.icpsignup["fields_email"].focus();
+                    alert("The Email field is required.");
+                    return false;
+                }
+                return true;
+            }
+        </script>
 
-    if (document.location.protocol === "https:")
-
-    	document.icpsignup.action = "https://app.icontact.com/icp/signup.php";
-    function verifyRequired() {
-      if (document.icpsignup["fields_email"].value == "") {
-        document.icpsignup["fields_email"].focus();
-        alert("The Email field is required.");
-        return false;
-      }
-
-
-    return true;
-    }
-    </script>
-    <div id="SignUp">
-      <label for="fields_email">Get the latest transparency news from farmsubsidy.org</label><input type="text" name="fields_email" value="" id="fields_email" size="20">
-      <input name="Submit" value="Add me" type="submit">
-        <input name="listid" value="3290" type="hidden">
-        <input name="specialid:3290" value="OMN5" type="hidden">
-        <input name="clientid" value="161514" type="hidden">
-        <input name="formid" value="278" type="hidden">
-        <input name="reallistid" value="1" type="hidden">
-        <input name="doubleopt" value="1" type="hidden">
-    </div>
+        <label for="fields_email">Get the latest transparency news from farmsubsidy.org</label><input type="text" name="fields_email" value="" id="fields_email" size="20">
+        <input name="Submit" value="Add me" type="submit">
     </form>
-    
-    
-    
-    
-    
-    
-  </div>
-<div id="outer">  
-    <div id="head">
-      <h1><a href="/">
-        {% block logo %}<img src="/media/images/logo-small.png" width="83" height="58"> {% endblock %}
-        <span>farmsubsidy.org</span></a></h1>
-      <h2>Discover who gets what from the Common Agricultural Policy</h2>
+</div>
 
-      <ul id="mainmenu">
-        {% load active_url %}
-        <li class="{% active request "^/(?!faq|about|blog|news)" %}"><a href="/" >Search / Browse</a></li>
-        <li class="{% active request "^/faq/" %}"><a href="/faq/">FAQs</a></li>
-        <li class="{% active request "^/about/" %}"><a href="/about/">About</a></li>
-        <li class="{% active request "^/blog/" %}"><a href="/blog/">Blog</a></li>
-        <li class="{% active request "^/news/" %}"><a href="/news/">In The News</a></li>
-        <li class="{% active request "^/lists/" %}"><a href="/lists/">Custom Lists</a></li>
-      </ul>
-      
+{# outer #}
+<div id="outer">  
+    
+    {# header #}
+    <div id="header">
+        <div id="photos">
+            
+        </div>
+        <h1>
+            <a href="/"><span>farmsubsidy.org</span></a>
+        </h1>
+        <h2>Discover who gets what from the Common Agricultural Policy</h2>
+        {# main menu #}
+        <ul id="mainmenu">
+            {% load active_url %}
+            <li class="{% active request "^/(?!faq|about|blog|news)" %}"><a href="/" >Home</a></li>
+            <li class="{% active request "^/lists/" %}"><a href="/lists/">Custom Lists</a></li>            
+            <li class="{% active request "^/faq/" %}"><a href="/faq/">FAQs</a></li>
+            <li class="{% active request "^/about/" %}"><a href="/about/">About</a></li>
+            <li class="{% active request "^/blog/" %}"><a href="/blog/">Blog</a></li>
+            <li class="{% active request "^/news/" %} last"><a href="/news/">In The News</a></li>
+        </ul>
+
       {# {% load user %} #}
       {# {% user_menu user %} #}
-      
-      {% block message %}
-        {% ifequal display_welcome_message "1" %}
-          <div class="welcome_message notice">
-            Hello, welcome to FarmSubsidy.org, a website that will help you find out who gets what in farm subsidies from the European Union, from small farmers to big multinational companies. It is a non-profit initiative, part of the <a href="followthemoney.eu">FollowTheMoney.eu</a> family.
-          </div>
-        {% endifequal %}
-      {% endblock %}
-    </div>    
-    
+    </div>
+
     <div id="right">
+        {% block message %}
+          {% ifequal display_welcome_message "1" %}
+            <div class="welcome_message notice">
+              Hello, welcome to FarmSubsidy.org, a website that will help you find out who gets what in farm subsidies from the European Union, from small farmers to big multinational companies. It is a non-profit initiative, part of the <a href="followthemoney.eu">FollowTheMoney.eu</a> family.
+            </div>
+          {% endifequal %}
+        {% endblock %}
+        
       {% block right %}
         
       {% endblock %}
@@ -107,7 +102,6 @@
           <p>{{ tweet.text|urlize }}<p>
       </div>
       {# {% endif %} #}
-
 
       {# {% block list %} #}
       {#   {% if custom_list.active %} #}
@@ -157,22 +151,36 @@
         
         <div id="about">
           <p>
-            FarmSubsidy.org is a project of <a href="http://www.followthemoney.eu/" title="Monitoring the European Union Budget | FollowTheMoney.eu" target="_blank">FollowTheMoney.eu</a>
+              <a href="#">
+                Farmsubsidy.org is a project of EU Transparency, a non-profit organisation.
+            </a>
           </p>
         </div>
         
-        
         <div id="links">
-          <ul id="footer_menu">
-              <li><a href="/">Home</a></li>
-              <li><a href="/search">Search</a></li>
-              <li><a href="/blog">Blog</a></li>
-              <li><a href="/news">In The News</a></li>
-          </ul>
-          <ul id="footer_meta">
-              <li><a href="/legal">Legal / Privacy Policy</a></li>
-              <li><a href="/about#contactus">Contact Us</a></li>
-          </ul>
+            <dl>
+                <dt>Latest news:</dt>
+                <dd>
+                    <ul>
+                        <li>[ADD LATEST NEWS TITLE HERE]</li>
+                    </ul>
+                </dd>
+                <dt>Looking for more information?:</dt>
+                <dd>
+                    <ul>
+                        <li><a href="/blog">Blog</a></li>
+                        <li><a href="/news">In The News</a></li>
+                        <li><a href="/legal">Legal / Privacy Policy</a></li>
+                        <li><a href="/about#contactus">Contact Us</a></li>
+                    </ul>
+                </dd>
+                <dt>Technical:</dt>
+                <dd>
+                    <ul>
+                        <li><a href="/">[ADD DATA AND GITHUB LINKS]</a></li>                        
+                    </ul>
+                </dd>
+           </dl>                   
         </div>
 
       </div>
