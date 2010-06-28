@@ -1,1 +1,7 @@
-web/local_settings.py
+web/settings.py
+*.pyc
+include/
+lib/
+pip-log.txt
+.Python
+bin/
