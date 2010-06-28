@@ -19,11 +19,9 @@ urlpatterns = patterns('data.views',
   country_url(r'(?P<year>\d+)/$', 'country', name='country_year'),
   country_url(r'recipient/(?P<recipient_id>[^/]+)/(?P<name>(.*))/', 'recipient', name='recipient_view' ),
 
-  country_url(r'location/(?P<geo1>[^/]+)/(?P<geo2>[^/]+)/(?P<geo3>[^/]+)/(?P<geo4>[^/]+)', 'location', name='location_view' ),
-  country_url(r'location/(?P<geo1>[^/]+)/(?P<geo2>[^/]+)/(?P<geo3>[^/]+)', 'location', name='location_view' ),
-  country_url(r'location/(?P<geo1>[^/]+)/(?P<geo2>[^/]+)', 'location', name='location_view' ),
-  country_url(r'location/(?P<geo1>[^/]+)', 'location', name='location_view' ),
-  country_url(r'location', 'location', name='location_view' ),
+  # Locations
+  country_url(r'location/(?P<slug>(.*))/$', 'location', name='location_view' ),
+  country_url(r'location/', 'all_locations', name='location_view' ),
 
   # Schemes
   country_url(r'scheme/$', 'all_schemes', name='all_schemes'),

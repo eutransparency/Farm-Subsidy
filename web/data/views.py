@@ -1,8 +1,10 @@
 from django.http import HttpResponse
 from django.template import RequestContext
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.db.models import Sum, Count
 from django.conf import settings
+
+from misc.helpers import country_template
 from data import countryCodes
 import context_processors
 import models
@@ -11,9 +13,9 @@ DEFAULT_YEAR = settings.DEFAULT_YEAR
 
 def home(request):
   
-  ip_country = context_processors.ip_country(request)['ip_country']
+  ip_country = request.session.get('ip_country', 'GB')
   top_eu = models.Recipient.objects.top_recipients()
-  top_for_ip = models.Recipient.objects.top_recipients(country=ip_country['ip_country'])
+  top_for_ip = models.Recipient.objects.top_recipients(country=ip_country)
   
   return render_to_response(
     'home.html', 
@@ -43,7 +45,7 @@ def country(request, country, year=DEFAULT_YEAR):
   
   top_recipients = models.Recipient.objects.top_recipients(country=country, year=year)
   top_schemes = models.Scheme.objects.top_schemes(country)
-  # top_regions = models.Location.objects.filter(geo_type='geo1').order_by('-total')
+  top_locations = models.Location.get_root_nodes().order_by('-total')
   # print top_regions
   
   return render_to_response(
@@ -51,7 +53,7 @@ def country(request, country, year=DEFAULT_YEAR):
     {
     'top_recipients' : top_recipients,
     'top_schemes' : top_schemes,
-    # 'top_regions' : top_regions,
+    'top_locations' : top_locations,
     # 'years' : years,
     'selected_year' : int(year),
     },
@@ -139,7 +141,9 @@ def browse(request, country):
     Browse recipients, sorted / filtered by various things using django-filter
     """
 
-    recipients = models.Recipient.objects.filter(countrypayment=country, total__isnull=False).distinct().order_by('-total')
+    recipients = models.Recipient.objects.filter(total__isnull=False).distinct().order_by('-total')
+    if country != "EU":
+        recipients = recipients.filter(countrypayment=country)
   
     return render_to_response(
         'browse.html', 
@@ -149,27 +153,46 @@ def browse(request, country):
         context_instance=RequestContext(request)
     )  
 
+def all_locations(request, country):
+    locations = models.Location.objects.all()
+    kwargs = {'geo_type' : 'geo1'}
+    if country != "EU":
+        kwargs['country'] = country
+    locations = locations.filter(**kwargs)
 
-def location(request, country, geo1=None,geo2=None,geo3=None,geo4=None):
+    return render_to_response(
+        'all_locations.html', 
+        {
+            'locations' : locations,
+        },
+        context_instance=RequestContext(request)
+    )  
 
-  sub_location_sort = request.GET.get('sublocation', 'amount')
-  
-  location = models.locations.objects.location(country=country, geo1=geo1, geo2=geo2, geo3=geo3, geo4=geo4)
-  sub_location = models.locations.objects.sub_locations(country=country, geo1=geo1,geo2=geo2,geo3=geo3,geo4=geo4, limit=None, sort=sub_location_sort)
-  location_recipients = models.locations.objects.recipients_by_location(country=country, geo1=geo1,geo2=geo2,geo3=geo3,geo4=geo4, limit=10)
-  
-   
-  return render_to_response(
-    'location.html', 
+def location(request, country, slug=None):
+
+    location = get_object_or_404(models.Location, country=country, slug=slug)
+    # sub_location = models.locations.objects.sub_locations(country=country, geo1=geo1,geo2=geo2,geo3=geo3,geo4=geo4, limit=None, sort=sub_location_sort)
+    kwargs = {}
+    for p in location.get_ancestors():
+        kwargs[p.geo_type] = p.name
+    location_recipients = models.Recipient.objects.all()[:10]
+    location_recipients = models.Recipient.objects.recipents_for_location(location)
+
+
+    sub_locations = location.get_children()
+    
+    
+    return render_to_response(
+    country_template('location.html', country), 
     {
     'location' : location,
     'location_recipients' : location_recipients,
-    'sub_location' : sub_location,
+    'sub_locations' : sub_locations,
     # 'sub_location_sort' : sub_location_sort,
     # 'selected_year' : int(year),        
     },
     context_instance=RequestContext(request)
-  )  
+    )  
   
 
   

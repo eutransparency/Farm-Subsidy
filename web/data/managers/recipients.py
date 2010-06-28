@@ -15,7 +15,7 @@ class RecipientManager(models.Manager):
     Various reusable queries, like top_recipients
     """
     
-    def top_recipients(self, country=None, year=DEFAULT_YEAR):
+    def top_recipients(self, country=None, year=0):
         if int(year) == 0:
             recipients = self.all()
             recipients = recipients.exclude(total=None)
@@ -23,3 +23,20 @@ class RecipientManager(models.Manager):
                 recipients = recipients.filter(countrypayment=country)
             recipients = recipients.order_by('-total')[:10]
             return recipients
+        
+    def recipents_for_location(self, location):
+        """
+        Given a location slug, retuen all recipients where the geo fields match.
+        
+        Location slugs are paths like a/b/c, where a=geo1, b-geo2 etc.
+        """
+        
+        geos = []
+        for l in location.get_ancestors():
+            geos.append(l)
+        geos.append(location)
+        kwargs = {}
+        for i, g in enumerate(geos):
+            i = i + 1
+            kwargs["geo%s__iexact" % i] = g.name
+        return self.filter(**kwargs)

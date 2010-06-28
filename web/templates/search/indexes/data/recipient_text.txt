@@ -1,0 +1,5 @@
+{{ object.name }}
+{{ object.geo1 }}
+{{ object.geo2 }}
+{{ object.geo3 }}
+{{ object.geo4 }}

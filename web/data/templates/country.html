@@ -64,11 +64,10 @@
       <th>Name</th>
       <th>Amount</th>
     </thead>
-  {% for region in top_regions %}
+  {% for location in top_locations %}
     <tr>
-      {# <td><a href="{% url location_view country=region.country geo1=region.geo1 %}">{{ region.geo1|title }}</a></td> #}
-      <td>{{ region.name|title }}</td>
-      <td>&euro;{{ region.total|floatformat:2|intcomma }}</td>
+      <td><a href="{{ location.get_absolute_url }}">{{ location.name|title }}</a></td>
+      <td>&euro;{{ location.total|floatformat:2|intcomma }}</td>
     </tr>
   {% endfor %}
   </table>
@@ -76,7 +75,7 @@
 </div>
 
 <div class="block top_recipients">
-  <h3 style="clear:both"">Top Recipients</h3>
+  <h3 style="clear:both">Top Recipients</h3>
   <table>  
     <thead>
       <th>Name</th>
@@ -95,7 +94,7 @@
       
     </tbody>
   </table>
-  <a href="{% url browse country=country.code browse_type="recipient" year=selected_year sort="amount" %}">View All</a>
+  <a href="{% url browse country=country.code %}">View All</a>
 </div>
 
 
@@ -107,9 +106,9 @@
 <div class="block">
   <h3>Browse all recipients</h3>
     <ul>
-    <li><a href="{% url browse country=country.code browse_type="recipient" year=selected_year sort="amount" %}">By Recipients</a></li>
-    <li><a href="{% url location_view country=country.code %}">By Region</a></li>
-    <li><a href="{% url browse country=country.code browse_type="scheme" year=selected_year sort="amount" %}">By Scheme</a></li>
+    <li><a href="{% url browse country=country.code %}">By Recipients</a></li>
+    {# <li><a href="{% url location_view country=country.code %}">By Region</a></li> #}
+    {# <li><a href="{% url browse country=country.code browse_type="scheme" year=selected_year sort="amount" %}">By Scheme</a></li> #}
     </ul>
 </div>
 
