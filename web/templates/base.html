@@ -8,7 +8,7 @@
     {% load humanize %}
 
     <title>{% block title %}{{title}}{% endblock %} | FarmSubsidy.org</title>
-    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.1.1/build/cssreset/reset-min.css">
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}/media/reset-min.css">
     <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}/css/main.css">    
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.js"></script>
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.example.min.js"></script>
@@ -136,13 +136,14 @@
     </div>
     
     <div id="content">
-      <h2>{% block page_title %}{% endblock %}</h2>
-      {% block error %}
+        
+        <h2>{% block page_title %}{% endblock %}</h2>
+        {% block error %}
 
-      {% endblock %}
-      
-      {% block content %}
-      {% endblock %}
+        {% endblock %}
+
+        {% block content %}
+        {% endblock %}
     </div>
     
 
