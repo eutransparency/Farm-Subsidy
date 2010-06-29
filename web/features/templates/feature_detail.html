@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load markup %}
+
+{% block title %}{{ feature.title }}{% endblock %}
+{% block page_title %}{{ feature.title }}{% endblock %}
+
+{% block breadcrumb %}
+  <a href="{% url home %}">Home</a> | <a href="{% url feature_list %}">Previous features</a>
+{% endblock %}
+
+{% block content %}
+    {{ feature.body|markdown }}
+{% endblock %}

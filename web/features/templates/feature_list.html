@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Features" %}{% endblock %}
+{% block page_title %}{% trans "Features" %}{% endblock %}
+
+{% block content %}
+  {% for feature in features %}
+    <h3><a href="{% url feature_detail feature.slug %}">{{ feature.title }}</a></h3>
+    <p>{{ feature.teaser }}</p>
+  {% endfor %}
+{% endblock %}

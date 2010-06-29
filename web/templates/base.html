@@ -136,6 +136,34 @@
     </div>
     
     <div id="content">
+
+        <hr></hr>
+        {% if featured_items %}
+          <ul id="features">
+              <li>
+                <a href="{% url feature_detail featured_items.0.slug %}">
+                <strong>{{ featured_items.0.title }}:</strong>
+                <p>{{ featured_items.0.teaser|truncatewords:"25" }}</p>
+                </a>
+              </li>
+              {% if featured_items.1 %}
+                <li>
+                  <a href="{% url feature_detail featured_items.1.slug %}">
+                  <strong>{{ featured_items.1.title }}:</strong>
+                  <p>{{ featured_items.1.teaser|truncatewords:"25" }}</p>
+                  </a>
+                </li>          
+              {% endif %}
+              {% if featured_items.2 %}        
+              <li>
+                <a href="{% url feature_detail featured_items.2.slug %}">
+                <strong>{{ featured_items.2.title }}:</strong>
+                <p>{{ featured_items.2.teaser|truncatewords:"25" }}</p>
+                </a>
+              </li>
+              {% endif %}        
+          </ul>
+        {% endif %}
         
         <h2>{% block page_title %}{% endblock %}</h2>
         {% block error %}
