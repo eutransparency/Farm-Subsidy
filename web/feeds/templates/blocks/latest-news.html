@@ -1,7 +1,7 @@
 {% if newsitems %}
   {% if oneline %}
     {% for item in newsitems %}
-      <div id="latest_news"><strong>Latest News:</strong> <a href="{{ item.url }}" target="_blank">{{ item }}</a></div>
+      <a href="{{ item.url }}" target="_blank">{{ item }}</a>
     {% endfor %}
 
   {% else %}

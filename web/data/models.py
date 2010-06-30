@@ -61,6 +61,7 @@ class Recipient(models.Model):
 
     def geo4_url(self):
         return self.geo_url(4)
+        
     
 class Payment(models.Model):
     paymentid = models.TextField()

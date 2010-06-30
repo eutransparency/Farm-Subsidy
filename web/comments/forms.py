@@ -8,10 +8,13 @@ import time
 import datetime
 from django.conf import settings
 
+COMMENT_MAX_LENGTH = getattr(settings,'COMMENT_MAX_LENGTH', 3000)
+
 class CommentFormWithOwners(CommentForm):  
-  
-  
+
   owner = forms.BooleanField(required=False, label="Are you the recipient?")
+  comment = forms.CharField(label='What did you find out?', widget=forms.Textarea,
+                                  max_length=COMMENT_MAX_LENGTH)
 
   def get_comment_model(self):
     # Use our custom comment model instead of the built-in one.

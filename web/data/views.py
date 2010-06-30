@@ -61,7 +61,6 @@ def country(request, country, year=DEFAULT_YEAR):
   )  
 
 
-
 def recipient(request, country, recipient_id, name):
   """
   View for recipient page.
@@ -76,6 +75,8 @@ def recipient(request, country, recipient_id, name):
   payments = models.Payment.objects.select_related().filter(recipient=recipient_id).order_by('year')
   recipient_total = recipient.total
   payment_years = list(set(payment.year for payment in payments))
+  payment_schemes = list(set(payment.scheme.globalschemeid for payment in payments))
+  
   
   return render_to_response(
     'recipient.html', 
@@ -84,6 +85,10 @@ def recipient(request, country, recipient_id, name):
     'payments' : payments,
     'recipient_total' : recipient_total,
     'payment_years' : payment_years,
+    'has_direct' : 'LU1' in payment_schemes,
+    'has_indirect' : 'LU2' in payment_schemes,
+    'has_rural' : 'LU3' in payment_schemes,
+    'first_year' : payment_years[0],
     },
     context_instance=RequestContext(request)
   )  
