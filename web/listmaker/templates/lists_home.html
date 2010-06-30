@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load lists %}
+{% block page_title %}Custom Lists{% endblock %}
+{% block title %}Custom Lists{% endblock %}
+
+{% block content %}  
+  <div class="col">
+    <h3>What are lists?</h3>
+    <p>You can think of custom lists as a little like a shopping cart or an Amazon.com wish list: while browsing the website you can add &#8216;items&#8217; (subsidy recipients) to your list like you would on any shopping website. You can then save the list so you can access it at a later date, or publish it for others to see.</p>
+
+    <p>You can give your list a title and a description. We hope that lists will be a new way for people to share their own expertise and analysis. </p>
+
+    <p>For instance, if you have special knowledge about certain vessels that are fishing for an especially threatened fish stock, you might like to make a custom list of those vessels. Or if you know of a number of vessels that are all owned by the same company, you might make a list of them.</p>
+    
+  </div>
+  <div class="col">
+    {% if list_enabled %}
+      <h3>Your list</h3>
+      
+      {% if list_items %}
+      {# {% load lists %} #}
+      <ul class="list_items">
+        {% for item in list_items %}
+          <li><strong>{{ item.content_object.name }}</strong><br />
+              {{ item.content_object.amount }}<br />
+              {{ item.content_object.pk }}<br />
+              {% list_item_edit item.content_object %}
+              </li>
+        {% endfor %}        
+      </ul>
+      {% else %}
+        {% url home as home_url %}
+      <p>{% blocktrans %}
+        <p>There are no items in your list yet.</p>
+        <p>To add items, <a href="{{ home_url }}">browse or search</a> the site and click on the icon next to a recipient.</p>
+      {% endblocktrans %}</p>
+      {% endif %}
+      <a href="{% url deactivate_list %}">Deactivate this list</a>
+    {% else %}
+      <h3>Create a list</h3>
+      <p>You don't currently have a list activated. <a href="{% url activate_list %}">Activate one now</a></p>
+    {% endif %}
+    
+  </div>
+{% endblock %}
