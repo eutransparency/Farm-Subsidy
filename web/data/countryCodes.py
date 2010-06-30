@@ -24,11 +24,11 @@ def country_codes(code=None, local='GB'):
   countries['LU']	=	{'GB' : 'Luxembourg'}
   countries['MT']	=	{'GB' : 'Malta'}
   countries['NL']	=	{'GB' : 'Netherlands'}
-  countries['PL']	=	{'GB' : 'Poland'}
+  countries['PO']	=	{'GB' : 'Poland'}
   countries['PT']	=	{'GB' : 'Portugal'}
   countries['RO']	=	{'GB' : 'Romania'}
   countries['SK']	=	{'GB' : 'Slovakia'}  
-  countries['SI']	=	{'GB' : 'Slovenia'}
+  countries['SL']	=	{'GB' : 'Slovenia'}
   countries['ES']	=	{'GB' : 'Spain'}
   countries['SE']	=	{'GB' : 'Sweden'}  
   countries['GB']	=	{'GB' : 'United Kingdom'}

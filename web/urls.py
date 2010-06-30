@@ -14,7 +14,7 @@ urlpatterns = patterns('',
     (r'features', include('web.features.urls')),
     (r'', include('web.misc.urls')),
     (r'', include('search.urls')),
-    # (r'', include('farmsubsidy.web.countryinfo.urls')),
+    (r'', include('countryinfo.urls')),
     (r'', include('web.graphs.urls')),
     (r'^comments/', include('django.contrib.comments.urls')),
     
