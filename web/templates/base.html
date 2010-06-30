@@ -85,14 +85,37 @@
             <li><a href="/lists/">Custom Lists</a></li>            
             <li><a href="/faq/">FAQs</a></li>
             <li><a href="/about/">About</a></li>
-            <li><a href="/blog/">Blog</a></li>
             <li class="last"><a href="/news/">In The News</a></li>
         </ul>
 
       {# {% load user %} #}
       {# {% user_menu user %} #}
     </div>
-
+    {% if featured_items %}    
+        <div class="features">
+          <ul id="features">
+              <li>
+                  <h5><a href="{% url feature_detail featured_items.0.slug %}">{{ featured_items.0.title }}</a></h5>
+                <p>{{ featured_items.0.teaser|truncatewords:"25" }}</p>
+              </li>
+              {% if featured_items.1 %}
+                <li>
+                  <h5><a href="{% url feature_detail featured_items.1.slug %}">{{ featured_items.1.title }}</a></h5>
+                  <p>{{ featured_items.1.teaser|truncatewords:"25" }}</p>
+                  
+                </li>          
+              {% endif %}
+              {% if featured_items.2 %}        
+              <li>
+                <h5><a href="{% url feature_detail featured_items.2.slug %}">
+{{ featured_items.2.title }}</a></h5>
+                <p>{{ featured_items.2.teaser|truncatewords:"25" }}</p>
+              </li>
+              {% endif %}        
+          </ul>
+          <br class="clear"/>
+      </div>
+    {% endif %}    
     <div id="right">
         {% block message %}
           {% ifequal display_welcome_message "1" %}
@@ -154,32 +177,6 @@
         {% block error %}
 
         {% endblock %}
-        {% if featured_items %}
-          <ul id="features">
-              <li>
-                <a href="{% url feature_detail featured_items.0.slug %}">
-                <strong>{{ featured_items.0.title }}:</strong>
-                <p>{{ featured_items.0.teaser|truncatewords:"25" }}</p>
-                </a>
-              </li>
-              {% if featured_items.1 %}
-                <li>
-                  <a href="{% url feature_detail featured_items.1.slug %}">
-                  <strong>{{ featured_items.1.title }}:</strong>
-                  <p>{{ featured_items.1.teaser|truncatewords:"25" }}</p>
-                  </a>
-                </li>          
-              {% endif %}
-              {% if featured_items.2 %}        
-              <li>
-                <a href="{% url feature_detail featured_items.2.slug %}">
-                <strong>{{ featured_items.2.title }}:</strong>
-                <p>{{ featured_items.2.teaser|truncatewords:"25" }}</p>
-                </a>
-              </li>
-              {% endif %}        
-          </ul>
-        {% endif %}
     
         {% block content %}
         {% endblock %}
@@ -208,7 +205,6 @@
                 <dt>Looking for more information?:</dt>
                 <dd>
                     <ul>
-                        <li><a href="/blog">Blog</a></li>
                         <li><a href="/news">In The News</a></li>
                         <li><a href="/legal">Legal / Privacy Policy</a></li>
                         <li><a href="/about#contactus">Contact Us</a></li>
