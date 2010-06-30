@@ -7,8 +7,8 @@ from data.models import Recipient
 class RecipientIndex(SearchIndex):
     text = CharField(document=True, use_template=True)
     name = CharField(model_attr='name', default="unknown", weight=2)
-    scheme = MultiValueField()
-    country = CharField(model_attr='countrypayment', default="unknown")
+    scheme = MultiValueField(faceted=True)
+    country = CharField(model_attr='countrypayment', default="unknown", faceted=True)
 
     def prepare_scheme(self, obj):
             # Since we're using a M2M relationship with a complex lookup,

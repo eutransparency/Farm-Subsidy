@@ -12,6 +12,7 @@ import models
 DEFAULT_YEAR = settings.DEFAULT_YEAR
 
 def home(request):
+<<<<<<< HEAD
 
   ip_country = request.session.get('ip_country', 'GB')
   top_eu = models.Recipient.objects.top_recipients()
@@ -25,6 +26,22 @@ def home(request):
     },
     context_instance=RequestContext(request)
   )  
+=======
+  
+    ip_country = request.session.get('ip_country', 'GB')
+    top_eu = models.Recipient.objects.top_recipients()
+    top_for_ip = models.Recipient.objects.top_recipients(country=ip_country)
+
+    return render_to_response(
+        'home.html', 
+        {
+            'top_eu' : top_eu,
+            'top_for_ip' : top_for_ip,
+        },
+        context_instance=RequestContext(request)
+    )  
+
+>>>>>>> 508a57c7fd50f2da14ec6a56e2ee3b992a760b84
 
 def countries(request):
     countries = []
@@ -55,6 +72,7 @@ def country(request, country, year=DEFAULT_YEAR):
     # print top_regions
 
     return render_to_response(
+<<<<<<< HEAD
     'country.html', 
     {
     'top_recipients' : top_recipients,
@@ -98,6 +116,46 @@ def recipient(request, country, recipient_id, name):
     },
     context_instance=RequestContext(request)
   )  
+=======
+        country_template('country.html', country),
+        {
+            'top_recipients' : top_recipients,
+            'top_schemes' : top_schemes,
+            'top_locations' : top_locations,
+            # 'years' : years,
+            'selected_year' : int(year),
+        },
+        context_instance=RequestContext(request)
+    )  
+
+
+
+def recipient(request, country, recipient_id, name):
+    """
+    View for recipient page.
+
+    - `country` ISO country, as defined in countryCodes
+    - `recipient_id` is actually a globalrecipientidx in the date
+
+    """
+    country = country.upper()
+
+    recipient = models.Recipient.objects.get(globalrecipientidx=recipient_id)
+    payments = models.Payment.objects.select_related().filter(recipient=recipient_id).order_by('year')
+    recipient_total = recipient.total
+    payment_years = list(set(payment.year for payment in payments))
+
+    return render_to_response(
+        country_template('recipient.html', country),
+        {
+            'recipient' : recipient,
+            'payments' : payments,
+            'recipient_total' : recipient_total,
+            'payment_years' : payment_years,
+        },
+        context_instance=RequestContext(request)
+    )  
+>>>>>>> 508a57c7fd50f2da14ec6a56e2ee3b992a760b84
 
 
 def all_schemes(request, country='EU'):
@@ -111,7 +169,7 @@ def all_schemes(request, country='EU'):
         schemes = schemes.filter(countrypayment=country)
 
     return render_to_response(
-        'all_schemes.html', 
+        country_template('all_schemes.html', country),
         {
             'schemes' : schemes,
         },
@@ -120,31 +178,32 @@ def all_schemes(request, country='EU'):
     
 
 def scheme(request, country, globalschemeid, name):
-  """
-  Show a single scheme and a list of top recipients to get payments under it
-  
-  - `country` ISO country, as defined by countryCodes
-  - ``globalschemeid` globalschemeid from the data_schemes table in the database
-  """ 
-  
-  scheme = models.Scheme.objects.get(globalschemeid=globalschemeid)
-  
-  # To add one day
-  # scheme_years = models.SchemeYear.objects.filter(globalschemeid=globalschemeid)
+    """
+    Show a single scheme and a list of top recipients to get payments under it
 
-  top_recipients = models.Recipient.objects.filter(
-                        payment__scheme=globalschemeid
-                    ).annotate(scheme_total=Sum('payment__amounteuro')).order_by('-scheme_total').distinct()
-  
-  return render_to_response(
-    'scheme.html', 
-    {
-    'scheme' : scheme,
-    # 'totals' : totals,
-    'top_recipients' : top_recipients,
-    },
-    context_instance=RequestContext(request)
-  )  
+    - `country` ISO country, as defined by countryCodes
+    - ``globalschemeid` globalschemeid from the data_schemes table in the database
+    """ 
+
+    scheme = models.Scheme.objects.get(globalschemeid=globalschemeid)
+
+    # To add one day
+    # scheme_years = models.SchemeYear.objects.filter(globalschemeid=globalschemeid)
+
+    top_recipients = models.Recipient.objects.filter(
+        payment__scheme=globalschemeid)\
+        .annotate(scheme_total=Sum('payment__amounteuro'))\
+        .order_by('-scheme_total')\
+        .distinct()
+
+    return render_to_response(
+        country_template('scheme.html', country), 
+        {
+            'scheme' : scheme,
+            'top_recipients' : top_recipients,
+        },
+        context_instance=RequestContext(request)
+    )  
   
 
 def browse(request, country):
@@ -152,12 +211,15 @@ def browse(request, country):
     Browse recipients, sorted / filtered by various things using django-filter
     """
 
-    recipients = models.Recipient.objects.filter(total__isnull=False).distinct().order_by('-total')
+    recipients = models.Recipient.objects.filter(total__isnull=False)\
+        .distinct()\
+        .order_by('-total')
+
     if country != "EU":
         recipients = recipients.filter(countrypayment=country)
   
     return render_to_response(
-        'browse.html', 
+        country_template('browse.html', country),
         {
             'recipients' : recipients,
         },
@@ -172,7 +234,7 @@ def all_locations(request, country):
     locations = locations.filter(**kwargs)
 
     return render_to_response(
-        'all_locations.html', 
+        country_template('all_locations.html', country),
         {
             'locations' : locations,
         },
@@ -182,27 +244,23 @@ def all_locations(request, country):
 def location(request, country, slug=None):
 
     location = get_object_or_404(models.Location, country=country, slug=slug)
-    # sub_location = models.locations.objects.sub_locations(country=country, geo1=geo1,geo2=geo2,geo3=geo3,geo4=geo4, limit=None, sort=sub_location_sort)
     kwargs = {}
     for p in location.get_ancestors():
         kwargs[p.geo_type] = p.name
     location_recipients = models.Recipient.objects.all()[:10]
     location_recipients = models.Recipient.objects.recipents_for_location(location)
 
-
     sub_locations = location.get_children()
     
     
     return render_to_response(
-    country_template('location.html', country), 
-    {
-    'location' : location,
-    'location_recipients' : location_recipients,
-    'sub_locations' : sub_locations,
-    # 'sub_location_sort' : sub_location_sort,
-    # 'selected_year' : int(year),        
-    },
-    context_instance=RequestContext(request)
+        country_template('location.html', country), 
+        {
+            'location' : location,
+            'location_recipients' : location_recipients,
+            'sub_locations' : sub_locations,
+        },
+        context_instance=RequestContext(request)
     )  
   
 

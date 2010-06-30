@@ -90,6 +90,7 @@ INSTALLED_APPS = (
     'treebeard',
     'haystack',
     'listmaker',
+    'features',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -105,6 +106,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   'misc.context_processors.google_api_key',
   'misc.context_processors.header_class',  
   'data.context_processors.breadcrumb',
+  'features.context_processors.featured_items',
 )
 
 ACCOUNT_ACTIVATION_DAYS = 7
