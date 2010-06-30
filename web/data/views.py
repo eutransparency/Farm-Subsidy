@@ -12,7 +12,6 @@ import models
 DEFAULT_YEAR = settings.DEFAULT_YEAR
 
 def home(request):
-<<<<<<< HEAD
 
   ip_country = request.session.get('ip_country', 'GB')
   top_eu = models.Recipient.objects.top_recipients()
@@ -26,22 +25,6 @@ def home(request):
     },
     context_instance=RequestContext(request)
   )  
-=======
-  
-    ip_country = request.session.get('ip_country', 'GB')
-    top_eu = models.Recipient.objects.top_recipients()
-    top_for_ip = models.Recipient.objects.top_recipients(country=ip_country)
-
-    return render_to_response(
-        'home.html', 
-        {
-            'top_eu' : top_eu,
-            'top_for_ip' : top_for_ip,
-        },
-        context_instance=RequestContext(request)
-    )  
-
->>>>>>> 508a57c7fd50f2da14ec6a56e2ee3b992a760b84
 
 def countries(request):
     countries = []
@@ -72,17 +55,16 @@ def country(request, country, year=DEFAULT_YEAR):
     # print top_regions
 
     return render_to_response(
-<<<<<<< HEAD
-    'country.html', 
+    country_template('country.html', country),
     {
-    'top_recipients' : top_recipients,
-    'top_schemes' : top_schemes,
-    'top_locations' : top_locations,
-    # 'years' : years,
-    'selected_year' : int(year),
+        'top_recipients' : top_recipients,
+        'top_schemes' : top_schemes,
+        'top_locations' : top_locations,
+        # 'years' : years,
+        'selected_year' : int(year),
     },
     context_instance=RequestContext(request)
-    )  
+    )
 
 
 def recipient(request, country, recipient_id, name):
@@ -116,19 +98,6 @@ def recipient(request, country, recipient_id, name):
     },
     context_instance=RequestContext(request)
   )  
-=======
-        country_template('country.html', country),
-        {
-            'top_recipients' : top_recipients,
-            'top_schemes' : top_schemes,
-            'top_locations' : top_locations,
-            # 'years' : years,
-            'selected_year' : int(year),
-        },
-        context_instance=RequestContext(request)
-    )  
-
-
 
 def recipient(request, country, recipient_id, name):
     """
@@ -155,7 +124,6 @@ def recipient(request, country, recipient_id, name):
         },
         context_instance=RequestContext(request)
     )  
->>>>>>> 508a57c7fd50f2da14ec6a56e2ee3b992a760b84
 
 
 def all_schemes(request, country='EU'):
