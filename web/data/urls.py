@@ -15,6 +15,7 @@ countries = ''
 
 urlpatterns = patterns('data.views',
   url(r'^$', 'home', name='home'),
+  url(r'countries/', 'countries', name='countries' ),
   country_url(r'$', 'country', name='country'),
   country_url(r'(?P<year>\d+)/$', 'country', name='country_year'),
   country_url(r'recipient/(?P<recipient_id>[^/]+)/(?P<name>(.*))/', 'recipient', name='recipient_view' ),

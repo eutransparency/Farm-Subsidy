@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load humanize %}
+{% load countries %}
 
 
 {% block title %}
@@ -102,7 +103,8 @@
   
 
 {% block right %}
-
+{% country_map country.code %}
+    
 <div class="block">
   <h3>Browse all recipients</h3>
     <ul>

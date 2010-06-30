@@ -68,15 +68,25 @@
             <a href="/"><span>farmsubsidy.org</span></a>
         </h1>
         <h2>Discover who gets what from the Common Agricultural Policy</h2>
+        
+        {# search form #}
+        <form id="search_form" action="{% url search %}" method="POST" accept-charset="utf-8">
+          <h2><label for="search" class="section_title">Search</label></h2>
+          <input type="text" name="q" value="" id="q" title="Enter a company name or place">
+          <input type="submit" value="Search" class="submit">
+          <small>e.g. <a href="/search?q=nestle">Nestle</a> or <a href="/search?q=windsor">Windsor</a></small>
+        </form>
+        
         {# main menu #}
         <ul id="mainmenu">
             {% load active_url %}
-            <li class="{% active request "^/(?!faq|about|blog|news)" %}"><a href="/" >Home</a></li>
-            <li class="{% active request "^/lists/" %}"><a href="/lists/">Custom Lists</a></li>            
-            <li class="{% active request "^/faq/" %}"><a href="/faq/">FAQs</a></li>
-            <li class="{% active request "^/about/" %}"><a href="/about/">About</a></li>
-            <li class="{% active request "^/blog/" %}"><a href="/blog/">Blog</a></li>
-            <li class="{% active request "^/news/" %} last"><a href="/news/">In The News</a></li>
+            <li><a href="/" >Home</a></li>
+            <li><a href="{% url countries %}">Countries</a></li>            
+            <li><a href="/lists/">Custom Lists</a></li>            
+            <li><a href="/faq/">FAQs</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li class="last"><a href="/news/">In The News</a></li>
         </ul>
 
       {# {% load user %} #}
@@ -93,7 +103,7 @@
         {% endblock %}
         
       {% block right %}
-        
+            
       {% endblock %}
 
       {# {% if tweet %} #}

@@ -12,7 +12,7 @@ import models
 DEFAULT_YEAR = settings.DEFAULT_YEAR
 
 def home(request):
-  
+
   ip_country = request.session.get('ip_country', 'GB')
   top_eu = models.Recipient.objects.top_recipients()
   top_for_ip = models.Recipient.objects.top_recipients(country=ip_country)
@@ -25,30 +25,36 @@ def home(request):
     },
     context_instance=RequestContext(request)
   )  
-  
 
+def countries(request):
+    countries = []
+    for country in countryCodes.country_codes():
+        countries.append(countryCodes.country_codes(country)) 
+        
+    return render_to_response('countries.html', {'countries' : countries},context_instance=RequestContext(request))
+        
 
 def country(request, country, year=DEFAULT_YEAR):
-  """
-  Provides all the variables for the country pages at, for example "/AT/"
-  
-  Querysets:
-  
-  - `top_recipients` Gets n recipients, sorted by total amount for a given year
-  - `years` The years that we have data for a given country
-  
-  
-  """
-  country = country.upper()
-  
-  # years = models.data.objects.years(country=country)
-  
-  top_recipients = models.Recipient.objects.top_recipients(country=country, year=year)
-  top_schemes = models.Scheme.objects.top_schemes(country)
-  top_locations = models.Location.get_root_nodes().order_by('-total')
-  # print top_regions
-  
-  return render_to_response(
+    """
+    Provides all the variables for the country pages at, for example "/AT/"
+
+    Querysets:
+
+    - `top_recipients` Gets n recipients, sorted by total amount for a given year
+    - `years` The years that we have data for a given country
+
+
+    """
+    country = country.upper()
+
+    # years = models.data.objects.years(country=country)
+
+    top_recipients = models.Recipient.objects.top_recipients(country=country, year=year)
+    top_schemes = models.Scheme.objects.top_schemes(country)
+    top_locations = models.Location.get_root_nodes().order_by('-total')
+    # print top_regions
+
+    return render_to_response(
     'country.html', 
     {
     'top_recipients' : top_recipients,
@@ -58,7 +64,7 @@ def country(request, country, year=DEFAULT_YEAR):
     'selected_year' : int(year),
     },
     context_instance=RequestContext(request)
-  )  
+    )  
 
 
 def recipient(request, country, recipient_id, name):
