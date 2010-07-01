@@ -9,3 +9,8 @@ def country_menu():
   return {'countries' : countries}
   
 register.inclusion_tag('blocks/country_menu.html')(country_menu)
+
+def country_map(country_code):
+    return {"country_code" : country_code}
+
+register.inclusion_tag('blocks/country_map.html')(country_map)    

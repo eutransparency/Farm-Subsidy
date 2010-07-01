@@ -1,16 +1,18 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-  "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
     {% load i18n %}
     {% load cache %}
     {% load humanize %}
-
+    {% load inthenews %}    
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <title>{% block title %}{{title}}{% endblock %} | FarmSubsidy.org</title>
-    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}/media/reset-min.css">
-    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}/css/main.css">    
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}/css/reset-min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}/css/main.css"/>    
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.js"></script>
+    <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.cookie.js"></script>    
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.example.min.js"></script>
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery-ui-1.7.1.custom.min.js"></script>
     <script src="{{ MEDIA_URL }}/js/scripts.js" type="text/javascript" charset="utf-8"></script>
@@ -22,37 +24,39 @@
 
 </head>
 
-<body id="{% block body_style %}{% endblock %}" class="{% block body_class %}{% endblock %} {% if list_items.create %}list_enabled{% endif %}">
+<body id="{% block body_style %}main{% endblock %}" class="{% block body_class %}none{% endblock %} {% if list_items.create %}list_enabled{% endif %}">
     
 {# Topbar #}
 <div id="topbar">
-    <form method="post" action="http://app.icontact.com/icp/signup.php" name="icpsignup" accept-charset="UTF-8" onsubmit="return verifyRequired();">
-        <fieldset>
-            <input name="redirect" value="http://www.icontact.com/www/signup/thanks.html" type="hidden">
-            <input name="errorredirect" value="http://www.icontact.com/www/signup/error.html" type="hidden">
-            <input name="listid" value="3290" type="hidden">
-            <input name="specialid:3290" value="OMN5" type="hidden">
-            <input name="clientid" value="161514" type="hidden">
-            <input name="formid" value="278" type="hidden">
-            <input name="reallistid" value="1" type="hidden">
-            <input name="doubleopt" value="1" type="hidden">
-        </fieldset>
-        <script type="text/javascript">
-            if (document.location.protocol === "https:"){
-                document.icpsignup.action = "https://app.icontact.com/icp/signup.php";
-            }
-            function verifyRequired() {
-                if (document.icpsignup["fields_email"].value == "") {
-                    document.icpsignup["fields_email"].focus();
-                    alert("The Email field is required.");
-                    return false;
+    <a href="http://www.twitter.com/farmsubsidy/">
+        <img src="{{MEDIA_URL}}/images/follow.png" alt="Follow us on Twitter"/>
+      </a>
+    <form method="post" action="http://app.icontact.com/icp/signup.php" accept-charset="UTF-8" onsubmit="return verifyRequired();">
+            <fieldset>
+                <input name="redirect" value="http://www.icontact.com/www/signup/thanks.html" type="hidden"/>
+                <input name="errorredirect" value="http://www.icontact.com/www/signup/error.html" type="hidden"/>
+                <input name="listid" value="3290" type="hidden"/>
+                <input name="specialid:3290" value="OMN5" type="hidden"/>
+                <input name="clientid" value="161514" type="hidden"/>
+                <input name="formid" value="278" type="hidden"/>
+                <input name="reallistid" value="1" type="hidden"/>
+                <input name="doubleopt" value="1" type="hidden"/>
+            <script type="text/javascript">
+                if (document.location.protocol === "https:"){
+                    document.icpsignup.action = "https://app.icontact.com/icp/signup.php";
                 }
-                return true;
-            }
-        </script>
-
-        <label for="fields_email">Get the latest transparency news from farmsubsidy.org</label><input type="text" name="fields_email" value="" id="fields_email" size="20">
-        <input name="Submit" value="Add me" type="submit">
+                function verifyRequired() {
+                    if (document.icpsignup["fields_email"].value == "") {
+                        document.icpsignup["fields_email"].focus();
+                        alert("The Email field is required.");
+                        return false;
+                    }
+                    return true;
+                }
+            </script>
+            <label for="fields_email">Sign up for our newsletter</label><input type="text" name="fields_email" value="" id="fields_email" size="20"/>
+            <input name="Submit" value="ok" type="submit"/>
+        </fieldset>        
     </form>
 </div>
 
@@ -61,47 +65,66 @@
     
     {# header #}
     <div id="header">
-        <div id="photos">
+        <div id="photos" class="{{header_class}}">
             
         </div>
         <h1>
             <a href="/"><span>farmsubsidy.org</span></a>
         </h1>
         <h2>Discover who gets what from the Common Agricultural Policy</h2>
+        
+        {# search form #}
+        <form id="search_form" action="{% url search %}" method="POST" accept-charset="utf-8">
+          <h2><label for="search" class="section_title">Search</label></h2>
+          <input type="text" name="q" value="" id="q" title="Enter a company name or place">
+          <input type="submit" value="Search" class="submit">
+          <small>e.g. <a href="/search?q=nestle">Nestle</a> or <a href="/search?q=windsor">Windsor</a></small>
+        </form>
+        
         {# main menu #}
         <ul id="mainmenu">
             {% load active_url %}
-            <li class="{% active request "^/(?!faq|about|blog|news)" %}"><a href="/" >Home</a></li>
-            <li class="{% active request "^/lists/" %}"><a href="/lists/">Custom Lists</a></li>            
-            <li class="{% active request "^/faq/" %}"><a href="/faq/">FAQs</a></li>
-            <li class="{% active request "^/about/" %}"><a href="/about/">About</a></li>
-            <li class="{% active request "^/blog/" %}"><a href="/blog/">Blog</a></li>
-            <li class="{% active request "^/news/" %} last"><a href="/news/">In The News</a></li>
+            <li><a href="/" >Home</a></li>
+            <li><a href="{% url countries %}">Countries</a></li>            
+            <li><a href="/lists/">Custom Lists</a></li>
+            <li><a href="/news/">News &amp; reports</a></li>
+            <li class="last"><a href="/faq/">FAQs</a></li>            
         </ul>
 
       {# {% load user %} #}
       {# {% user_menu user %} #}
     </div>
-
+    {% if featured_items %}
+            <div class="features">
+              <ul id="features">
+                  <li>
+                      <h5><a href="{% url feature_detail featured_items.0.slug %}">{{ featured_items.0.title }}</a></h5>
+                    <p>{{ featured_items.0.teaser|truncatewords:"25" }}</p>
+                  </li>
+                  {% if featured_items.1 %}
+                    <li>
+                      <h5><a href="{% url feature_detail featured_items.1.slug %}">{{ featured_items.1.title }}</a></h5>
+                      <p>{{ featured_items.1.teaser|truncatewords:"25" }}</p>
+                  
+                    </li>          
+                  {% endif %}
+                  {% if featured_items.2 %}        
+                  <li>
+                    <h5><a href="{% url feature_detail featured_items.2.slug %}">
+    {{ featured_items.2.title }}</a></h5>
+                    <p>{{ featured_items.2.teaser|truncatewords:"25" }}</p>
+                  </li>
+                  {% endif %}        
+              </ul>
+              <br class="clear"/>
+             <h4>latest news &amp; reports from the farmsubsidy.org network</h4>          
+          </div>
+    {% endif %}    
     <div id="right">
-        {% block message %}
-          {% ifequal display_welcome_message "1" %}
-            <div class="welcome_message notice">
-              Hello, welcome to FarmSubsidy.org, a website that will help you find out who gets what in farm subsidies from the European Union, from small farmers to big multinational companies. It is a non-profit initiative, part of the <a href="followthemoney.eu">FollowTheMoney.eu</a> family.
-            </div>
-          {% endifequal %}
-        {% endblock %}
-        
       {% block right %}
-        
+            
       {% endblock %}
 
-      {# {% if tweet %} #}
-      <div class="twitter block">
-          <h3>Follow <a href="http://twitter.com/farmsubsidy">farmsubsidy.org</a> on Twitter</h3> 
-          <p>{{ tweet.text|urlize }}<p>
-      </div>
-      {# {% endif %} #}
 
       {# {% block list %} #}
       {#   {% if custom_list.active %} #}
@@ -136,47 +159,23 @@
     </div>
     
     <div id="content">
-
-        <hr></hr>
-        {% if featured_items %}
-          <ul id="features">
-              <li>
-                <a href="{% url feature_detail featured_items.0.slug %}">
-                <strong>{{ featured_items.0.title }}:</strong>
-                <p>{{ featured_items.0.teaser|truncatewords:"25" }}</p>
-                </a>
-              </li>
-              {% if featured_items.1 %}
-                <li>
-                  <a href="{% url feature_detail featured_items.1.slug %}">
-                  <strong>{{ featured_items.1.title }}:</strong>
-                  <p>{{ featured_items.1.teaser|truncatewords:"25" }}</p>
-                  </a>
-                </li>          
-              {% endif %}
-              {% if featured_items.2 %}        
-              <li>
-                <a href="{% url feature_detail featured_items.2.slug %}">
-                <strong>{{ featured_items.2.title }}:</strong>
-                <p>{{ featured_items.2.teaser|truncatewords:"25" }}</p>
-                </a>
-              </li>
-              {% endif %}        
-          </ul>
-        {% endif %}
-        
-        <h2>{% block page_title %}{% endblock %}</h2>
+        <div class="heading">
+            <p class="breadcrumbs">
+                {% block breadcrumb %}{% endblock %}
+            </p>
+            <h2>{% block page_title %}{% endblock %}</h2>
+        </div>
         {% block error %}
 
         {% endblock %}
-
+    
         {% block content %}
         {% endblock %}
     </div>
     
 
     {% block footer %}
-      <div id="footer" class="clear">
+      <div id="footer">
         
         <div id="about">
           <p>
@@ -188,19 +187,28 @@
         
         <div id="links">
             <dl>
-                <dt>Latest news:</dt>
-                <dd>
-                    <ul>
-                        <li>[ADD LATEST NEWS TITLE HERE]</li>
-                    </ul>
-                </dd>
+                {% if featured_items %}
+                    <dt>Latest news:</dt>
+                    <dd>
+                        <ul>
+                            <li><a href="{% url feature_detail featured_items.0.slug %}">{{ featured_items.0.title }}</a></li>
+                        </ul>
+                    </dd>
+                {% endif %}
                 <dt>Looking for more information?:</dt>
                 <dd>
                     <ul>
-                        <li><a href="/blog">Blog</a></li>
-                        <li><a href="/news">In The News</a></li>
+                        <li><a href="/news">News &amp; reports</a></li>
                         <li><a href="/legal">Legal / Privacy Policy</a></li>
-                        <li><a href="/about#contactus">Contact Us</a></li>
+                        <li><a href="/about#contactus">About us</a></li>
+                        <li><a href="/about">Contact Us</a></li>
+                    </ul>
+                </dd>
+                <dt>Get in touch</dt>
+                <dd>
+                    <ul>
+                        <li><a href="mailto:team[-at-]farmsubsidy[-dot-]org">Email us</a></li>
+                        <li><a href="http://twitter.com/farmsubsidy">Follow farmsubsidy.org on Twitter</a></li>                        
                     </ul>
                 </dd>
                 <dt>Technical:</dt>
@@ -215,8 +223,5 @@
       </div>
     {% endblock %}
 </div>
-
-
-    
 </body>
 </html>

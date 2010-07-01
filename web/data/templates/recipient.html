@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load humanize markup %}
-
+{% load more_like_this %}
+{% load countries %}
 {% block title %}
   {{ recipient.name }} | {{ country.name }}
 {% endblock %}
@@ -9,139 +10,164 @@
   {{ recipient.name }}
 {% endblock %}
 
-
 {% block content %}
-  
-  <div class="section">
-    <h3>Recipient Information</h3>
-    <div class="halfcolleft">
-    <h4>Address</h4>
 
-    {% if recipient.address1 %}{{ recipient.address1|title }}<br />{% endif %}
-    {% if recipient.address2 %}{{ recipient.address2|title }}<br />{% endif %}
-    {% if recipient.address3 %}{{ recipient.address3|title }}<br />{% endif %}
-    {% if recipient.town %}{{ recipient.town|title }}<br />{% endif %}
-    {% if recipient.address4 %}{{ recipient.address4|title }}<br />{% endif %}
-    {% if recipient.zipcode %}{{ recipient.zipcode|slice:"3:" }}<br />{% endif %}    
-    </div>
-
-    <div class="halfcolleft">
-    <h4>Location</h4>
-    {% if recipient.geo4 %}<a href="{{ recipient.geo4_url }}">{{ recipient.geo1_url }}--{{ recipient.geo4|title }}</a><br />{% endif %}
-    {% if recipient.geo3 %}<a href="{{ recipient.geo3_url }}">{{ recipient.geo3|title }}</a><br />{% endif %}
-    {% if recipient.geo2 %}<a href="{{ recipient.geo2_url }}">{{ recipient.geo2|title }}</a><br />{% endif %}
-    {% if recipient.geo1 %}<a href="{{ recipient.geo1_url }}">{{ recipient.geo1|title }}</a><br />{% endif %}
-    </div>
-    <div class="clear"></div>
-  </div>
-  
-
-  {# Only show the graph if there is more than one payment_year #}
-  {% if payment_years.1 %}
-    {% load graphs %}
-    {% graph "recipient_graph" recipient.globalrecipientidx %}
-  {% endif %}
-  <div class="section">  
-    <h3>Payments</h3>
-  <table>
-    <thead>
-      <th>Year</th>
-      <th>Scheme</th>
-      <th>Total</th>
-    </thead>
-    {% for payment in payments %}
-      <tr>
-        <td>{{ payment.year }} </td>
-        <td>
-          {# {% if payment.schemeid %} #}
-            {# <a href="{% url scheme_view payment.country payment.schemeid %}">{{ payment.scheme.name }}</a> #}
-          {# {% else %} #}
-            {{ payment.scheme.nameenglish }}
-          {# {% endif %} #}
-        </td>
-        <td>&euro;{{ payment.amounteuro|floatformat:2|intcomma }}</td>
-      </tr>
-    {% endfor %}
-    <tr>
-      <td></td>
-      <td style="text-align:right;"><strong>Total:</strong></td>
-      <td>&euro;{{ recipient_total|floatformat:2|intcomma }}</td>
-    </tr>
-  </table>
-  </div>
-  {% load more_like_this %}
-  {# {% more_like_this recipient as related_content for "data.recipient" limit 2 %} #}
-  {% more_like_this recipient as related_content limit 3 %}
-  {% if related_content %}
     <div class="section">
-      <h3>Related</h3>
-      <p>The following recipients might be related to {{ recipient.name }}</p>
-      <ul>
-      {% for item in related_content %}
-        <li><a href="{{ item.object.get_absolute_url }}">{{ item.object.name }}</a></li>
-      {% endfor %}
-      </ul>
-    
+        <p>
+            {{recipient.name}} is a recipient of farm subsidies in {% if recipient.town %}{{ recipient.town|title }},{% endif %} {{ country.name }}.
+        </p>
+        <p>    
+            Since {{first_year}} it has received <strong>&euro;{{ recipient_total|floatformat:2|intcomma }}</strong> in payments from the European Union comprising of {% if has_direct %}<strong>direct subsidies</strong> (income support){% if has_indirect and has_rural %}, {%else%}{% if has_indirect or has_rural %} and {% else %}.{%endif%}{%endif%}{% endif %}{%if has_indirect %}<strong>indirect or other subsidies</strong> (market support such as export refunds or costs associated with food storage){% if has_rural %} and {%else%}.{%endif%}{% endif %}{% if has_rural %}<strong>rural development payments</strong> (for land conservation, income support for farms in dry, mountainous or cold places, or business development grants).{%endif%}
+        </p>
     </div>
-  {% endif %}
 
-  <div class="section">
-    {% load comments i18n %}
-    {% get_comment_list for recipient as comment_list %}
-    {% for comment in comment_list %}
-      <div class="comment">
-        <div class="info col">        
-          <h4>{{ comment.user }}</h4>
-          {{ comment.submit_date|date:"H.i" }} {{ comment.submit_date|naturalday }}
-        </div>    
-        <div class="message col">
-          {{ comment.comment|markdown:"safe" }}
-        </div>
-      </div>
-    {% endfor %}
-    
-  </div>
-
-  <div class="section">
-    <h3>Add information for this recipient</h3>
-    <p>e.g. What kind of farm or company is it? Is it a subsidiary of another company? Are you the owner or do you live nearby? Any other factual information to add?</p>
-    
-    {% if user.is_authenticated %}
-    {% get_comment_form for recipient as form %}
-    <form action="{% comment_form_target %}" method="post">
-      {% if next %}<input type="hidden" name="next" value="{{ next }}" />{% endif %}
-      {% for field in form %}
-        {% if field.is_hidden %}
-          {{ field }}
-        {% else %}
-          {% if field.errors %}{{ field.errors }}{% endif %}
-          <p
-            {% if field.errors %} class="error"{% endif %}
-            {% ifequal field.name "honeypot" %} style="display:none;"{% endifequal %}>
-            {{ field.label_tag }} {{ field }}
-
-          </p>
-        {% endif %}
-      {% endfor %}
-      <p class="submit">
-        <input type="submit" name="post" class="submit-post" value="{% trans "Post" %}" />
-        <input type="submit" name="preview" class="submit-preview" value="{% trans "Preview" %}" />
-      </p>
-    </form>
-    
-    {% else %}
-        <a href="{% url registration_register %}">Create an account</a> or <a href="{% url auth_login %}">Log in</a> to add information.
-    {% endif %}
+  <div class="section">  
+    <h3>Details of payments</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Scheme</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        {% for payment in payments %}
+          <tr>
+            <td>{{ payment.year }} </td>
+            <td>
+              {# {% if payment.schemeid %} #}
+                {# <a href="{% url scheme_view payment.country payment.schemeid %}">{{ payment.scheme.name }}</a> #}
+              {# {% else %} #}
+                {{ payment.scheme.nameenglish }}
+              {# {% endif %} #}
+            </td>
+            <td>&euro;{{ payment.amounteuro|floatformat:2|intcomma }}</td>
+          </tr>
+        {% endfor %}
+        <tr>
+          <td></td>
+          <td style="text-align:right;"><strong>Total:</strong></td>
+          <td>&euro;{{ recipient_total|floatformat:2|intcomma }}</td>
+        </tr>
+    </table>
   </div>
   
+  {# Only show the graph if there is more than one payment_year #}
+  {% if payment_years.1 %}  
+    <div class="section">
+        <h3>Breakdown by year</h3>
+        {% load graphs %}
+        {% graph "recipient_graph" recipient.globalrecipientidx %}
+    </div>
+  {% endif %}
+  
+    {% load comments i18n %}  
+    <div class="section">
+
+        {% get_comment_list for recipient as comment_list %}
+        {% ifequal comment_list|length 0 %}
+            {# no comments #}
+            <h3><span class="highlight">Nobody has investigated this recipient yet</span></h3>
+            <p>
+                Currently all we know about {{recipient.name}} are the few bits of information released by the {{ country.name }} government.
+            </p>
+            <p>
+            We need <strong>your help</strong> to investigate this recipient. Is it a multi-national company or a small independent farm? What does it produce? Is it a subsidiary of a larger company? How large is it? Is it owned by anyone noteworthy?</p>
+        {% else %}
+            {# has comments #}
+            <h3>More information about this recipient</h3>
+            <p>
+                People have been helping us to find out more about {{recipient.name}}. You can add more information below. Here is what we know so far:
+            </p>
+            {% for comment in comment_list %}
+              <div class="comment">
+                  {{ comment.comment|markdown:"safe" }}                  
+                  <small class="comment_meta">
+                      Added {{ comment.submit_date|naturalday }} by {{ comment.user }} | <a href="/about#contactus">something wrong?</a>
+                    </small>
+              </div>
+            {% endfor %}
+            </div>
+            <div class="section">
+            <h3>Help us investigate</h3>            
+            <p>
+            Can you find any more information about {{recipient.name}}? Is it a multi-national company of a small independent farm? What does it produce? Is it a subsidiary of a larger company? How large is it? Is it owned by anyone noteworthy?
+            </p>
+        {% endifequal %}
+
+        {% if user.is_authenticated %}
+            {% get_comment_form for recipient as form %}
+            <form id="comments" action="{% comment_form_target %}" method="post">
+                <fieldset>
+                  {% if next %}<input type="hidden" name="next" value="{{ next }}" />{% endif %}
+                  {% for field in form %}
+                    {% if field.is_hidden %}
+                      {{ field }}
+                    {% else %}
+                      {% if field.errors %}{{ field.errors }}{% endif %}
+                      <p id="line_{{field.html_name}}" {% if field.errors %} class="error"{% endif %}{% ifequal field.name "honeypot" %} style="display:none;"{% endifequal %}>
+                        {{ field.label_tag }} {{ field }}
+                      </p>
+                      {% ifequal field.name "comment" %}
+                      <p class="hint">
+                          <strong>Format help:</strong>
+                          <br/>
+                          Link: [text to display](http://example.net/)
+                          <br/>                          
+                          List item: * example item
+                          <br/>                          
+                          Bold text: *example text*
+                      </p>
+                      {% endifequal %}
+                    {% endif %}
+                  {% endfor %}
+                  <p class="submit">
+                    <input type="submit" name="post" class="submit-post" value="{% trans "Post" %}" />
+                    <input type="submit" name="preview" class="submit-preview" value="{% trans "Preview" %}" />
+                  </p>
+                 </fieldset>
+            </form>
+
+        {% else %}
+            <p id="disabled_comments">
+                <textarea disabled="disabled"></textarea>
+                <a href="{% url registration_register %}">Create an account</a> or <a href="{% url auth_login %}">sign in</a> to tell us something about {{recipient.name}}.
+            </p>
+        {% endif %}
+        
+    </div>
+
 {% endblock %}
 
-
 {% block right %}
+    {% country_map country.code %}
 
-{% include "breadcrumbs.html" %}
+    <h4>Address</h4>    
+    <p>
+        {% if recipient.address1 %}{{ recipient.address1|title }}<br />{% endif %}
+        {% if recipient.address2 %}{{ recipient.address2|title }}<br />{% endif %}
+        {% if recipient.address3 %}{{ recipient.address3|title }}<br />{% endif %}
+        {% if recipient.town %}{{ recipient.town|title }}<br />{% endif %}
+        {% if recipient.address4 %}{{ recipient.address4|title }}<br />{% endif %}
+        {% if recipient.zipcode %}{{ recipient.zipcode|slice:"3:" }}<br />{% endif %}
+    </p>
 
-{% load recipient_blocks %}  
-{% recipient_links recipient %}
+    <h4>Location</h4>
+    <p>
+        {% if recipient.geo4 %}<a href="{{ recipient.geo4_url }}">{{ recipient.geo1_url }}--{{ recipient.geo4|title }}</a><br />{% endif %}
+        {% if recipient.geo3 %}<a href="{{ recipient.geo3_url }}">{{ recipient.geo3|title }}</a><br />{% endif %}
+        {% if recipient.geo2 %}<a href="{{ recipient.geo2_url }}">{{ recipient.geo2|title }}</a><br />{% endif %}
+        {% if recipient.geo1 %}<a href="{{ recipient.geo1_url }}">{{ recipient.geo1|title }}</a><br />{% endif %}
+    </p>
+    
+    {% more_like_this recipient as related_content limit 3 %}
+    {% if related_content %}
+        <h4>Similarly named recipients</h4>
+        <ul>
+        {% for item in related_content %}
+          <li><a href="{{ item.object.get_absolute_url }}">{{ item.object.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
 
 {% endblock %}

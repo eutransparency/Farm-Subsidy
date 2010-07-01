@@ -5,8 +5,6 @@ from data import countryCodes
 from django.contrib import admin
 admin.autodiscover()
 
-
-
 urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
     (r'', include('data.urls')),

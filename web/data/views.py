@@ -3,8 +3,11 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.db.models import Sum, Count
 from django.conf import settings
-
+from feeds.models import *
+from tagging.models import TaggedItem
 from misc.helpers import country_template
+from web.countryinfo.transparency import transparency_score, transparency_list
+from web.countryinfo.load_info import load_info
 from data import countryCodes
 import context_processors
 import models
@@ -12,21 +15,27 @@ import models
 DEFAULT_YEAR = settings.DEFAULT_YEAR
 
 def home(request):
+
+  ip_country = request.session.get('ip_country', 'GB')
+  top_eu = models.Recipient.objects.top_recipients()
+  top_for_ip = models.Recipient.objects.top_recipients(country=ip_country)
   
-    ip_country = request.session.get('ip_country', 'GB')
-    top_eu = models.Recipient.objects.top_recipients()
-    top_for_ip = models.Recipient.objects.top_recipients(country=ip_country)
+  return render_to_response(
+    'home.html', 
+    {
+    'top_eu' : top_eu,
+    'top_for_ip' : top_for_ip,
+    },
+    context_instance=RequestContext(request)
+  )  
 
-    return render_to_response(
-        'home.html', 
-        {
-            'top_eu' : top_eu,
-            'top_for_ip' : top_for_ip,
-        },
-        context_instance=RequestContext(request)
-    )  
-
-
+def countries(request):
+    countries = []
+    for country in countryCodes.country_codes():
+        countries.append(countryCodes.country_codes(country)) 
+        
+    return render_to_response('countries.html', {'countries' : countries},context_instance=RequestContext(request))
+        
 
 def country(request, country, year=DEFAULT_YEAR):
     """
@@ -37,7 +46,6 @@ def country(request, country, year=DEFAULT_YEAR):
     - `top_recipients` Gets n recipients, sorted by total amount for a given year
     - `years` The years that we have data for a given country
 
-
     """
     country = country.upper()
 
@@ -46,21 +54,71 @@ def country(request, country, year=DEFAULT_YEAR):
     top_recipients = models.Recipient.objects.top_recipients(country=country, year=year)
     top_schemes = models.Scheme.objects.top_schemes(country)
     top_locations = models.Location.get_root_nodes().order_by('-total')
+    
+    #get transparency score
+    transparency = None
+    if country != "EU":
+      transparency = transparency_score(country)
     # print top_regions
+    
+    #get the most recent news story
+    latest_news_item = False    
+    news_items = TaggedItem.objects.get_by_model(FeedItems, Tag.objects.filter(name=country))
+    news_items = news_items.order_by("-date")
+    if news_items:
+        latest_news_item = news_items[0]
+
+    #get country stats
+    stats_info = load_info(country)
 
     return render_to_response(
-        country_template('country.html', country),
-        {
-            'top_recipients' : top_recipients,
-            'top_schemes' : top_schemes,
-            'top_locations' : top_locations,
-            # 'years' : years,
-            'selected_year' : int(year),
-        },
-        context_instance=RequestContext(request)
-    )  
+    country_template('country.html', country),
+    {
+        'top_recipients' : top_recipients,
+        'top_schemes' : top_schemes,
+        'top_locations' : top_locations,
+        'transparency' : transparency,
+        'latest_news_item': latest_news_item,
+        'stats_year': settings.STATS_YEAR,
+        'stats_info': stats_info,
+        # 'years' : years,
+        'selected_year' : int(year),
+    },
+    context_instance=RequestContext(request)
+    )
 
 
+def recipient(request, country, recipient_id, name):
+  """
+  View for recipient page.
+  
+  - `country` ISO country, as defined in countryCodes
+  - `recipient_id` is actually a globalrecipientidx in the date
+  
+  """
+  country = country.upper()
+  
+  recipient = models.Recipient.objects.get(globalrecipientidx=recipient_id)
+  payments = models.Payment.objects.select_related().filter(recipient=recipient_id).order_by('year')
+  recipient_total = recipient.total
+  payment_years = list(set(payment.year for payment in payments))
+  payment_schemes = list(set(payment.scheme.globalschemeid for payment in payments))
+  
+  
+  return render_to_response(
+    'recipient.html', 
+    {
+    'recipient' : recipient,
+    'payments' : payments,
+    'recipient_total' : recipient_total,
+    'payment_years' : payment_years,
+    'has_direct' : 'LU1' in payment_schemes,
+    'has_indirect' : 'LU2' in payment_schemes,
+    'has_rural' : 'LU3' in payment_schemes,
+    'first_year' : payment_years[0],
+    },
+    context_instance=RequestContext(request)
+  )  
 
 def recipient(request, country, recipient_id, name):
     """

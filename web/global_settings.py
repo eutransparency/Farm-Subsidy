@@ -104,6 +104,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   'customlists.context_processors.custom_list',
   # 'misc.context_processors.latest_tweet',
   'misc.context_processors.google_api_key',
+  'misc.context_processors.header_class',  
   'data.context_processors.breadcrumb',
   'features.context_processors.featured_items',
 )
