@@ -18,7 +18,7 @@
         <h3>Recent news &amp; reports</h3>
         {% for feature in recent_features %}    
                 <p>
-                    <a href="{% url feature_detail featured_items.0.slug %}">{{feature.title}}</a>
+                    <a href="{{ feature.get_absolute_url }}">{{feature.title}}</a>
                 </p>
                 <p>{{ feature.teaser|truncatewords:"25" }}</p>
         {% endfor %}

@@ -15,7 +15,7 @@
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.cookie.js"></script>    
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.example.min.js"></script>
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery-ui-1.7.1.custom.min.js"></script>
-    <script src="{{ MEDIA_URL }}/js/scripts.js" type="text/javascript" charset="utf-8"></script>
+    {# // <script src="{{ MEDIA_URL }}/js/scripts.js" type="text/javascript" charset="utf-8"></script> #}
 
     {% if custom_list.active %}
         <link rel="stylesheet" href="/media/css/custom_lists.css" type="text/css" media="screen, projection">
@@ -97,20 +97,22 @@
     {% if featured_items %}
             <div class="features">
               <ul id="features">
+                  {% if featured_items.0 %}                  
                   <li>
-                      <h5><a href="{% url feature_detail featured_items.0.slug %}">{{ featured_items.0.title }}</a></h5>
+                      <h5><a href="{{ featured_items.0.get_absolute_url }}">{{ featured_items.0.title }}</a></h5>
                     <p>{{ featured_items.0.teaser|truncatewords:"25" }}</p>
                   </li>
+                  {% endif %}                  
                   {% if featured_items.1 %}
                     <li>
-                      <h5><a href="{% url feature_detail featured_items.1.slug %}">{{ featured_items.1.title }}</a></h5>
+                      <h5><a href="{{ featured_items.1.get_absolute_url }}">{{ featured_items.1.title }}</a></h5>
                       <p>{{ featured_items.1.teaser|truncatewords:"25" }}</p>
                   
                     </li>          
                   {% endif %}
                   {% if featured_items.2 %}        
                   <li>
-                    <h5><a href="{% url feature_detail featured_items.2.slug %}">
+                    <h5><a href="{{ featured_items.2.get_absolute_url }}">
     {{ featured_items.2.title }}</a></h5>
                     <p>{{ featured_items.2.teaser|truncatewords:"25" }}</p>
                   </li>
@@ -192,7 +194,7 @@
                     <dt>Latest news:</dt>
                     <dd>
                         <ul>
-                            <li><a href="{% url feature_detail featured_items.0.slug %}">{{ featured_items.0.title }}</a></li>
+                            <li><a href="{{ featured_items.0.get_absolute_url }}">{{ featured_items.0.title }}</a></li>
                         </ul>
                     </dd>
                 {% endif %}
