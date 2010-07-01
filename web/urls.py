@@ -5,13 +5,10 @@ from data import countryCodes
 from django.contrib import admin
 admin.autodiscover()
 
-
-
 urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
     (r'', include('web.data.urls')),
-    (r'', include('web.feeds.urls')),
-    (r'features', include('web.features.urls')),
+    (r'^news/', include('web.features.urls')),
     (r'', include('web.misc.urls')),
     (r'', include('search.urls')),
     # (r'', include('farmsubsidy.web.countryinfo.urls')),

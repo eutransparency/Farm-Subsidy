@@ -18,10 +18,12 @@ def feature_list(request):
 
 def feature_detail(request, slug):
     feature = get_object_or_404(Feature, published=True, slug=slug)
+    recent_features = Feature.objects.filter(published=True).exclude(slug=slug).order_by('-id')[:5]    
     return render_to_response(
         'feature_detail.html', 
         {
-        'feature' : feature
+        'feature' : feature,
+        'recent_features' : recent_features,
         }, 
         context_instance = RequestContext(request)
     )    

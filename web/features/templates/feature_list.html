@@ -1,11 +1,17 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% block title %}{% trans "Features" %}{% endblock %}
-{% block page_title %}{% trans "Features" %}{% endblock %}
+{% load inthenews %}
+
+{% block title %}{% trans "News &amp; reports" %}{% endblock %}
+{% block page_title %}{% trans "News &amp; reports" %}{% endblock %}
 
 {% block content %}
   {% for feature in features %}
-    <h3><a href="{% url feature_detail feature.slug %}">{{ feature.title }}</a></h3>
+    <h4><a href="{% url feature_detail feature.slug %}">{{ feature.title }}</a></h4>
     <p>{{ feature.teaser }}</p>
   {% endfor %}
+{% endblock %}
+
+{% block right %}
+    {% latestnews %}
 {% endblock %}

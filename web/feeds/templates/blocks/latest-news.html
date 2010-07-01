@@ -6,11 +6,12 @@
 
   {% else %}
     <div class="block">
-      <h3>Recent news stories</h3>
+      <h3>In the press</h3>
       <ul>
         {% for item in newsitems %}
-        {{ item.date }}
-        <li><a href="{{ item.url }}" target="_blank">{{ item }}</a></li>
+        <li>
+            <a href="{{ item.url }}" target="_blank">{{ item.title }}</a> <small>{{ item.date|date:"D d M Y" }}</small>
+        </li>
         {% endfor %}
       </ul>  
     </div>

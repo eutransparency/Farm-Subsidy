@@ -28,6 +28,9 @@
     
 {# Topbar #}
 <div id="topbar">
+    <a href="http://www.twitter.com/farmsubsidy/">
+        <img src="{{MEDIA_URL}}/images/follow.png" alt="Follow us on Twitter"/>
+      </a>
     <form method="post" action="http://app.icontact.com/icp/signup.php" accept-charset="UTF-8" onsubmit="return verifyRequired();">
             <fieldset>
                 <input name="redirect" value="http://www.icontact.com/www/signup/thanks.html" type="hidden"/>
@@ -51,8 +54,8 @@
                     return true;
                 }
             </script>
-            <label for="fields_email">Get the latest transparency news from farmsubsidy.org</label><input type="text" name="fields_email" value="" id="fields_email" size="20"/>
-            <input name="Submit" value="Add me" type="submit"/>
+            <label for="fields_email">Sign up for our newsletter</label><input type="text" name="fields_email" value="" id="fields_email" size="20"/>
+            <input name="Submit" value="ok" type="submit"/>
         </fieldset>        
     </form>
 </div>
@@ -83,10 +86,9 @@
             {% load active_url %}
             <li><a href="/" >Home</a></li>
             <li><a href="{% url countries %}">Countries</a></li>            
-            <li><a href="/lists/">Custom Lists</a></li>            
-            <li><a href="/faq/">FAQs</a></li>
-            <li><a href="/about/">About</a></li>
-            <li class="last"><a href="/news/">In The News</a></li>
+            <li><a href="/lists/">Custom Lists</a></li>
+            <li><a href="/news/">News &amp; reports</a></li>
+            <li class="last"><a href="/faq/">FAQs</a></li>            
         </ul>
 
       {# {% load user %} #}
@@ -122,14 +124,6 @@
       {% block right %}
             
       {% endblock %}
-        <div class="section">
-          <a href="http://www.twitter.com/farmsubsidy/">
-              <img src="{{MEDIA_URL}}/images/follow.png" alt="Follow us on Twitter"/>
-            </a>
-            {# {% if tweet %} #}
-                <p>{{ tweet.text|urlize }}<p>
-            {# {% endif %} #}
-        </div>
 
 
       {# {% block list %} #}
@@ -166,6 +160,9 @@
     
     <div id="content">
         <div class="heading">
+            <p class="breadcrumbs">
+                {% block breadcrumb %}{% endblock %}
+            </p>
             <h2>{% block page_title %}{% endblock %}</h2>
         </div>
         {% block error %}
@@ -201,9 +198,17 @@
                 <dt>Looking for more information?:</dt>
                 <dd>
                     <ul>
-                        <li><a href="/news">In The News</a></li>
+                        <li><a href="/news">News &amp; reports</a></li>
                         <li><a href="/legal">Legal / Privacy Policy</a></li>
-                        <li><a href="/about#contactus">Contact Us</a></li>
+                        <li><a href="/about#contactus">About us</a></li>
+                        <li><a href="/about">Contact Us</a></li>
+                    </ul>
+                </dd>
+                <dt>Get in touch</dt>
+                <dd>
+                    <ul>
+                        <li><a href="mailto:team[-at-]farmsubsidy[-dot-]org">Email us</a></li>
+                        <li><a href="http://twitter.com/farmsubsidy">Follow farmsubsidy.org on Twitter</a></li>                        
                     </ul>
                 </dd>
                 <dt>Technical:</dt>

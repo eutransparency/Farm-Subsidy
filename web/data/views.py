@@ -62,8 +62,11 @@ def country(request, country, year=DEFAULT_YEAR):
     # print top_regions
     
     #get the most recent news story
+    latest_news_item = False    
     news_items = TaggedItem.objects.get_by_model(FeedItems, Tag.objects.filter(name=country))
     news_items = news_items.order_by("-date")
+    if news_items:
+        latest_news_item = news_items[0]
 
     #get country stats
     stats_info = load_info(country)
@@ -75,7 +78,7 @@ def country(request, country, year=DEFAULT_YEAR):
         'top_schemes' : top_schemes,
         'top_locations' : top_locations,
         'transparency' : transparency,
-        'latest_news_item': news_items[0],
+        'latest_news_item': latest_news_item,
         'stats_year': settings.STATS_YEAR,
         'stats_info': stats_info,
         # 'years' : years,

@@ -1,13 +1,27 @@
 {% extends "base.html" %}
 {% load markup %}
+{% load inthenews %}
 
 {% block title %}{{ feature.title }}{% endblock %}
 {% block page_title %}{{ feature.title }}{% endblock %}
 
 {% block breadcrumb %}
-  <a href="{% url home %}">Home</a> | <a href="{% url feature_list %}">Previous features</a>
+    <a href="{% url feature_list %}">&laquo; back to all news &amp; reports</a>
 {% endblock %}
 
 {% block content %}
     {{ feature.body|markdown }}
+{% endblock %}
+
+{% block right %}
+    <div class="section">
+        <h3>Recent news &amp; reports</h3>
+        {% for feature in recent_features %}    
+                <p>
+                    <a href="{% url feature_detail featured_items.0.slug %}">{{feature.title}}</a>
+                </p>
+                <p>{{ feature.teaser|truncatewords:"25" }}</p>
+        {% endfor %}
+    </div>
+    {% latestnews %}
 {% endblock %}
