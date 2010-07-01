@@ -156,8 +156,10 @@
 </div>
 -->
     
-  {% load transparency_index %}
-  {% transparency_index country %}
+    {% if transparency %}
+        {% load transparency_index %}
+        {% transparency_index country %}
+    {% endif %}
 
 
   {% latestnews country.code %}
