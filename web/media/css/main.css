@@ -48,6 +48,7 @@ p {padding-bottom:1em; line-height:1.3em;}
 p.more_info {text-align:right; font-size:0.9em; padding-right:2em;}
 ul {padding-bottom:1em;}
 
+
 table {font-size:0.9em; width:100%; margin-bottom:1.5em;}
 table th {background:#303c30; color:#fff;padding:0.6em 1em;}
 table tbody td{background:url(../images/featurebar.png);padding:0.6em 1em;}
@@ -89,11 +90,9 @@ div.features li p {font-size:0.9em;}
 #footer #links a, #footer #links a:hover, #footer #links a:visited {color:#fff;}
 #footer #links dt {float:left;font-weight:bold; padding-right:1em;}
 #footer #links ul li {display:inline; padding-right:0.7em;}
-#footer #about {width:239px; padding:0 20px 0 20px; position:absolute;
+#footer #about {width:239px; padding:25px 20px 0 20px; position:absolute;
     top:0; right:0;height:100%;
     background: #fff url(../images/background.png) top right;}
-#footer #about p {padding-top:50px;}
-#footer #about p a {background:url(../images/eutlogo.png) no-repeat top right; color:#808080; text-decoration:none;min-height:75px; display:block; padding-right:100px;}
-#footer #about p a:hover {color:#000;}
+#footer #about p {padding:10px 0 0 12px;margin:0;color:#808080;}
 
 br.clear {clear:both;}

@@ -67,12 +67,12 @@
         {% get_comment_list for recipient as comment_list %}
         {% ifequal comment_list|length 0 %}
             {# no comments #}
-            <h3><span class="highlight">Nobody has investigated this recipient yet</span></h3>
+            <h3><span class="highlight">Nobody has looked into this recipient yet</span></h3>
             <p>
                 Currently all we know about {{recipient.name}} are the few bits of information released by the {{ country.name }} government.
             </p>
             <p>
-            We need <strong>your help</strong> to investigate this recipient. Is it a multi-national company or a small independent farm? What does it produce? Is it a subsidiary of a larger company? How large is it? Is it owned by anyone noteworthy?</p>
+            We need <strong>your help</strong> to find out more about this recipient. Is it a multi-national company or a small independent farm? What does it produce? Is it a subsidiary of a larger company? How large is it? Is it owned by anyone noteworthy?</p>
         {% else %}
             {# has comments #}
             <h3>More information about this recipient</h3>
@@ -89,7 +89,7 @@
             {% endfor %}
             </div>
             <div class="section">
-            <h3>Help us investigate</h3>            
+            <h3>Help us improve this page</h3>            
             <p>
             Can you find any more information about {{recipient.name}}? Is it a multi-national company of a small independent farm? What does it produce? Is it a subsidiary of a larger company? How large is it? Is it owned by anyone noteworthy?
             </p>
