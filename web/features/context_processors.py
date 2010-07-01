@@ -15,3 +15,5 @@ def featured_items(request):
         return {'featured_items' : featured_items}
     else:
         return {}
+        
+    
