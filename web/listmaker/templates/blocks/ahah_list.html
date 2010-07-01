@@ -1,0 +1,11 @@
+{% load lists %}
+  {% if list_items %}
+    {% for item in list_items %}
+      <li><strong><a href="{{ item.get_absolute_url }}">{{ item.content_object.name }}</a></strong><br />
+          {{ item.content_object.amount }}<br />
+          {% list_item_edit item.content_object %}
+          </li>
+    {% endfor %}
+  {% else %}
+    <p>No items in your list</p>
+  {% endif %}

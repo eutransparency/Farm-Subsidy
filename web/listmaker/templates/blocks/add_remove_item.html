@@ -1,0 +1,13 @@
+{% if list_name %}
+<form method="POST" action="{% url list_item_add %}" class="list_form">
+  <input type="hidden" name="list_item_id" value="{{ ct.name }}:{{ list_object.pk }}" class="list_item_id">
+  <input type="hidden" name="content_type" value="{{ ct.name }}" class="content_type">
+  <input type="hidden" name="object_id" value="{{ list_object.pk }}" class="object_id">
+
+{% if in_list %}
+  <input type="submit" name="remove" value="Remove From List" class="action">
+{% else %}
+  <input type="submit" name="add" value="Add To List" class="action">
+{% endif %}
+</form>
+{% endif %}

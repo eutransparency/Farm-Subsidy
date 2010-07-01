@@ -7,12 +7,13 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
-    (r'', include('web.data.urls')),
-    (r'^news/', include('web.features.urls')),
-    (r'', include('web.misc.urls')),
+    (r'', include('data.urls')),
+    (r'', include('feeds.urls')),
+    (r'features', include('features.urls')),
+    (r'', include('misc.urls')),
     (r'', include('search.urls')),
-    # (r'', include('farmsubsidy.web.countryinfo.urls')),
-    (r'', include('web.graphs.urls')),
+    (r'', include('countryinfo.urls')),
+    (r'', include('graphs.urls')),
     (r'^comments/', include('django.contrib.comments.urls')),
     
     (r'', include('web.customlists.urls')),

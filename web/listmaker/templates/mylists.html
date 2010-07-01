@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block page_title %}{% trans "My Lists" %}{% endblock %}
+{% block title %}{% trans "My Lists" %}{% endblock %}
+{% block content %}
+
+{% for list in lists %}
+  <h3>{{ list.name }} <sup><a href="{% url edit_list list.id %}" class="tiny quiet">{% trans "Edit" %}</a></sup></h3>
+  <p>{{ list.description }}</p>
+{% endfor %}
+  
+{% endblock %}
+
+
+{% block right %}
+  {# {% load lists %} #}
+  {% latest_lists 5 %}
+{% endblock %}

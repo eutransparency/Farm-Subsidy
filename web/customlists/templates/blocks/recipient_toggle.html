@@ -1,7 +1,0 @@
-{% load customlist_list %}
-
-{% if recipient_id|in_list:custom_list.list_items %}
-  <input type="checkbox" name="del-{{ recipient_id }}" value="{{ recipient_id }}" id="del-{{ recipient_id }}" class="custom_list_toggle" checked>
-{% else %}
-  <input type="checkbox" name="add-{{ recipient_id }}" value="{{ recipient_id }}" id="add-{{ recipient_id }}" class="custom_list_toggle">
-{% endif %}

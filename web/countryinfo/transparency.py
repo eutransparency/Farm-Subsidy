@@ -24,7 +24,7 @@ def transparency_list():
   index = open_index()
   table = []
   for row in index:
-    table.append((countryCodes.code2name[row[0]], row[1]))
+    table.append((countryCodes.country_codes(row[0]), row[1]))
   return table
   
 
