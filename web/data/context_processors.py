@@ -82,7 +82,6 @@ def breadcrumb(request):
         location_breadcrumbs.reverse()
         breadcrumb.append({'Sub-Locations' : location_breadcrumbs})
 
-
     # Schemes
     if 'scheme' in path and len(path) >= 5:
         scheme_breadcrumbs = []

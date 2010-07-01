@@ -122,15 +122,15 @@
       {% block right %}
             
       {% endblock %}
+        <div class="section">
+          <a href="http://www.twitter.com/farmsubsidy/">
+              <img src="{{MEDIA_URL}}/images/follow.png" alt="Follow us on Twitter"/>
+            </a>
+            {# {% if tweet %} #}
+                <p>{{ tweet.text|urlize }}<p>
+            {# {% endif %} #}
+        </div>
 
-      {# {% if tweet %} #}
-      <!--
-      <div class="twitter block">
-          <h3>Follow <a href="http://twitter.com/farmsubsidy">farmsubsidy.org</a> on Twitter</h3> 
-          <p>{{ tweet.text|urlize }}<p>
-      </div>
-      -->
-      {# {% endif %} #}
 
       {# {% block list %} #}
       {#   {% if custom_list.active %} #}
@@ -190,12 +190,14 @@
         
         <div id="links">
             <dl>
-                <dt>Latest news:</dt>
-                <dd>
-                    <ul>
-                        <li>{% latestnews "" 1 "Blog" 1 %}</li>
-                    </ul>
-                </dd>
+                {% if featured_items %}
+                    <dt>Latest news:</dt>
+                    <dd>
+                        <ul>
+                            <li><a href="{% url feature_detail featured_items.0.slug %}">{{ featured_items.0.title }}</a></li>
+                        </ul>
+                    </dd>
+                {% endif %}
                 <dt>Looking for more information?:</dt>
                 <dd>
                     <ul>

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load humanize %}
 {% load countries %}
-
+{% load inthenews %}
 
 {% block title %}
   {{ country.name }}
@@ -12,6 +12,19 @@
 {% endblock %}
 
 {% block content %}
+<p>
+    These pages list farm subsidy payments made in {{country.name}} as published directly by the government of {{country.name}} or sourced via freedom of information requests. {% if transparency %}{{country.name}} is <strong>{{transparency.rank}}</strong> in our <a href="/transparency/">transparency index</a> which measures how good governments are at opening up their data to the general public.{% endif %}
+</p>
+{% if stats_info or latest_news_item%}
+    <p>
+        {% if stats_info %}
+            In {{stats_year}} {{country.name}} received <strong>{{ stats_info.total_spending|safe }}</strong> in farm subsidies or approximately <strong>{{ stats_info.spending_per_farm|safe }} per farm</strong>.
+        {% endif %}
+        {% if latest_news_item %}
+            Farm subsidies in {{country.name}} have most recently been featured in the story '<a href="{{latest_news_item.url}}">{{latest_news_item.title}}</a>'.
+        {% endif %}
+    </p>
+{% endif %}    
 
 {% if years.1 %}  
   {% load graphs %}
@@ -35,52 +48,12 @@
 </div>
 
 {% endif %}
-
-
-{% load countrystats %}
-{% country_stats country.code 2008 %}
-
-
-
-<div class="block top_schemes halfcol">
-  <h3>Top Schemes</h3>
-  <table>
-    <thead>
-      <th>Name</th>
-      <th>Amount</th>
-    </thead>
-  {% for scheme in top_schemes %}
-    <tr>
-      <td><a href="{{ scheme.get_absolute_url }}">{{ scheme.nameenglish }}</a></td>
-      <td>&euro;{{ scheme.total|floatformat:2|intcomma }}</td>
-    </tr>
-  {% endfor %}
-  </table>
-  <a href="{% url all_schemes country=country.code %}">View All</a>
-</div>
-<div class="block top_regions halfcol">
-  <h3>Top Regions</h3>
-  <table>
-    <thead>
-      <th>Name</th>
-      <th>Amount</th>
-    </thead>
-  {% for location in top_locations %}
-    <tr>
-      <td><a href="{{ location.get_absolute_url }}">{{ location.name|title }}</a></td>
-      <td>&euro;{{ location.total|floatformat:2|intcomma }}</td>
-    </tr>
-  {% endfor %}
-  </table>
-  <a href="{% url location_view country=country.code %}">View All</a>
-</div>
-
-<div class="block top_recipients">
-  <h3 style="clear:both">Top Recipients</h3>
+<div class="section">
+  <h3>Top recipients</h3>
   <table>  
     <thead>
-      <th>Name</th>
-      <th>Amount</th>
+      <th>Recipient name</th>
+      <th class="money">Amount</th>
     {% if custom_list.active %}
       <th>Add To List</th>
     {% endif %}
@@ -89,22 +62,90 @@
       {% for r in top_recipients %}
         <tr>
           <td><a href="{{ r.get_absolute_url }}">{{ r.name }}</a></td>
-          <td>&euro;{{ r.total|floatformat:2|intcomma }}</td>
+          <td class="money">&euro;{{ r.total|floatformat:2|intcomma }}</td>
         </tr>
       {% endfor %}
       
     </tbody>
   </table>
-  <a href="{% url browse country=country.code %}">View All</a>
+  <p class="more_info">
+    <a href="{% url browse country=country.code %}">View all recipients &raquo;</a>
+  </p>
 </div>
 
+<div class="section">
+  <h3>Top regions</h3>
+  <table>
+    <thead>
+      <th>Region name</th>
+      <th class="money">Amount</th>
+    </thead>
+  {% for location in top_locations %}
+    <tr>
+      <td><a href="{{ location.get_absolute_url }}">{{ location.name|title }}</a></td>
+      <td class="money">&euro;{{ location.total|floatformat:2|intcomma }}</td>
+    </tr>
+  {% endfor %}
+  </table>
+  <p class="more_info">
+    <a href="{% url location_view country=country.code %}">View all regions &raquo;</a>
+  </p>
+</div>
+
+
+<div class="section">
+    <h3>Top schemes</h3>
+    <table>
+    <thead>
+      <th>Scheme name</th>
+      <th class="money">Amount</th>
+    </thead>
+    {% for scheme in top_schemes %}
+    <tr>
+      <td><a href="{{ scheme.get_absolute_url }}">{{ scheme.nameenglish }}</a></td>
+      <td class="money">&euro;{{ scheme.total|floatformat:2|intcomma }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+    <p class="more_info">
+      <a href="{% url all_schemes country=country.code %}">View all schemes &raquo;</a>
+    </p>
+</div>
 
 {% endblock %}
   
 
 {% block right %}
-{% country_map country.code %}
-    
+    <div class="section">
+        {% country_map country.code %}
+    </div>
+    <div class="section">
+        <div class="section">
+          <h3>The Basics</h3>
+          <div class="clear">  
+            <p class="halfcol"><strong>Total contribution:</strong> {{ stats_info.total_contribution|safe }}            </p>
+            <p class="halfcol"><strong>Total spending:</strong> {{ stats_info.total_spending|safe }}                     </p>
+            <p class="halfcol"><strong>Net budget balance:</strong> {{ stats_info.net_budget_balance|safe }}            </p>
+            <p class="halfcol"><strong>Contribution per citizen:</strong> {{ stats_info.contribution_per_citizen|safe }}</p>
+            <p class="halfcol"><strong>Spending per citizen:</strong> {{ stats_info.spending_per_citizen|safe }}        </p>
+            <p class="halfcol"><strong>Spending per farm:</strong> {{ stats_info.spending_per_farm|safe }}             </p>
+            <p class="halfcol"><strong>Spending per farm worker:</strong> {{ stats_info.spending_per_farm_worker|safe }}</p>
+            <p class="halfcol"><strong>Spending per hectare:</strong> {{ stats_info.spending_per_hectare|safe }}        </p>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>How the CAP is divided</h3>
+          <div class="clear">
+          <p class="halfcol"><strong>Proportion direct aids:</strong> {{ stats_info.proportion_direct_aids|safe }}                       </p>
+          <p class="halfcol"><strong>Proportion of payments to top 10%:</strong> {{ stats_info.proportion_of_payments_to_top_10|safe }} </p>
+          <p class="halfcol"><strong>Proportion rural development:</strong> {{ stats_info.proportion_rural_development|safe }}                      </p>
+          <p class="halfcol"><strong>Proportion of payments to top 20%:</strong> {{ stats_info.proportion_of_payments_to_top_20|safe }}  </p>
+          <p class="halfcol"><strong>Proportion export subsidies:</strong> {{ stats_info.proportion_export_subsidies|safe }}             </p>
+          </div>
+        </div>
+    </div>
+<!--
 <div class="block">
   <h3>Browse all recipients</h3>
     <ul>
@@ -113,12 +154,12 @@
     {# <li><a href="{% url browse country=country.code browse_type="scheme" year=selected_year sort="amount" %}">By Scheme</a></li> #}
     </ul>
 </div>
-
-
+-->
+    
   {% load transparency_index %}
   {% transparency_index country %}
 
-  {% load inthenews %}
+
   {% latestnews country.code %}
 
   {{block.super}}

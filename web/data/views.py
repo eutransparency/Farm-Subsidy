@@ -3,8 +3,11 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.db.models import Sum, Count
 from django.conf import settings
-
+from feeds.models import *
+from tagging.models import TaggedItem
 from misc.helpers import country_template
+from web.countryinfo.transparency import transparency_score, transparency_list
+from web.countryinfo.load_info import load_info
 from data import countryCodes
 import context_processors
 import models
@@ -43,7 +46,6 @@ def country(request, country, year=DEFAULT_YEAR):
     - `top_recipients` Gets n recipients, sorted by total amount for a given year
     - `years` The years that we have data for a given country
 
-
     """
     country = country.upper()
 
@@ -52,7 +54,19 @@ def country(request, country, year=DEFAULT_YEAR):
     top_recipients = models.Recipient.objects.top_recipients(country=country, year=year)
     top_schemes = models.Scheme.objects.top_schemes(country)
     top_locations = models.Location.get_root_nodes().order_by('-total')
+    
+    #get transparency score
+    transparency = None
+    if country != "EU":
+      transparency = transparency_score(country)
     # print top_regions
+    
+    #get the most recent news story
+    news_items = TaggedItem.objects.get_by_model(FeedItems, Tag.objects.filter(name=country))
+    news_items = news_items.order_by("-date")
+
+    #get country stats
+    stats_info = load_info(country)
 
     return render_to_response(
     country_template('country.html', country),
@@ -60,6 +74,10 @@ def country(request, country, year=DEFAULT_YEAR):
         'top_recipients' : top_recipients,
         'top_schemes' : top_schemes,
         'top_locations' : top_locations,
+        'transparency' : transparency,
+        'latest_news_item': news_items[0],
+        'stats_year': settings.STATS_YEAR,
+        'stats_info': stats_info,
         # 'years' : years,
         'selected_year' : int(year),
     },
