@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load humanize markup %}
+{% load more_like_this %}
+{% block title %}
+ Countries
+{% endblock %}
+
+{% block page_title %}
+ Browse data by country
+{% endblock %}
+
+{% block content %}
+    <ul>
+    {% for country in countries %}
+      <li><a href="{% url country country.code %}">{{ country.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
