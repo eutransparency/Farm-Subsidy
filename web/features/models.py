@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.cache import cache
+from django.core.urlresolvers import reverse
 
 class Feature(models.Model):
     """
@@ -21,6 +22,10 @@ class Feature(models.Model):
     body = models.TextField(blank=True)        
     published = models.BooleanField(default=True)
     featured = models.BooleanField(default=False)
+    
+    def get_absolute_url(self):
+        return reverse('feature_detail', args=[self.slug,])
+    
     
     # class Translation(multilingual.Translation):
     #     title = models.CharField(blank=False, max_length=255)

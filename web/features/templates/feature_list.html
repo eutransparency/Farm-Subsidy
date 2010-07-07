@@ -7,7 +7,7 @@
 
 {% block content %}
   {% for feature in features %}
-    <h4><a href="{% url feature_detail feature.slug %}">{{ feature.title }}</a></h4>
+    <h4><a href="{{ feature.get_absolute_url }}">{{ feature.title }}</a></h4>
     <p>{{ feature.teaser }}</p>
   {% endfor %}
 {% endblock %}
