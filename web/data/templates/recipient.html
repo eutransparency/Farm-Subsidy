@@ -11,20 +11,17 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    <a href="">&laquo; back to {{ country.name }}</a>
-{% endblock %}
-
 {% for item in breadcrumbs %}
   {% for heading, content in item.items %}
-    <h4>{{ heading|title }}</h4>
-    <ul>
+
     {% for url in content %}      
-      <li><a href="{{ url.url }}" class="{{ url.class }}">{{ url.name|title }}</a></li>
+      &nbsp;<a href="{{ url.url }}" class="{{ url.class }}">&laquo; {{ url.name|title }}</a> 
     {% endfor %}
-    </ul>
   {% endfor %}
-{% endfor %}  
-  
+
+{% endfor %}
+{% endblock %}
+
 {% block content %}
 
     <div class="section">

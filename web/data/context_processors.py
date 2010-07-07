@@ -48,7 +48,6 @@ def ip_country(request):
 
 def breadcrumb(request):
     breadcrumb = []
-    
     path = request.META['PATH_INFO'].split('/')
     
     # First make the country breadcrumb:
@@ -92,7 +91,7 @@ def breadcrumb(request):
         scheme_breadcrumbs.append(item)
         breadcrumb.append({'Schemes' : scheme_breadcrumbs})
 
-
+    print breadcrumb
     return {'breadcrumbs' : breadcrumb}
 
 
