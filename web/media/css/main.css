@@ -96,3 +96,8 @@ div.features li p {font-size:0.9em;}
 #footer #about p {padding:10px 0 0 12px;margin:0;color:#808080;}
 
 br.clear {clear:both;}
+
+/* metadata */
+dl.metadata {line-height:1.5em;}
+dl.metadata dt {font-weight:normal; float:left; clear:left; padding-right:1em;}
+dl.metadata dd {font-weight:bold; text-align:right;}
