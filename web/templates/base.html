@@ -94,34 +94,36 @@
       {# {% load user %} #}
       {# {% user_menu user %} #}
     </div>
-    {% if featured_items %}
-            <div class="features">
-              <ul id="features">
-                  {% if featured_items.0 %}                  
-                  <li>
-                      <h5><a href="{{ featured_items.0.get_absolute_url }}">{{ featured_items.0.title }}</a></h5>
-                    <p>{{ featured_items.0.teaser|truncatewords:"25" }}</p>
-                  </li>
-                  {% endif %}                  
-                  {% if featured_items.1 %}
-                    <li>
-                      <h5><a href="{{ featured_items.1.get_absolute_url }}">{{ featured_items.1.title }}</a></h5>
-                      <p>{{ featured_items.1.teaser|truncatewords:"25" }}</p>
+    {% if not is_home %}
+        {% if featured_items %}
+                <div class="features">
+                  <ul id="features">
+                      {% if featured_items.0 %}                  
+                      <li>
+                          <h5><a href="{{ featured_items.0.get_absolute_url }}">{{ featured_items.0.title }}</a></h5>
+                        <p>{{ featured_items.0.teaser|truncatewords:"25" }}</p>
+                      </li>
+                      {% endif %}                  
+                      {% if featured_items.1 %}
+                        <li>
+                          <h5><a href="{{ featured_items.1.get_absolute_url }}">{{ featured_items.1.title }}</a></h5>
+                          <p>{{ featured_items.1.teaser|truncatewords:"25" }}</p>
                   
-                    </li>          
-                  {% endif %}
-                  {% if featured_items.2 %}        
-                  <li>
-                    <h5><a href="{{ featured_items.2.get_absolute_url }}">
-    {{ featured_items.2.title }}</a></h5>
-                    <p>{{ featured_items.2.teaser|truncatewords:"25" }}</p>
-                  </li>
-                  {% endif %}        
-              </ul>
-              <br class="clear"/>
-             <h4>latest news &amp; reports from the farmsubsidy.org network</h4>          
-          </div>
-    {% endif %}    
+                        </li>          
+                      {% endif %}
+                      {% if featured_items.2 %}        
+                      <li>
+                        <h5><a href="{{ featured_items.2.get_absolute_url }}">
+        {{ featured_items.2.title }}</a></h5>
+                        <p>{{ featured_items.2.teaser|truncatewords:"25" }}</p>
+                      </li>
+                      {% endif %}        
+                  </ul>
+                  <br class="clear"/>
+                 <h4>latest news &amp; reports from the farmsubsidy.org network</h4>          
+              </div>
+        {% endif %}    
+    {% endif %}            
     <div id="right">
       {% block right %}
             
