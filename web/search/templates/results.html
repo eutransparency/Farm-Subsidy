@@ -10,10 +10,12 @@
 
 <form action="{% url search %}" method="POST" accept-charset="utf-8" id="search_form">
   <h2><label for="search" class="section_title">{{ form.q.label }}</label></h2>
-  {{ form.q }}
-  <div class="description">{{ form.q.help_text|safe }}</div>
-  <input type="submit" value="Go" class="submit">
+  <p>
+      {{ form.q }}
+    <input type="submit" value="Go" class="submit">
+  </p>
 </form>
+
   <table>
     <thead>
       <th>Name</th>

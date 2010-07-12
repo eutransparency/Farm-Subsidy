@@ -28,7 +28,7 @@
         <p>
             {{recipient.name}} is a recipient of farm subsidies in {% if recipient.town %}{{ recipient.town|title }},{% endif %} {{ country.name }}.
         </p>
-        <p>    
+        <p>
             Since {{first_year}} it has received <strong>&euro;{{ recipient_total|floatformat:2|intcomma }}</strong> in payments from the European Union comprising of {% if has_direct %}<strong>direct subsidies</strong> (income support){% if has_indirect and has_rural %}, {%else%}{% if has_indirect or has_rural %} and {% else %}.{%endif%}{%endif%}{% endif %}{%if has_indirect %}<strong>indirect or other subsidies</strong> (market support such as export refunds or costs associated with food storage){% if has_rural %} and {%else%}.{%endif%}{% endif %}{% if has_rural %}<strong>rural development payments</strong> (for land conservation, income support for farms in dry, mountainous or cold places, or business development grants).{%endif%}
         </p>
     </div>
