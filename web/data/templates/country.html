@@ -121,28 +121,40 @@
     </div>
     <div class="section">
         <div class="section">
-          <h3>The Basics</h3>
-          <div class="clear">  
-            <p class="halfcol"><strong>Total contribution:</strong> {{ stats_info.total_contribution|safe }}            </p>
-            <p class="halfcol"><strong>Total spending:</strong> {{ stats_info.total_spending|safe }}                     </p>
-            <p class="halfcol"><strong>Net budget balance:</strong> {{ stats_info.net_budget_balance|safe }}            </p>
-            <p class="halfcol"><strong>Contribution per citizen:</strong> {{ stats_info.contribution_per_citizen|safe }}</p>
-            <p class="halfcol"><strong>Spending per citizen:</strong> {{ stats_info.spending_per_citizen|safe }}        </p>
-            <p class="halfcol"><strong>Spending per farm:</strong> {{ stats_info.spending_per_farm|safe }}             </p>
-            <p class="halfcol"><strong>Spending per farm worker:</strong> {{ stats_info.spending_per_farm_worker|safe }}</p>
-            <p class="halfcol"><strong>Spending per hectare:</strong> {{ stats_info.spending_per_hectare|safe }}        </p>
-          </div>
+          <dl class="metadata">  
+            <dt>Total contribution</dt>
+            <dd>{{ stats_info.total_contribution|safe }}</dd>
+            <dt>Total spending</dt>
+            <dd>{{ stats_info.total_spending|safe }}</dd>
+            <dt>Net budget balance</dt>
+            <dd>{{ stats_info.net_budget_balance|safe }}</dd>
+            <dt>Contribution per citizen</dt>
+            <dd>{{ stats_info.contribution_per_citizen|safe }}</dd>
+            <dt>Spending per citizen</dt>
+            <dd>{{ stats_info.spending_per_citizen|safe }}</dd>
+            <dt>Spending per farm</dt>
+            <dd>{{ stats_info.spending_per_farm|safe }}</dd>
+            <dt>Spending per farm worker</dt>
+            <dd>{{ stats_info.spending_per_farm_worker|safe }}</dd>
+            <dt>Spending per hectare</dt>
+            <dd>{{ stats_info.spending_per_hectare|safe }}</dd>
+          </dl>
         </div>
 
         <div class="section">
           <h3>How the CAP is divided</h3>
-          <div class="clear">
-          <p class="halfcol"><strong>Proportion direct aids:</strong> {{ stats_info.proportion_direct_aids|safe }}                       </p>
-          <p class="halfcol"><strong>Proportion of payments to top 10%:</strong> {{ stats_info.proportion_of_payments_to_top_10|safe }} </p>
-          <p class="halfcol"><strong>Proportion rural development:</strong> {{ stats_info.proportion_rural_development|safe }}                      </p>
-          <p class="halfcol"><strong>Proportion of payments to top 20%:</strong> {{ stats_info.proportion_of_payments_to_top_20|safe }}  </p>
-          <p class="halfcol"><strong>Proportion export subsidies:</strong> {{ stats_info.proportion_export_subsidies|safe }}             </p>
-          </div>
+          <dl class="metadata">
+              <dt>Direct aid</dt>
+              <dd>{{ stats_info.proportion_direct_aids|safe }}</dd>
+              <dt>Rural development</dt>
+              <dd>{{ stats_info.proportion_rural_development|safe }}</dd>
+              <dt>Export subsidies:</dt>
+              <dd>{{ stats_info.proportion_export_subsidies|safe }}</dd>
+              <dt>Payments to top 10%</dt>
+              <dd>{{ stats_info.proportion_of_payments_to_top_10|safe }} </dd>
+              <dt>Payments to top 20%</dt>
+              <dd>{{ stats_info.proportion_of_payments_to_top_20|safe }}</dd>              
+          </dl>
         </div>
     </div>
 <!--

@@ -24,6 +24,7 @@ def home(request):
     'home.html', 
     {
     'top_eu' : top_eu,
+    'is_home' : True,
     'top_for_ip' : top_for_ip,
     },
     context_instance=RequestContext(request)

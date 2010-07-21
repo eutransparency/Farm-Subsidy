@@ -7,6 +7,7 @@ body {font-family:Helvetica, Arial, sans-serif; text-align:center;color:#141618;
 #topbar form, #topbar fieldset {display:inline;position:relative; top:-2px;}
 #topbar form input {color:#808080;}
 #topbar img{vertical-align:bottom;}
+
 /* outer */
 #outer {width:90%; background: #fff url(../images/background.png) top right repeat-y; margin:0 auto; text-align:left;border:solid 1px #ccc;}
 
@@ -16,7 +17,7 @@ body {font-family:Helvetica, Arial, sans-serif; text-align:center;color:#141618;
 /* header */
 #header {background:#fff; position:relative;}
 #header #mainmenu {background:#2a8330;text-align:right; padding:0.5em 20px;}
-#header #mainmenu li {display:inline;font-size:0.8em; font-weight:bold;}
+#header #mainmenu li {display:inline;font-size:0.9em; font-weight:bold;}
 #header #mainmenu a {color:#fff;border-right:solid 2px #fff; padding-right:0.8em;padding-left:0.8em;}
 #header #mainmenu li.last a {border-right:none;padding-right:0;}
 #header h1 span, #header h2 {display:none;}
@@ -68,11 +69,17 @@ p.hint {color:#808080;font-size:0.8em; line-height:1.5em; padding:0.4em; margin-
 /* features */
 div.features {border-bottom:solid 1px #ccc;background:url(../images/featurebar.png);
     display:none;padding-top:1em;}
-div.features h4 {font-variant:small-caps;background:#2a8330; color:#fff; padding-left:20px;margin:0;}
+div.features h4 {font-variant:small-caps;background:#808080; color:#fff; padding-left:20px;margin:0 0 0 0;}
 div.features li {float:left; width:33%; height:6em;}
 div.features li a {color:#141618;}
 div.features li h5, div.features li p {padding:0 0 0 20px; font-size:1em;}
 div.features li p {font-size:0.9em;}
+
+/* homepage */
+p.intro {font-size:1.3em;}
+
+/*  links */
+a {color:#3092eb;}
 
 /* comments */
 #disabled_comments textarea {width:90%; height:30px;margin-bottom:1em; background:#fafafa;}
@@ -83,16 +90,21 @@ div.features li p {font-size:0.9em;}
     border-top:dotted 1px #ddd; padding-top:0.5em;}
 
 /* footer */
-#footer {position:relative;background:#303c30; color:#fff; font-size:0.9em;}
+#footer {position:relative;background:#303c30; color:#fff; font-size:0.9em;clear:both;}
 
 
-#footer #links {padding:25px 289px 2em 20px; background:url(../images/footer.png) repeat-x;line-height:2.2em;}
+#footer #links {padding:25px 289px 2em 20px; background:url(../images/footer.png) repeat-x;line-height:1.5em;}
 #footer #links a, #footer #links a:hover, #footer #links a:visited {color:#fff;}
 #footer #links dt {float:left;font-weight:bold; padding-right:1em;}
 #footer #links ul li {display:inline; padding-right:0.7em;}
 #footer #about {width:239px; padding:25px 20px 0 20px; position:absolute;
     top:0; right:0;height:100%;
     background: #fff url(../images/background.png) top right;}
-#footer #about p {padding:10px 0 0 12px;margin:0;color:#808080;}
+#footer #about p {padding:0 0 0 12px;margin:0;color:#808080;}
 
 br.clear {clear:both;}
+
+/* metadata */
+dl.metadata {line-height:1.5em;}
+dl.metadata dt {font-weight:normal; float:left; clear:left; padding-right:1em;}
+dl.metadata dd {font-weight:bold; text-align:right;}
