@@ -49,7 +49,7 @@ ID_FIELD = options.field
 SAME_AS = options.SAME_AS
 
 try:
-    in_file = csv.reader(open(options.IN_FILE), delimiter=',')
+    in_file = csv.reader(open(options.IN_FILE), delimiter=';')
 except:
     raise Exception('Input file not found')
 
@@ -64,15 +64,16 @@ deleted = 0
 
 def process_line(line):
     s = StringIO.StringIO()
-    w = csv.writer(s)
+    w = csv.writer(s, delimiter=';')
     w.writerow(line)
-    r.hset(key_prefix, line[ID_FIELD], s.getvalue())
-    return  r.hdel(key_prefix, line[ID_FIELD])
+    return r.hset(key_prefix, line[ID_FIELD], s.getvalue())
+    # return  r.hdel(key_prefix, line[ID_FIELD])
 
 
 print "Removing Duplicates"
 for line in in_file:
     if SAME_AS:
+        print line[SAME_AS], line[ID_FIELD]
         if line[SAME_AS] == line[ID_FIELD]:
             deleted += process_line(line)
     else:
