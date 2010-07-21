@@ -18,7 +18,9 @@ class Command(BaseCommand):
     
     def format_file_name(self, table):
         path = "%s/data/csv/%s/%s.csv" % (settings.ROOT_PATH, self.country, table)
-        path = "/" + "/".join(path.split('/')[2:])
+        if path.startswith('/private'):
+            # Hack for OS X :(
+            path = "/" + "/".join(path.split('/')[2:])
         if os.path.exists(path):
             return path
         else:
