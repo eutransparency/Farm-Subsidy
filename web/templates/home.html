@@ -14,12 +14,30 @@
         Welcome to farmsubsidy.org!
     </h2>
     <p class="intro">
-        Subsidies paid to farmers and others under the European Union’s Common Agricultural Policy amount to approximately €55 billion a year, more than 40% of European Union’s entire annual budget, or around €100 a year for each EU citizen. Farmsubsidy.org helps people find out who gets what, and why.
+        Subsidies paid to farmers and others under the European Union’s Common Agricultural Policy amount to approximately €55 billion a year, more than 40% of European Union’s entire annual budget, or around &euro;100 a year for each EU citizen. Farmsubsidy.org helps people find out who gets what, and why.
     </p>
 </div>
 
 <div class="section">
- 
+    <h3>Latest news &amp; reports from the farmsubsidy.org network</h3>
+    {% if featured_items.0 %}                  
+        <h5><a href="{{ featured_items.0.get_absolute_url }}">{{ featured_items.0.title }}</a></h5>
+        <p>{{ featured_items.0.teaser|truncatewords:"25" }}</p>
+    {% endif %}                  
+                  {% if featured_items.1 %}
+                    <li>
+                      <h5><a href="{{ featured_items.1.get_absolute_url }}">{{ featured_items.1.title }}</a></h5>
+                      <p>{{ featured_items.1.teaser|truncatewords:"25" }}</p>
+              
+                    </li>          
+                  {% endif %}
+                  {% if featured_items.2 %}        
+                  <li>
+                    <h5><a href="{{ featured_items.2.get_absolute_url }}">
+    {{ featured_items.2.title }}</a></h5>
+                    <p>{{ featured_items.2.teaser|truncatewords:"25" }}</p>
+                  </li>
+                  {% endif %}
 </div>
 
 
