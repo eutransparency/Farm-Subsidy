@@ -64,10 +64,15 @@ class Command(BaseCommand):
         c = self.open_csv(self.format_csv_path('recipients'), field_names)
         for line in c:
             if c.line_num != 1:
-                r = Recipient()
-                line['total'] = line['lat'] = line['lng'] = 0
-                r.__dict__.update(line)
-                r.save()
+                try:
+                    if len(line['zipcode']) < 12:
+                      r = Recipient()
+                      line['total'] = line['lat'] = line['lng'] = 0
+                      r.__dict__.update(line)
+                      r.save()
+                except Exception, e:
+                  print e
+                  print c.line_num
 
     def schemes(self):
         print "Indexing Schemes"
@@ -104,13 +109,15 @@ class Command(BaseCommand):
         
         c = self.open_csv(self.format_csv_path('payments'), field_names)
         for line in c:
-            if c.line_num != 1:
-                p = Payment()
-                if not line['amountnationalcurrency']:
-                    line['amountnationalcurrency'] = line['amounteuro']
-                p.__dict__.update(line)
-                p.save()
-        
+            try:
+              if c.line_num != 1:
+                  p = Payment()
+                  if not line['amountnationalcurrency']:
+                      line['amountnationalcurrency'] = line['amounteuro']
+                  p.__dict__.update(line)
+                  p.save()
+            except Exception, e:
+              print e
     
     def handle(self, **options):
         self.country = options.get('country')

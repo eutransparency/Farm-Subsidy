@@ -91,7 +91,6 @@ def breadcrumb(request):
         scheme_breadcrumbs.append(item)
         breadcrumb.append({'Schemes' : scheme_breadcrumbs})
 
-    print breadcrumb
     return {'breadcrumbs' : breadcrumb}
 
 
