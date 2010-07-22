@@ -33,6 +33,8 @@ body {font-family:Helvetica, Arial, sans-serif; text-align:center;color:#141618;
 #header #photos.header_6 {background:url(../images/header_6.jpg) center center;}
 #header #photos.header_7 {background:url(../images/header_7.jpg) center center;}
 #header #photos.header_8 {background:url(../images/header_8.jpg) center center;}
+#header #photos.header_9 {background:url(../images/header_9.jpg) center center;}
+#header #photos.header_10 {background:url(../images/header_10.jpg) center center;}
 
 #header #search_form {position:absolute; top:15px; right:0; background:url(../images/trans.png);
     padding:0.6em;}
