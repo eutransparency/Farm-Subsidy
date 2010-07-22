@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     (r'', include('graphs.urls')),
     (r'^comments/', include('django.contrib.comments.urls')),
     
-    (r'', include('web.customlists.urls')),
+    (r'lists/', include('listmaker.urls')),
     (r'^accounts/', include('registration.urls')),
 
     # (r'^api/', include('farmsubsidy.web.api.urls')),

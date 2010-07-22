@@ -117,13 +117,13 @@ class Location(MP_Node):
 
     geo_type = models.CharField(blank=True, max_length=10)
     name = models.CharField(max_length=255)
-    slug = models.SlugField()
+    slug = models.SlugField(max_length=255)
     country = models.CharField(blank=True, max_length=100)
     recipients = models.IntegerField(blank=True, null=True)
     total = models.FloatField()
     average = models.FloatField()
-    lat = models.FloatField()
-    lon = models.FloatField()
+    lat = models.FloatField(null=True)
+    lon = models.FloatField(null=True)
     
     def __unicode__(self):
         return self.name
