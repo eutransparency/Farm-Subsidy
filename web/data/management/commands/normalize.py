@@ -33,6 +33,7 @@ class Command(BaseCommand):
                 FROM data_payment
                 GROUP BY globalrecipientidx) s
             WHERE data_recipient.globalrecipientidx=s.globalrecipientidx;
+            AND data_recipient.total IS NULL
             COMMIT;
         """)
         

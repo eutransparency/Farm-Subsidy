@@ -26,6 +26,7 @@ class SchemeManager(models.Manager):
 
         schemes = self.all()
         schemes = schemes.filter(**kwargs)
+        schemes = schemes.exclude(total=None)
         schemes = schemes.order_by('-total')
         return schemes[:limit]
 

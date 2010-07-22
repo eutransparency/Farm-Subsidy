@@ -2,3 +2,6 @@ Recipients page:
 
 * Link to scheme
 * Reinstate related recipients (using haystack)
+
+Lists:
+* Get list home text (currently using fish)

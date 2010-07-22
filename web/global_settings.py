@@ -48,7 +48,6 @@ MIDDLEWARE_CLASSES = (
     'pagination.middleware.PaginationMiddleware',
     'web.misc.middleware.Middleware',
     'django.middleware.transaction.TransactionMiddleware',
-    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     #'django.middleware.cache.FetchFromCacheMiddleware',
     
 )
@@ -101,7 +100,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   "django.core.context_processors.request",
   'data.context_processors.country',
   'data.context_processors.ip_country',
-  'customlists.context_processors.custom_list',
+  'listmaker.context_processors.list_items',
   # 'misc.context_processors.latest_tweet',
   'misc.context_processors.google_api_key',
   'misc.context_processors.header_class',  
