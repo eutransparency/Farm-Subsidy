@@ -35,7 +35,9 @@ def countries(request):
     for country in countryCodes.country_codes():
         countries.append(countryCodes.country_codes(country)) 
         
-    return render_to_response('countries.html', {'countries' : countries},context_instance=RequestContext(request))
+    return render_to_response('countries.html', 
+    {'countries' : countries},
+    context_instance=RequestContext(request))
         
 
 def country(request, country, year=DEFAULT_YEAR):
@@ -54,7 +56,7 @@ def country(request, country, year=DEFAULT_YEAR):
 
     top_recipients = models.Recipient.objects.top_recipients(country=country, year=year)
     top_schemes = models.Scheme.objects.top_schemes(country)
-    top_locations = models.Location.get_root_nodes().order_by('-total')
+    top_locations = models.Location.get_root_nodes().filter(country=country).order_by('-total')
     
     #get transparency score
     transparency = None
