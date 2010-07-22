@@ -3,12 +3,14 @@
 {% block content %}
     <table>
         <thead>
+            <th></th>
             <th>Country</th>
             <th>Rank</th>
         </thead>
         <tbody>
             {% for item in list %}
             <tr>
+                <td>{{ forloop.counter }}</td>
                 <td><a href="{% url country item.0.code %}">{{ item.0.name }}</a></td>
                 <td>{{ item.1 }}%</td>
             </tr>
