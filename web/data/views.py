@@ -102,7 +102,23 @@ def recipient(request, country, recipient_id, name):
   country = country.upper()
   
   recipient = models.Recipient.objects.get(globalrecipientidx=recipient_id)
-  payments = models.Payment.objects.select_related().filter(recipient=recipient_id).order_by('year')
+  
+  
+  payments = models.Payment.objects.select_related().filter(recipient=recipient_id)
+  expanded = request.GET.get('expand', False)
+  if not expanded:
+      # Hack to stop *all* payments getting displayed, when there are sometimes
+      # many 'trasactions' per year in the same scheme.
+      all_payments = payments.values('year','scheme',).annotate(amounteuro=Sum('amounteuro'))
+      payments = []
+      for payment in all_payments:
+          p = models.Payment()
+          p.year = payment['year']
+          p.amounteuro = payment['amounteuro']
+          s = models.Scheme.objects.get(pk=payment['scheme'])
+          p.scheme = s
+          payments.append(p)
+
   recipient_total = recipient.total
   payment_years = list(set(payment.year for payment in payments))
   payment_schemes = list(set(payment.scheme.globalschemeid for payment in payments))
@@ -119,36 +135,37 @@ def recipient(request, country, recipient_id, name):
     'has_indirect' : 'LU2' in payment_schemes,
     'has_rural' : 'LU3' in payment_schemes,
     'first_year' : payment_years[0],
+    'expanded' : expanded
     },
     context_instance=RequestContext(request)
   )  
 
-def recipient(request, country, recipient_id, name):
-    """
-    View for recipient page.
-
-    - `country` ISO country, as defined in countryCodes
-    - `recipient_id` is actually a globalrecipientidx in the date
-
-    """
-    country = country.upper()
-
-    recipient = models.Recipient.objects.get(globalrecipientidx=recipient_id)
-    payments = models.Payment.objects.select_related().filter(recipient=recipient_id).order_by('year')
-    recipient_total = recipient.total
-    payment_years = list(set(payment.year for payment in payments))
-
-    return render_to_response(
-        country_template('recipient.html', country),
-        {
-            'recipient' : recipient,
-            'payments' : payments,
-            'recipient_total' : recipient_total,
-            'payment_years' : payment_years,
-        },
-        context_instance=RequestContext(request)
-    )  
-
+# def recipient(request, country, recipient_id, name):
+#     """
+#     View for recipient page.
+# 
+#     - `country` ISO country, as defined in countryCodes
+#     - `recipient_id` is actually a globalrecipientidx in the date
+# 
+#     """
+#     country = country.upper()
+# 
+#     recipient = models.Recipient.objects.get(globalrecipientidx=recipient_id)
+#     payments = models.Payment.objects.select_related().filter(recipient=recipient_id).order_by('year')
+#     recipient_total = recipient.total
+#     payment_years = list(set(payment.year for payment in payments))
+# 
+#     return render_to_response(
+#         country_template('recipient.html', country),
+#         {
+#             'recipient' : recipient,
+#             'payments' : payments,
+#             'recipient_total' : recipient_total,
+#             'payment_years' : payment_years,
+#         },
+#         context_instance=RequestContext(request)
+#     )  
+# 
 
 def all_schemes(request, country='EU'):
     """
