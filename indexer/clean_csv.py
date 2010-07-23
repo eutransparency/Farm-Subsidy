@@ -73,7 +73,6 @@ def process_line(line):
 print "Removing Duplicates"
 for line in in_file:
     if SAME_AS:
-        print line[SAME_AS], line[ID_FIELD]
         if line[SAME_AS] == line[ID_FIELD]:
             deleted += process_line(line)
     else:
