@@ -1,5 +1,6 @@
 from django.contrib import admin
-from models import Recipient
+from django.contrib.gis import admin as geo_admin
+from models import Recipient, GeoRecipient
 # 
 # # class FeedsAdmin(admin.ModelAdmin):
 # #   list_display  = ('title','url', 'is_active', 'category',)
@@ -14,5 +15,6 @@ from models import Recipient
 #     prepopulated_fields = {"slug": ("name",)}
 # 
 admin.site.register(Recipient)
+admin.site.register(GeoRecipient, geo_admin.GeoModelAdmin)
 # # admin.site.register(FeedItems, FeedItemsAdmin)
 # # admin.site.register(FeedCategories)

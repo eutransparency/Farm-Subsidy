@@ -32,8 +32,7 @@ class Command(BaseCommand):
                 SELECT globalrecipientidx, SUM(amounteuro) as total
                 FROM data_payment
                 GROUP BY globalrecipientidx) s
-            WHERE data_recipient.globalrecipientidx=s.globalrecipientidx
-            AND data_recipient.total IS NULL;
+            WHERE data_recipient.globalrecipientidx=s.globalrecipientidx;
             COMMIT;
         """)
         

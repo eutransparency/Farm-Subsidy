@@ -90,6 +90,7 @@ INSTALLED_APPS = (
     'haystack',
     'listmaker',
     'features',
+    'django.contrib.gis',    
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

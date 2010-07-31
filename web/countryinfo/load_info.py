@@ -26,7 +26,7 @@ def load_info(country=None, format=True, year=settings.STATS_YEAR):
           # Format elements
           for k,v in info.items():
             try:
-              info[k] = humanize.intcomma(info[k])
+              info[k] = humanize.intcomma(info[k].strip())
               formatter = k[-2:]
               if formatter == " E":
                 new_k = k[:-2].strip()

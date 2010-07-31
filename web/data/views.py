@@ -123,6 +123,11 @@ def recipient(request, country, recipient_id, name):
   payment_years = list(set(payment.year for payment in payments))
   payment_schemes = list(set(payment.scheme.globalschemeid for payment in payments))
   
+  try:
+      georecipient = models.GeoRecipient.objects.get(pk=recipient.pk)
+      closest = models.GeoRecipient.objects.distance(georecipient.location).order_by('distance')[:5]
+  except:
+      closest = None
   
   return render_to_response(
     'recipient.html', 
@@ -134,8 +139,9 @@ def recipient(request, country, recipient_id, name):
     'has_direct' : 'LU1' in payment_schemes,
     'has_indirect' : 'LU2' in payment_schemes,
     'has_rural' : 'LU3' in payment_schemes,
-    'first_year' : payment_years[0],
-    'expanded' : expanded
+    'first_year' : 0,
+    'expanded' : expanded,
+    'closest' : closest,
     },
     context_instance=RequestContext(request)
   )  

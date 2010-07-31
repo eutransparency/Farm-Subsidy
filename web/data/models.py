@@ -2,6 +2,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from treebeard.mp_tree import MP_Node
+from django.contrib.gis.db import models as geo_models
 
 from managers.recipients import RecipientManager
 from managers.schemes import SchemeManager
@@ -62,7 +63,16 @@ class Recipient(models.Model):
     def geo4_url(self):
         return self.geo_url(4)
         
-    
+
+class GeoRecipient(geo_models.Model):
+    recipient = models.ForeignKey(Recipient, primary_key=True)
+    location = geo_models.PointField()
+
+    objects = geo_models.GeoManager()
+
+    def __unicode__(self):
+        return self.pk
+
 class Payment(models.Model):
     paymentid = models.TextField()
     globalpaymentid = models.CharField(max_length=10, primary_key=True)
