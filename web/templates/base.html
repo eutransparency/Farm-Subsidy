@@ -2,7 +2,6 @@
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-
     {% load i18n %}
     {% load cache %}
     {% load humanize %}
@@ -17,16 +16,17 @@
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.example.min.js"></script>
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery-ui-1.7.1.custom.min.js"></script>
     <script src="{{ MEDIA_URL }}/js/scripts.js" type="text/javascript" charset="utf-8"></script>
-
+    
+    
     {% if custom_list.active %}
         <link rel="stylesheet" href="/media/css/custom_lists.css" type="text/css" media="screen, projection">
         <script src="{{ MEDIA_URL }}/js/custom_lists.js" type="text/javascript" charset="utf-8"></script>
-    {% endif %}
+    {% endif %}    
 
 </head>
 
 <body id="{% block body_style %}main{% endblock %}" class="{% block body_class %}none{% endblock %} {% if list_items.create %}list_enabled{% endif %}">
-    
+
 {# Topbar #}
 <div id="topbar">
     <a href="http://www.twitter.com/farmsubsidy/">
@@ -77,9 +77,9 @@
         {# search form #}
         <form id="search_form" action="{% url search %}" method="POST" accept-charset="utf-8">
           <h2><label for="search" class="section_title">Search</label></h2>
-          <input type="text" name="q" value="" id="q" title="Enter a company name or place">
+          <input type="text" name="q" value="{{ q }}" id="q" title="Enter a company name or place">
           <input type="submit" value="Search" class="submit">
-          <small>e.g. <a href="/search?q=nestle">Nestle</a> or <a href="/search?q=windsor">Windsor</a></small>
+          <small>e.g. <a href="{% url search 'nestle' %}">Nestle</a> or <a href="{% url search 'windsor' %}">Windsor</a></small>
         </form>
         
         {# main menu #}
@@ -219,7 +219,8 @@
                 <dt>Technical:</dt>
                 <dd>
                     <ul>
-                        <li><a href="/">[ADD DATA AND GITHUB LINKS]</a></li>                        
+                        <li><a href="/">[ADD DATA AND GITHUB LINKS]</a></li>
+                        <li><a href="{% url download %}">Get the raw data</a></li>
                     </ul>
                 </dd>
            </dl>                   
@@ -230,3 +231,4 @@
 </div>
 </body>
 </html>
+{% block footer_scripts %}{% endblock %}

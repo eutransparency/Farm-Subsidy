@@ -141,3 +141,14 @@ class Location(MP_Node):
     def get_absolute_url(self):
         return reverse('location_view', args=[self.country, self.slug])
     
+class DataDownload(models.Model):
+
+    public = models.BooleanField(default=True)
+    filename = models.CharField(blank=True, max_length=255)
+    format = models.CharField(blank=True, max_length=100)
+    description = models.TextField(blank=True)
+    file_path = models.CharField(blank=True, max_length=255)
+    download_count = models.IntegerField(blank=True, null=True)
+
+    def __unicode__(self):
+        return u"%s" % self.filename

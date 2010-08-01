@@ -46,6 +46,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'pagination.middleware.PaginationMiddleware',
+    'django_notify.middleware.NotificationsMiddleware',    
     'web.misc.middleware.Middleware',
     'django.middleware.transaction.TransactionMiddleware',
     #'django.middleware.cache.FetchFromCacheMiddleware',
@@ -73,7 +74,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.syndication',
-    # 'farmsubsidy.web.api',
+    'django_notify',
+    'web.api',
     'web.comments',
     'web.countryinfo',
     'data',
@@ -111,6 +113,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 ACCOUNT_ACTIVATION_DAYS = 7
 LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = '/login/'
 AUTH_PROFILE_MODULE = "misc.Profile"
 DEFAULT_FROM_EMAIL = "team@farmsubsidy.org"
 
