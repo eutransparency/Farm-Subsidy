@@ -33,11 +33,16 @@ countryoverview_handler = Resource(CountryOverviewHandler)
 
 # API v1 URLS
 urlpatterns = patterns('',
-   url(r'^v1/recipient/(?P<globalrecipientidx>[^/]+)/', recipient_handler),
-   url(r'^v1/search/(?P<term>[^/]+)/', search_handler),
-   v1_country_url('info/', countryoverview_handler),
+    
+    url(r'^v1/recipient/(?P<globalrecipientidx>[^/]+)/', recipient_handler),
+    url(r'^v1/search/(?P<term>[^/]+)/', search_handler),
+    v1_country_url('info/', countryoverview_handler),
+
+    # # Geo API
+    # url(r'v1/geo/(?P<lng>[^/]+),(?P<lat>[^/]+)\.(?P<format>[^/]+)', views.geo),
    
-   # Geo API
-   url(r'v1/geo/(?P<lng>[^/]+),(?P<lat>[^/]+)\.(?P<format>[^/]+)', views.geo),
-   
+    # Documentation 
+    url(r'^(?P<path>.*)$', views.documentation),
 )
+
+
