@@ -19,7 +19,6 @@ class Command(BaseCommand):
 
     def handle(self, **options):
         back = backend.SearchBackend()
-        index_data = Recipient.objects.filter(total__gt="1000000")
-        print len(index_data)
+        index_data = Recipient.objects.all()
         index = site.get_index(Recipient)
         back.update(index, index_data)
