@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Thanks for downloading data from farmsubsidy.org." %}{% endblock %}
+{% block page_title %}{% trans "Thanks for downloading data from farmsubsidy.org." %}{% endblock %}
+{% block content %}
+
+{% blocktrans %}
+  <p>We worked really hard to create this database, and this site represents many
+  hundreds of hours of work by our team. Getting data out of governments is often
+  not an easy task. We often have to fight with governments through freedom of
+  information requests to get access to the data. Sometimes we get data in
+  strange formats. Sometimes we have to build web robots to extract it. Once we
+  have it, it takes yet more work to turn it into a useful database.</p>
+
+  <p>All of the many hundreds of hours of work requires funding and support,
+  which we are grateful to receive from our kind funders. We depend on you to
+  demonstrate the value of our work by attributing us as the source. By
+  attributing us or citing us in your news story, article, research report, radio
+  or TV show, website, and so on, you are, in a very direct way, helping us to
+  continue providing you data.</p>
+
+  <p>We make our database available under the Open Database License, which means
+  you should:</p>
+
+  <ul> <li>Attribute your use of this database to us, and</li> <li>Share your
+  changes back with everyone else.</li> </ul>
+
+  <p>For more on how to do both of these and the specifics, please see our <a
+  href="/about/legal/">legal policy</a>, the ODbL text or <a href="/faqs/">our
+  FAQ</a> for details.</p>
+
+  <p>Have fun, and if there are any questions, <a href="/about/">please get in
+  touch</a>.</p>
+{% endblocktrans %}
+
+
+
+<form method="POST">
+  {{ form.as_p }}
+{# {{ form.data_agreement.label_tag }} #}
+{# {{ form.data_agreement }} #}
+{#  #}
+{# {{ form.data_description.label_tag }} #}
+{# {{ form.data_description }} #}
+<input type="submit" name="submit" value="{% trans "Continue" %}" id="submit">
+</form>
+
+{% endblock %}
+  
