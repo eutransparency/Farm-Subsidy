@@ -1,0 +1,67 @@
+{% extends "search_base.html" %}
+{% load humanize %}
+
+{% block results %}
+<form action="{% url search_map q 'map' %}" method="POST" accept-charset="utf-8" id="search_form">
+  <h2><label for="search" class="section_title">{{ form.q.label }}</label></h2>
+  <p>
+      {{ form.q }}
+    <input type="submit" value="Go" class="submit">
+  </p>
+</form>
+
+    <div id="map"></div>
+{% endblock %}
+
+
+{% block footer_scripts %}
+    <style>
+        #map {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+
+    <script src="http://maps.google.com/maps?file=api&v=2&sensor=false&key={{ GOOGLE_MAPS_API_KEY }}"></script>
+    <script>
+    var map;
+    if (GBrowserIsCompatible()) {
+        map = new GMap2(document.getElementById('map'));
+        map.setCenter(new GLatLng(0, 0), 8);
+        map.setUIToDefault();
+    }
+
+    </script>
+
+    <script>
+        var bounds = new GLatLngBounds();
+
+        function createMarker(point,html) {
+                var marker = new GMarker(point);
+                GEvent.addListener(marker, "click", function() {
+                  marker.openInfoWindowHtml(html);
+                });
+                return marker;
+              }
+    
+        {% for point in sqs %}
+            {% if point.object.lat %}
+                var point = new GLatLng({{point.object.lat}}, {{point.object.lng}});
+                var marker = createMarker(point, '\
+                <h3><a href="{{ point.object.get_absolute_url }}">{{ point.object.name }}</a></h3>\
+                <p><br/>\
+                <strong>&euro;{{ point.object.total|floatformat:2|intcomma }}</strong>\
+                <br/></p>\
+                ')
+                map.addOverlay(marker);
+                bounds.extend(point);
+            
+            {% endif %}
+        {% endfor %}
+
+        map.setZoom(map.getBoundsZoomLevel(bounds)-1);
+        map.setCenter(bounds.getCenter());
+
+
+    </script>
+{% endblock %}

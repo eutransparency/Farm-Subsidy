@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load countryinfo %}
+{% load humanize %}
+{% load parse_qs %}
+{% block content %}
+        {% block results %}
+        {% endblock %}
+{% endblock %}
+
+
+
+
+{% block right %}
+  <div class="block">
+    <h3>Search information</h3>
+    <p>Your search for <strong>{{ q }}</strong> <br />
+    returned <strong>{{ results }}</strong> result{{ results|pluralize }}</p>
+    <p>This page's results totals <strong>&euro;{{ total|floatformat:2|intcomma }}</strong></p>
+    {% if search_map %}
+        <h4><a href="{% url search q %}">View as List</a></h4>
+    {% else %}
+        <h4><a href="{% url search_map q 'map' %}">View on Map</a></h4>
+    {% endif %}
+    {{ sqs.facet_counts }}
+    {% if sqs.facet_counts.fields.country or sqs.facet_counts.fields.scheme %}        
+        <h3>Narrow your search</h3>
+        {% if sqs.facet_counts.fields.country %}
+            <h4>Countries:</h4>
+            <ul>
+            {% for country in sqs.facet_counts.fields.country %}
+                <li><a href="{% parse_qs request.GET "country" country.0 %}">{% code_to_name country.0 %}</a> ({{ country.1 }} results)</li>
+            {% endfor %}
+            </ul>            
+        {% endif %}
+        {% if sqs.facet_counts.fields.scheme %}            
+            <h4>Schemes:</h4>
+            <ul>
+            {% for scheme in sqs.facet_counts.fields.scheme %}
+                <li><a href="{% parse_qs request.GET "scheme" scheme.0 %}">{{ scheme.0 }}</a> ({{ scheme.1 }} results)</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endif %}
+    
+    
+  </div>
+{% endblock %}
