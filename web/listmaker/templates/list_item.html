@@ -5,6 +5,7 @@
 {% block title %}{{ list_item.name }}{% endblock %}
 {% block content %}
   {{ list_item.description|markdown }}
+  <p class="hint"><a href="{% url edit_list list_item.pk %}">Edit title and description</a></p>
   
   <div class="section">
   <h3>Items</h3>
@@ -15,7 +16,6 @@
     <thead>
       <th>Name</th>
       <th>Payments</th>
-      <th>Port</th>
       <th>Amount</th>
     </thead>
     <tbody>
@@ -42,7 +42,8 @@
   </table>
   {% else %}
   {% ifequal user.pk list_item.user.pk  %}
-  There is nothing in your list yet.  <a href="{% url edit_list_items list_item.pk %}">Add Items</a>
+  There is nothing in your list yet.  
+  <p class="hint"><a href="{% url edit_list_items list_item.pk %}">Add Items</a></p>
   {% else %}
   The list owner hasn't added any items to this list yet.
   {% endifequal %}

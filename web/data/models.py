@@ -33,6 +33,11 @@ class Recipient(models.Model):
 
     objects = RecipientManager()
 
+    LIST_ENABLED = True
+    list_hash_fields = ('name', 'countrypayment', 'total')
+    list_total_field = 'amount'
+    
+
     def __unicode__(self):
         return "%s (%s)" % (self.pk, self.name)
     

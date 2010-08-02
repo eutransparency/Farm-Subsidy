@@ -2,7 +2,13 @@ Recipients page:
 
 * Link to scheme
 * Reinstate related recipients (using haystack)
+* Make commenting less clunky
 
 Lists:
 * Get list home text (currently using fish)
 
+* Make a country_years table, containing all years (plus a total) for each
+  country. Make max/min year method from it
+  * Add text to location pages ("...since [minyear]")
+  
+* Make scheme categories model, get someone to group schemes in to 3 main types (if poss)

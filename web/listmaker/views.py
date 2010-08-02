@@ -53,35 +53,59 @@ def deactivate(request):
 @login_required
 @active_list_required
 def manage_lists(request, list_id=None):
-    active_list = request.session.get('list_object')
-    if list_id or active_list:
-        print active_list.pk
-        list_item = get_object_or_404(models.List, pk=list_id or active_list.pk, user=request.user)
-    else:
-        list_item = models.List(user=request.user)
+    """
+    Update or create a list.
     
-    if request.POST:
-        new_list_form = forms.ListForm(request.POST, instance=list_item)
-        new_list_form.user = request.user
-        if new_list_form.is_valid():
-            list_item = new_list_form.save()
-            
-            # Save the list object
-            request.session['list_object'] = list_item
-            
-            # Save each item in the list
-            for item in request.session['list_items']:
-                item.save()
-                # models.ListItem.objects.get_or_create(content_type=item.content_)
-            return HttpResponseRedirect(reverse('list_detail', kwargs={'list_id' : list_item.pk}))
+    Handles the POST for the create/edit page, and displaies the correct form.
+    """
+    
+    if list_id:
+        list_object = get_object_or_404(models.List, pk=list_id, user=request.user)
     else:
-        print "-=="
-        print repr(list_item)
-        new_list_form = forms.ListForm(instance=list_item)
+        list_object = models.List(user=request.user)
+    
+    form = forms.ListForm(instance=list_object)
+
+    if request.POST:
+        form = forms.ListForm(request.POST, instance=list_object)
+        if form.is_valid():
+            
+            if request.session.get('list_name'):
+                lists.save_items(list_id)
+            
+            form.save()
+            return HttpResponseRedirect(form.instance.get_absolute_url())
+    # 
+    # active_list = request.session.get('list_object')
+    # if list_id or active_list:
+    #     print active_list.pk
+    #     list_item = get_object_or_404(models.List, pk=list_id or active_list.pk, user=request.user)
+    # else:
+    #     list_item = models.List(user=request.user)
+    # 
+    # if request.POST:
+    #     new_list_form = forms.ListForm(request.POST, instance=list_item)
+    #     new_list_form.user = request.user
+    #     if new_list_form.is_valid():
+    #         list_item = new_list_form.save()
+    #         
+    #         # Save the list object
+    #         request.session['list_object'] = list_item
+    #         
+    #         # Save each item in the list
+    #         print request.session.keys()
+    #         for item in request.session['list_items']:
+    #             item.save()
+    #             # models.ListItem.objects.get_or_create(content_type=item.content_)
+    #         return HttpResponseRedirect(reverse('list_detail', kwargs={'list_id' : list_item.pk}))
+    # else:
+    #     print "-=="
+    #     print repr(list_item)
+    #     new_list_form = forms.ListForm(instance=list_item)
     return render_to_response(
         'edit.html', 
             {
-                'new_list_form': new_list_form, 
+                'new_list_form': form, 
             }, context_instance = RequestContext(request))
 
 
@@ -155,6 +179,8 @@ def add_remove_item(request):
         object_hash = {}
         for f in co.list_hash_fields:
             object_hash[f] = co.__dict__[f]
+        if hasattr(co, 'get_absolute_url'):
+            object_hash['get_absolute_url'] = co.get_absolute_url()
         lists.add_item(list_name, object_id, object_hash)
 
     # if action == "remove":
@@ -177,7 +203,7 @@ def add_remove_item(request):
     html = t.render(c)
     
     
-    if request.META['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest':
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         return HttpResponse(json.dumps(
             {
             # 'total' : list_total,
