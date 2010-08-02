@@ -25,6 +25,7 @@
 {% block content %}
 
     <div class="section">
+            
         <p>
             {{recipient.name}} is a recipient of farm subsidies in {% if recipient.town %}{{ recipient.town|title }},{% endif %} {{ country.name }}.
         </p>
@@ -139,6 +140,7 @@
         {% else %}
             <p id="disabled_comments">
                 <textarea disabled="disabled"></textarea>
+                <br/>
                 <a href="{% url registration_register %}">Create an account</a> or <a href="{% url auth_login %}">sign in</a> to tell us something about {{recipient.name}}.
             </p>
         {% endif %}
@@ -148,7 +150,11 @@
 {% endblock %}
 
 {% block right %}
-    {% country_map country.code %}
+{%if recipient.lat and recipient.lng%}
+    <img src="http://maps.google.com/maps/api/staticmap?center={{recipient.lat}},{{recipient.lng}}&zoom=15&size=245x200&sensor=false&maptype=satellite" title="Satellite image" alt="Satellite image" width="245" height="200"/>
+{% endif %}
+
+
 
     <h4>Address</h4>    
     <p>
@@ -159,13 +165,11 @@
         {% if recipient.address4 %}{{ recipient.address4|title }}<br />{% endif %}
         {% if recipient.zipcode %}{{ recipient.zipcode|slice:"3:" }}<br />{% endif %}
     </p>
-
-    <h4>Location</h4>
     <p>
-        {% if recipient.geo4 %}<a href="{{ recipient.geo4_url }}">{{ recipient.geo1_url }}--{{ recipient.geo4|title }}</a><br />{% endif %}
-        {% if recipient.geo3 %}<a href="{{ recipient.geo3_url }}">{{ recipient.geo3|title }}</a><br />{% endif %}
-        {% if recipient.geo2 %}<a href="{{ recipient.geo2_url }}">{{ recipient.geo2|title }}</a><br />{% endif %}
-        {% if recipient.geo1 %}<a href="{{ recipient.geo1_url }}">{{ recipient.geo1|title }}</a><br />{% endif %}
+        {% if recipient.geo4 %}<a href="{{ recipient.geo4_url }}">View other recipients in {{ recipient.geo1_url }}--{{ recipient.geo4|title }}</a><br />{% endif %}
+        {% if recipient.geo3 %}<a href="{{ recipient.geo3_url }}">View other recipients in {{ recipient.geo3|title }}</a><br />{% endif %}
+        {% if recipient.geo2 %}<a href="{{ recipient.geo2_url }}">View other recipients in {{ recipient.geo2|title }}</a><br />{% endif %}
+        {% if recipient.geo1 %}<a href="{{ recipient.geo1_url }}">View other recipients in {{ recipient.geo1|title }}</a><br />{% endif %}
     </p>
     
     {% if closest %}        
