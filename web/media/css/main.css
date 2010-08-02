@@ -54,11 +54,12 @@ ul {padding-bottom:1em;}
 
 table {font-size:0.9em; width:100%; margin-bottom:1.5em;}
 table th {background:#303c30; color:#fff;padding:0.6em 1em;}
+table th a {color:#fff;}
 table tbody td{background:url(../images/featurebar.png);padding:0.6em 1em;}
 th.money, td.money {text-align:right;}
 
 table td { border-bottom:solid 0 #fff;height:20px;padding:0.6em 1em;}
-div.section {border-bottom:dotted 1px #ddd; margin:0 0 1em 0; padding:0 0 1em 0;}
+div.section {border-bottom:dotted 1px #ddd; margin:0 0 1em 0; padding:0 0 1em 0;clear:left;overflow:auto;}
 #right div.section {border-bottom:dotted 1px #ddd; margin:1em 0 1em 0; }
 span.highlight {background:#ffffaa; padding:0.2em 1em;}
 h2 span.highlight, h3 span.highlight, h4 span.highlight h5 span.highlight   

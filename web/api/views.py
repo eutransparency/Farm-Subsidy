@@ -6,7 +6,7 @@ from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import Distance
 from django.contrib.gis.shortcuts import render_to_kml
 
-from vectorformats.Formats import Django, GeoJSON
+#from vectorformats.Formats import Django, GeoJSON
 
 from data.models import Recipient, GeoRecipient, Payment
 

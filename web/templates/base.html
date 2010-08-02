@@ -127,7 +127,31 @@
     {% endif %}            
     <div id="right">
       {% block right %}
-            
+            {% if featured_items %}
+                <h5>Latest news</h5>
+                <ul>
+                  {% if featured_items.0 %}                  
+                  <li>
+                      <h5><a href="{{ featured_items.0.get_absolute_url }}">{{ featured_items.0.title }}</a></h5>
+                    <p>{{ featured_items.0.teaser|truncatewords:"25" }}</p>
+                  </li>
+                  {% endif %}                  
+                  {% if featured_items.1 %}
+                    <li>
+                      <h5><a href="{{ featured_items.1.get_absolute_url }}">{{ featured_items.1.title }}</a></h5>
+                      <p>{{ featured_items.1.teaser|truncatewords:"25" }}</p>
+
+                    </li>          
+                  {% endif %}
+                  {% if featured_items.2 %}        
+                  <li>
+                    <h5><a href="{{ featured_items.2.get_absolute_url }}">
+                {{ featured_items.2.title }}</a></h5>
+                    <p>{{ featured_items.2.teaser|truncatewords:"25" }}</p>
+                  </li>
+                  {% endif %}        
+                </ul>
+            {% endif %}
       {% endblock %}
 
 
