@@ -1,5 +1,7 @@
 from django.contrib.contenttypes.models import ContentType
 from django.template import Library, Node
+from django.template import Context, Variable
+
 from listmaker.models import List
 from listmaker import lists
 
@@ -26,3 +28,26 @@ def list_item_edit(context, list_object):
         'list_object' : list_object,
         'in_list' : in_list,
     }
+
+class ListItems(Node):
+    def __init__(self, list_name, varname=None):
+        self.varname = varname
+        self.list_name = list_name
+
+    def render(self, context):
+        self.list_name = Variable(self.list_name).resolve(context)
+        context[self.varname] = lists.list_items(self.list_name)
+        return ''
+
+        return 
+@register.tag
+def list_items(parser, token):
+    bits = token.contents.split()    
+    if len(bits) > 2:
+        if bits[2] == "as":
+            varname = bits[3]
+    else:
+        varname = None
+    return ListItems(bits[1], varname)
+
+

@@ -8,6 +8,7 @@ def list_items(request):
     if request.session.get('list_name'):
         return {
             'list_enabled' : True,
+            'list_name' : request.session.get('list_name'),
         }
     else:
         return {}

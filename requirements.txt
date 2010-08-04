@@ -23,3 +23,5 @@ git+git://github.com/symroe/xapian-haystack.git
 git+git://github.com/symroe/django-haystack.git
 http://sunet.dl.sourceforge.net/sourceforge/numpy/numpy-1.3.0.tar.gz
 http://sourceforge.net/projects/matplotlib/files/matplotlib/matplotlib-0.99.1/matplotlib-0.99.1.2.tar.gz/download
+django-piston==0.2.2
+django-notify==1.1.2

@@ -43,8 +43,9 @@ def list_items(list_name):
     """
     items = []
     for item in r.keys("%s:hashes:*" % list_name):
-        print r.hgetall(item)
-
+        items.append(r.hgetall(item))
+    return items
+    
 def item_in_list(list_name, item_key):
     return r.sismember("%s:items" % list_name, item_key)
 
@@ -56,3 +57,16 @@ def add_item(list_name, item_key, object_hash):
             r.hset("%s:hashes:%s" % (list_name, item_key), k, v)
         r.expire("%s:hashes:%s" % (list_name, item_key), EXPIRE_TIME)
 
+
+def save_items(list_name):
+    """
+    Converts whatever is in redis in to ListItem DB objects (IE, GFKs to the
+    content object)
+    """
+    
+    active_list_items = list_items(list_name)
+    try:
+        active_list = List.objects.get()
+    except:
+        pass
+    

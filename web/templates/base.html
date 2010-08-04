@@ -16,7 +16,7 @@
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.example.min.js"></script>
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery-ui-1.7.1.custom.min.js"></script>
     <script src="{{ MEDIA_URL }}/js/scripts.js" type="text/javascript" charset="utf-8"></script>
-    
+    <script src="{{ MEDIA_URL }}/js/lists.js" type="text/javascript" charset="utf-8"></script>    
     
     {% if custom_list.active %}
         <link rel="stylesheet" href="/media/css/custom_lists.css" type="text/css" media="screen, projection">
@@ -153,38 +153,7 @@
                 </ul>
             {% endif %}
       {% endblock %}
-
-
-      {# {% block list %} #}
-      {#   {% if custom_list.active %} #}
-      {#   <div id="list_standard"> #}
-      {#     <div id="list_content"> #}
-      {#        #}
-      {#  #}
-      {#     <h3>Custom List</h3> #}
-      {#     {# {% load customlist_list %} #}
-      {#     {# {% list_total list_items.items %} #}
-      {#     {# <div class="list_items hide">{% list_items list_items.items %}</div> #}
-      {#     <p>The total for your list is: <strong>&euro;{{ custom_list.total }}</strong></p> #}
-      {#     <div id="list_items"> #}
-      {#       <ul> #}
-      {#         {% if custom_list.list_items.items %} #}
-      {#           {% for docid, item in custom_list.list_items.items %} #}
-      {#             <li>{{ item.name }} &mdash; {{ item.amount }}</li> #}
-      {#           {% endfor %} #}
-      {#         {% else %} #}
-      {#          <strong>There are no items in your list yet.</strong> #}
-      {#          <li>You can browse though this site and add items with a checkbox next to them.</li> #}
-      {#         {% endif %} #}
-      {#       </ul> #}
-      {#     </div> #}
-      {#     </div> #}
-      {#     </div> #}
-      {#    #}
-      {#      #}
-      {#   {% endif %} #}
-      {# {% endblock %} #}
-      
+                        {% include "blocks/list_view.html" %}
     </div>
     
     <div id="content">

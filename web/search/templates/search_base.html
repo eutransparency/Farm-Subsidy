@@ -21,7 +21,6 @@
     {% else %}
         <h4><a href="{% url search_map q 'map' %}">View on Map</a></h4>
     {% endif %}
-    {{ sqs.facet_counts }}
     {% if sqs.facet_counts.fields.country or sqs.facet_counts.fields.scheme %}        
         <h3>Narrow your search</h3>
         {% if sqs.facet_counts.fields.country %}

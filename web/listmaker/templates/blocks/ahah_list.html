@@ -1,4 +1,4 @@
-{% load lists %}
+{% load list_tags %}
   {% if list_items %}
     {% for item in list_items %}
       <li><strong><a href="{{ item.get_absolute_url }}">{{ item.content_object.name }}</a></strong><br />
