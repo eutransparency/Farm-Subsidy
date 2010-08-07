@@ -57,6 +57,8 @@ def country(request, country, year=DEFAULT_YEAR):
     """
     country = country.upper()
 
+    years_max_min = models.CountryYear.objects.year_max_min('BE')
+
     # years = models.data.objects.years(country=country)
 
     top_recipients = models.Recipient.objects.top_recipients(country=country, year=year)
@@ -91,6 +93,7 @@ def country(request, country, year=DEFAULT_YEAR):
         'stats_info': stats_info,
         # 'years' : years,
         'selected_year' : int(year),
+        'years_max_min' : years_max_min,
     },
     context_instance=RequestContext(request)
     )
@@ -105,9 +108,8 @@ def recipient(request, country, recipient_id, name):
   
   """
   country = country.upper()
-  
+
   recipient = models.Recipient.objects.get(globalrecipientidx=recipient_id)
-  
   
   payments = models.Payment.objects.select_related().filter(recipient=recipient_id).order_by('year', 'amounteuro')
   expanded = request.GET.get('expand', False)
@@ -124,9 +126,17 @@ def recipient(request, country, recipient_id, name):
           p.scheme = s
           payments.append(p)
 
+  print type(payments[0].scheme)
   recipient_total = recipient.total
   payment_years = list(set(payment.year for payment in payments))
-  payment_schemes = list(set(payment.scheme.globalschemeid for payment in payments))
+
+  
+  payment_schemes = []
+  for payment in payments:
+      for scheme in payment.scheme.schemetype_set.all():
+          payment_schemes.append(scheme.scheme_type)
+  print "worked"
+  print payment_schemes
   
   try:
       georecipient = models.GeoRecipient.objects.get(pk=recipient.pk)
@@ -141,9 +151,9 @@ def recipient(request, country, recipient_id, name):
     'payments' : payments,
     'recipient_total' : recipient_total,
     'payment_years' : payment_years,
-    'has_direct' : 'LU1' in payment_schemes,
-    'has_indirect' : 'LU2' in payment_schemes,
-    'has_rural' : 'LU3' in payment_schemes,
+    'has_direct' : 0 in payment_schemes,
+    'has_indirect' : 1 in payment_schemes,
+    'has_rural' : 2 in payment_schemes,
     'first_year' : 0,
     'expanded' : expanded,
     'closest' : closest,
@@ -272,13 +282,15 @@ def location(request, country, slug=None):
 
     sub_locations = location.get_children()
     
-    
+    years_max_min = models.CountryYear.objects.year_max_min(country)
+
     return render_to_response(
         country_template('location.html', country), 
         {
             'location' : location,
             'location_recipients' : location_recipients,
             'sub_locations' : sub_locations,
+            'years_max_min' : years_max_min,
         },
         context_instance=RequestContext(request)
     )  

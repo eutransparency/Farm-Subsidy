@@ -6,6 +6,17 @@ from django.contrib.gis.db import models as geo_models
 
 from managers.recipients import RecipientManager
 from managers.schemes import SchemeManager
+from managers.countryyear import CountryYearManager
+
+import countryCodes
+
+class CountryYear(models.Model):
+    year = models.IntegerField(blank=True, null=True)
+    country = models.CharField(blank=True, max_length=2)
+    total = models.FloatField()
+    
+    objects = CountryYearManager()
+
 
 class Recipient(models.Model):
     recipientid = models.CharField(max_length=10)
@@ -67,7 +78,7 @@ class Recipient(models.Model):
 
     def geo4_url(self):
         return self.geo_url(4)
-        
+
 
 class GeoRecipient(geo_models.Model):
     recipient = models.ForeignKey(Recipient, primary_key=True)
@@ -77,6 +88,7 @@ class GeoRecipient(geo_models.Model):
 
     def __unicode__(self):
         return self.pk
+
 
 class Payment(models.Model):
     paymentid = models.TextField()
@@ -108,10 +120,14 @@ class Scheme(models.Model):
     
     objects = SchemeManager()
     
+    def __unicode__(self):
+        return "%s - %s" % (self.pk, self.nameenglish)
+    
     def get_absolute_url(self):
         return reverse('scheme_view', args=[self.countrypayment, 
                                             self.pk, 
                                             slugify(self.nameenglish)])
+
 
 class SchemeYear(models.Model):
     globalschemeid = models.CharField(blank=True, max_length=40, db_index=True)
@@ -120,12 +136,31 @@ class SchemeYear(models.Model):
     year = models.IntegerField(blank=True, null=True)
     total = models.FloatField()
 
+
+class SchemeType(models.Model):
+    
+    DIRECT = 0
+    INDIRECT = 1
+    RURAL = 2
+    
+    SCHEME_TYPES = (
+        (DIRECT, 'Direct'),
+        (INDIRECT, 'Indirect'),
+        (RURAL, 'Rural'),
+    )
+    
+    globalschemeid = models.ForeignKey(Scheme, primary_key=True)
+    country = models.CharField(blank=False, max_length=2, choices=((i,i) for i in countryCodes.country_codes()))
+    scheme_type = models.IntegerField(choices=SCHEME_TYPES)
+
+    def __unicode__(self):
+        return "%s - %s" % (self.globalschemeid, self.scheme_type)
+
 class TotalYear(models.Model):
     recipient = models.ForeignKey(Recipient, db_index=True)
     year = models.IntegerField(blank=True, null=True, db_index=True)
     total = models.FloatField(db_index=True)
     country = models.CharField(blank=False, max_length=2)
-
 
 
 class Location(MP_Node):

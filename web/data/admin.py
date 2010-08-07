@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.gis import admin as geo_admin
-from models import Recipient, GeoRecipient
+from models import Recipient, GeoRecipient, SchemeType
 # 
 # # class FeedsAdmin(admin.ModelAdmin):
 # #   list_display  = ('title','url', 'is_active', 'category',)
@@ -16,5 +16,6 @@ from models import Recipient, GeoRecipient
 # 
 admin.site.register(Recipient)
 admin.site.register(GeoRecipient, geo_admin.GeoModelAdmin)
+admin.site.register(SchemeType)
 # # admin.site.register(FeedItems, FeedItemsAdmin)
 # # admin.site.register(FeedCategories)
