@@ -22,32 +22,60 @@ class Command(BaseCommand):
         'recipient totals'
         """
         
-        print "Making recipient total colum"
         cursor = connection.cursor()
-        cursor.execute("""
-            BEGIN;
-            UPDATE data_recipient
-            SET total = s.total
+
+        UPDATE_PAGE_SIZE = 10000
+        sql_count = """
+          SELECT COUNT(*) from data_recipient WHERE countrypayment='%(country)s' AND total IS NULL;
+          """ % {'country' : self.country}
+        cursor.execute(sql_count)
+        to_process = cursor.fetchone()[0]
+        more_to_process = int(to_process) > 0
+        print to_process
+        offset = 0
+
+        print int(to_process/UPDATE_PAGE_SIZE)
+        print "Making recipient total colum, %s at a time" % UPDATE_PAGE_SIZE
+        for i in range(int(to_process/UPDATE_PAGE_SIZE)):
+          print UPDATE_PAGE_SIZE, offset, to_process
+          cursor.execute("""
+            UPDATE data_recipient                                                              
+            SET total = s.newtotal
             FROM (
-                SELECT globalrecipientidx, SUM(amounteuro) as total
-                FROM data_payment
-                GROUP BY globalrecipientidx) s
-            WHERE data_recipient.globalrecipientidx=s.globalrecipientidx
-            AND data_recipient.total IS NULL;
-            COMMIT;
-        """)
-        
+                  SELECT r.globalrecipientidx, SUM(p.amounteuro) AS newtotal FROM 
+                    (
+                        SELECT globalrecipientidx
+                        FROM data_recipient
+                        WHERE total IS NULL
+                        AND countrypayment = %(country)s
+                        LIMIT %(update_page_size)s OFFSET %(offset)s
+                    ) as r
+                    JOIN data_payment p
+                    ON r.globalrecipientidx=p.globalrecipientidx
+                    GROUP BY r.globalrecipientidx
+
+                   ) s
+            WHERE data_recipient.globalrecipientidx=s.globalrecipientidx;
+
+          """, {'country' : self.country, 'update_page_size' : UPDATE_PAGE_SIZE, 'offset' : offset})
+
+          cursor.execute(sql_count, {'country' : self.country})
+          to_process = cursor.fetchone()[0]
+          more_to_process = int(to_process) > 0
+          print to_process
+          offset = offset+ UPDATE_PAGE_SIZE
+       
+
         print "Making year totals for %s" % self.country
         cursor = connection.cursor()
         cursor.execute("""
-            BEGIN;
             DELETE FROM data_totalyear WHERE country=%(country)s;
             INSERT INTO data_totalyear (recipient_id, year, total, country)
                 (
                 SELECT globalrecipientidx, year, SUM(amounteuro) as total, countrypayment
                 FROM data_payment
+                WHERE countrypayment=%(country)s
                 GROUP BY globalrecipientidx, year, countrypayment);
-            COMMIT;
         """, {'country' : self.country})
 
     
@@ -62,16 +90,15 @@ class Command(BaseCommand):
         print "Making scheme totals"
         cursor = connection.cursor()
         cursor.execute("""
-            BEGIN;
             UPDATE data_scheme
             SET total = s.total
             FROM (
                 SELECT p.globalschemeid, SUM(p.amounteuro) as total
                 FROM data_payment p
+                WHERE countrypayment=%(country)s
                 GROUP BY globalschemeid) s
             WHERE data_scheme.globalschemeid=s.globalschemeid;
-            COMMIT;
-        """)
+        """, {'country' : self.country})
 
 
         print "Making scheme year totals"
