@@ -6,5 +6,6 @@ import forms
 
 urlpatterns = patterns('search.views',
   url(r'^search/$', 'search', name='search'),
-  url(r'^search/(.*)$', 'search', name='search'),
+  url(r'^search/([^/]+)/(map)/$', 'search', name='search_map'),
+  url(r'^search/([^/]+)/$', 'search', name='search'),
 )

@@ -11,24 +11,27 @@ class FarmOwners(models.Model):
 
 
 class Profile(models.Model):
-  user = models.ForeignKey(User, unique=True)
-  
-  joined = models.DateTimeField(blank=False, default=datetime.datetime.now)
-  
-  def __unicode__(self):
-    return self.user.username
-  
-  def get_absolute_url(self):
-    return ('profiles_profile_detail', (), { 'username': self.user.username })
-  get_absolute_url = models.permalink(get_absolute_url)
+    """(profile description)"""
 
+    user = models.ForeignKey(User)
+    name = models.CharField(blank=True, max_length=255)
+    data_agreement = models.BooleanField(default=False)
+    data_description = models.TextField(blank=False, null=True)
 
+    def __unicode__(self):
+        return "%s" % self.user
 
+    def get_absolute_url(self):
+        return ('profiles_profile_detail', (), { 'username': self.user.username })
+    get_absolute_url = models.permalink(get_absolute_url)
 
-def add_deafult_profile(user, **kwargs):
-  p = Profile(user_id=user.id)
-  p.save()
-user_registered.connect(add_deafult_profile)
+# Signal Registrations
+# when a user gets registered, we want to generate a profile for them
+from registration.signals import user_registered
 
-
-
+def create_user_profile(sender, **kwargs):
+    user = kwargs['user']
+    name = kwargs['request'].POST.get('name')
+    profile = Profile(user=user, name=name)
+    profile.save()
+user_registered.connect(create_user_profile)

@@ -1,14 +1,18 @@
-{% load lists %}
+{% load list_tags %}
+{% list_items list_name as list_items %}
+
 <ul class="list_items">
-  Editing {% if list_object.name %}<a href="{% url save_list %}">{{ list_object.name }}</a>{% else %}a new list{% endif %}
+  Editing <a href="{% url save_list %}">{% if list_object.name %}{{ list_object.name }}{% else %}a new list{% endif %}</a>
   {% if list_items %}
     {% for item in list_items %}
-      <li><strong><a href="{% url vessel item.content_object.country item.content_object.pk item.content_object.name|slugify %}">{{ item.content_object.name }}</a></strong><br />
-          {{ item.content_object.amount }}<br />
-          {% list_item_edit item.content_object %}
+      <li><strong><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></strong><br />
+          {{ item.total }}<br />
+          {# {% list_item_edit item.content_object %} #}
           </li>
     {% endfor %}
   {% else %}
-    <p>No items in your list</p>
+  <p>There are no items in your list yet.</p>
+  <p>To add items, <a href="{{ home_url }}">browse or search</a> the site and click on the icon next to a recipient.</p>
+
   {% endif %}
 </ul>

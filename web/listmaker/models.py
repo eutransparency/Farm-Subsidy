@@ -10,7 +10,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-
+from django.core.urlresolvers import reverse
 
 class List(models.Model):
     """Stores list definitions against a user"""
@@ -21,7 +21,9 @@ class List(models.Model):
     
     def __unicode__(self):
         return u"%s" % self.name
-
+    
+    def get_absolute_url(self):
+        return reverse('list_detail', kwargs={'list_id' : self.pk})
 
 class ListItem(models.Model):
     """Stores ids of other objects against a list"""

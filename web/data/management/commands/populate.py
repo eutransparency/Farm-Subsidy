@@ -61,13 +61,15 @@ class Command(BaseCommand):
             'total',
         )
         
-        c = self.open_csv(self.format_csv_path('recipients'), field_names)
+        c = self.open_csv(self.format_csv_path('recipient'), field_names)
         for line in c:
             if c.line_num != 1:
                 try:
                     if len(line['zipcode']) < 12:
                       r = Recipient()
-                      line['total'] = line['lat'] = line['lng'] = 0
+                      line['total'] = 0
+                      if not line['lat']:
+                          line['lat'] = line['lng'] = 0
                       r.__dict__.update(line)
                       r.save()
                 except Exception, e:
@@ -85,7 +87,7 @@ class Command(BaseCommand):
             'total',
         )
         
-        c = self.open_csv(self.format_csv_path('schemes'), field_names)
+        c = self.open_csv(self.format_csv_path('scheme'), field_names)
         for line in c:
             if c.line_num != 1:
                 s = Scheme()
@@ -107,7 +109,7 @@ class Command(BaseCommand):
             'countrypayment',
         )
         
-        c = self.open_csv(self.format_csv_path('payments'), field_names)
+        c = self.open_csv(self.format_csv_path('payment'), field_names)
         for line in c:
             try:
               if c.line_num != 1:

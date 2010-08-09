@@ -5,7 +5,7 @@ from models import Feature
 
 def featured_items(request):
     featured_items = cache.get('featured_items')
-    
+
     in_features = bool(request.META['PATH_INFO'].split('/')[1] =='features')
     
     if not featured_items:

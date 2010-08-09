@@ -9,12 +9,18 @@ from haystack import backend
 
 import forms
 
-def search(request, q=None):
+def search(request, q=None, search_map=False):
     form = forms.SearchForm()
 
     if request.POST:
         # initial redirect, to get linkable URLs
-        return HttpResponseRedirect(reverse('search', args=[request.POST.get('q')]))
+        args=[request.POST.get('q')]
+        if search_map:
+            v = 'search_map'
+            args.append('map')
+        else:
+            v = 'search'
+        return HttpResponseRedirect(reverse(v, args=args))
 
     if q:
         form = forms.SearchForm(initial={'q' : q})
@@ -34,9 +40,12 @@ def search(request, q=None):
             total += t.object.total
         
         results = len(sqs)
-    
+    if search_map:
+        t = 'map.html'
+    else:
+        t = 'results.html'
     return render_to_response(
-    'results.html', 
+    t, 
     locals(),
     context_instance=RequestContext(request)
     )  

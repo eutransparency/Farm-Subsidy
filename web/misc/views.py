@@ -23,12 +23,18 @@ def login(request):
     if user is not None:
         if user.is_active:
             auth.login(request, user)
+            if request.POST.get('next'):
+                return HttpResponseRedirect(request.POST['next'])
             return HttpResponseRedirect(reverse('home'))  
     if registration_form.is_valid():
         new_user = registration_form.save()
         return HttpResponseRedirect(reverse('registration_complete'))
   
   return render_to_response('login.html', 
-    {'login_form': login_form, 'registration_form': registration_form,}, 
+    {
+        'login_form': login_form, 
+        'registration_form': registration_form,
+        'next' : request.GET.get('next', '/'),
+    }, 
     context_instance = RequestContext(request)
   )

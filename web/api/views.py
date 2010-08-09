@@ -1,68 +1,53 @@
-from django.db import models
+from django.http import HttpResponse
+from django.template import RequestContext
+from django.template import Context, Template
+from django.template.loader import render_to_string, select_template
+from django.contrib.gis.geos import Point
+from django.contrib.gis.measure import Distance
+from django.contrib.gis.shortcuts import render_to_kml
 
-from django.shortcuts import render_to_response
-from simplejson import dumps
-from django.utils.html import escape
-from django.core import serializers 
-import pyfo
-import cPickle
+from data.models import Recipient, GeoRecipient, Payment
 
-from queries import queries
-import farmsubsidy.fsconf as fsconf
-
-
-def format_data(data, format):
-  if format == "xml":    
-    # Replace doc numbers with 'document' because xml can't have numbers as keys
-    documents = []
-    for doc in data['documents'].items():
-      documents.append(('recipient', doc[1],))
-    data['documents'] = documents
+# def geo(request, lng, lat, format='kml'):
+#     lng, lat = map(float, (lng, lat,))
+#     limit = request.GET.get('limit', 10)
+#     offset = request.GET.get('offset', 0)
+#     
+# 
+#     base_qs = GeoRecipient.objects.distance(Point((lng, lat))).order_by('-distance')
+#     
+#     if format == 'kml':
+#         qs = base_qs.kml()
+#     if format == 'json':
+#         qs = base_qs.json()
+#         print "json"
+#     
+#     qs = qs[offset:limit]
+#     
+#     djf = Django.Django(geodjango="geometry", properties=['city', 'state'])
+#     geoj = GeoJSON.GeoJSON()
+#     string = geoj.encode(djf.decode(qs))
+#     print string
+#     
+#     # return render_to_kml('kml.html', {'qs' : qs}) 
+# 
+def documentation(request, path):
+    """
+    A version of direct_to_template, I guess.
     
-    data = pyfo.pyfo(('root',data), pretty=True)
-    return data, "text/xml"
+    Takes a path, and looks for a tempalte that might match it, then rendars it.
     
-  if format == "json":
-    return dumps(data), "application/json"
+    Simples.
+    """
     
-  if format == "pickle":
-    return cPickle.dumps(data), "text"
-  
-  if format == "csv":
-    csv = []
-    for i,line in data['documents'].items():
-      # assert False
-      csv.append(
-        ",".join('"%s"' % str(v) for k,v in line.items())
-      )
-      
-    # assert False
-    return ";\n".join(csv), "text"
+    tempalte_guesses = [path]
+    tempalte_guesses.append("documentation/%s.html" % path)
+    tempalte_guesses.append("documentation/%s/index.html" % path)
+    c = RequestContext(request)
+    t = select_template(tempalte_guesses)
+    return HttpResponse(t.render(c))
 
-def test(request):
-  format = request.GET.get('format', 'xml')
-  test = queries.do_search("roe")
-  # data = serializers.serialize("json", test)
-  data, mimetype = format_data(test, format)
-    
-  return render_to_response("data.html", {'data' : data}, mimetype=mimetype)
-  
-  
-def get_recipient(request, rid):
-  format = request.GET.get('format', 'xml')
-  
-  options = {
-    'collapse_key' : fsconf.index_values['year'], 
-    'page' : 0,
-    'len' : 50
-  }
-  
-  results = queries.do_search("xid:%s" % rid, options)
-
-  data, mimetype = format_data(results, format)
-    
-  return render_to_response("data.html", {'data' : data}, mimetype=mimetype)
-
+    return t.render()
 
 
 

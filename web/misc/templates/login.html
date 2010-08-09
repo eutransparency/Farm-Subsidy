@@ -10,6 +10,7 @@
     <h2>Login</h2>
     <ul class="form">
     {{ login_form.as_ul }}
+    <input type="hidden" name="next" value="{{ next }}" id="next">
     </ul>
     <p><input type="submit" name="login" value="Log In" id="login"></p>
   </form>

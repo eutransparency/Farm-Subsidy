@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}Data Download{% endblock %}
+{% block page_title %}Data Download{% endblock %}
+{% block body_class%}wide{% endblock %}
+{% block content %}
+{% blocktrans %}
+<h3>We make our database available under the Open Database License</h3>
+<p>Which means you should attribute your use of this database to us, and Share your changes back with everyone else.</p>
+
+{% endblocktrans %}
+<table>
+  <thead>
+    <th>{% trans "File Name" %}</th>
+    <th>{% trans "File Format" %}</th>
+    <th>{% trans "File Description" %}</th>
+  </thead>
+  <tbody>
+    {% for file in files %}
+    <tr>
+      <td>{{ file.filename }}</td>
+      <td>{{ file.format }}</td>
+      <td>{{ file.description }}</td>
+      <td><a href="{% url download_file file.pk %}">{% trans "Download" %}</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

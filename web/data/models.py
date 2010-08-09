@@ -2,6 +2,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from treebeard.mp_tree import MP_Node
+from django.contrib.gis.db import models as geo_models
 
 from managers.recipients import RecipientManager
 from managers.schemes import SchemeManager
@@ -31,6 +32,11 @@ class Recipient(models.Model):
     total = models.FloatField(null=True, db_index=True)
 
     objects = RecipientManager()
+
+    LIST_ENABLED = True
+    list_hash_fields = ('name', 'countrypayment', 'total')
+    list_total_field = 'amount'
+    
 
     def __unicode__(self):
         return "%s (%s)" % (self.pk, self.name)
@@ -62,7 +68,16 @@ class Recipient(models.Model):
     def geo4_url(self):
         return self.geo_url(4)
         
-    
+
+class GeoRecipient(geo_models.Model):
+    recipient = models.ForeignKey(Recipient, primary_key=True)
+    location = geo_models.PointField()
+
+    objects = geo_models.GeoManager()
+
+    def __unicode__(self):
+        return self.pk
+
 class Payment(models.Model):
     paymentid = models.TextField()
     globalpaymentid = models.CharField(max_length=10, primary_key=True)
@@ -131,3 +146,14 @@ class Location(MP_Node):
     def get_absolute_url(self):
         return reverse('location_view', args=[self.country, self.slug])
     
+class DataDownload(models.Model):
+
+    public = models.BooleanField(default=True)
+    filename = models.CharField(blank=True, max_length=255)
+    format = models.CharField(blank=True, max_length=100)
+    description = models.TextField(blank=True)
+    file_path = models.CharField(blank=True, max_length=255)
+    download_count = models.IntegerField(blank=True, null=True)
+
+    def __unicode__(self):
+        return u"%s" % self.filename

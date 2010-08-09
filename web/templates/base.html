@@ -2,7 +2,6 @@
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-
     {% load i18n %}
     {% load cache %}
     {% load humanize %}
@@ -17,16 +16,17 @@
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.example.min.js"></script>
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery-ui-1.7.1.custom.min.js"></script>
     <script src="{{ MEDIA_URL }}/js/scripts.js" type="text/javascript" charset="utf-8"></script>
-
+    <script src="{{ MEDIA_URL }}/js/lists.js" type="text/javascript" charset="utf-8"></script>    
+    
     {% if custom_list.active %}
         <link rel="stylesheet" href="/media/css/custom_lists.css" type="text/css" media="screen, projection">
         <script src="{{ MEDIA_URL }}/js/custom_lists.js" type="text/javascript" charset="utf-8"></script>
-    {% endif %}
+    {% endif %}    
 
 </head>
 
 <body id="{% block body_style %}main{% endblock %}" class="{% block body_class %}none{% endblock %} {% if list_items.create %}list_enabled{% endif %}">
-    
+
 {# Topbar #}
 <div id="topbar">
     <a href="http://www.twitter.com/farmsubsidy/">
@@ -77,9 +77,9 @@
         {# search form #}
         <form id="search_form" action="{% url search %}" method="POST" accept-charset="utf-8">
           <h2><label for="search" class="section_title">Search</label></h2>
-          <input type="text" name="q" value="" id="q" title="Enter a company name or place">
+          <input type="text" name="q" value="{{ q }}" id="q" title="Enter a company name or place">
           <input type="submit" value="Search" class="submit">
-          <small>e.g. <a href="/search?q=nestle">Nestle</a> or <a href="/search?q=windsor">Windsor</a></small>
+          <small>e.g. <a href="{% url search 'nestle' %}">Nestle</a> or <a href="{% url search 'windsor' %}">Windsor</a></small>
         </form>
         
         {# main menu #}
@@ -87,7 +87,7 @@
             {% load active_url %}
             <li><a href="/" >Home</a></li>
             <li><a href="{% url countries %}">Countries</a></li>            
-            <li><a href="/lists/">Custom Lists</a></li>
+            <li><a href="/lists/">Custom lists</a></li>
             <li><a href="/news/">News &amp; reports</a></li>
             <li class="last"><a href="/faq/">FAQs</a></li>            
         </ul>
@@ -127,40 +127,33 @@
     {% endif %}            
     <div id="right">
       {% block right %}
-            
+            {% if featured_items %}
+                <h5>Latest news</h5>
+                <ul>
+                  {% if featured_items.0 %}                  
+                  <li>
+                      <h5><a href="{{ featured_items.0.get_absolute_url }}">{{ featured_items.0.title }}</a></h5>
+                    <p>{{ featured_items.0.teaser|truncatewords:"25" }}</p>
+                  </li>
+                  {% endif %}                  
+                  {% if featured_items.1 %}
+                    <li>
+                      <h5><a href="{{ featured_items.1.get_absolute_url }}">{{ featured_items.1.title }}</a></h5>
+                      <p>{{ featured_items.1.teaser|truncatewords:"25" }}</p>
+
+                    </li>          
+                  {% endif %}
+                  {% if featured_items.2 %}        
+                  <li>
+                    <h5><a href="{{ featured_items.2.get_absolute_url }}">
+                {{ featured_items.2.title }}</a></h5>
+                    <p>{{ featured_items.2.teaser|truncatewords:"25" }}</p>
+                  </li>
+                  {% endif %}        
+                </ul>
+            {% endif %}
       {% endblock %}
-
-
-      {# {% block list %} #}
-      {#   {% if custom_list.active %} #}
-      {#   <div id="list_standard"> #}
-      {#     <div id="list_content"> #}
-      {#        #}
-      {#  #}
-      {#     <h3>Custom List</h3> #}
-      {#     {# {% load customlist_list %} #}
-      {#     {# {% list_total list_items.items %} #}
-      {#     {# <div class="list_items hide">{% list_items list_items.items %}</div> #}
-      {#     <p>The total for your list is: <strong>&euro;{{ custom_list.total }}</strong></p> #}
-      {#     <div id="list_items"> #}
-      {#       <ul> #}
-      {#         {% if custom_list.list_items.items %} #}
-      {#           {% for docid, item in custom_list.list_items.items %} #}
-      {#             <li>{{ item.name }} &mdash; {{ item.amount }}</li> #}
-      {#           {% endfor %} #}
-      {#         {% else %} #}
-      {#          <strong>There are no items in your list yet.</strong> #}
-      {#          <li>You can browse though this site and add items with a checkbox next to them.</li> #}
-      {#         {% endif %} #}
-      {#       </ul> #}
-      {#     </div> #}
-      {#     </div> #}
-      {#     </div> #}
-      {#    #}
-      {#      #}
-      {#   {% endif %} #}
-      {# {% endblock %} #}
-      
+                        {% include "blocks/list_view.html" %}
     </div>
     
     <div id="content">
@@ -219,7 +212,8 @@
                 <dt>Technical:</dt>
                 <dd>
                     <ul>
-                        <li><a href="/">[ADD DATA AND GITHUB LINKS]</a></li>                        
+                        <li><a href="http://github.com/eutransparency/Farm-Subsidy">Get the code</a></li>
+                        <li><a href="{% url download %}">Get the raw data</a></li>
                     </ul>
                 </dd>
            </dl>                   
@@ -230,3 +224,4 @@
 </div>
 </body>
 </html>
+{% block footer_scripts %}{% endblock %}

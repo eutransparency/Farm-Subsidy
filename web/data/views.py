@@ -1,7 +1,9 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.db.models import Sum, Count
+from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from feeds.models import *
 from tagging.models import TaggedItem
@@ -11,6 +13,9 @@ from web.countryinfo.load_info import load_info
 from data import countryCodes
 import context_processors
 import models
+
+from misc.models import Profile
+from misc.forms import DataAgreementForm
 
 DEFAULT_YEAR = settings.DEFAULT_YEAR
 
@@ -123,6 +128,11 @@ def recipient(request, country, recipient_id, name):
   payment_years = list(set(payment.year for payment in payments))
   payment_schemes = list(set(payment.scheme.globalschemeid for payment in payments))
   
+  try:
+      georecipient = models.GeoRecipient.objects.get(pk=recipient.pk)
+      closest = models.GeoRecipient.objects.distance(georecipient.location).order_by('distance')[:5]
+  except:
+      closest = None
   
   return render_to_response(
     'recipient.html', 
@@ -134,8 +144,9 @@ def recipient(request, country, recipient_id, name):
     'has_direct' : 'LU1' in payment_schemes,
     'has_indirect' : 'LU2' in payment_schemes,
     'has_rural' : 'LU3' in payment_schemes,
-    'first_year' : payment_years[0],
-    'expanded' : expanded
+    'first_year' : 0,
+    'expanded' : expanded,
+    'closest' : closest,
     },
     context_instance=RequestContext(request)
   )  
@@ -257,7 +268,7 @@ def location(request, country, slug=None):
     for p in location.get_ancestors():
         kwargs[p.geo_type] = p.name
     location_recipients = models.Recipient.objects.all()[:10]
-    location_recipients = models.Recipient.objects.recipents_for_location(location)
+    location_recipients = models.Recipient.objects.recipents_for_location(location)[:10]
 
     sub_locations = location.get_children()
     
@@ -274,3 +285,59 @@ def location(request, country, slug=None):
   
 
   
+@login_required
+def download(request, data_file=None):
+    user = request.user
+    try:
+        profile = Profile.objects.get(user=user)
+    except Profile.DoesNotExist:
+        return HttpResponseRedirect(reverse('profiles_create_profile'))
+
+    if profile.data_agreement == False:
+        request.notifications.add("Please agree to the following licence before downloading the data")
+        return HttpResponseRedirect(reverse('data_agreement_form'))
+
+    if data_file:
+        download_file = get_object_or_404(DataDownload, pk=data_file)
+        f = open(download_file.file_path)
+        file_mimetype = mimetypes.guess_type(download_file.file_path)
+        response = HttpResponse(FileWrapper(f), content_type=file_mimetype[0])
+        response['Content-Disposition'] = 'attachment; filename="%s"' % \
+                        download_file.file_path.split('/')[-1]
+        return response
+
+    files = models.DataDownload.objects.filter(public=True)
+    return render_to_response(
+      'downloads.html', 
+      {
+      'files' : files,
+      },
+      context_instance=RequestContext(request)
+    )
+
+
+@login_required
+def data_agreement_form(request):
+    try:
+        profile = Profile.objects.get(user=request.user)
+        if profile.data_agreement:
+            return HttpResponseRedirect(reverse('download'))
+    except Profile.DoesNotExist:
+        return HttpResponseRedirect(reverse('profiles_create_profile'))
+
+    if request.POST:
+        form = DataAgreementForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save() 
+    else:
+        form = DataAgreementForm(instance=profile)
+
+    return render_to_response(
+      'data_agreement_form.html', 
+      {
+      'form' : form,
+      }, 
+      context_instance=RequestContext(request)
+    )
+
+

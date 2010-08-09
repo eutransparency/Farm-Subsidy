@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+  <name>{{document_title}}</name>
+{% for place in places %}
+    <Placemark>
+        <name>{{ place.name|escape }}</name>
+        {% if place.description %}
+        <description>
+            {{ place.description|escape }}
+        </description>
+        {% endif %}
+        {% if place.kml %}
+        {{ place.kml|safe }}
+        {% endif %}
+        {# <ExtendedData> #}
+        {#     {% for k,v in place.items %} #}
+        {#         <Data name="{{k}}"> #}
+        {#             <value>{{v|safe}}</value> #}
+        {#         </Data> #}
+        {#     {% endfor %} #}
+        {# </ExtendedData>     #}
+    </Placemark>
+{% endfor %}
+</Document>
+</kml>

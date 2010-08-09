@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
-{% load lists %}
+{% load list_tags %}
 {% block page_title %}Custom Lists{% endblock %}
 {% block title %}Custom Lists{% endblock %}
 
@@ -16,27 +16,7 @@
   </div>
   <div class="col">
     {% if list_enabled %}
-      <h3>Your list</h3>
-      
-      {% if list_items %}
-      {# {% load lists %} #}
-      <ul class="list_items">
-        {% for item in list_items %}
-          <li><strong>{{ item.content_object.name }}</strong><br />
-              {{ item.content_object.amount }}<br />
-              {{ item.content_object.pk }}<br />
-              {% list_item_edit item.content_object %}
-              </li>
-        {% endfor %}        
-      </ul>
-      {% else %}
-        {% url home as home_url %}
-      <p>{% blocktrans %}
-        <p>There are no items in your list yet.</p>
-        <p>To add items, <a href="{{ home_url }}">browse or search</a> the site and click on the icon next to a recipient.</p>
-      {% endblocktrans %}</p>
-      {% endif %}
-      <a href="{% url deactivate_list %}">Deactivate this list</a>
+    {% include "blocks/list_items.html" %}
     {% else %}
       <h3>Create a list</h3>
       <p>You don't currently have a list activated. <a href="{% url activate_list %}">Activate one now</a></p>

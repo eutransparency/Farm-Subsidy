@@ -2,8 +2,8 @@
 {% load humanize %}
 
 {% block title %}
-  {% if location.0.name %}
-      {{ location.0.name|title }}, {{ country.name }}
+  {% if location.name %}
+      EU Farm subsidies for {{ location.0.name|title }}, {{ country.name }}
   {% else %}
     All locations in {{ country.name }}
   {% endif %}
@@ -12,7 +12,7 @@
 
 {% block page_title %}
     {% if location.name %}
-        {{ location.name|title }}, {{ country.name }}
+        EU Farm subsidies for {{ location.name|title }}, {{ country.name }}
     {% else %}
       All locations in {{ country.name }}
     {% endif %}
@@ -20,26 +20,18 @@
 
 {% block content %}
   {% if location.recipients %}    
-    <p>{{ location.recipients|intcomma }} recipients received &euro;{{ location.total|floatformat:2|intcomma }}  </p>
+    <p>{{ location.recipients|intcomma }} recipients in {{ location.name|title }} received a total of &euro;{{ location.total|floatformat:2|intcomma }} </p>
   {% endif %} 
   
   {% if sub_locations %}
-    <img src='http://maps.google.com/maps/api/staticmap?size=400x400&sensor=false
-        {% for l in sub_locations %}
-            {% ifnotequal l.lat 0 %}
-                &markers={{ l.lat }},{{ l.lon }}|label:{{ l.name }}
-            {% endifnotequal %}
-        {% endfor %}
-        &key={{ GOOGLE_MAPS_API_KEY }}' />
-  
     <div class="block top_recipients">
-      <h3>Sub-locations</h3>
+      <h3>Breakdown by place</h3>
       <table>  
         <thead class="sort-{{ sub_location_sort }}">
-          <th><a href="?sublocation=name" class="name">Name</a></th>
-          <th><a href="?sublocation=amount" class="amount">Amount</a></th>
-          <th><a href="?sublocation=recipients" class="recipients">Recipients</a></th>
-          <th><a href="?sublocation=avg" class="avg">Average per recipient</a></th>
+          <th>Name</th>
+          <th>Amount</th>
+          <th>Recipients</th>
+          <th>Average per recipient</th>
           
         </thead>
         <tbody>
@@ -60,7 +52,7 @@
   
   
   <div class="block top_recipients">
-    <h3>Top Recipients</h3>
+    <h3>Recipients</h3>
     <table>  
       <thead>
         <th>Name</th>
@@ -76,7 +68,6 @@
 
       </tbody>
     </table>
-    <a href="">View All</a>
   </div>
   
   

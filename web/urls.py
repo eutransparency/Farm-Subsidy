@@ -2,7 +2,8 @@ from django.conf.urls.defaults import *
 from web import settings
 from data import countryCodes
 # Uncomment the next two lines to enable the adminn:
-from django.contrib import admin
+# from django.contrib import admin
+from django.contrib.gis import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -18,7 +19,7 @@ urlpatterns = patterns('',
     (r'lists/', include('listmaker.urls')),
     (r'^accounts/', include('registration.urls')),
 
-    # (r'^api/', include('farmsubsidy.web.api.urls')),
+    (r'^api/', include('web.api.urls')),
     )
 
 if settings.DEBUG:
