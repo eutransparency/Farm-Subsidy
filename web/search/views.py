@@ -33,11 +33,12 @@ def search(request, q=None, search_map=False):
         if 'scheme' in request.GET:
             sqs = sqs.filter(scheme=request.GET['scheme'])
         
-        sqs = sqs.facet('scheme').facet('country')
+        sqs = sqs.facet('country')
 
         total = 0
         for t in sqs:
-            total += t.object.total
+            if t.object.total:
+              total += t.object.total
         
         results = len(sqs)
     if search_map:
