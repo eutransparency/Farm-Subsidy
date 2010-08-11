@@ -15,7 +15,6 @@ import emitters
 def add_kml_to_recipient(recipient):
     # Try to get KML for this recipient
     geos = recipient.georecipient_set.all()
-    print geos
     if len(geos) > 0:
         recipient.kml = geos.kml()[0].location.kml
     return recipient

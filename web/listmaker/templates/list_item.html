@@ -15,26 +15,15 @@
   <table>
     <thead>
       <th>Name</th>
-      <th>Payments</th>
       <th>Amount</th>
     </thead>
     <tbody>
       {% for item in list_item.listitem_set.all %}
         <tr>
-          <td>{{ item.content_object.name }} ({{ item.content_object.recipient_id }})</td>
+          <td>{{ item.content_object.name }} ({{ item.content_object.pk }})</td>
           <td>
-            ---
-            <ul>{% for payment in item.content_object.payment_set.all %}
-            <li>
-              {{ payment.amount }}
-              {{ payment.scheme }}
-            </li>
-          {% endfor %}</ul>
-          
-          
+            {{ item.content_object.total }}
           </td>
-          <td>{{ item.content_object.port.name }}</td>
-          <td>{{ item.content_object.amount }}</td>
         </tr>
       {% endfor %}
       <p></p>

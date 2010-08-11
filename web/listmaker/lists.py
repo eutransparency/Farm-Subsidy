@@ -4,6 +4,8 @@ Redis read/write interface/backend for lists
 
 import redis
 
+import models
+
 EXPIRE_TIME = 60*60*24*10
 
 r = redis.Redis()
@@ -58,15 +60,24 @@ def add_item(list_name, item_key, object_hash):
         r.expire("%s:hashes:%s" % (list_name, item_key), EXPIRE_TIME)
 
 
-def save_items(list_name):
+def save_items(list_object, list_name):
     """
     Converts whatever is in redis in to ListItem DB objects (IE, GFKs to the
     content object)
+    
+    Requires a List object
     """
     
     active_list_items = list_items(list_name)
-    try:
-        active_list = List.objects.get()
-    except:
-        pass
+
+    # Delete all existing ListItems relating to this list
+    list_object.listitem_set.all().delete()
     
+    for item in active_list_items:
+        i = models.ListItem()
+        if item.get('content_type') and item.get('content_object'):
+            i.content_type_id = item.get('content_type')
+            i.object_id = item.get('content_object')
+            i.list_id = list_object
+            i.save()
+        # i = models.ListItem()
