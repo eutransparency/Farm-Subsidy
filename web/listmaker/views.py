@@ -71,7 +71,7 @@ def manage_lists(request, list_id=None):
         if form.is_valid():
             
             if request.session.get('list_name'):
-                lists.save_items(list_id)
+                lists.save_items(list_object, request.session.get('list_name'))
             
             form.save()
             return HttpResponseRedirect(form.instance.get_absolute_url())
@@ -143,8 +143,8 @@ def edit_list_items(request, list_id=None):
     request.session['list_enabled'] = True
     list_items = [i for i in list_object.listitem_set.all()]
     request.session['list_items'] = list_items
-    list_total = [i.content_object.amount for i in list_items]
-    request.session['list_total'] = list_total
+    # list_total = [i.content_object.amount for i in list_items]
+    # request.session['list_total'] = list_total
     
     request.session.modified = True
     return HttpResponseRedirect(reverse('list_detail', args=(list_object.pk,)))
@@ -179,8 +179,15 @@ def add_remove_item(request):
         object_hash = {}
         for f in co.list_hash_fields:
             object_hash[f] = co.__dict__[f]
+
+        # Add the URL, if we can get it
         if hasattr(co, 'get_absolute_url'):
             object_hash['get_absolute_url'] = co.get_absolute_url()
+
+        # Add content object and content_type
+        object_hash['content_object'] = co.pk
+        object_hash['content_type'] = ct.pk
+        
         lists.add_item(list_name, object_id, object_hash)
 
     # if action == "remove":
