@@ -30,7 +30,6 @@ class SchemeManager(models.Manager):
         schemes = schemes.order_by('-total')
         return schemes[:limit]
 
-
 class SchemeYearManager(models.Manager):
     """
     Various reusable queries, like top_schemes

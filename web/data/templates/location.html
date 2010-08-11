@@ -20,7 +20,7 @@
 
 {% block content %}
   {% if location.recipients %}    
-    <p>{{ location.recipients|intcomma }} recipients in {{ location.name|title }} received a total of &euro;{{ location.total|floatformat:2|intcomma }} </p>
+    <p>Since {{ years_max_min.0 }}, {{ location.recipients|intcomma }} recipients in {{ location.name|title }} received a total of &euro;{{ location.total|floatformat:2|intcomma }} </p>
   {% endif %} 
   
   {% if sub_locations %}

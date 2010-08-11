@@ -47,11 +47,13 @@
         {% for point in sqs %}
             {% if point.object.lat %}
                 var point = new GLatLng({{point.object.lat}}, {{point.object.lng}});
-                var marker = createMarker(point, '\
+                var marker = createMarker(point, '<div style="text-align:center">\
                 <h3><a href="{{ point.object.get_absolute_url }}">{{ point.object.name }}</a></h3>\
-                <p><br/>\
-                <strong>&euro;{{ point.object.total|floatformat:2|intcomma }}</strong>\
+                <p>\
+                <strong>&euro;{{ point.object.total|floatformat:2|intcomma }}</strong><br />\
+                <img src="http://maps.google.com/maps/api/staticmap?center={{point.object.lat}},{{point.object.lng}}&zoom=15&size=245x200&sensor=false&maptype=satellite" title="Satellite image" alt="Satellite image" width="245" height="200"/>\
                 <br/></p>\
+                </div>\
                 ')
                 map.addOverlay(marker);
                 bounds.extend(point);
