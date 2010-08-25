@@ -62,13 +62,13 @@
   </div>
   
   {# Only show the graph if there is more than one payment_year #}
-  {% if payment_years.1 %}  
-    <div class="section">
-        <h3>Breakdown by year</h3>
-        {% load graphs %}
-        {% graph "recipient_graph" recipient.globalrecipientidx %}
-    </div>
-  {% endif %}
+  {# {% if payment_years.1 %}   #}
+  {#   <div class="section"> #}
+  {#       <h3>Breakdown by year</h3> #}
+  {#       {% load graphs %} #}
+  {#       {% graph "recipient_graph" recipient.globalrecipientidx %} #}
+  {#   </div> #}
+  {# {% endif %} #}
   
     {% load comments i18n %}  
     <div class="section">
