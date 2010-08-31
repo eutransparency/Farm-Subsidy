@@ -3,6 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     {% load i18n %}
+    {% load lists %}
     {% load cache %}
     {% load humanize %}
     {% load inthenews %}    
@@ -16,11 +17,12 @@
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery.example.min.js"></script>
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery-ui-1.7.1.custom.min.js"></script>
     <script src="{{ MEDIA_URL }}/js/scripts.js" type="text/javascript" charset="utf-8"></script>
-    <script src="{{ MEDIA_URL }}/js/lists.js" type="text/javascript" charset="utf-8"></script>    
+
     
-    {% if custom_list.active %}
+    {% if list_enabled %}
         <link rel="stylesheet" href="/media/css/custom_lists.css" type="text/css" media="screen, projection">
         <script src="{{ MEDIA_URL }}/js/custom_lists.js" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ MEDIA_URL }}/js/lists.js" type="text/javascript" charset="utf-8"></script>    
     {% endif %}    
 
 </head>
@@ -153,7 +155,7 @@
                 </ul>
             {% endif %}
       {% endblock %}
-                        {% include "blocks/list_view.html" %}
+      {% include "blocks/list_view.html" %}
     </div>
     
     <div id="content">
