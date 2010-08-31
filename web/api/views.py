@@ -39,8 +39,10 @@ def documentation(request, path):
     
     Simples.
     """
-    
+    if path.endswith('/') and len(path) > 1:
+        path = path[:-1]
     tempalte_guesses = [path]
+    # tempalte_guesses.append("%s.html" % path)
     tempalte_guesses.append("documentation/%s.html" % path)
     tempalte_guesses.append("documentation/%s/index.html" % path)
     c = RequestContext(request)

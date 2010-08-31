@@ -108,6 +108,12 @@ a {color:#3092eb;}
 
 br.clear {clear:both;}
 
+
+dl {line-height:1.5em;}
+dl dt {font-weight:bold;}
+dl dd {padding-left:1em;}
+
+
 /* metadata */
 dl.metadata {line-height:1.5em;}
 dl.metadata dt {font-weight:normal; float:left; clear:left; padding-right:1em;}

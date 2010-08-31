@@ -16,14 +16,14 @@ from web.data import countryCodes
 
 import views
 
-def v1_country_url(pattern, *args, **kwargs):
+def country_url(pattern, *args, **kwargs):
     """
     Wrap url() with a URL that always prepends a list of countries (upper and
     lower case)
     """
     countries = countryCodes.country_codes()
     countries = "|".join(countries)
-    return url(r'^v1/(?i)(?P<country>%s)/%s' % (countries, pattern), *args, **kwargs)
+    return url(r'^(?i)(?P<country>%s)/%s' % (countries, pattern), *args, **kwargs)
 
 
 recipient_handler = Resource(RecipientHandler)
@@ -33,16 +33,21 @@ countryoverview_handler = Resource(CountryOverviewHandler)
 
 # API v1 URLS
 urlpatterns = patterns('',
-    
-    url(r'^v1/recipient/(?P<globalrecipientidx>[^/]+)/', recipient_handler),
-    url(r'^v1/search/(?P<term>[^/]+)/', search_handler),
-    v1_country_url('info/', countryoverview_handler),
+
+    # Recipient
+    url(r'^recipient/', recipient_handler),
+
+    url(r'^search/', search_handler),
+    url(r'^info/', countryoverview_handler),
 
     # # Geo API
     # url(r'v1/geo/(?P<lng>[^/]+),(?P<lat>[^/]+)\.(?P<format>[^/]+)', views.geo),
-   
+      
+    # API redirect to docs 
+    url(r'^$', 'django.views.generic.simple.redirect_to', {'url': '/api/docs/'}),
+
     # Documentation 
-    url(r'^(?P<path>.*)$', views.documentation),
+    url(r'^docs/(?P<path>.*)$', views.documentation, name='search'),
 )
 
 
