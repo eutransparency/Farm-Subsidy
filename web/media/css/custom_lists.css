@@ -37,8 +37,8 @@
 #list_arrow {
   background:url('../images/arrows.png');
   position:absolute;
-  right:2px;
-  top:2px;
+  right:8px;
+  top:12px;
   height:15px;
   width:18px;
   display:block;
