@@ -17,7 +17,7 @@ class KMLEmitter(Emitter):
 
         if isinstance(data, dict):
             data = [v for k,v in data.items()]
-        print data
+
         context = {
             'document_title': title,
             'places': data,

@@ -69,7 +69,6 @@ def country(request, country, year=DEFAULT_YEAR):
     transparency = None
     if country != "EU":
       transparency = transparency_score(country)
-    # print top_regions
     
     #get the most recent news story
     latest_news_item = False    
@@ -126,7 +125,6 @@ def recipient(request, country, recipient_id, name):
           p.scheme = s
           payments.append(p)
 
-  print type(payments[0].scheme)
   recipient_total = recipient.total
   payment_years = list(set(payment.year for payment in payments))
 
@@ -135,8 +133,6 @@ def recipient(request, country, recipient_id, name):
   for payment in payments:
       for scheme in payment.scheme.schemetype_set.all():
           payment_schemes.append(scheme.scheme_type)
-  print "worked"
-  print payment_schemes
   
   try:
       georecipient = models.GeoRecipient.objects.get(pk=recipient.pk)
