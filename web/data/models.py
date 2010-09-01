@@ -46,7 +46,7 @@ class Recipient(models.Model):
 
     LIST_ENABLED = True
     list_hash_fields = ('name', 'countrypayment', 'total')
-    list_total_field = 'amount'
+    list_total_field = 'total'
     
 
     def __unicode__(self):

@@ -10,14 +10,13 @@ $(function() {
         // Move the list block to the footer
         $('.lists_footer').remove().insertAfter('#footer');
         
-        
         // Hide the list items by default
         $('.list_block .list_items #box_content').addClass('hide');
         
         $('#footer').css({'margin-bottom': '40px'})
         
         // Open the list box when the total is pressed
-        $('.list_block').click(function() {
+        $('.list_block .list_items').click(function() {
             $('.list_block .list_items #box_content').slideToggle('fast');
             $('.list_block .list_items #list_arrow').toggleClass('list_on_display');
         });
@@ -26,51 +25,7 @@ $(function() {
     
     SetUp();
 
-
-
-      // $('#add').hide()
-      // 
-      // $("input:checkbox.custom_list_toggle").click(function() {
-      //   id = $(this).attr('name')  
-      //   if ($(this).attr('checked')) {
-      // 
-      //       $.getJSON("/lists/ajax/add/" + id, function(data){
-      //         total = data.total
-      //         console.debug(total)
-      //       });
-      //       
-      //       $(this).parent().parent().toggle('transfer', {to : '#list p strong'}, function() {
-      //         $('#list p').effect('highlight',null,null, function() {
-      //           $('#list p strong').html('&euro;'+total)
-      //           
-      //           $('#list_items').fadeOut(100,function(){
-      //             $('#list_items').load("/lists/ajax/list", function() {
-      //               if ($('#list_items').hasClass('hide')==false) {
-      //                 $('#list_items').fadeIn(100,function(){})
-      //               }
-      //             })
-      //           })
-      //         }) 
-      //       })
-      //         
-      //   } else {
-      //     $.getJSON("/lists/ajax/del/" + id, function(data){
-      //       total = data.total
-      //     });
-      // 
-      //     $('#list p strong').toggle('transfer', {to : $(this).parent().parent()}, function() {
-      //       $(this).effect('highlight',null,null, function() {
-      //         $('#list p strong').html('&euro;'+total)
-      //         $('#list_items').load("/lists/ajax/list")
-      //       }) 
-      //     })
-      // 
-      //   }
-      // });
-
-
-
-
+    
     
     
     function make_icons(){
@@ -142,5 +97,52 @@ $(function() {
 
     });
 
+
+
+      // $('#add').hide()
+      // 
+      // $("input:checkbox.custom_list_toggle").click(function() {
+      //   id = $(this).attr('name')  
+      //   if ($(this).attr('checked')) {
+      // 
+      //       $.getJSON("/lists/ajax/add/" + id, function(data){
+      //         total = data.total
+      //         console.debug(total)
+      //       });
+      //       
+      //       $(this).parent().parent().toggle('transfer', {to : '#list p strong'}, function() {
+      //         $('#list p').effect('highlight',null,null, function() {
+      //           $('#list p strong').html('&euro;'+total)
+      //           
+      //           $('#list_items').fadeOut(100,function(){
+      //             $('#list_items').load("/lists/ajax/list", function() {
+      //               if ($('#list_items').hasClass('hide')==false) {
+      //                 $('#list_items').fadeIn(100,function(){})
+      //               }
+      //             })
+      //           })
+      //         }) 
+      //       })
+      //         
+      //   } else {
+      //     $.getJSON("/lists/ajax/del/" + id, function(data){
+      //       total = data.total
+      //     });
+      // 
+      //     $('#list p strong').toggle('transfer', {to : $(this).parent().parent()}, function() {
+      //       $(this).effect('highlight',null,null, function() {
+      //         $('#list p strong').html('&euro;'+total)
+      //         $('#list_items').load("/lists/ajax/list")
+      //       }) 
+      //     })
+      // 
+      //   }
+      // });
+
+
+
+
+    
+    
 
 });

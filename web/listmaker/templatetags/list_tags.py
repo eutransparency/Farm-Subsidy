@@ -1,6 +1,8 @@
 from django.contrib.contenttypes.models import ContentType
 from django.template import Library, Node
 from django.template import Context, Variable
+from django.template.defaultfilters import floatformat
+from django.contrib.humanize.templatetags.humanize import intcomma
 
 from listmaker.models import List
 from listmaker import lists
@@ -39,7 +41,7 @@ class ListItems(Node):
         context[self.varname] = lists.list_items(self.list_name)
         return ''
 
-        return 
+
 @register.tag
 def list_items(parser, token):
     bits = token.contents.split()    
@@ -49,5 +51,14 @@ def list_items(parser, token):
     else:
         varname = None
     return ListItems(bits[1], varname)
+
+
+@register.simple_tag
+def list_total(list_name):
+    total = lists.get_total(list_name)
+    total = floatformat(total, 2)
+    total = intcomma(total)
+    return total
+
 
 

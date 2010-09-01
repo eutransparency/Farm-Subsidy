@@ -35,9 +35,41 @@ def create_list(request):
     
 def delete_list(request):
     if request.session.get('list_name'):
+        for k in r.keys("%s:*" % request.session['list_name']):
+            r.delete(k)
         r.delete(request.session['list_name'])
         del request.session['list_name']
         request.session.modified = True
+
+def get_total(list_name):
+    try:
+        return float(r.get('%s:total' % list_name))
+    except:
+        return float(0)
+
+def make_total(list_name, method, total=None):
+    existing_total = r.get("%s:total" % list_name)
+    if existing_total:
+        existing_total = float(existing_total)
+    else:
+        existing_total = float(0)
+
+    if method == "add":
+        new_total = existing_total + total
+    if method == "remove":
+        new_total = existing_total - total
+    if method == "recreate":
+        print "remaking total"
+        tmp_total = 0
+        for obj in r.keys('list:1:hashes:*'):
+            print tmp_total
+            tmp_total += float(r.hget(obj, 'total'))
+        print tmp_total
+        new_total = tmp_total
+    
+    r.delete("%s:total" % list_name)
+    r.set("%s:total" % list_name, new_total)
+    return new_total
 
 def list_items(list_name):
     """
@@ -59,6 +91,16 @@ def add_item(list_name, item_key, object_hash):
             r.hset("%s:hashes:%s" % (list_name, item_key), k, v)
         r.expire("%s:hashes:%s" % (list_name, item_key), EXPIRE_TIME)
 
+def remove_item(list_name, item_key):
+    """
+    Deleting an item from a list.
+    """
+    print "removing", list_name, item_key 
+    # remove the hash
+    r.delete("%s:hashes:%s" % (list_name, item_key))
+    # remove the item from the list_items set
+    r.srem("%s:items" % list_name, item_key)
+    
 
 def save_items(list_object, list_name):
     """
