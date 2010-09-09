@@ -140,3 +140,6 @@ STATS_YEAR = 2008
 STATS_DIR = ROOT_PATH + '/data/stats'
 
 PISTON_DISPLAY_ERRORS = False
+
+TEST_RUNNER='django.contrib.gis.tests.run_tests'
+POSTGIS_TEMPLATE='template_postgis'
