@@ -57,7 +57,7 @@ def country(request, country, year=DEFAULT_YEAR):
     """
     country = country.upper()
 
-    years_max_min = models.CountryYear.objects.year_max_min('BE')
+    years_max_min = models.CountryYear.objects.year_max_min(country)
 
     # years = models.data.objects.years(country=country)
 

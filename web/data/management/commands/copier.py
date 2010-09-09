@@ -76,3 +76,4 @@ class Command(BaseCommand):
             self.filename = self.format_file_name(table)
             self.columns = self.get_columns()
             self.copy()
+
