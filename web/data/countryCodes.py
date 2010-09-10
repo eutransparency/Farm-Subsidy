@@ -24,7 +24,7 @@ def country_codes(code=None, local='GB'):
   countries['LU']	=	{'GB' : 'Luxembourg'}
   countries['MT']	=	{'GB' : 'Malta'}
   countries['NL']	=	{'GB' : 'Netherlands'}
-  countries['PO']	=	{'GB' : 'Poland'}
+  countries['PL']	=	{'GB' : 'Poland'}
   countries['PT']	=	{'GB' : 'Portugal'}
   countries['RO']	=	{'GB' : 'Romania'}
   countries['SK']	=	{'GB' : 'Slovakia'}  

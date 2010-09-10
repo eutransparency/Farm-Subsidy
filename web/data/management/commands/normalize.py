@@ -127,7 +127,7 @@ class Command(BaseCommand):
         
         # First do the recipients
         print "recipients"
-        self.totals()
+        #self.totals()
         print "schemes"
         self.schemes()
     
