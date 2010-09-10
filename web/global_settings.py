@@ -41,6 +41,8 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     #'django.middleware.cache.UpdateCacheMiddleware',
+    'johnny.middleware.LocalStoreClearMiddleware',
+    'johnny.middleware.QueryCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -93,6 +95,7 @@ INSTALLED_APPS = (
     'listmaker',
     'features',
     'django.contrib.gis',    
+    'johnny',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -138,3 +141,9 @@ HAYSTACK_INCLUDE_SPELLING = True
 DEFAULT_YEAR = 0
 STATS_YEAR = 2008
 STATS_DIR = ROOT_PATH + '/data/stats'
+
+CACHE_BACKEND = 'redis_cache.cache://localhost:6379'
+JOHNNY_MIDDLEWARE_KEY_PREFIX='jc_farm_stage'
+JOHNNY_MIDDLEWARE_SECONDS = 200000000
+
+
