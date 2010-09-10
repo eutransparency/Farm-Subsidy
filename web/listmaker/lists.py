@@ -59,12 +59,9 @@ def make_total(list_name, method, total=None):
     if method == "remove":
         new_total = existing_total - total
     if method == "recreate":
-        print "remaking total"
         tmp_total = 0
         for obj in r.keys('list:1:hashes:*'):
-            print tmp_total
             tmp_total += float(r.hget(obj, 'total'))
-        print tmp_total
         new_total = tmp_total
     
     r.delete("%s:total" % list_name)
@@ -84,7 +81,6 @@ def item_in_list(list_name, item_key):
     return r.sismember("%s:items" % list_name, item_key)
 
 def add_item(list_name, item_key, object_hash):
-    print "adding", list_name, item_key, object_hash
     if not item_in_list(list_name, item_key):
         r.sadd("%s:items" % list_name, item_key)
         for k,v in object_hash.items():
@@ -95,7 +91,6 @@ def remove_item(list_name, item_key):
     """
     Deleting an item from a list.
     """
-    print "removing", list_name, item_key 
     # remove the hash
     r.delete("%s:hashes:%s" % (list_name, item_key))
     # remove the item from the list_items set
