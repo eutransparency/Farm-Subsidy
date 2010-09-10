@@ -11,6 +11,9 @@ def country_menu():
 register.inclusion_tag('blocks/country_menu.html')(country_menu)
 
 def country_map(country_code):
+    if country_code == "EU":
+        countries = countryCodes.country_codes()[1:]
+        country_code = "|".join(countries)
     return {"country_code" : country_code}
 
 register.inclusion_tag('blocks/country_map.html')(country_map)    

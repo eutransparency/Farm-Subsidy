@@ -39,12 +39,14 @@ def activate(request):
 
 
 def deactivate(request):
-    if request.POST.get('deactivate_confirm'):        
+    if request.POST.get('deactivate_confirm'):
+        if request.POST['deactivate_confirm'].lower() == "save":
+            return HttpResponseRedirect(reverse('save_list'))
         lists.delete_list(request)
         request.notifications.add("Your list has been deactivated")
         return HttpResponseRedirect(reverse('lists_home'))
     return render_to_response(
-        'deactivate_warming.html',
+        'deactivate_warning.html',
         {},
         context_instance = RequestContext(request)
         )
@@ -170,12 +172,14 @@ def add_remove_item(request):
 
     content_type = request.POST.get('content_type', None)
     object_id = request.POST.get('object_id', None)
+    item_key = "%s:%s" % (content_type, object_id)
 
+    # Load the object from the database
+    ct = ContentType.objects.get(name=content_type)
+    co = ct.get_object_for_this_type(pk=object_id)
+
+    
     if action == "add":
-        # Load the object from the database
-        ct = ContentType.objects.get(name=content_type)
-        co = ct.get_object_for_this_type(pk=object_id)
-
         object_hash = {}
         for f in co.list_hash_fields:
             object_hash[f] = co.__dict__[f]
@@ -188,22 +192,15 @@ def add_remove_item(request):
         object_hash['content_object'] = co.pk
         object_hash['content_type'] = ct.pk
         
-        lists.add_item(list_name, object_id, object_hash)
+        lists.add_item(list_name, item_key, object_hash)
 
-    # if action == "remove":
-    #     try:
-    #         for i in list_items:
-    #             # This is needed becuase an instance of the object
-    #             # maybe saved, and there wont be the same
-    #             if i.content_type == list_item.content_type and \
-    #             i.object_id == list_item.object_id:
-    #                 list_items.remove(i)
-    #             # list_items.remove(list_item)
-    #     except:
-    #         pass
+    if action == "remove":
+        lists.remove_item(list_name, item_key)
 
     # Create the total for this list
-    # list_total = sum([float(i.content_object.amount) for i in list_items])
+    if hasattr(co, 'list_total_field'):
+        total_field = getattr(co, co.list_total_field)
+        list_total = lists.make_total(list_name, action, total_field)
     
     t = select_template(["blocks/ahah_list.html",])
     c = RequestContext(request, RequestContext(request))
@@ -213,7 +210,7 @@ def add_remove_item(request):
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         return HttpResponse(json.dumps(
             {
-            # 'total' : list_total,
+            'total' : list_total,
             'html' : html, 
             'action' : action,
             # 'list_item_id' : list_item_id,

@@ -147,3 +147,7 @@ JOHNNY_MIDDLEWARE_KEY_PREFIX='jc_farm_stage'
 JOHNNY_MIDDLEWARE_SECONDS = 200000000
 
 
+PISTON_DISPLAY_ERRORS = False
+
+TEST_RUNNER='django.contrib.gis.tests.run_tests'
+POSTGIS_TEMPLATE='template_postgis'

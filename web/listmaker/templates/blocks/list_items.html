@@ -1,18 +1,23 @@
+{% load humanize %}
 {% load list_tags %}
 {% list_items list_name as list_items %}
 
-<ul class="list_items">
-  Editing <a href="{% url save_list %}">{% if list_object.name %}{{ list_object.name }}{% else %}a new list{% endif %}</a>
-  {% if list_items %}
-    {% for item in list_items %}
-      <li><strong><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></strong><br />
-          {{ item.total }}<br />
-          {# {% list_item_edit item.content_object %} #}
-          </li>
-    {% endfor %}
-  {% else %}
-  <p>There are no items in your list yet.</p>
-  <p>To add items, <a href="{{ home_url }}">browse or search</a> the site and click on the icon next to a recipient.</p>
-
-  {% endif %}
-</ul>
+<div class="list_items">
+    <strong>Total:</strong> &euro;{% list_total list_name %}
+    <span id="list_arrow"></span>
+    <div id="box_content">
+        {% if list_items %}
+            <ul>
+            {% for item in list_items %}
+                <li><strong><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></strong><br />
+                &euro;{{ item.total|floatformat:"2"|intcomma }}<br />
+                {# {% list_item_edit item.content_object %} #}
+                </li>
+            {% endfor %}
+            </ul>
+            {% else %}
+                <p>There are no items in your list yet.</p>
+                <p>To add items, <a href="{{ home_url }}">browse or search</a> the site and click on the icon next to a recipient.</p>
+        {% endif %}
+    </div>
+</div>

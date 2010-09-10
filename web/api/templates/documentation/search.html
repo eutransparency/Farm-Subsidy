@@ -1,0 +1,46 @@
+{% extends "doc_base.html" %}
+
+{% block content %}
+    <p>Preforms a search over all recipients in the database.</p>
+    
+    <dl>
+        <dt>/search/</dt>
+        <dd>
+            <h5>Prams:</h5>
+            <ul>
+                <li><strong>term</strong> &mdash; text to search for</li>
+            </ul>
+            <h5>Example Request</h5>
+            <p>http://farmsubsidy.org/api/search/?term=nestle&amp;format=json</p>
+            <h5>Example Response</h5>
+            <p><pre>
+                {
+                    "0": {
+                        "town": "ANDERLECHT", 
+                        "total": -3329.3000000000002, 
+                        "geo2": "Région Bruxelloise / Brussels Gewest", 
+                        "name": "NESTLE BELGILUX ", 
+                        "geo3nationallanguage": "", 
+                        "globalrecipientidx": "BE51869", 
+                        "geo1": "Région Bruxelloise / Brussels Gewest", 
+                        "address1": "", 
+                        "address2": "", 
+                        "countryrecipient": "BE", 
+                        "zipcode": "BE-1070", 
+                        "geo4": "", 
+                        "geo4nationallanguage": "", 
+                        "geo1nationallanguage": "", 
+                        "lat": 50.836620000000003, 
+                        "lng": 4.3069699999999997, 
+                        "geo2nationallanguage": "", 
+                        "globalrecipientid": "BE51869", 
+                        "geo3": "ANDERLECHT", 
+                        "countrypayment": "BE"
+                    }
+                }
+            </pre></p>
+        </dd>
+    </dl>
+    
+    
+{% endblock %}

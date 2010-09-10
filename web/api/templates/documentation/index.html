@@ -1,6 +1,20 @@
-{% extends "base.html" %}
+{% extends "doc_base.html" %}
 {% block title %}Farmsubsidy.org API{% endblock %}
 {% block page_title %}Farmsubsidy.org API{% endblock %}
 {% block content %}
-    TODO
+    <p>This is the API on to the data the powers farmsubsidy.org.  You might want to <a href="">read about how we get the data</a> or <a href="">download the raw data</a> if you want to do more in depth analysis.</p>
+    
+
+    <h3>Output</h3>
+    
+    <p>All methods can be output in the following formats, by appending the 'format' GET parameter:</p>
+    <ul>
+        <li>JSON (default) (for JSONP add 'callback' to the GET request)</li>
+        <li>XML</li>
+        <li>YAML</li>
+    </ul>
+    
+    <h3>Throttling</h3>
+    <p>Requests are throttled based on IP address, and unless otherwise stated are limited to 30 requests a minute.</p>
+    <p>If you need faster access to the data, you can <a href="/about/#contactus">contact us</a> or <a href="/getthedata/download">download the data</a> yourself</p>
 {% endblock %}

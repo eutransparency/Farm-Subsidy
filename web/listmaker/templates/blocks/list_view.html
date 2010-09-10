@@ -4,6 +4,8 @@
   <div class="list_block">
   <h3>Custom Lists</h3>
   {% include "blocks/list_items.html" %}
+      {% if list_object.name %}<a href="{% url save_list %}">{{ list_object.name }}</a>{% else %}New list<br /><a href="{% url save_list %}">Save</a>{% endif %}
+  <a href="{% url deactivate_list %}">Deactivate</a>
   </div>
 
   

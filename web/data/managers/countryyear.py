@@ -25,7 +25,9 @@ class CountryYearManager(models.Manager):
         years = years.order_by('-year')
         years = years.values('year')
         years = [y['year'] for y in years]
-        print years
+        if not years:
+            # If no years, return a 'blank' list
+            years = [0,0]
         
         return min(years), max(years)
 

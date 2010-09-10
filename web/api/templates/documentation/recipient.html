@@ -1,0 +1,58 @@
+{% extends "doc_base.html" %}
+{% block content %}
+    <h4> Recipients</h4>
+    <p>Returns a recipient object, with all payments made to that recipient.</p>
+    <dl>
+        <dt>/recipient/</dt>
+        <dd>
+            <h5>Prams:</h5>
+            <ul>
+                <li><strong>id</strong> &mdash; Recipient ID</li>
+            </ul>
+            <h5>Example Request</h5>
+            <p>http://farmsubsidy.org/api/recipient/?id=BE10&amp;format=json</p>
+            <h5>Example Response</h5>
+            <p><pre>
+                {
+                    "countryrecipient": "BE", 
+                    "geo3nationallanguage": "", 
+                    "geo4": "", 
+                    "geo4nationallanguage": "", 
+                    "lng": 3.44842, 
+                    "total": 2936421.6899999999, 
+                    "zipcode": "BE-9880", 
+                    "geo2nationallanguage": "", 
+                    "recipientidx": "10", 
+                    "address1": "", 
+                    "address2": "", 
+                    "recipientid": "10", 
+                    "lat": 51.083829999999999, 
+                    "town": "AALTER", 
+                    "name": "Campina BV ", 
+                    "geo1": "Vlaams Gewest", 
+                    "geo3": "AALTER", 
+                    "geo2": "Oost-Vlaanderen", 
+                    "globalrecipientidx": "BE10", 
+                    "geo1nationallanguage": "", 
+                    "payments": [
+                        {
+                            "globalpaymentid": "BE5291", 
+                            "countrypayment": "BE", 
+                            "recipient_id": "BE10", 
+                            "amountnationalcurrency": 277396.91999999998, 
+                            "year": 2004, 
+                            "paymentid": "5291", 
+                            "globalrecipientid": "BE108", 
+                            "amounteuro": 277396.91999999998, 
+                            "scheme_id": "BE3"
+                        }, 
+                    ], 
+                    "globalrecipientid": "BE10", 
+                    "countrypayment": "BE"
+                }
+                
+                
+            </pre></p>
+        </dd>
+    </dl>
+{% endblock %}

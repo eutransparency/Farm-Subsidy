@@ -76,3 +76,7 @@ class Command(BaseCommand):
             self.filename = self.format_file_name(table)
             self.columns = self.get_columns()
             self.copy()
+<<<<<<< HEAD:web/data/management/commands/copier.py
+=======
+
+>>>>>>> eadccdd282fe85d26cf55623a293228fd78b1b3d:web/data/management/commands/copier.py

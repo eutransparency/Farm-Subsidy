@@ -18,5 +18,6 @@ urlpatterns = patterns('',
 
    # List Management stuff
    url(r'^lists/item/add/$',list_views.add_remove_item, name='list_item_add'),
+   url(r'^lists/item/remove/$',list_views.add_remove_item, name='list_item_remove'),
   
    )

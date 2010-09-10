@@ -1,0 +1,41 @@
+{% extends "doc_base.html" %}
+
+{% block content %}
+    <p>Returns various bits if information about the country, as seen at the top of the country pages.</p>
+    
+    <dl>
+        <dt>/info/</dt>
+        <dd>
+            <h5>Prams:</h5>
+            <ul>
+                <li><strong>country</strong> &mdash; ISO country code</li>
+            </ul>
+            <h5>Example Request</h5>
+            <p>http://farmsubsidy.org/api/info/?country=BE&amp;format=json</p>
+            <h5>Example Response</h5>
+            <p><pre>
+                {
+                    "spending_per_hectare": "&euro;570", 
+                    "proportion_of_payments_to_top_10": "35%", 
+                    "total_contribution": "&euro;2,269 Million", 
+                    "export_subsidies": "&euro;74.2 Million", 
+                    "rural_development": "121.8%", 
+                    "proportion_of_payments_to_top_20": "56%", 
+                    "proportion_direct_aids": "72%", 
+                    "contribution_per_citizen": "&euro;214", 
+                    "spending_per_farm_worker": "&euro;9,603", 
+                    "spending_per_citizen": "&euro;74", 
+                    "year": 2008, 
+                    "net_budget_balance": "&euro;-1,489 Million", 
+                    "proportion_export_subsidies": "9%", 
+                    "total_spending": "&euro;781 Million", 
+                    "direct_aids": "&euro;559.7 Million", 
+                    "proportion_rural_development": "16%", 
+                    "spending_per_farm": "&euro;16,263"
+                }
+            </pre></p>
+        </dd>
+    </dl>
+    
+    
+{% endblock %}
