@@ -22,4 +22,11 @@ class DataViewsTest(TestCase):
         def country_page(country):
             response = self.client.get(reverse('country', kwargs={'country' : country}))
             self.assertEqual(response.status_code, 200)
+        
+        def top_recipients(country):
+            # Test recipients are there
+            recipients_len = len(response.context['top_recipients'])
+            self.assertEqual(recipients_len, 10)
+                        
         self.country_runner(country_page)
+        self.country_runner(top_recipients)
