@@ -138,7 +138,11 @@ class SchemeYear(models.Model):
 
 
 class SchemeType(models.Model):
+    """
+    Model for defining what broad category a scheme fits in to.
     
+    See the "scheme_types" managment command for how this is populated.
+    """
     DIRECT = 0
     INDIRECT = 1
     RURAL = 2

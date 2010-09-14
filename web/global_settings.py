@@ -64,7 +64,7 @@ TEMPLATE_DIRS = (
     PROJECT_PATH + '/templates',
 )
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -79,7 +79,7 @@ INSTALLED_APPS = (
     'django_notify',
     'web.api',
     'web.comments',
-    'web.countryinfo',
+    'countryinfo',
     'data',
     'search',
     'feeds',
@@ -96,7 +96,7 @@ INSTALLED_APPS = (
     'features',
     'django.contrib.gis',    
     'johnny',
-)
+]
 
 TEMPLATE_CONTEXT_PROCESSORS = (
   "django.core.context_processors.auth",

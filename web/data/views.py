@@ -8,7 +8,7 @@ from django.conf import settings
 from feeds.models import *
 from tagging.models import TaggedItem
 from misc.helpers import country_template
-from web.countryinfo.transparency import transparency_score, transparency_list
+from web.countryinfo.transparency import transparency_score
 from web.countryinfo.load_info import load_info
 from data import countryCodes
 import context_processors
