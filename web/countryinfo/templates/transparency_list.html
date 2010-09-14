@@ -1,18 +1,19 @@
 {% extends "base.html" %}
-
+{% load countryinfo %}
+{% load humanize %}
 {% block content %}
     <table>
         <thead>
-            <th></th>
-            <th>Country</th>
             <th>Rank</th>
+            <th>Country</th>
+            <th>Score</th>
         </thead>
         <tbody>
             {% for item in list %}
             <tr>
-                <td>{{ forloop.counter }}</td>
-                <td><a href="{% url country item.0.code %}">{{ item.0.name }}</a></td>
-                <td>{{ item.1 }}%</td>
+                <td>{{ item.rank|ordinal }}</td>
+                <td><a href="{% url country item.country %}">{% code_to_name item.country %}</a></td>
+                <td>{{ item.score }}%</td>
             </tr>
             {% endfor %}            
         </tbody>

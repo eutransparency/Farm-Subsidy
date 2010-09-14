@@ -2,6 +2,7 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 import transparency
+from models import TransparencyScore
 import load_info
 
 def compare(request):
@@ -16,7 +17,7 @@ def compare(request):
   
 
 def transparency_list(request):
-    transparency_list = transparency.transparency_list()
+    transparency_list = TransparencyScore.objects.all().order_by('rank')
     
     return render_to_response(
         'transparency_list.html', 
