@@ -37,7 +37,7 @@ urlpatterns = patterns('',
     # Recipient
     url(r'^recipient/', recipient_handler),
 
-    url(r'^search/', search_handler),
+    url(r'^search/', search_handler, name="api_search"),
     url(r'^info/', countryoverview_handler),
 
     # # Geo API
@@ -47,7 +47,7 @@ urlpatterns = patterns('',
     url(r'^$', 'django.views.generic.simple.redirect_to', {'url': '/api/docs/'}),
 
     # Documentation 
-    url(r'^docs/(?P<path>.*)$', views.documentation, name='search'),
+    url(r'^docs/(?P<path>.*)$', views.documentation, name='api_doc'),
 )
 
 
