@@ -2,6 +2,9 @@
 {% load countryinfo %}
 {% load humanize %}
 {% block content %}
+    
+    <img src="http://chart.apis.google.com/chart?cht=map:fixed=35,-15,71,35&amp;chs=400x520&amp;chld={{ map_countries|join:"|" }}&amp;chco=000000|{{ map_colours|join:"|" }}&amp;chf=bg,s,f2f2f2,55555" alt="payments by year" width="528" height="430"/>
+    
     <table>
         <thead>
             <th>Rank</th>
