@@ -36,7 +36,6 @@ urlpatterns = patterns('',
 
     # Recipient
     url(r'^recipient/', recipient_handler),
-
     url(r'^search/', search_handler, name="api_search"),
     url(r'^info/', countryoverview_handler),
 

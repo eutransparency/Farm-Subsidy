@@ -17,12 +17,15 @@ register.inclusion_tag('blocks/latest_lists.html')(latest_lists)
 
 
 @register.inclusion_tag('blocks/add_remove_item.html', takes_context=True)
+
 def list_item_edit(context, list_object):
     list_name = context['request'].session.get('list_name')
     ct = ContentType.objects.get_for_model(list_object)
 
     if list_name:
         in_list = lists.item_in_list(list_name, "%s:%s" % (ct, list_object.pk))
+    else:
+        in_list = False
 
     return {
         'ct' : ct,
