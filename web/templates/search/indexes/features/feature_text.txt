@@ -1,0 +1,4 @@
+{% load markup %}
+
+{{ object.title }}
+{{ object.body|markdown|striptags }}

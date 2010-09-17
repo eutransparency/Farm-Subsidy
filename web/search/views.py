@@ -6,6 +6,8 @@ from django.shortcuts import render_to_response
 from haystack.query import SearchQuerySet
 from haystack import backend
 
+from data.models import Recipient
+from features.models import Feature
 
 import forms
 
@@ -25,7 +27,7 @@ def search(request, q=None, search_map=False):
     if q:
         form = forms.SearchForm(initial={'q' : q})
         sqs = SearchQuerySet()
-        sqs = sqs.auto_query(q).load_all()
+        sqs = sqs.auto_query(q).load_all().models(Recipient)
         sqs = sqs.exclude(name__startswith="unknown")
         
         if 'country' in request.GET:
@@ -41,6 +43,12 @@ def search(request, q=None, search_map=False):
               total += t.object.total
         
         results = len(sqs)
+        
+        # Features search:
+        feature_search = SearchQuerySet()
+        feature_search = feature_search.models(Feature)
+        feature_search = feature_search.auto_query(q).load_all().highlight()
+        
     if search_map:
         t = 'map.html'
     else:

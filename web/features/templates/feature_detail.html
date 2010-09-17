@@ -14,6 +14,7 @@
 {% endblock %}
 
 {% block right %}
+    {% if recent_features %}
     <div class="section">
         <h3>Recent news &amp; reports</h3>
         {% for feature in recent_features %}    
@@ -23,5 +24,6 @@
                 <p>{{ feature.teaser|truncatewords:"25" }}</p>
         {% endfor %}
     </div>
+    {% endif %}
     {% latestnews %}
 {% endblock %}

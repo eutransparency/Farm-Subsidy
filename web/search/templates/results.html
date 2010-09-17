@@ -2,6 +2,7 @@
 {% load humanize %}
 {% load countryinfo %}
 {% load parse_qs %}
+{% load highlight %}
 
 {% block title %}
   Search for {{ q }}
@@ -16,23 +17,36 @@
         <input type="submit" value="Go" class="submit">
       </p>
     </form>
-
-    <table>
-      <thead>
-        <th>Name</th>
-        <th>Amount (All years)</th>
-      </thead>
-    <tbody>
-      {% for result in sqs %}
-      <tr class="{% cycle 'odd' 'even' %}">
-        <td><a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a></td>
-        <td>&euro;{{ result.object.total|floatformat:2|intcomma }}</td>
+    
+    {% if feature_search %}
+        <div class="section">
+            <h2>Matching News items and Reports</h2>
+            {% for feature in feature_search %}
+                <h3><a href="{{ feature.object.get_absolute_url }}">{{ feature.object.title }}</a></h3>
+                {% highlight feature.text with q %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <div class="section">
+        <h2>Matching Recipients</h2>
+        <table>
+          <thead>
+            <th>Name</th>
+            <th>Amount (All years)</th>
+          </thead>
+        <tbody>
+          {% for result in sqs %}
+          <tr class="{% cycle 'odd' 'even' %}">
+            <td><a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a></td>
+            <td>&euro;{{ result.object.total|floatformat:2|intcomma }}</td>
         
-      </tr>
-      {% empty %}
-      <tr><td colspan="2">Sorry, no recipients found</td></tr>
-      {% endfor %}    
-    </tbody>
-    </table>
+          </tr>
+          {% empty %}
+          <tr><td colspan="2">Sorry, no recipients found</td></tr>
+          {% endfor %}    
+        </tbody>
+        </table>        
+    </div>
 {% endblock %}
 

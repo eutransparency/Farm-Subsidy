@@ -9,8 +9,11 @@
     <input type="submit" value="Go" class="submit">
   </p>
 </form>
-
-    <div id="map"></div>
+    {% if sqs %}        
+        <div id="map"></div>
+    {% else %}
+        Sorry, no recipients found
+    {% endif %}
 {% endblock %}
 
 
