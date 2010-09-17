@@ -17,13 +17,18 @@ register.inclusion_tag('blocks/latest_lists.html')(latest_lists)
 
 
 @register.inclusion_tag('blocks/add_remove_item.html', takes_context=True)
-
 def list_item_edit(context, list_object):
-    ct = list_name = in_list = None
+    ct = in_list = None
+    list_name = context['request'].session.get('list_name')
     if list_name:
-        list_name = context['request'].session.get('list_name')
-        ct = ContentType.objects.get_for_model(list_object)
-        in_list = lists.item_in_list(list_name, "%s:%s" % (ct, list_object.pk))
+        if type(list_object) == dict:
+            ct = ContentType.objects.get(pk=list_object.get('content_type'))
+            in_list = lists.item_in_list(list_name, "%s:%s" % (ct, list_object.get('content_object')))
+            print "%s:%s" % (ct, list_object.get('content_object'))
+        else:            
+            ct = ContentType.objects.get_for_model(list_object)
+            in_list = lists.item_in_list(list_name, "%s:%s" % (ct, list_object.pk))
+            print "%s:%s" % (ct, list_object.pk)
 
     return {
         'ct' : ct,

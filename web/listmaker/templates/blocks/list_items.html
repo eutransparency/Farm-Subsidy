@@ -11,13 +11,13 @@
             {% for item in list_items %}
                 <li><strong><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></strong><br />
                 &euro;{{ item.total|floatformat:"2"|intcomma }}<br />
-                {# {% list_item_edit item.content_object %} #}
+                {% list_item_edit item %}
                 </li>
             {% endfor %}
             </ul>
             {% else %}
                 <p>There are no items in your list yet.</p>
-                <p>To add items, <a href="{{ home_url }}">browse or search</a> the site and click on the icon next to a recipient.</p>
+                <p>To add items, <a href="{% url home %}">browse or search</a> the site and click on the icon next to a recipient.</p>
         {% endif %}
     </div>
 </div>
