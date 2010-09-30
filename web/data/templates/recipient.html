@@ -183,7 +183,7 @@
     </ul>
     {% endif %}
     
-    
+    {% comment %}  
     {% more_like_this recipient as related_content limit 3 %}
     {% if related_content %}
         <h4>Similarly named recipients</h4>
@@ -193,5 +193,5 @@
         {% endfor %}
         </ul>
     {% endif %}
-
+   {% endcomment %}
 {% endblock %}
