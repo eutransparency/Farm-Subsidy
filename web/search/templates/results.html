@@ -3,6 +3,8 @@
 {% load countryinfo %}
 {% load parse_qs %}
 {% load highlight %}
+{% load pagination_tags %}
+{% load list_tags %}
 
 {% block title %}
   Search for {{ q }}
@@ -36,10 +38,14 @@
             <th>Amount (All years)</th>
           </thead>
         <tbody>
-          {% for result in sqs %}
+
+            {% autopaginate sqs 20 as results %}
+            
+          {% for result in results %}
           <tr class="{% cycle 'odd' 'even' %}">
             <td><a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a></td>
             <td>&euro;{{ result.object.total|floatformat:2|intcomma }}</td>
+            <td>{% list_item_edit result.object %}</td>
         
           </tr>
           {% empty %}
@@ -47,6 +53,7 @@
           {% endfor %}    
         </tbody>
         </table>        
+            <h4 class="pager">{% paginate %}</h4>
     </div>
 {% endblock %}
 

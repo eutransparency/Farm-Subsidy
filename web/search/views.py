@@ -25,23 +25,35 @@ def search(request, q=None, search_map=False):
         return HttpResponseRedirect(reverse(v, args=args))
 
     if q:
-        form = forms.SearchForm(initial={'q' : q})
+        
+        be = backend.SearchBackend()
+        qu = be.parse_query(q)
+        # sqs = be.search(qu)
+        print qu
+        
+        # 
+        # form = forms.SearchForm(initial={'q' : q})
         sqs = SearchQuerySet()
-        sqs = sqs.auto_query(q).load_all().models(Recipient)
-        sqs = sqs.exclude(name__startswith="unknown")
-        
-        if 'country' in request.GET:
-            sqs = sqs.filter(country=request.GET['country'])
-        if 'scheme' in request.GET:
-            sqs = sqs.filter(scheme=request.GET['scheme'])
-        
-        sqs = sqs.facet('country')
+        # print dir(sqs)
+        sqs = sqs.raw_search(qu)
+        print q
+        print sqs
 
-        total = 0
-        for t in sqs:
-            if t.object.total:
-              total += t.object.total
-        
+        # sqs = sqs.auto_query(q).load_all().models(Recipient)
+        # sqs = sqs.exclude(name__startswith="unknown")
+        # 
+        # if 'country' in request.GET:
+        #     sqs = sqs.filter(country=request.GET['country'])
+        # if 'scheme' in request.GET:
+        #     sqs = sqs.filter(scheme=request.GET['scheme'])
+        # 
+        # sqs = sqs.facet('country')
+        # 
+        # total = 0
+        # for t in sqs:
+        #     if t.object.total:
+        #       total += t.object.total
+        # 
         results = len(sqs)
         
         # Features search:
