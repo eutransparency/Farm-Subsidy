@@ -2,12 +2,14 @@
 {% load humanize markup %}
 {% load more_like_this %}
 {% load countries %}
+{% load list_tags %}
+
 {% block title %}
   {{ recipient.name }} | {{ country.name }}
 {% endblock %}
 
 {% block page_title %}
-  {{ recipient.name }}
+  {{ recipient.name }} {% list_item_edit recipient %}
 {% endblock %}
 
 {% block breadcrumb %}

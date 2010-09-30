@@ -20,7 +20,6 @@ class Command(BaseCommand):
     def handle(self, **options):
         back = backend.SearchBackend()
         index_data = Recipient.objects.filter(countrypayment=options['country']).exclude(total=None)
-        print len(index_data)
         index = site.get_index(Recipient)
         print "now indexing"
         back.update(index, index_data)

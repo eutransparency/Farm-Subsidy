@@ -24,6 +24,8 @@
 }
 
 .list_block .list_items #box_content {
+  display:none;
+  width:239px;
   position:absolute;
   bottom:41px;
   height:300px;
@@ -32,6 +34,7 @@
   border-top:1px solid #000;
   padding:20px;
   text-align:left;
+  cursor:default;
 }
 
 #list_arrow {
@@ -52,4 +55,22 @@
   color:#CCC;
   padding:5px;
   font-size:1.4em;
+}
+
+
+a.list_item span {
+  display:block;
+  background:url('/media/images/list_sprite.png') no-repeat;
+  height:25px;
+  width:35px;
+  cursor:pointer;
+  float:right;
+}
+
+a.list_item span:hover {
+  background-position:0 -35px;
+}
+
+a.list_remove span {
+  background-position:bottom;
 }

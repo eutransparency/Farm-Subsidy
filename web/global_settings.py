@@ -96,6 +96,7 @@ INSTALLED_APPS = [
     'features',
     'django.contrib.gis',    
     'johnny',
+    'typogrify',
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = (

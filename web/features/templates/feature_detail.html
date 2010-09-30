@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load markup %}
+{% load typogrify %}
 {% load inthenews %}
 
 {% block title %}{{ feature.title }}{% endblock %}
@@ -10,7 +11,7 @@
 {% endblock %}
 
 {% block content %}
-    {{ feature.body|markdown }}
+    {{ feature.body|markdown|typogrify }}
 {% endblock %}
 
 {% block right %}
@@ -21,7 +22,7 @@
                 <p>
                     <a href="{{ feature.get_absolute_url }}">{{feature.title}}</a>
                 </p>
-                <p>{{ feature.teaser|truncatewords:"25" }}</p>
+                <p>{{ feature.teaser|truncatewords:"25"|typogrify }}</p>
         {% endfor %}
     </div>
     {% endif %}

@@ -26,3 +26,4 @@ http://sourceforge.net/projects/matplotlib/files/matplotlib/matplotlib-0.99.1/ma
 django-piston==0.2.2
 django-notify==1.1.2
 git+http://github.com/sebleier/django-redis-cache.git
+svn+http://typogrify.googlecode.com/svn/trunk/

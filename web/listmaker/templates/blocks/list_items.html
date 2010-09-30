@@ -3,8 +3,10 @@
 {% list_items list_name as list_items %}
 
 <div class="list_items">
-    <strong>Total:</strong> &euro;{% list_total list_name %}
-    <span id="list_arrow"></span>
+    <div class="list_total">        
+        <strong>Total:</strong> &euro;{% list_total list_name %}
+        <span id="list_arrow"></span>
+    </div>
     <div id="box_content">
         {% if list_items %}
             <ul>

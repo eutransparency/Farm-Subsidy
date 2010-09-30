@@ -48,21 +48,12 @@ def get_total(list_name):
         return float(0)
 
 def make_total(list_name, method, total=None):
-    existing_total = r.get("%s:total" % list_name)
-    if existing_total:
-        existing_total = float(existing_total)
-    else:
-        existing_total = float(0)
 
-    if method == "add":
-        new_total = existing_total + total
-    if method == "remove":
-        new_total = existing_total - total
-    if method == "recreate":
-        tmp_total = 0
-        for obj in r.keys('list:1:hashes:*'):
-            tmp_total += float(r.hget(obj, 'total'))
-        new_total = tmp_total
+    tmp_total = 0
+    for obj in r.keys('%s:hashes:*' % list_name):
+        tmp_total += float(r.hget(obj, 'total'))
+        print r.hget(obj, 'total')
+    new_total = tmp_total
     
     r.delete("%s:total" % list_name)
     r.set("%s:total" % list_name, new_total)

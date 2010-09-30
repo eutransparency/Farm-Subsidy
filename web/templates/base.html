@@ -6,6 +6,7 @@
     {% load list_tags %}
     {% load cache %}
     {% load humanize %}
+    {% load typogrify %}
     {% load inthenews %}    
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <title>{% block title %}{{title}}{% endblock %} | FarmSubsidy.org</title>
@@ -135,13 +136,13 @@
                   {% if featured_items.0 %}                  
                   <li>
                       <h5><a href="{{ featured_items.0.get_absolute_url }}">{{ featured_items.0.title }}</a></h5>
-                    <p>{{ featured_items.0.teaser|truncatewords:"25" }}</p>
+                    <p>{{ featured_items.0.teaser|truncatewords:"25"|typogrify }}</p>
                   </li>
                   {% endif %}                  
                   {% if featured_items.1 %}
                     <li>
                       <h5><a href="{{ featured_items.1.get_absolute_url }}">{{ featured_items.1.title }}</a></h5>
-                      <p>{{ featured_items.1.teaser|truncatewords:"25" }}</p>
+                      <p>{{ featured_items.1.teaser|truncatewords:"25"|typogrify }}</p>
 
                     </li>          
                   {% endif %}
@@ -149,7 +150,7 @@
                   <li>
                     <h5><a href="{{ featured_items.2.get_absolute_url }}">
                 {{ featured_items.2.title }}</a></h5>
-                    <p>{{ featured_items.2.teaser|truncatewords:"25" }}</p>
+                    <p>{{ featured_items.2.teaser|truncatewords:"25"|typogrify }}</p>
                   </li>
                   {% endif %}        
                 </ul>
@@ -228,3 +229,4 @@
 </body>
 </html>
 {% block footer_scripts %}{% endblock %}
+ir

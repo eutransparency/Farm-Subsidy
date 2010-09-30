@@ -169,6 +169,7 @@ def add_remove_item(request):
     
     # Action is 'add' or 'remove'
     action = request.POST.get('action', 'add')
+    print action
 
     content_type = request.POST.get('content_type', None)
     object_id = request.POST.get('object_id', None)
@@ -213,7 +214,7 @@ def add_remove_item(request):
             'total' : list_total,
             'html' : html, 
             'action' : action,
-            # 'list_item_id' : list_item_id,
+            'list_item_id' : item_key,
             }))
         
     res = HttpResponseRedirect(request.META['HTTP_REFERER'])
