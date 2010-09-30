@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load inthenews %}
+{% load typogrify %}
+{% load markup %}
 
 {% block title %}{% trans "News &amp; reports" %}{% endblock %}
 {% block page_title %}{% trans "News &amp; reports" %}{% endblock %}
 
 {% block content %}
   {% for feature in features %}
-    <h4><a href="{{ feature.get_absolute_url }}">{{ feature.title }}</a></h4>
-    <p>{{ feature.teaser }}</p>
+    <h4><a href="{{ feature.get_absolute_url }}">{{ feature.title|typogrify }}</a></h4>
+    {{ feature.teaser|markdown|typogrify }}
   {% endfor %}
 {% endblock %}
 
