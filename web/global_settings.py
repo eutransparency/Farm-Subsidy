@@ -40,9 +40,6 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    #'django.middleware.cache.UpdateCacheMiddleware',
-    'johnny.middleware.LocalStoreClearMiddleware',
-    'johnny.middleware.QueryCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -50,9 +47,7 @@ MIDDLEWARE_CLASSES = (
     'pagination.middleware.PaginationMiddleware',
     'django_notify.middleware.NotificationsMiddleware',    
     'web.misc.middleware.Middleware',
-    'django.middleware.transaction.TransactionMiddleware',
-    #'django.middleware.cache.FetchFromCacheMiddleware',
-    
+    'django.middleware.transaction.TransactionMiddleware',    
 )
 
 ROOT_URLCONF = 'web.urls'
@@ -94,8 +89,7 @@ INSTALLED_APPS = [
     'haystack',
     'listmaker',
     'features',
-    'django.contrib.gis',    
-    'johnny',
+    'django.contrib.gis',
     'typogrify',
 ]
 
@@ -144,8 +138,8 @@ STATS_YEAR = 2008
 STATS_DIR = ROOT_PATH + '/data/stats'
 
 CACHE_BACKEND = 'redis_cache.cache://localhost:6379'
-JOHNNY_MIDDLEWARE_KEY_PREFIX='jc_farm_stage'
-JOHNNY_MIDDLEWARE_SECONDS = 200000000
+JOHNNY_MIDDLEWARE_KEY_PREFIX='jc_farm_stage_tmp'
+JOHNNY_MIDDLEWARE_SECONDS = 500
 
 
 PISTON_DISPLAY_ERRORS = False
