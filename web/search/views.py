@@ -34,20 +34,21 @@ def search(request, q=None, search_map=False):
         
         
         sqs = SearchQuerySet().models(Recipient)
-        # print dir(sqs)
         sqs = sqs.raw_search(qu).load_all().models(Recipient)
 
-        total = 0
-        for t in sqs:
-            if t.object.total:
-              total += t.object.total
+        # total = 0
+        # offset = 0
+        # if request.GET.get('page'):
+        #     offset = 30*request.GET.get('page')
+        # for t in sqs[offset:30]:
+        #     if t.object.total:
+        #       total += t.object.total
         # results = len(sqs)
 
         # Lists search:
         list_search = SearchQuerySet()
         list_search = list_search.models(List)
         list_search = list_search.auto_query(q).load_all().highlight()
-        
         
         # Location search:
         location_search = SearchQuerySet()
