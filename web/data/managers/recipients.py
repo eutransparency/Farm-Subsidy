@@ -39,4 +39,4 @@ class RecipientManager(models.Manager):
         for i, g in enumerate(geos):
             i = i + 1
             kwargs["geo%s__iexact" % i] = g.name
-        return self.filter(**kwargs)
+        return self.filter(**kwargs).exclude(total=None)
