@@ -6,4 +6,5 @@
     {{ object.geo2 }}
     {{ object.geo3 }}
     {{ object.geo4 }}
+    {{ object.zipcode }}
 {% endfilter %}
