@@ -80,4 +80,8 @@
 
 {% block right %}
     {% include "breadcrumbs.html" %}
+    {% if location.lat and location.lon %}
+        <img src="http://maps.google.com/maps/api/staticmap?center={{location.lat}},{{location.lon}}&zoom=8&size=245x200&sensor=false&maptype=satellite" title="Satellite image" alt="Satellite image" width="245" height="200"/>
+    {% endif %}
+    
 {% endblock %}

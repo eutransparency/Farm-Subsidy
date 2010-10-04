@@ -1,0 +1,4 @@
+{% load strip_accents %}
+{% filter lower|strip_accents %}
+    {{ object.name }}
+{% endfilter %}
