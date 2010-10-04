@@ -33,7 +33,7 @@ def search(request, q=None, search_map=False):
         
         
         sqs = SearchQuerySet().models(Recipient)
-        sqs = sqs.raw_search(qu, end_offset=500).load_all().models(Recipient)
+        sqs = sqs.raw_search(qu, end_offset=500).models(Recipient)
 
         # total = 0
         # offset = 0
