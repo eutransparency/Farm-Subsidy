@@ -31,7 +31,6 @@ def search(request, q=None, search_map=False):
         be = backend.SearchBackend()
         qu = be.parse_query("%s django_ct:data.recipient" % q)
         qu = be.parse_query("%s django_ct:data.recipient" % q)
-        print qu
         
         
         sqs = SearchQuerySet().models(Recipient)
@@ -49,7 +48,6 @@ def search(request, q=None, search_map=False):
         list_search = list_search.models(List)
         list_search = list_search.auto_query(q).load_all().highlight()
         
-        print list_search
         
         # Location search:
         location_search = SearchQuerySet()
