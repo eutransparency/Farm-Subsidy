@@ -30,11 +30,10 @@ def search(request, q=None, search_map=False):
         
         be = backend.SearchBackend()
         qu = be.parse_query("%s django_ct:data.recipient" % q)
-        qu = be.parse_query("%s django_ct:data.recipient" % q)
         
         
         sqs = SearchQuerySet().models(Recipient)
-        sqs = sqs.raw_search(qu).load_all().models(Recipient)
+        sqs = sqs.raw_search(qu, end_offset=500).load_all().models(Recipient)
 
         # total = 0
         # offset = 0
