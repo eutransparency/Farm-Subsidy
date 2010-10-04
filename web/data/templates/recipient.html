@@ -3,6 +3,9 @@
 {% load more_like_this %}
 {% load countries %}
 {% load list_tags %}
+{% load i18n %}
+{% load comments %}
+{% load typogrify %}
 
 {% block title %}
   {{ recipient.name }} | {{ country.name }}
@@ -13,27 +16,19 @@
 {% endblock %}
 
 {% block breadcrumb %}
-{% for item in breadcrumbs %}
-  {% for heading, content in item.items %}
-
-    {% for url in content %}      
-      &nbsp;<a href="{{ url.url }}" class="{{ url.class }}">&laquo; {{ url.name|title }}</a> 
+    {% for item in breadcrumbs %}
+        {% for heading, content in item.items %}
+            {% for url in content %}      
+                &nbsp;<a href="{{ url.url }}" class="{{ url.class }}">&laquo; {{ url.name|title }}</a> 
+            {% endfor %}
+        {% endfor %}
     {% endfor %}
-  {% endfor %}
-
-{% endfor %}
 {% endblock %}
 
 {% block content %}
-
     <div class="section">
-            
-        <p>
-            {{recipient.name}} is a recipient of farm subsidies in {% if recipient.town %}{{ recipient.town|title }},{% endif %} {{ country.name }}.
-        </p>
-        <p>
-            Since {{years_max_min.0}} it has received <strong>&euro;{{ recipient_total|floatformat:2|intcomma }}</strong> in payments from the European Union{% if has_direct or has_indirect or has_rural%}comprising of {% if has_direct %}<strong>direct subsidies</strong> (income support){% if has_indirect and has_rural %}, {%else%}{% if has_indirect or has_rural %} and {% else %}.{%endif%}{%endif%}{% endif %}{%if has_indirect %}<strong>indirect or other subsidies</strong> (market support such as export refunds or costs associated with food storage){% if has_rural %} and {%else%}.{%endif%}{% endif %}{% if has_rural %}<strong>rural development payments</strong> (for land conservation, income support for farms in dry, mountainous or cold places, or business development grants).{% endif %}{% else %}. {% endif %}
-        </p>
+        <p>{{ recipient.name }} is a recipient of farm subsidies in {% if recipient.town %}{{ recipient.town|title }},{% endif %} {{ country.name }}.</p>
+        <p>Since {{ years_max_min.0 }} it has received <strong>&euro;{{ recipient_total|floatformat:2|intcomma }}</strong> in payments from the European Union{% if has_direct or has_indirect or has_rural%}comprising of {% if has_direct %}<strong>direct subsidies</strong> (income support){% if has_indirect and has_rural %}, {%else%}{% if has_indirect or has_rural %} and {% else %}.{% endif %}{% endif %}{% endif %}{% if has_indirect %}<strong>indirect or other subsidies</strong> (market support such as export refunds or costs associated with food storage){% if has_rural %} and {%else%}.{%endif%}{% endif %}{% if has_rural %}<strong>rural development payments</strong> (for land conservation, income support for farms in dry, mountainous or cold places, or business development grants).{% endif %}{% else %}. {% endif %}</p>
     </div>
 
   <div class="section">  
@@ -72,43 +67,37 @@
   {#   </div> #}
   {# {% endif %} #}
   
-    {% load comments i18n %}  
-    <div class="section">
 
+    <div class="section">
         {% get_comment_list for recipient as comment_list %}
-        {% ifequal comment_list|length 0 %}
+        {% if not comment_list %}
             {# no comments #}
             <h3><span class="highlight">Nobody has looked into this recipient yet</span></h3>
-            <p>
-                Currently all we know about {{recipient.name}} are the few bits of information released by the {{ country.name }} government.
-            </p>
-            <p>
-            We need <strong>your help</strong> to find out more about this recipient. Is it a multi-national company or a small independent farm? What does it produce? Is it a subsidiary of a larger company? How large is it? Is it owned by anyone noteworthy?</p>
+            <p>Currently all we know about {{recipient.name}} are the few bits of information released by the {{ country.name }} government.</p>
+            <p>We need <strong>your help</strong> to find out more about this recipient. Is it a multi-national company or a small independent farm? What does it produce? Is it a subsidiary of a larger company? How large is it? Is it owned by anyone noteworthy?</p>
         {% else %}
             {# has comments #}
             <h3>More information about this recipient</h3>
-            <p>
-                People have been helping us to find out more about {{recipient.name}}. You can add more information below. Here is what we know so far:
-            </p>
+            <p>People have been helping us to find out more about {{recipient.name}}. You can add more information below. Here is what we know so far:</p>
             {% for comment in comment_list %}
-              <div class="comment">
-                  {{ comment.comment|markdown:"safe" }}                  
-                  <small class="comment_meta">
-                      Added {{ comment.submit_date|naturalday }} by {{ comment.user }} | <a href="/about#contactus">something wrong?</a>
+              <div class="comment" id="comment-{{ comment.pk }}">
+                  {{ comment.comment|urlize|markdown|typogrify }}
+                  <small class="comment_meta"> 
+                      Added {{ comment.submit_date|naturalday }} by {{ comment.user }} | <a href="{{ request.META.PATH_INFO }}#comment-{{ comment.pk }}">#</a> | <a href="/about#contactus">something wrong?</a>
                     </small>
               </div>
             {% endfor %}
             </div>
             <div class="section">
-            <h3>Help us improve this page</h3>            
-            <p>
-            Can you find any more information about {{recipient.name}}? Is it a multi-national company of a small independent farm? What does it produce? Is it a subsidiary of a larger company? How large is it? Is it owned by anyone noteworthy?
-            </p>
-        {% endifequal %}
+                <h3>Help us improve this page</h3>            
+                <p>Can you find any more information about {{ recipient.name }}? Is it a multi-national company of a small independent farm? What does it produce? Is it a subsidiary of a larger company? How large is it? Is it owned by anyone noteworthy?</p>
+            </div>
+        {% endif %}
 
         {% if user.is_authenticated %}
             {% get_comment_form for recipient as form %}
             <form id="comments" action="{% comment_form_target %}" method="post">
+                <input type="hidden" name="next" value="{{ request.META.PATH_INFO }}" />
                 <fieldset>
                   {% if next %}<input type="hidden" name="next" value="{{ next }}" />{% endif %}
                   {% for field in form %}
@@ -133,8 +122,9 @@
                     {% endif %}
                   {% endfor %}
                   <p class="submit">
-                    <input type="submit" name="post" class="submit-post" value="{% trans "Post" %}" />
-                    <input type="submit" name="preview" class="submit-preview" value="{% trans "Preview" %}" />
+                      {% csrf_token %}
+                      <input type="submit" name="post" class="submit-post" value="{% trans "Post" %}" />
+                      <input type="submit" name="preview" class="submit-preview" value="{% trans "Preview" %}" />
                   </p>
                  </fieldset>
             </form>
@@ -143,7 +133,7 @@
             <p id="disabled_comments">
                 <textarea disabled="disabled"></textarea>
                 <br/>
-                <a href="{% url registration_register %}">Create an account</a> or <a href="{% url auth_login %}">sign in</a> to tell us something about {{recipient.name}}.
+                <a href="{% url login %}">Create an account</a> or <a href="{% url login %}">sign in</a> to tell us something about {{recipient.name}}.
             </p>
         {% endif %}
         
@@ -183,7 +173,7 @@
     </ul>
     {% endif %}
     
-    {% comment %}  
+
     {% more_like_this recipient as related_content limit 3 %}
     {% if related_content %}
         <h4>Similarly named recipients</h4>
@@ -193,5 +183,5 @@
         {% endfor %}
         </ul>
     {% endif %}
-   {% endcomment %}
+
 {% endblock %}
