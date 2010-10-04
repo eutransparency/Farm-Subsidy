@@ -251,6 +251,7 @@ def all_locations(request, country):
         context_instance=RequestContext(request)
     )  
 
+@cache_page(60 * 60 * 4)
 def location(request, country, slug=None):
     """
     Single location object. This is a node in the tree, and could have
