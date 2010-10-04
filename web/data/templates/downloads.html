@@ -1,14 +1,20 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load markup %}
+{% load typogrify %}
 {% block title %}Data Download{% endblock %}
 {% block page_title %}Data Download{% endblock %}
 {% block body_class%}wide{% endblock %}
 {% block content %}
-{% blocktrans %}
-<h3>We make our database available under the Open Database License</h3>
-<p>Which means you should attribute your use of this database to us, and Share your changes back with everyone else.</p>
 
-{% endblocktrans %}
+{% filter typogrify %}
+    {% blocktrans %}
+    <h3>We make our database available under the Open Database License</h3>
+    <p>Which means you should attribute your use of this database to us, and Share your changes back with everyone else.</p>
+    {% endblocktrans %}
+{% endfilter %}
+
+
 <table>
   <thead>
     <th>{% trans "File Name" %}</th>

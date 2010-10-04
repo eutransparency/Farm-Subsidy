@@ -1,8 +1,8 @@
-from django.template import Library, Node
-register = Library()
-
-
 import unicodedata
+
+from django.template import Library, Node
+
+register = Library()
 
 @register.filter(name='strip_accents')
 def strip_accents(value):

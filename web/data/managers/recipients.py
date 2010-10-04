@@ -14,7 +14,7 @@ class RecipientManager(models.Manager):
     """
     Various reusable queries, like top_recipients
     """
-    
+
     def top_recipients(self, country=None, year=0):
         if int(year) == 0:
             recipients = self.all()

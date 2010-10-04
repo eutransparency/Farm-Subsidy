@@ -22,7 +22,9 @@
         {% else %}
             <h4><a href="{% url search_map q 'map' %}">View on Map</a></h4>
         {% endif %}
-        {# {% if sqs.facet_counts.fields.country or sqs.facet_counts.fields.scheme %}         #}
+
+        {# {{ sqs.facet_counts }} #}
+        {# {% if sqs.facet_counts.fields.country %}         #}
         {#     <h3>Narrow your search</h3> #}
         {#     {% if sqs.facet_counts.fields.country %} #}
         {#         <h4>Countries:</h4> #}
@@ -31,14 +33,6 @@
         {#             <li><a href="{% parse_qs request.GET "country" country.0 %}">{% code_to_name country.0 %}</a> ({{ country.1 }} results)</li> #}
         {#         {% endfor %} #}
         {#         </ul>             #}
-        {#     {% endif %} #}
-        {#     {% if sqs.facet_counts.fields.scheme %}             #}
-        {#         <h4>Schemes:</h4> #}
-        {#         <ul> #}
-        {#         {% for scheme in sqs.facet_counts.fields.scheme %} #}
-        {#             <li><a href="{% parse_qs request.GET "scheme" scheme.0 %}">{{ scheme.0 }}</a> ({{ scheme.1 }} results)</li> #}
-        {#         {% endfor %} #}
-        {#         </ul> #}
         {#     {% endif %} #}
         {# {% endif %} #}
     

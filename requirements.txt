@@ -27,3 +27,5 @@ django-piston==0.2.2
 django-notify==1.1.2
 git+http://github.com/sebleier/django-redis-cache.git
 svn+http://typogrify.googlecode.com/svn/trunk/
+git+http://github.com/toastdriven/queued_search.git
+

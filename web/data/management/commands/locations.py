@@ -40,7 +40,7 @@ class Command(BaseCommand):
         # Geo1 totals
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT geo1, SUM(total) as total, COUNT(*) as count, MAX(lat) as lat, MAX(lng) as lng
+            SELECT geo1, SUM(total) as total, COUNT(*) as count, AVG(lat) as lat, AVG(lng) as lng
             FROM data_recipient
             WHERE countrypayment='%s'
             AND geo1 IS NOT NULL
@@ -52,7 +52,7 @@ class Command(BaseCommand):
         # Geo2 totals
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT geo2, SUM(total) as total, COUNT(*) as count, MAX(lat) as lat, MAX(lng) as lng
+            SELECT geo2, SUM(total) as total, COUNT(*) as count, AVG(lat) as lat, AVG(lng) as lng
             FROM data_recipient
             WHERE countrypayment='%s'
             AND geo2 IS NOT NULL
@@ -63,7 +63,7 @@ class Command(BaseCommand):
         # Geo3 totals
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT geo3, SUM(total) as total, COUNT(*) as count, MAX(lat) as lat, MAX(lng) as lng
+            SELECT geo3, SUM(total) as total, COUNT(*) as count, AVG(lat) as lat, AVG(lng) as lng
             FROM data_recipient
             WHERE countrypayment='%s'
             AND geo3 IS NOT NULL
@@ -74,7 +74,7 @@ class Command(BaseCommand):
         # Geo4 totals
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT geo4, SUM(total) as total, COUNT(*) as count, MAX(lat) as lat, MAX(lng) as lng
+            SELECT geo4, SUM(total) as total, COUNT(*) as count, AVG(lat) as lat, AVG(lng) as lng
             FROM data_recipient
             WHERE countrypayment='%s'
             AND geo4 IS NOT NULL

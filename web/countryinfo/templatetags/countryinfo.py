@@ -12,7 +12,6 @@ def code_to_name(code):
     try:
         return country_codes(code)['name']
     except:
-        pass
-    
+        pass    
 register.simple_tag(code_to_name)
 

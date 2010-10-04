@@ -1,7 +1,9 @@
 {% load strip_accents %}
-{{ object.name|lower }}
-{{ object.name|lower|strip_accents }}
-{{ object.geo1|lower }}
-{{ object.geo2|lower }}
-{{ object.geo3|lower }}
-{{ object.geo4|lower }}
+{% filter lower|strip_accents %}
+    {{ object.name }}
+    {{ object.name }}
+    {{ object.geo1 }}
+    {{ object.geo2 }}
+    {{ object.geo3 }}
+    {{ object.geo4 }}
+{% endfilter %}

@@ -1,4 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect
+from django.views.decorators.cache import cache_page
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
@@ -19,6 +20,7 @@ from misc.forms import DataAgreementForm
 
 DEFAULT_YEAR = settings.DEFAULT_YEAR
 
+@cache_page(60 * 60 * 4)
 def home(request):
 
   ip_country = request.session.get('ip_country', 'GB')
@@ -44,7 +46,7 @@ def countries(request):
     {'countries' : countries},
     context_instance=RequestContext(request))
         
-
+@cache_page(60 * 60 * 4)
 def country(request, country, year=DEFAULT_YEAR):
     """
     Provides all the variables for the country pages at, for example "/AT/"
@@ -106,6 +108,13 @@ def recipient(request, country, recipient_id, name):
   - `recipient_id` is actually a globalrecipientidx in the date
   
   """
+  # settings.DISABLE_QUERYSET_CACHE_QUERYSET_CACHE = True
+  # # settings.DISABLE_QUERYSET_CACHE = False
+  # 
+  # from johnny.middleware import QueryCacheMiddleware
+  # QueryCacheMiddleware().unpatch()
+  
+  
   country = country.upper()
 
   recipient = models.Recipient.objects.get(globalrecipientidx=recipient_id)
@@ -139,7 +148,7 @@ def recipient(request, country, recipient_id, name):
       closest = models.GeoRecipient.objects.distance(georecipient.location).order_by('distance')[:5]
   except:
       closest = None
-  
+
   return render_to_response(
     'recipient.html', 
     {
@@ -157,33 +166,7 @@ def recipient(request, country, recipient_id, name):
     context_instance=RequestContext(request)
   )  
 
-# def recipient(request, country, recipient_id, name):
-#     """
-#     View for recipient page.
-# 
-#     - `country` ISO country, as defined in countryCodes
-#     - `recipient_id` is actually a globalrecipientidx in the date
-# 
-#     """
-#     country = country.upper()
-# 
-#     recipient = models.Recipient.objects.get(globalrecipientidx=recipient_id)
-#     payments = models.Payment.objects.select_related().filter(recipient=recipient_id).order_by('year')
-#     recipient_total = recipient.total
-#     payment_years = list(set(payment.year for payment in payments))
-# 
-#     return render_to_response(
-#         country_template('recipient.html', country),
-#         {
-#             'recipient' : recipient,
-#             'payments' : payments,
-#             'recipient_total' : recipient_total,
-#             'payment_years' : payment_years,
-#         },
-#         context_instance=RequestContext(request)
-#     )  
-# 
-
+@cache_page(60 * 60 * 4)
 def all_schemes(request, country='EU'):
     """
     Scheme browser (replaces generic 'browse' function for schemes)
@@ -252,6 +235,7 @@ def browse(request, country):
         context_instance=RequestContext(request)
     )  
 
+@cache_page(60 * 60 * 4)
 def all_locations(request, country):
     locations = models.Location.objects.all()
     kwargs = {'geo_type' : 'geo1'}
@@ -268,7 +252,13 @@ def all_locations(request, country):
     )  
 
 def location(request, country, slug=None):
-
+    """
+    Single location object. This is a node in the tree, and could have
+    children.
+    
+    If children are found, we call them 'sub locations' and display a list of
+    them.
+    """
     location = get_object_or_404(models.Location, country=country, slug=slug)
     kwargs = {}
     for p in location.get_ancestors():
@@ -290,9 +280,8 @@ def location(request, country, slug=None):
         },
         context_instance=RequestContext(request)
     )  
-  
 
-  
+
 @login_required
 def download(request, data_file=None):
     user = request.user
@@ -347,5 +336,3 @@ def data_agreement_form(request):
       }, 
       context_instance=RequestContext(request)
     )
-
-
