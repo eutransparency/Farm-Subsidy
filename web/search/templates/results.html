@@ -81,8 +81,8 @@
           </thead>
         <tbody>
 
-            {% autopaginate sqs 20 as results %}
-            
+          {% autopaginate sqs 20 as results %}
+        
           {% for result in results %}
           <tr class="{% cycle 'odd' 'even' %}">
             <td><a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a></td>

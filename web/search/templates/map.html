@@ -47,7 +47,7 @@
                 return marker;
               }
     
-        {% for point in sqs %}
+        {% for point in sqs|slice:"100" %}
             {% if point.object.lat %}
                 var point = new GLatLng({{point.object.lat}}, {{point.object.lng}});
                 var marker = createMarker(point, '<div style="text-align:center">\

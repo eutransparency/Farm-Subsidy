@@ -16,7 +16,7 @@
         <h3>Search information</h3>
         {# <p>Your search for <strong>{{ q }}</strong> <br /> #}
         {# returned <strong>{{ results }}</strong> result{{ results|pluralize }}</p> #}
-        {# <p>This page's results totals <strong>&euro;{{ total|floatformat:2|intcomma }}</strong></p> #}
+        <p>This page's results totals <strong>&euro;{{ total|floatformat:2|intcomma }}</strong></p>
         {% if search_map %}
             <h4><a href="{% url search q %}">View as List</a></h4>
         {% else %}
