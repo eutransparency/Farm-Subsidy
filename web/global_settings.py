@@ -91,6 +91,8 @@ INSTALLED_APPS = [
     'features',
     'django.contrib.gis',
     'typogrify',
+    'queued_search',
+    
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -146,3 +148,8 @@ PISTON_DISPLAY_ERRORS = False
 
 TEST_RUNNER='django.contrib.gis.tests.run_tests'
 POSTGIS_TEMPLATE='template_postgis'
+
+
+QUEUE_BACKEND = 'redisd'
+QUEUE_REDIS_CONNECTION = 'localhost:6379'
+QUEUE_REDIS_DB = 0
