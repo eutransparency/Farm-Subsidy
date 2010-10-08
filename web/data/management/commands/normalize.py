@@ -59,6 +59,21 @@ class Command(BaseCommand):
         """, {'country' : self.country})
 
     
+    def country_years(self):
+        print "Making country year totals for %s" % self.country
+        cursor = connection.cursor()
+        cursor.execute("""
+            DELETE FROM data_countryyear WHERE country=%(country)s;
+            INSERT INTO data_countryyear (year, country, total)
+            SELECT year, countrypayment, sum(amounteuro) 
+            FROM data_payment 
+            WHERE year !='0' 
+            AND countrypayment=%(country)s
+            GROUP BY countrypayment, year;
+            COMMIT;
+        """, {'country' : self.country})
+
+
     def schemes(self):
         """
         Makes a row in scheme_years for each scheme in each year.
@@ -99,6 +114,8 @@ class Command(BaseCommand):
         """, {'country' : self.country})
         
     
+    
+    
     def handle(self, **options):
         self.country = options.get('country')
         if not self.country:
@@ -106,8 +123,13 @@ class Command(BaseCommand):
         
         
         # First do the recipients
-        print "recipients"
-        self.totals()
-        print "schemes"
+
+        # print "recipients"
+        # self.totals()
+        # 
+        # print "schemes"
         # self.schemes()
+
+        print "country years"
+        self.country_years()
     

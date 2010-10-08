@@ -32,7 +32,7 @@
         <tbody>
             {% for location in locations  %}
                 <tr>
-                    <td><a href="{{ location.get_absolute_url }}">{{ location.name }}</a></td>
+                    <td><a href="{{ location.get_absolute_url }}">{{ location.name|title }}</a></td>
                     <td>&euro;{{ location.total|floatformat:2|intcomma }}</td>
                     <td>{{ location.recipients }}</td>
                     <td>&euro;{{ location.average|floatformat:2|intcomma }}</td>

@@ -35,6 +35,16 @@ class Command(BaseCommand):
         if not self.country:
             raise Exception('A valid country is required')
         
+        
+        # Make all locations lower case by default
+        print "Lowering location names"
+        cursor = connection.cursor()
+        cursor.execute("""
+        UPDATE data_recipient 
+        SET geo1=lower(geo1), geo2=lower(geo2), geo3=lower(geo3), geo4=lower(geo4)
+        WHERE countrypayment='%(country)s';
+        """ % {'country' : self.country})
+        
         Location.objects.filter(country=self.country).delete()
         
         # Geo1 totals
