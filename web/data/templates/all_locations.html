@@ -3,7 +3,7 @@
 
 {% block title %}
   {% if location.0.name %}
-      {{ location.0.name|title }}, {{ country.name }}
+      {{ location.name|title }}, {{ country.name }}
   {% else %}
     All locations in {{ country.name }}
   {% endif %}
