@@ -62,7 +62,7 @@ th.money, td.money {text-align:right;}
 table td { border-bottom:solid 0 #fff;height:20px;padding:0.6em 1em;}
 div.section {border-bottom:dotted 1px #ddd; margin:0 0 1em 0; padding:0 0 1em 0;clear:left;}
 #right div.section {border-bottom:dotted 1px #ddd; margin:1em 0 1em 0; }
-#content div.section {overflow:auto;}
+/*#content div.section {overflow:auto; margin-bottom:2em;}*/
 span.highlight {background:#ffffaa; padding:0.2em 1em;}
 h2 span.highlight, h3 span.highlight, h4 span.highlight h5 span.highlight   
 {padding-left:0.5em;position:relative; left:-0.5em;}

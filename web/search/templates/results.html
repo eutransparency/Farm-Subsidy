@@ -88,21 +88,17 @@
             <td><a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a></td>
             <td>&euro;{{ result.object.total|floatformat:2|intcomma }}</td>
             <td>{% list_item_edit result.object %}</td>
-        
           </tr>
-          {% empty %}
-          <tr><td colspan="2">Sorry, no recipients found</td></tr>
-          {% endfor %}    
+          {% endfor %}
         </tbody>
-        </table>        
+        </table>
             <h4 class="pager">{% paginate %}</h4>
     </div>
-    {% endif %}    
+    {% endif %}
     
     
-    {% if not results and not location_search and not feature_search and not list_search %}
+    {% if not results and not location_search and not feature_search and not list_search  and q %}
         Sorry, no results found.
-        
     {% endif %}
     
 {% endblock %}

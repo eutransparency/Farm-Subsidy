@@ -25,13 +25,10 @@ def list_item_edit(context, list_object):
             ct = ContentType.objects.get(pk=list_object.get('content_type'))
             list_object['pk'] = list_object.get('content_object')
             in_list = lists.item_in_list(list_name, "%s:%s" % (ct, list_object.get('content_object')))
-            print "dist:  %s:%s" % (ct, list_object.get('content_object'))
-            print list_object
         else:            
             ct = ContentType.objects.get_for_model(list_object)
             in_list = lists.item_in_list(list_name, "%s:%s" % (ct, list_object.pk))
-            print "%s:%s" % (ct, list_object.pk)
-
+            
     return {
         'ct' : ct,
         'list_name' : list_name,

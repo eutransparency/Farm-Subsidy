@@ -17,14 +17,17 @@ def search(request, q=None, search_map=False):
 
     if request.POST:
         # initial redirect, to get linkable URLs
-        args=[request.POST.get('q')]
-        if search_map:
-            v = 'search_map'
-            args.append('map')
+        if request.POST.get('q'):
+            args = [request.POST.get('q')]
+            if search_map:
+                v = 'search_map'
+                args.append('map')
+            else:
+                v = 'search'
+            return HttpResponseRedirect(reverse(v, args=args))
         else:
-            v = 'search'
-        return HttpResponseRedirect(reverse(v, args=args))
-
+            return HttpResponseRedirect(reverse('search'))
+        
     if q:
         form = forms.SearchForm(initial={'q' : q})
         
