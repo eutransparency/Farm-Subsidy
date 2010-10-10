@@ -97,6 +97,7 @@
         {% if user.is_authenticated %}
             {% get_comment_form for recipient as form %}
             <form id="comments" action="{% comment_form_target %}" method="post">
+                {% csrf_token %}
                 <input type="hidden" name="next" value="{{ request.META.PATH_INFO }}" />
                 <fieldset>
                   {% if next %}<input type="hidden" name="next" value="{{ next }}" />{% endif %}
@@ -122,7 +123,6 @@
                     {% endif %}
                   {% endfor %}
                   <p class="submit">
-                      {% csrf_token %}
                       <input type="submit" name="post" class="submit-post" value="{% trans "Post" %}" />
                       <input type="submit" name="preview" class="submit-preview" value="{% trans "Preview" %}" />
                   </p>

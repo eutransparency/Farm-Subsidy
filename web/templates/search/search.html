@@ -4,6 +4,7 @@
     <h2>Search</h2>
 
     <form method="get" action=".">
+        {% csrf_token %}
         <table>
             {{ form.as_table }}
             <tr>

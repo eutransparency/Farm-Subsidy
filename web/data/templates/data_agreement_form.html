@@ -38,6 +38,7 @@
 
 
 <form method="POST">
+    {% csrf_token %}
   {{ form.as_p }}
 {# {{ form.data_agreement.label_tag }} #}
 {# {{ form.data_agreement }} #}

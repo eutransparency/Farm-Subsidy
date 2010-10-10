@@ -15,13 +15,13 @@
 
 <div class="col">
     <p>If you deactivate your list, all unsaved changes will be lost.</p>
-  <form method="POST"><input type="submit" name="deactivate_confirm" value="{% trans "Deactivate" %}" id="deactivate_confirm"></form>
+  <form method="POST">{% csrf_token %} <input type="submit" name="deactivate_confirm" value="{% trans "Deactivate" %}" id="deactivate_confirm"></form>
 </div>
 <div class="col">
   <p>Alternatively, you can save your list.  Saving your list will enable 
      you to edit your list at a later date and others to view your list</p>
   
-  <form method="POST" action=""><input type="submit" name="deactivate_confirm" value="{% trans "Save" %}" id="deactivate_confirm"></form>
+  <form method="POST" action="">{% csrf_token %}<input type="submit" name="deactivate_confirm" value="{% trans "Save" %}" id="deactivate_confirm"></form>
 </div>
 
 
