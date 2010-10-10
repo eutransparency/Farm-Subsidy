@@ -66,7 +66,6 @@ $(document).ready(function() {
     $('.list_item span').live('click', function(){  
         item = $(this)
         item_form = item.parent().parent()
-        console.debug(item)
 
 
         object_id = $(item_form).children('.object_id').attr('value');
@@ -74,7 +73,6 @@ $(document).ready(function() {
         list_item_id = $(item_form).children('.list_item_id').attr('value');
         action = $(item_form).children('.action').attr('name');
         form_action = $(item_form).attr('action');
-        console.debug(form_action)
 
         
         // animate_add(item_form)
