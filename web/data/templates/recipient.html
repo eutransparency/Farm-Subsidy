@@ -47,7 +47,7 @@
             <td>
                 <a href="{{ payment.scheme.get_absolute_url }}">{{ payment.scheme.nameenglish }}</a>
             </td>
-            <td>&euro;{{ payment.amounteuro|floatformat:0|intcomma }}</td>
+            <td class="money">&euro;{{ payment.amounteuro|floatformat:0|intcomma }}</td>
           </tr>
         {% endfor %}
         <tr>

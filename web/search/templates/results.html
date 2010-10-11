@@ -26,7 +26,7 @@
       {% for result in sqs %}
       <tr class="{% cycle 'odd' 'even' %}">
         <td><a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a></td>
-        <td>&euro;{{ result.object.total|floatformat:0|intcomma }}</td>
+        <td class="money">&euro;{{ result.object.total|floatformat:0|intcomma }}</td>
         
       </tr>
       {% empty %}
