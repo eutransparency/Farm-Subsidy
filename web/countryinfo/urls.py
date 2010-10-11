@@ -4,5 +4,5 @@ import views
 
 urlpatterns = patterns('',
     url(r'^stats/comapre',views.compare),
-    url(r'^transparency/',views.transparency_list),
+    url(r'^transparency/',views.transparency_list, name="transparency_index"),
 )

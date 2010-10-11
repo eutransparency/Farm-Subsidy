@@ -57,22 +57,19 @@
   font-size:1.4em;
 }
 
-
 a.list_item span {
   display:block;
   background:url('/media/images/list_sprite.png') no-repeat;
-  height:25px;
-  width:35px;
+  height:1.8em;
+  text-align:left;
   cursor:pointer;
-  float:right;
-}
-
-a.list_item span:hover {
-  background-position:0 -35px;
+  font-size:0.8em;
+  background-position:bottom left;
+  padding-left:30px;
 }
 
 a.list_remove span {
-  background-position:bottom;
+  background-position:0 -39px;
 }
 
 .list_block h4 {

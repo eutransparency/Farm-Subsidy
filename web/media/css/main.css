@@ -4,6 +4,7 @@ body {font-family:Helvetica, Arial, sans-serif; text-align:center;color:#141618;
 /* banner (email signup, events, calls to action etc) */
 #topbar { font-size:0.7em; padding:0.4em 0.7em; text-align:left;width:90%; margin:0 auto;}
 #topbar label {padding-right:0.6em; padding-left:1em;color:#808080;}    
+#topbar #newsletter_label { background:url('../images/email_open.png') no-repeat right; padding:5px 20px 0 10px}
 #topbar form, #topbar fieldset {display:inline;position:relative; top:-2px;}
 #topbar form input {color:#808080;}
 #topbar img{vertical-align:bottom;}
@@ -16,7 +17,7 @@ body {font-family:Helvetica, Arial, sans-serif; text-align:center;color:#141618;
 
 /* header */
 #header {background:#fff; position:relative;}
-#header #mainmenu {background:#2a8330;text-align:right; padding:0.5em 20px;}
+#header #mainmenu {background:#2a8330;text-align:right; padding:0.5em 20px 0.5em 400px;}
 #header #mainmenu li {display:inline;font-size:0.9em; font-weight:bold;}
 #header #mainmenu a {color:#fff;border-right:solid 2px #fff; padding-right:0.8em;padding-left:0.8em;}
 #header #mainmenu li.last a {border-right:none;padding-right:0;}
@@ -72,7 +73,7 @@ textarea {padding:0.5em;}
 label {font-weight:bold;}
 
 p.hint {color:#808080;font-size:0.8em; line-height:1.5em; padding:0.4em; margin-bottom:1em;}
-.smallhint {color:#808080;font-size:0.8em; padding:0; margin-bottom:0em;}
+.smallhint {color:#808080;color:red;font-size:0.8em; padding:0; margin-bottom:0em;}
 
 /* features */
 div.features {border-bottom:solid 1px #ccc;background:url(../images/featurebar.png);
@@ -127,3 +128,5 @@ dl.metadata dd {font-weight:bold; text-align:right;}
 .hide { display:none; }
 
 .highlighted {font-weight:bold;}
+
+.pager { text-align:center; border-top: 1px solid #ccc; padding:1em;}

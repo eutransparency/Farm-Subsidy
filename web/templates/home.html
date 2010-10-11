@@ -35,7 +35,14 @@
     {% endif %}
 </div>
 
-
+<div class="section">
+    <h3>Latest annotations</h3>
+    <ul>
+    {% for annotation in latest_annotations %}
+        <li>{{ annotation.user.username }} annotated <a href="{{ annotation.content_object.get_absolute_url }}">{{ annotation.content_object.name }}</a>:  <blockquote>{{ annotation.comment|truncatewords:30 }}</blockquote></li>        
+    {% endfor %}
+    </ul>
+</div>
 
 {% endblock %}
 

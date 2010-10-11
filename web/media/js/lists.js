@@ -33,8 +33,14 @@ $(document).ready(function() {
             alerady_converted = $(el).children('.list_item');
             if ($(alerady_converted).length == 0) {
                 $(el).children().hide();
-                action = $(el).children('.action').attr('name');                
-                $(el).append('<a class="list_item list_'+action+'"><span></span></a>');                
+                action = $(el).children('.action').attr('name');
+                if (action == "add") {
+                    text = "Add to list"
+                } else {
+                    text = "Remove from list"
+                }
+                
+                $(el).append('<a class="list_item list_'+action+'"><span>'+text+'</span></a>');
 
             }
         });
@@ -95,7 +101,7 @@ $(document).ready(function() {
                 item_forms = $("input[value='"+list_item_id+"']")
 
                 item_forms.each(function(i, el) {
-
+                    console.debug(el)
                     item_form = $(el).parent();
                     item_link = item_form.children('a.list_item')[0];
                     
