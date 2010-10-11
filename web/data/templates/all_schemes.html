@@ -23,7 +23,7 @@
       {% for scheme in schemes %}
       <tr>
         <td><a href="{{ scheme.get_absolute_url }}">{{ scheme.nameenglish }}</a></td>
-        <td>&euro;{{ scheme.total|floatformat:2|intcomma }}</td>
+        <td>&euro;{{ scheme.total|floatformat:0|intcomma }}</td>
       </tr>
       {% endfor %}
     </tbody>
