@@ -2,9 +2,6 @@
 {% load humanize %}
 {% load countryinfo %}
 {% load parse_qs %}
-{% load highlight %}
-{% load pagination_tags %}
-{% load list_tags %}
 
 {% block title %}
   Search for {{ q }}
@@ -16,90 +13,26 @@
       <h2><label for="search" class="section_title">{{ form.q.label }}</label></h2>
       <p>
           {{ form.q }}
-        <input type="submit" value="Go" class="submit">        
-          {% if spellings %}
-              <span class="smallhint">
-                  Search instead for
-                  {# {% for s in spellings %} #}
-                  {#     <a href="{% url search s %}">{{ s }}</a> #}
-                  {# {% endfor %} #}
-              </span>
-          {% endif %}    
+        <input type="submit" value="Go" class="submit">
       </p>
-      
     </form>
-    
-    {% if feature_search %}
-        <div class="section">
-            <h3>Matching News items and Reports</h3>
-            {% for feature in feature_search %}
-                <h3><a href="{{ feature.object.get_absolute_url }}">{{ feature.object.title }}</a></h3>
-                {% highlight feature.text with q %}
-            {% endfor %}
-        </div>
-    {% endif %}
-    
-    {% if list_search %}
-    <div class="section">
-        <h3>Lists</h3>
-        <ul>
-            {% for list in list_search %}                
-                <li>
-                    <h3><a href="{{ list.object.get_absolute_url }}">{{ list.name }}</a></h3>
-                    {{ list.object.description }}
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
-    
-    {% if location_search %}
-    <div class="section">
-        <h3>Locations</h3>
-        <ul>
-            {% for location in location_search %}                
-                <li>
-                    <a href="{% url country location.object.country %}">{% code_to_name location.object.country %}</a> &raquo;
-                    {{ location.object.get_ancestors|join:" &raquo; " }} &raquo;
-                    <a href="{{ location.object.get_absolute_url }}">
-                    {{ location.object.name }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-    {% endif %}
-    
-    {% if sqs %}
-    <div class="section">
 
-        <h2>Matching Recipients</h2>
-        <table>
-          <thead>
-            <th>Name</th>
-            <th>Amount (All years)</th>
-          </thead>
-        <tbody>
-
-          {% autopaginate sqs 20 as results %}
+    <table>
+      <thead>
+        <th>Name</th>
+        <th>Amount (All years)</th>
+      </thead>
+    <tbody>
+      {% for result in sqs %}
+      <tr class="{% cycle 'odd' 'even' %}">
+        <td><a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a></td>
+        <td class="money">&euro;{{ result.object.total|floatformat:0|intcomma }}</td>
         
-          {% for result in results %}
-          <tr class="{% cycle 'odd' 'even' %}">
-            <td><a href="{{ result.object.get_absolute_url }}">{{ result.object.name }}</a></td>
-            <td>&euro;{{ result.object.total|floatformat:2|intcomma }}</td>
-            <td>{% list_item_edit result.object %}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-        </table>
-            <h4 class="pager">{% paginate %}</h4>
-    </div>
-    {% endif %}
-    
-    
-    {% if not results and not location_search and not feature_search and not list_search  and q %}
-        Sorry, no results found.
-    {% endif %}
-    
+      </tr>
+      {% empty %}
+      <tr><td colspan="2">Sorry, no recipients found</td></tr>
+      {% endfor %}    
+    </tbody>
+    </table>
 {% endblock %}
 

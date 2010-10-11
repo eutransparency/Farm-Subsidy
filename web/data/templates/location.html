@@ -20,7 +20,7 @@
 
 {% block content %}
   {% if location.recipients %}    
-    <p>Since {{ years_max_min.0 }}, {{ location.recipients|intcomma }} recipients in {{ location.name|title }} received a total of &euro;{{ location.total|floatformat:2|intcomma }} </p>
+    <p>{{ location.recipients|intcomma }} recipients in {{ location.name|title }} received a total of &euro;{{ location.total|floatformat:0|intcomma }} </p>
   {% endif %} 
   
   {% if sub_locations %}
@@ -39,9 +39,9 @@
             <tr>
               <td>
                 <a href="{{ sub_location.get_absolute_url }}">{{ sub_location.name|title }}</a>
-                <td>&euro;{{ sub_location.total|floatformat:2|intcomma }}</td>
+                <td class="money">&euro;{{ sub_location.total|floatformat:0|intcomma }}</td>
                 <td>{{ sub_location.recipients|floatformat|intcomma }}</td>
-                <td>&euro;{{ sub_location.average|floatformat:2|intcomma }}</td>
+                <td class="money">&euro;{{ sub_location.average|floatformat:0|intcomma }}</td>
               </td>
             </tr>
           {% endfor %}
@@ -62,7 +62,7 @@
         {% for r in location_recipients %}
           <tr>
             <td><a href="{{ r.get_absolute_url }}">{{ r.name|title }}</a></td>
-            <td>&euro;{{ r.total|floatformat:2|intcomma }}</td>
+            <td class="money">&euro;{{ r.total|floatformat:0|intcomma }}</td>
           </tr>
         {% endfor %}
 
@@ -80,8 +80,4 @@
 
 {% block right %}
     {% include "breadcrumbs.html" %}
-    {% if location.lat and location.lon %}
-        <img src="http://maps.google.com/maps/api/staticmap?center={{location.lat}},{{location.lon}}&zoom=8&size=245x200&sensor=false&maptype=satellite" title="Satellite image" alt="Satellite image" width="245" height="200"/>
-    {% endif %}
-    
 {% endblock %}
