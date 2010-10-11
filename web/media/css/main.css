@@ -36,8 +36,10 @@ body {font-family:Helvetica, Arial, sans-serif; text-align:center;color:#141618;
 #header #photos.header_9 {background:url(../images/header_9.jpg) center center;}
 #header #photos.header_10 {background:url(../images/header_10.jpg) center center;}
 
-#header #search_form {position:absolute; top:15px; right:0; background:url(../images/trans.png);
-    padding:0.6em;}
+#header .transparent { background:url(../images/trans.png); }
+#header #totalizer  {position:absolute; top:15px; left:0; padding:0.6em;}
+
+#header #search_form  {position:absolute; top:15px; right:0; padding:0.6em;}
 #header #search_form #q {width:15em; color:#808080;}
 #header #search_form small {display:block; padding-top:0.4em;}    
 

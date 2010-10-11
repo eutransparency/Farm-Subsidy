@@ -78,13 +78,15 @@
         <h2>Discover who gets what from the Common Agricultural Policy</h2>
         
         {# search form #}
-        <form id="search_form" action="{% url search %}" method="POST" accept-charset="utf-8">
+        <form id="search_form" action="{% url search %}" method="POST" accept-charset="utf-8" class="transparent">
             {% csrf_token %}
             <h2><label for="search" class="section_title">Search</label></h2>
             <input type="text" name="q" value="{{ q }}" id="q" title="Enter a company name or place">
             <input type="submit" value="Search" class="submit">
             <small>e.g. <a href="{% url search 'nestle' %}">Nestle</a> or <a href="{% url search 'windsor' %}">Windsor</a></small>
         </form>
+        
+        <span id="totalizer" class="transparent">&euro;xxxxx in payments to 23 countries since 2001</span>
         
         {# main menu #}
         <ul id="mainmenu">
