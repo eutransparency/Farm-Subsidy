@@ -149,19 +149,22 @@ def recipient(request, country, recipient_id, name):
   except:
       closest = None
 
+  years_max_min = models.CountryYear.objects.year_max_min(country)
+
   return render_to_response(
     'recipient.html', 
     {
-    'recipient' : recipient,
-    'payments' : payments,
-    'recipient_total' : recipient_total,
-    'payment_years' : payment_years,
-    'has_direct' : 0 in payment_schemes,
-    'has_indirect' : 1 in payment_schemes,
-    'has_rural' : 2 in payment_schemes,
-    'first_year' : 0,
-    'expanded' : expanded,
-    'closest' : closest,
+        'recipient' : recipient,
+        'payments' : payments,
+        'recipient_total' : recipient_total,
+        'payment_years' : payment_years,
+        'has_direct' : 1 in payment_schemes,
+        'has_indirect' : 2 in payment_schemes,
+        'has_rural' : 3 in payment_schemes,
+        'first_year' : 0,
+        'year_max_min' : year_max_min,
+        'expanded' : expanded,
+        'closest' : closest,
     },
     context_instance=RequestContext(request)
   )  

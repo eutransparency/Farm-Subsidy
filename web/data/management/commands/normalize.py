@@ -128,8 +128,8 @@ class Command(BaseCommand):
         # self.totals()
         # 
         # print "schemes"
-        # self.schemes()
+        self.schemes()
 
-        print "country years"
-        self.country_years()
+        #print "country years"
+        #self.country_years()
     
