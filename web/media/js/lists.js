@@ -8,7 +8,7 @@ $(document).ready(function() {
         $(".list_block").wrap('<div class="lists_footer" />');
         
         // Move the list block to the footer
-        $('.lists_footer').remove().insertAfter('#footer');
+        $('.lists_footer').remove().insertAfter('#outer');
         
         // Hide the list items by default
         $('.list_block .list_items #box_content').addClass('hide');

@@ -73,7 +73,7 @@ h2 span.highlight, h3 span.highlight, h4 span.highlight h5 span.highlight
 textarea {padding:0.5em;}
 label {font-weight:bold;}
 
-p.hint {color:#808080;font-size:0.8em; line-height:1.5em; padding:0.4em; margin-bottom:1em;}
+p.hint {color:#808080;font-size:0.8em; line-height:1.5em; padding:0.4em 0; margin-bottom:1em;}
 .smallhint {color:#808080;color:red;font-size:0.8em; padding:0; margin-bottom:0em;}
 
 /* features */

@@ -2,21 +2,21 @@
 {% load list_tags %}
 {% if list_enabled %}
     <div class="list_block">
-        <h3>Custom Lists</h3>
+        {# <h3>Custom Lists</h3> #}
         {% include "blocks/list_items.html" %}
-        <h4>
-        {% if list_object %}
-            <a href="{{ list_object.get_absolute_url }}">{{ list_object.name }}</a>
-        {% else %}
-            New list
-        {% endif %}
+        <h4>    
+            {% if list_object %}
+                {{ list_object.name }}
+            {% else %}
+                New list
+            {% endif %}
         </h4>
         {% if list_object %}
-            <a href="{% url save_list list_object.pk %}">Save</a>
+            <a href="{% url save_list list_object.pk %}">Save and publish</a>
         {% else %}
-            <a href="{% url save_list %}">Save</a>
+            <a href="{% url save_list %}">Save and publish</a>
         {% endif %}
-
-        <a href="{% url deactivate_list %}">Deactivate</a>
+        
+        <a href="{% url deactivate_list %}">Cancel</a>
     </div>
 {% endif %}

@@ -2,24 +2,29 @@
 
 .lists_footer {
   height:40px;
-  width:90%;
+/*  width:100%;*/
   position:fixed;  
   height:40px;
   bottom:0;
-  border-top:1px solid #666;
+  left:0;
+  right:0;
+  border-top:1px solid #808080;
   text-align:center;      
-  background:#303C30;
+  background:#ffffd7;
   margin:0 auto;  
+  text-align:left;
+/*  padding: 5px 5px 5px 15px;*/
 }
 
-
+.list_block { padding: 10px 0.5em;}
+.list_block a { font-size:0.8em; padding-right:2em;}
 .list_block .list_items {
-  padding:10px 0;
+  padding:0px 35px 10px 0;
   margin:0;
   width:279px;
   float:right;
   height:40px;
-  background:url("../images/background.png") repeat-y  right top #ccc;
+  text-align:right;
   cursor:pointer;
 }
 
@@ -27,13 +32,16 @@
   display:none;
   width:239px;
   position:absolute;
-  bottom:41px;
+  bottom:40px;
+  right:0;
   height:300px;
   overflow:auto;
-  background:url("../images/background.png") repeat-y  right top #ccc;
-  border-top:1px solid #000;
+  border-top:1px solid #808080;
+  border-left:1px solid #808080;
   padding:20px;
   text-align:left;
+  background:#ffffd7;
+  
   cursor:default;
 }
 
@@ -49,18 +57,11 @@
 
 #list_arrow.list_on_display { background:url('../images/arrows.png') right; }
 
-.list_block h3 {
-  position:absolute;
-  right:300px;
-  color:#CCC;
-  padding:5px;
-  font-size:1.4em;
-}
-
 a.list_item span {
   display:block;
   background:url('/media/images/list_sprite.png') no-repeat;
   height:1.8em;
+/*  float:right;*/
   text-align:left;
   cursor:pointer;
   font-size:0.8em;
@@ -69,11 +70,18 @@ a.list_item span {
 }
 
 a.list_remove span {
-  background-position:0 -39px;
+  background-position:-39px left;
 }
 
-.list_block h4 {
-  color:#FFF;
-  padding:0;
+
+
+.list_block h4, .list_block h4 a {
+/*  color:#FFF;*/
+  padding:5px 1em;
   margin:0;
+  display:inline;
+}
+
+.list_head {
+  width:9em;
 }

@@ -6,23 +6,30 @@
 {% block page_title %}{{ list_item.name }}{% endblock %}
 {% block title %}{{ list_item.name }}{% endblock %}
 {% block content %}
+
+    <p class="hint">  
+        <a href="{% url edit_list_items list_item.pk %}">Edit this list</a> or <a href="{% url edit_list list_item.pk %}">edit title and description</a>
+        {% if list_object.pk == list_item.pk %}
+        <br />
+          NOTE: Because you are editing this list, the items below may not match the (unsaved) items you have added or removed.
+        {% endif %}
+    </p>
+  
+
   {{ list_item.description|markdown }}
-  <p class="hint"><a href="{% url edit_list list_item.pk %}">Edit title and description</a></p>
+
   
   <div class="section">
-  <h3>Items</h3>
     
   {% if list_item.listitem_set.all %}
-  <a href="{% url edit_list_items list_item.pk %}">Add Items</a>
 
-  {% if list_object.pk == list_item.pk %}
-    <p class="hint">NOTE: Because you are editing this list, the items below may not match the (unsaved) items you have added or removed.</p>
-  {% endif %}
+
 
   <table>
     <thead>
       <th>Name</th>
       <th>Amount</th>
+      <th></th>
     </thead>
     <tbody>
       {% for item in list_item.listitem_set.all %}
