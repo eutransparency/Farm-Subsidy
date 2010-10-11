@@ -69,13 +69,6 @@ def list_items(list_name):
     return items
     
 def item_in_list(list_name, item_key):
-    print item_key
-    print list_name, item_key
-    print r.keys("%s*" % list_name)
-    print r.smembers("%s:items" % list_name)
-    print
-    print
-    print
     return r.sismember("%s:items" % list_name, item_key)
 
 def add_item(list_name, item_key, object_hash):
