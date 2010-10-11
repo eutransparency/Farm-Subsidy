@@ -19,6 +19,9 @@
         <thead>
             <th>Name</th>
             <th>Amount</th>
+            {% if list_name %}
+                <th></th>
+            {% endif %}
         </thead>
         <tbody>
             {% for recipient in recipients %}

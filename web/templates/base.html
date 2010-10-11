@@ -58,7 +58,8 @@
                     return true;
                 }
             </script>
-            <label for="fields_email">Sign up for our newsletter</label><input type="text" name="fields_email" value="" id="fields_email" size="20"/>
+            <label for="fields_email" id="newsletter_label">Sign up for our newsletter</label>
+            <input type="text" name="fields_email" value="" id="fields_email" size="20"/>
             <input name="Submit" value="ok" type="submit"/>
         </fieldset>        
     </form>
@@ -78,7 +79,7 @@
         <h2>Discover who gets what from the Common Agricultural Policy</h2>
         
         {# search form #}
-        <form id="search_form" action="{% url search %}" method="POST" accept-charset="utf-8">
+        <form id="search_form" action="{% url search %}" method="POST" accept-charset="utf-8" class="transparent">
             {% csrf_token %}
             <h2><label for="search" class="section_title">Search</label></h2>
             <input type="text" name="q" value="{{ q }}" id="q" title="Enter a company name or place">
@@ -86,13 +87,16 @@
             <small>e.g. <a href="{% url search 'nestle' %}">Nestle</a> or <a href="{% url search 'windsor' %}">Windsor</a></small>
         </form>
         
+        <span id="totalizer" class="transparent">&euro;xxxxx in payments to  23 countries since 2001</span>
+        
         {# main menu #}
         <ul id="mainmenu">
             {% load active_url %}
             <li><a href="/" >Home</a></li>
             <li><a href="{% url countries %}">Countries</a></li>            
-            <li><a href="/lists/">Custom lists</a></li>
-            <li><a href="/news/">News &amp; reports</a></li>
+            <li><a href="/lists/">Lists</a></li>
+            <li><a href="{% url transparency_index %}">Transparency Index</a></li>            
+            <li><a href="/news/">News</a></li>
             <li class="last"><a href="/faq/">FAQs</a></li>            
         </ul>
 

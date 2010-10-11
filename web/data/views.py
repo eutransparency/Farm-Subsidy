@@ -5,6 +5,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.db.models import Sum, Count
 from django.contrib.auth.decorators import login_required
+from django.contrib.comments.models import Comment
 from django.conf import settings
 from feeds.models import *
 from tagging.models import TaggedItem
@@ -27,12 +28,15 @@ def home(request):
   top_eu = models.Recipient.objects.top_recipients()
   top_for_ip = models.Recipient.objects.top_recipients(country=ip_country)
   
+  latest_annotations = Comment.objects.all().order_by('-submit_date')[:5]
+  
   return render_to_response(
     'home.html', 
     {
     'top_eu' : top_eu,
     'is_home' : True,
     'top_for_ip' : top_for_ip,
+    'latest_annotations' : latest_annotations,
     },
     context_instance=RequestContext(request)
   )  
