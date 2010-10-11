@@ -295,7 +295,9 @@ def download(request, data_file=None):
     try:
         profile = Profile.objects.get(user=user)
     except Profile.DoesNotExist:
-        return HttpResponseRedirect(reverse('profiles_create_profile'))
+        profile = Profile(user=request.user)
+        profile.save()
+
 
     if profile.data_agreement == False:
         request.notifications.add("Please agree to the following licence before downloading the data")
@@ -327,7 +329,8 @@ def data_agreement_form(request):
         if profile.data_agreement:
             return HttpResponseRedirect(reverse('download'))
     except Profile.DoesNotExist:
-        return HttpResponseRedirect(reverse('profiles_create_profile'))
+        p = Profile(user=request.user)
+        p.save()
 
     if request.POST:
         form = DataAgreementForm(request.POST, instance=profile)

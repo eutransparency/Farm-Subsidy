@@ -16,7 +16,7 @@ class Profile(models.Model):
     user = models.ForeignKey(User)
     name = models.CharField(blank=True, max_length=255)
     data_agreement = models.BooleanField(default=False)
-    data_description = models.TextField(blank=False, null=True)
+    data_description = models.TextField(blank=True, null=True)
 
     def __unicode__(self):
         return "%s" % self.user
