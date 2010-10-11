@@ -19,7 +19,7 @@ def compare(request):
 def transparency_list(request):
     transparency_list = TransparencyScore.objects.all().order_by('rank')
     
-    green = "00D400"
+    green = "2A8330"
     yellow = "FF6600"
     red = "FE0000"
     
