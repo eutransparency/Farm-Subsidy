@@ -3,6 +3,7 @@ Redis read/write interface/backend for lists
 """
 
 import redis
+from django.contrib.contenttypes.models import ContentType
 
 import models
 
@@ -68,6 +69,13 @@ def list_items(list_name):
     return items
     
 def item_in_list(list_name, item_key):
+    print item_key
+    print list_name, item_key
+    print r.keys("%s*" % list_name)
+    print r.smembers("%s:items" % list_name)
+    print
+    print
+    print
     return r.sismember("%s:items" % list_name, item_key)
 
 def add_item(list_name, item_key, object_hash):
@@ -76,6 +84,7 @@ def add_item(list_name, item_key, object_hash):
         for k,v in object_hash.items():
             r.hset("%s:hashes:%s" % (list_name, item_key), k, v)
         r.expire("%s:hashes:%s" % (list_name, item_key), EXPIRE_TIME)
+    make_total(list_name, 'add')
 
 def remove_item(list_name, item_key):
     """
@@ -94,7 +103,8 @@ def save_items(list_object, list_name):
     
     Requires a List object
     """
-    
+    list_object.save()
+
     active_list_items = list_items(list_name)
 
     # Delete all existing ListItems relating to this list
@@ -108,3 +118,44 @@ def save_items(list_object, list_name):
             i.list_id = list_object
             i.save()
         # i = models.ListItem()
+
+
+def make_object_hash(model_object, ct=None):
+    """
+    Takes a model object and returns dict ready to be passed to add_item()
+    """
+    if not ct:
+        ct = ContentType.objects.get_for_model(model_object)
+    
+    object_hash = {}
+    for f in model_object.list_hash_fields:
+        object_hash[f] = model_object.__dict__[f]
+
+    # Add the URL, if we can get it
+    if hasattr(model_object, 'get_absolute_url'):
+        object_hash['get_absolute_url'] = model_object.get_absolute_url()
+
+    # Add content object and content_type
+    object_hash['content_object'] = model_object.pk
+    object_hash['content_type'] = ct.pk
+    
+
+    
+    return object_hash
+
+def make_item_key(model_object, ct=None):
+    """
+    Makes an item key from a given model.
+    
+    This is in the form of "[content type pk]:[object pk]", in a
+    GFK style.
+    
+    NOTE: this will break other things if the pk of the object 
+    has a colon (:) in it.
+    """
+    
+    if not ct:
+        ct = ContentType.objects.get_for_model(model_object)
+
+    item_key = "%s:%s" % (ct.pk, model_object.pk)
+    return item_key

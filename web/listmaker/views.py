@@ -53,14 +53,13 @@ def deactivate(request):
 
 
 @login_required
-@active_list_required
 def manage_lists(request, list_id=None):
     """
     Update or create a list.
     
     Handles the POST for the create/edit page, and displaies the correct form.
     """
-    
+
     if list_id:
         list_object = get_object_or_404(models.List, pk=list_id, user=request.user)
     else:
@@ -71,39 +70,12 @@ def manage_lists(request, list_id=None):
     if request.POST:
         form = forms.ListForm(request.POST, instance=list_object)
         if form.is_valid():
-            
             if request.session.get('list_name'):
                 lists.save_items(list_object, request.session.get('list_name'))
             
             form.save()
             return HttpResponseRedirect(form.instance.get_absolute_url())
-    # 
-    # active_list = request.session.get('list_object')
-    # if list_id or active_list:
-    #     print active_list.pk
-    #     list_item = get_object_or_404(models.List, pk=list_id or active_list.pk, user=request.user)
-    # else:
-    #     list_item = models.List(user=request.user)
-    # 
-    # if request.POST:
-    #     new_list_form = forms.ListForm(request.POST, instance=list_item)
-    #     new_list_form.user = request.user
-    #     if new_list_form.is_valid():
-    #         list_item = new_list_form.save()
-    #         
-    #         # Save the list object
-    #         request.session['list_object'] = list_item
-    #         
-    #         # Save each item in the list
-    #         print request.session.keys()
-    #         for item in request.session['list_items']:
-    #             item.save()
-    #             # models.ListItem.objects.get_or_create(content_type=item.content_)
-    #         return HttpResponseRedirect(reverse('list_detail', kwargs={'list_id' : list_item.pk}))
-    # else:
-    #     print "-=="
-    #     print repr(list_item)
-    #     new_list_form = forms.ListForm(instance=list_item)
+
     return render_to_response(
         'edit.html', 
             {
@@ -135,20 +107,29 @@ def list_view(request, list_id):
 
 
 def edit_list_items(request, list_id=None):
+    """
+    'activates' a saved list.
+    """
     if list_id:
         try:
             list_object = models.List.objects.get(pk=list_id)
             request.session['list_object'] = list_object
-            
         except models.List.DoesNotExist:
             return HttpResponseRedirect(reverse('create_list'))
-    request.session['list_enabled'] = True
-    list_items = [i for i in list_object.listitem_set.all()]
-    request.session['list_items'] = list_items
-    # list_total = [i.content_object.amount for i in list_items]
-    # request.session['list_total'] = list_total
+
+    list_name = lists.get_list_name(request)
     
+    for list_item in list_object.listitem_set.all().select_related():
+        co = list_item.content_object
+        item_key = lists.make_item_key(co)
+        object_hash = lists.make_object_hash(co)
+        lists.add_item(list_name, item_key, object_hash)
+    
+    request.session['list_name'] = list_name    
+    request.session['list_enabled'] = True    
+    request.session['list_object'] = list_object    
     request.session.modified = True
+
     return HttpResponseRedirect(reverse('list_detail', args=(list_object.pk,)))
 
 
@@ -172,26 +153,14 @@ def add_remove_item(request):
 
     content_type = request.POST.get('content_type', None)
     object_id = request.POST.get('object_id', None)
-    item_key = "%s:%s" % (content_type, object_id)
 
     # Load the object from the database
     ct = ContentType.objects.get(name=content_type)
     co = ct.get_object_for_this_type(pk=object_id)
-
+    item_key = lists.make_item_key(co, ct)
     
     if action == "add":
-        object_hash = {}
-        for f in co.list_hash_fields:
-            object_hash[f] = co.__dict__[f]
-
-        # Add the URL, if we can get it
-        if hasattr(co, 'get_absolute_url'):
-            object_hash['get_absolute_url'] = co.get_absolute_url()
-
-        # Add content object and content_type
-        object_hash['content_object'] = co.pk
-        object_hash['content_type'] = ct.pk
-        
+        object_hash = lists.make_object_hash(co)
         lists.add_item(list_name, item_key, object_hash)
 
     if action == "remove":

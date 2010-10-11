@@ -5,13 +5,18 @@
         <h3>Custom Lists</h3>
         {% include "blocks/list_items.html" %}
         <h4>
-        {% if list_object.name %}
-            <a href="{% url save_list %}">{{ list_object.name }}</a>
+        {% if list_object %}
+            <a href="{{ list_object.get_absolute_url }}">{{ list_object.name }}</a>
         {% else %}
             New list
         {% endif %}
         </h4>
-        <a href="{% url save_list %}">Save</a>
+        {% if list_object %}
+            <a href="{% url save_list list_object.pk %}">Save</a>
+        {% else %}
+            <a href="{% url save_list %}">Save</a>
+        {% endif %}
+
         <a href="{% url deactivate_list %}">Deactivate</a>
     </div>
 {% endif %}

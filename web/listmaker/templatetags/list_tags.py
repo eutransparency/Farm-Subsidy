@@ -24,10 +24,12 @@ def list_item_edit(context, list_object):
         if type(list_object) == dict:
             ct = ContentType.objects.get(pk=list_object.get('content_type'))
             list_object['pk'] = list_object.get('content_object')
-            in_list = lists.item_in_list(list_name, "%s:%s" % (ct, list_object.get('content_object')))
+            item_key = "%s:%s" % (ct.pk, list_object['pk'])
+            in_list = lists.item_in_list(list_name, item_key)
         else:            
             ct = ContentType.objects.get_for_model(list_object)
-            in_list = lists.item_in_list(list_name, "%s:%s" % (ct, list_object.pk))
+            item_key = lists.make_item_key(list_object, ct)
+            in_list = lists.item_in_list(list_name, item_key)
             
     return {
         'ct' : ct,

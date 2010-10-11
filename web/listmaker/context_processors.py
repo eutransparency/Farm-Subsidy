@@ -9,6 +9,7 @@ def list_items(request):
         return {
             'list_enabled' : True,
             'list_name' : request.session.get('list_name'),
+            'list_object' : request.session.get('list_object'),
         }
     else:
         return {}

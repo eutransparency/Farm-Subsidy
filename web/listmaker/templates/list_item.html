@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load markup %}
+{% load list_tags %}
 {% block page_title %}{{ list_item.name }}{% endblock %}
 {% block title %}{{ list_item.name }}{% endblock %}
 {% block content %}
@@ -12,6 +13,11 @@
     
   {% if list_item.listitem_set.all %}
   <a href="{% url edit_list_items list_item.pk %}">Add Items</a>
+
+  {% if list_object.pk == list_item.pk %}
+    <p class="hint">NOTE: Because you are editing this list, the items below may not match the (unsaved) items you have added or removed.</p>
+  {% endif %}
+
   <table>
     <thead>
       <th>Name</th>
@@ -20,10 +26,9 @@
     <tbody>
       {% for item in list_item.listitem_set.all %}
         <tr>
-          <td>{{ item.content_object.name }} ({{ item.content_object.pk }})</td>
-          <td>
-            {{ item.content_object.total }}
-          </td>
+          <td><a href="{{ item.content_object.get_absolute_url }}">{{ item.content_object.name }}</a></td>
+          <td>{{ item.content_object.total }}</td>
+          <td>{% list_item_edit item.content_object %}</td>
         </tr>
       {% endfor %}
       <p></p>
