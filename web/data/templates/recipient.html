@@ -132,7 +132,7 @@
 {% endblock %}
 
 {% block right %}
-{%if recipient.lat and recipient.lng%}
+{%if recipient.lat != 0 and recipient.lng != 0 %}
     <img src="http://maps.google.com/maps/api/staticmap?center={{recipient.lat}},{{recipient.lng}}&zoom=15&size=245x200&sensor=false&maptype=satellite" title="Satellite image" alt="Satellite image" width="245" height="200"/>
 {% endif %}
 
@@ -162,16 +162,5 @@
         {% endfor %}
     </ul>
     {% endif %}
-    
-
-    {# {% more_like_this recipient as related_content limit 3 %} #}
-    {# {% if related_content %} #}
-    {#     <h4>Similarly named recipients</h4> #}
-    {#     <ul> #}
-    {#     {% for item in related_content %} #}
-    {#       <li><a href="{{ item.object.get_absolute_url }}">{{ item.object.name }}</a></li> #}
-    {#     {% endfor %} #}
-    {#     </ul> #}
-    {# {% endif %} #}
 
 {% endblock %}
