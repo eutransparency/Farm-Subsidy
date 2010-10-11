@@ -205,8 +205,7 @@ def scheme(request, country, globalschemeid, name):
     top_recipients = models.Recipient.objects.filter(
         payment__scheme=globalschemeid)\
         .annotate(scheme_total=Sum('payment__amounteuro'))\
-        .order_by('-scheme_total')\
-        .distinct()
+        .order_by('-scheme_total')
 
     return render_to_response(
         country_template('scheme.html', country), 
