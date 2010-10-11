@@ -57,16 +57,6 @@
         </tr>
     </table>
   </div>
-  
-  {# Only show the graph if there is more than one payment_year #}
-  {# {% if payment_years.1 %}   #}
-  {#   <div class="section"> #}
-  {#       <h3>Breakdown by year</h3> #}
-  {#       {% load graphs %} #}
-  {#       {% graph "recipient_graph" recipient.globalrecipientidx %} #}
-  {#   </div> #}
-  {# {% endif %} #}
-  
 
     <div class="section">
         {% get_comment_list for recipient as comment_list %}
@@ -174,14 +164,14 @@
     {% endif %}
     
 
-    {% more_like_this recipient as related_content limit 3 %}
-    {% if related_content %}
-        <h4>Similarly named recipients</h4>
-        <ul>
-        {% for item in related_content %}
-          <li><a href="{{ item.object.get_absolute_url }}">{{ item.object.name }}</a></li>
-        {% endfor %}
-        </ul>
-    {% endif %}
+    {# {% more_like_this recipient as related_content limit 3 %} #}
+    {# {% if related_content %} #}
+    {#     <h4>Similarly named recipients</h4> #}
+    {#     <ul> #}
+    {#     {% for item in related_content %} #}
+    {#       <li><a href="{{ item.object.get_absolute_url }}">{{ item.object.name }}</a></li> #}
+    {#     {% endfor %} #}
+    {#     </ul> #}
+    {# {% endif %} #}
 
 {% endblock %}
