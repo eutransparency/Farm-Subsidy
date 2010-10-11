@@ -162,7 +162,7 @@ def recipient(request, country, recipient_id, name):
         'has_indirect' : 2 in payment_schemes,
         'has_rural' : 3 in payment_schemes,
         'first_year' : 0,
-        'year_max_min' : year_max_min,
+        'years_max_min' : years_max_min,
         'expanded' : expanded,
         'closest' : closest,
     },
