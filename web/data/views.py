@@ -150,7 +150,7 @@ def recipient(request, country, recipient_id, name):
       closest = None
 
   years_max_min = models.CountryYear.objects.year_max_min(country)
-
+  # print years_max_min
   return render_to_response(
     'recipient.html', 
     {
