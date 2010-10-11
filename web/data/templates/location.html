@@ -29,9 +29,9 @@
       <table>  
         <thead class="sort-{{ sub_location_sort }}">
           <th>Name</th>
-          <th>Amount</th>
+          <th class="money">Amount</th>
           <th>Recipients</th>
-          <th>Average per recipient</th>
+          <th class="money">Average per recipient</th>
           
         </thead>
         <tbody>
@@ -56,7 +56,7 @@
     <table>  
       <thead>
         <th>Name</th>
-        <th>Amount</th>
+        <th class="money">Amount</th>
       </thead>
       <tbody>
         {% for r in location_recipients %}

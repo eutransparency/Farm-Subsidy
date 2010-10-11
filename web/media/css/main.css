@@ -60,7 +60,7 @@ table tbody td{background:url(../images/featurebar.png);padding:0.6em 1em;}
 th.money, td.money {text-align:right;}
 
 table td { border-bottom:solid 0 #fff;height:20px;padding:0.6em 1em;}
-table td.money {text-align:right;}
+table td.money, table th.money {text-align:right;}
 div.section {border-bottom:dotted 1px #ddd; margin:0 0 1em 0; padding:0 0 1em 0;clear:left;}
 #right div.section {border-bottom:dotted 1px #ddd; margin:1em 0 1em 0; }
 /*#content div.section {overflow:auto; margin-bottom:2em;}*/
