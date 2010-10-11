@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load markup %}
+{% load humanize %}
 {% load list_tags %}
 {% block page_title %}{{ list_item.name }}{% endblock %}
 {% block title %}{{ list_item.name }}{% endblock %}
@@ -27,7 +28,7 @@
       {% for item in list_item.listitem_set.all %}
         <tr>
           <td><a href="{{ item.content_object.get_absolute_url }}">{{ item.content_object.name }}</a></td>
-          <td>{{ item.content_object.total }}</td>
+          <td>{{ item.content_object.total|floatformat:2|intcomma }}</td>
           <td>{% list_item_edit item.content_object %}</td>
         </tr>
       {% endfor %}

@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from feeds.models import *
 from tagging.models import TaggedItem
-from misc.helpers import country_template
+from misc.helpers import country_template, CachedCountQuerySetWrapper
 from web.countryinfo.transparency import transparency_score
 from web.countryinfo.load_info import load_info
 from data import countryCodes
@@ -206,7 +206,11 @@ def scheme(request, country, globalschemeid, name):
         payment__scheme=globalschemeid)\
         .annotate(scheme_total=Sum('payment__amounteuro'))\
         .order_by('-scheme_total')
-
+    
+    # top_recipients.count = 1
+    # top_recipients.__len__ = 1
+    top_recipients = CachedCountQuerySetWrapper(top_recipients)
+    
     return render_to_response(
         country_template('scheme.html', country), 
         {
