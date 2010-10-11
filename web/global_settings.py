@@ -109,6 +109,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   'misc.context_processors.google_api_key',
   'misc.context_processors.header_class',  
   'data.context_processors.breadcrumb',
+  'data.context_processors.data_totals_info',
   'features.context_processors.featured_items',
 )
 

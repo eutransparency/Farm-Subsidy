@@ -3,7 +3,10 @@ import socket
 import urllib2
 
 from django.core.urlresolvers import reverse
+from django.core.cache import cache
+
 from data import countryCodes
+from data.models import Recipient, Payment
 
 
 def country(request):
@@ -94,6 +97,23 @@ def breadcrumb(request):
     return {'breadcrumbs' : breadcrumb}
 
 
+def data_totals_info(request):
+    from django.db.models import Sum
+    
+    EXPIRE_TIME = 60*60*24*7 # cache for one week
+    
+    total_recipients = cache.get('total_recipients')
+    if not total_recipients:
+        total_recipients = Recipient.objects.count()
+        cache.set('total_recipients', total_recipients, EXPIRE_TIME)
 
-
-
+    sum_of_payments = cache.get('sum_of_payments')
+    if not sum_of_payments:
+        sum_of_payments = Payment.objects.aggregate(total=Sum('amounteuro'))
+        cache.set('sum_of_payments', sum_of_payments, EXPIRE_TIME)
+    
+    
+    return {
+        'total_recipients' : total_recipients,
+        'sum_of_payments' : sum_of_payments['total'],
+        }
