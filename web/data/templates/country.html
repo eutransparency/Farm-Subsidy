@@ -2,6 +2,7 @@
 {% load humanize %}
 {% load countries %}
 {% load inthenews %}
+{% load list_tags %}
 
 {% block title %}
   {{ country.name }}
@@ -26,43 +27,41 @@
     </p>
 {% endif %}    
 
-{% if years.1 %}  
-  {% load graphs %}
-  {% graph "country_years" country.code %}
-
-<div class="year_selector">  
-  {% for year in years %}
-    {% ifequal year.year selected_year  %}
-      <strong>{{ year.year }}</strong>
+{% if years %}  
+    <div class="year_selector section">  
+    {% if selected_year == 0 %}
+        <span class="selected">All Years</span>
     {% else %}
-      {% url country_year country=country.code year=year.year as year_url %}
-      <a href="{{ year_url }}">{{ year.year }}</a>
-    {% endifequal %}
-  {% endfor %}
-  <br />
-  {% ifequal selected_year 0 %}
-    All Years
-  {% else %}
-    <a href="{% url country_year country=country.code year=0 %}" class="selected">All Years</a>
-  {% endifequal %}
-</div>
-
+        <a href="{% url country country=country.code %}" class="selected">All Years</a>
+    {% endif %}
+    
+    {% for year in years %}
+        {% if year.year == selected_year  %}
+            <strong>{{ year.year }}</strong>
+        {% else %}
+            {% url country_year country=country.code year=year.year as year_url %}
+            <a href="{{ year_url }}">{{ year.year }}</a>
+        {% endif %}
+    {% endfor %}
+    </div>
 {% endif %}
+
 <div class="section">
   <h3>Top recipients</h3>
   <table>  
     <thead>
       <th>Recipient name</th>
-      <th class="money">Amount</th>
-    {% if custom_list.active %}
-      <th>Add To List</th>
+      <th class="money">Amount (all years)</th>
+    {% if list_name %}
+      <th class="list_head"></th>
     {% endif %}
     </thead>
     <tbody>
-      {% for r in top_recipients %}
+      {% for recipient in top_recipients %}
         <tr>
-          <td><a href="{{ r.get_absolute_url }}">{{ r.name }}</a></td>
-          <td class="money">&euro;{{ r.total|floatformat:0|intcomma }}</td>
+          <td><a href="{{ recipient.get_absolute_url }}">{{ recipient.name }}</a></td>
+          <td class="money">&euro;{{ recipient.total|floatformat:0|intcomma }}</td>
+          <td>{% list_item_edit recipient %}</td>
         </tr>
       {% endfor %}
       

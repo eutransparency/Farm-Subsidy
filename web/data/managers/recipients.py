@@ -16,15 +16,19 @@ class RecipientManager(models.Manager):
     """
 
     def top_recipients(self, country=None, year=0):
-        if int(year) == 0:
-            recipients = self.all()
-            recipients = recipients.exclude(total=None)
-            if country and country != 'EU':
-                recipients = recipients.filter(countrypayment=country)
-            recipients = recipients.order_by('-total')[:10]
-            return recipients
+        recipients = self.all()
+        recipients = recipients.exclude(total=None)
+        kwargs = {}
+        if country and country != 'EU':
+            kwargs['countrypayment'] = country
+        if int(year) != 0:
+            kwargs['payment__year__exact'] = year
+            recipients = recipients.distinct()
+        recipients = recipients.filter(**kwargs)
+        recipients = recipients.order_by('-total')
+        return recipients
         
-    def recipents_for_location(self, location):
+    def recipents_for_location(self, location, year=0):
         """
         Given a location slug, retuen all recipients where the geo fields match.
         
@@ -36,7 +40,9 @@ class RecipientManager(models.Manager):
             geos.append(l)
         geos.append(location)
         kwargs = {}
+        if int(year) != 0:
+            kwargs['payment__year__exact'] = year
         for i, g in enumerate(geos):
             i = i + 1
             kwargs["geo%s" % i] = g.name
-        return self.filter(**kwargs).exclude(total=None)
+        return self.filter(**kwargs).exclude(total=None).distinct()

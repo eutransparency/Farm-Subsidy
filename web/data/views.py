@@ -65,11 +65,11 @@ def country(request, country, year=DEFAULT_YEAR):
 
     years_max_min = models.CountryYear.objects.year_max_min(country)
 
-    # years = models.data.objects.years(country=country)
-
-    top_recipients = models.Recipient.objects.top_recipients(country=country, year=year)
-    top_schemes = models.Scheme.objects.top_schemes(country)
-    top_locations = models.Location.get_root_nodes().filter(country=country).order_by('-total')
+    years = models.CountryYear.objects.filter(country=country)
+    
+    top_recipients = models.Recipient.objects.top_recipients(country=country, year=year)[:5]
+    top_schemes = models.SchemeYear.objects.top_schemes(country, year=year)[:5]
+    top_locations = models.Location.get_root_nodes().filter(country=country, year=year).order_by('-total')[:5]
     
     #get transparency score
     transparency = None
@@ -96,7 +96,7 @@ def country(request, country, year=DEFAULT_YEAR):
         'latest_news_item': latest_news_item,
         'stats_year': settings.STATS_YEAR,
         'stats_info': stats_info,
-        # 'years' : years,
+        'years' : years,
         'selected_year' : int(year),
         'years_max_min' : years_max_min,
     },
@@ -246,9 +246,12 @@ def browse(request, country):
     )  
 
 @cache_page(60 * 60 * 4)
-def all_locations(request, country):
+def all_locations(request, country, year=0):
     locations = models.Location.objects.all()
-    kwargs = {'geo_type' : 'geo1'}
+    kwargs = {
+        'geo_type' : 'geo1',
+        'year' : year,
+        }
     if country != "EU":
         kwargs['country'] = country
     locations = locations.filter(**kwargs)
@@ -261,8 +264,8 @@ def all_locations(request, country):
         context_instance=RequestContext(request)
     )  
 
-@cache_page(60 * 60 * 4)
-def location(request, country, slug=None):
+# @cache_page(60 * 60 * 4)
+def location(request, country, slug=None, year=0):
     """
     Single location object. This is a node in the tree, and could have
     children.
@@ -270,12 +273,14 @@ def location(request, country, slug=None):
     If children are found, we call them 'sub locations' and display a list of
     them.
     """
-    location = get_object_or_404(models.Location, country=country, slug=slug)
-    kwargs = {}
-    for p in location.get_ancestors():
-        kwargs[p.geo_type] = p.name
-    location_recipients = models.Recipient.objects.all()[:10]
-    location_recipients = models.Recipient.objects.recipents_for_location(location).order_by('-total')[:10]
+    print year
+    
+    location = get_object_or_404(models.Location, country=country, slug=slug, year=year)
+
+    # kwargs = {}
+    # for p in location.get_ancestors():
+    #     kwargs[p.geo_type] = p.name
+    location_recipients = models.Recipient.objects.recipents_for_location(location, year=year).order_by('-total')[:10]
 
     sub_locations = location.get_children()
     
