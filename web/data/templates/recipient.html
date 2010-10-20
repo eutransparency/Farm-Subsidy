@@ -124,7 +124,7 @@
             <p id="disabled_comments">
                 <textarea disabled="disabled"></textarea>
                 <br/>
-                <a href="{% url login %}">Create an account</a> or <a href="{% url login %}">sign in</a> to tell us something about {{recipient.name}}.
+                <a href="{% url my_account:login %}">Create an account</a> or <a href="{% url my_account:login %}">sign in</a> to tell us something about {{recipient.name}}.
             </p>
         {% endif %}
         
