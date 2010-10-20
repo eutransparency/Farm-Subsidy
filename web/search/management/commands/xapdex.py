@@ -33,7 +33,7 @@ class Command(BaseCommand):
             locations = Location.objects.filter(country=options['country'])
 
             print "now indexing Recipients"
-            # back.update(recipient_index, index_data)
+            back.update(recipient_index, index_data)
 
             print "now indexing Location"
             back.update(location_index, locations)

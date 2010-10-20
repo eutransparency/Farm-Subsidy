@@ -2,6 +2,9 @@
 
 # To be called every 5 minutes.  Add any commands below.
 
+import warnings
+warnings.simplefilter("ignore")
+
 commands = (
         'process_search_queue', # Updates the xaipain index
         )
