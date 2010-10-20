@@ -154,7 +154,6 @@ def recipient(request, country, recipient_id, name):
       closest = None
 
   years_max_min = models.CountryYear.objects.year_max_min(country)
-  # print years_max_min
   return render_to_response(
     'recipient.html', 
     {
@@ -273,7 +272,6 @@ def location(request, country, slug=None, year=0):
     If children are found, we call them 'sub locations' and display a list of
     them.
     """
-    print year
     
     location = get_object_or_404(models.Location, country=country, slug=slug, year=year)
 
