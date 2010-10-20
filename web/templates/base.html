@@ -63,6 +63,13 @@
             <input name="Submit" value="ok" type="submit"/>
         </fieldset>        
     </form>
+    <div class="loginbar">
+    {% if request.user.is_authenticated %}
+        Logged in as <a href="{{ request.user.profile_set.all.0.get_absolute_url }}">{{ request.user.username }}</a> | <a href="{% url my_account:logout %}">logout</a>
+    {% else %}
+        <a href="{% url my_account:login %}">Create an account</a> or <a href="{% url my_account:login %}">sign in</a>
+    {% endif %}
+    </div>
 </div>
 
 {# outer #}
@@ -202,7 +209,7 @@
                         </ul>
                     </dd>
                 {% endif %}
-                <dt>Looking for more information?:</dt>
+                <dt>Looking for more information?</dt>
                 <dd>
                     <ul>
                         <li><a href="/news">News &amp; reports</a></li>
@@ -210,7 +217,7 @@
                         <li><a href="/about">About us</a></li>
                     </ul>
                 </dd>
-                <dt>Get in touch</dt>
+                <dt>Get in touch:</dt>
                 <dd>
                     <ul>
                         <li><a href="mailto:team[-at-]farmsubsidy[-dot-]org">Email us</a></li>

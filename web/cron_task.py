@@ -1,16 +1,9 @@
 #!/usr/bin/env python
 
-# To be called every 5 minutes.  Add any commands below.
-
+import os.path
+import sys
 import warnings
 warnings.simplefilter("ignore")
-
-commands = (
-        'process_search_queue', # Updates the xaipain index
-        )
-    
-
-import os.path
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -27,8 +20,8 @@ import os
 os.chdir(CURRENT_PATH)
 
 def main():
-    for c in commands:
-        management.call_command(c)
+    print sys.argv[1]
+    management.call_command(sys.argv[1])
     
 if __name__ == '__main__':
     import settings

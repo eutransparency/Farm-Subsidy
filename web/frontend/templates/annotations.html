@@ -1,0 +1,20 @@
+{% extends "account_base.html" %}
+
+{% load markup %}
+{% load pagination_tags %}
+
+{% block account_content %}
+    {% autopaginate annotations 30 as annotations %}
+{% if annotations %}
+    <div class="section">
+        <h3>All Annotations</h3>
+        {% for annotation in annotations %}
+            {{ user.username }} annotated <a href="{{ annotation.content_object.get_absolute_url }}">{{ annotation.content_object.name }}</a>:
+            <blockquote>{{ annotation.comment|markdown|striptags|truncatewords:30 }}</blockquote>
+        {% endfor %}
+    </div>
+        <h4 class="pager">{% paginate %}</h4>
+{% endif %}
+
+
+{% endblock %}

@@ -62,18 +62,17 @@ def breadcrumb(request):
                  'url' : reverse('country', args=[country['code']])},
                  ]})
     
-    # Locations
-    if 'location' in path and path[2] == "location" and len(path) >= 4:
+    # # Locations
+    if 'location' in path and path[2] == "location" and len(path) >= 6:
+        year = path[3]
         geos = ['geo1','geo2','geo3','geo4',]
-        locations = path[3:]
+        locations = path[4:]
         location_breadcrumbs = []
         while locations:
-            kwargs = {'country' : country['code'],}
+            kwargs = {'country' : country['code'], 'year': year}
             for i, geo in enumerate(geos):
-                try:
-                    kwargs['slug'] = locations[i]
-                except:
-                    pass
+                kwargs['slug'] = "/".join(locations)
+
             item = {
                 'name' : locations[-1], 
                 'url' : reverse('location_view', kwargs=kwargs)
@@ -100,7 +99,7 @@ def breadcrumb(request):
 def data_totals_info(request):
     from django.db.models import Sum
     
-    EXPIRE_TIME = 60*60*24*7 # cache for one week
+    EXPIRE_TIME = 60*60*24*7*30 # cache for one month
     
     total_recipients = cache.get('total_recipients')
     if not total_recipients:

@@ -16,17 +16,18 @@ from data import countryCodes
 import context_processors
 import models
 
-from misc.models import Profile
-from misc.forms import DataAgreementForm
+from frontend.models import Profile
+from frontend.forms import DataAgreementForm
 
 DEFAULT_YEAR = settings.DEFAULT_YEAR
 
 @cache_page(60 * 60 * 24)
 def home(request):
 
-  ip_country = request.session.get('ip_country', 'GB')
-  top_eu = models.Recipient.objects.top_recipients()
-  top_for_ip = models.Recipient.objects.top_recipients(country=ip_country)
+  # ip_country = request.session.get('ip_country', 'GB')
+  # top_for_ip = models.Recipient.objects.top_recipients(country=ip_country)
+
+  top_eu = models.Recipient.objects.top_recipients()[:10]
   
   latest_annotations = Comment.objects.all().order_by('-submit_date')[:5]
   
@@ -35,7 +36,7 @@ def home(request):
     {
     'top_eu' : top_eu,
     'is_home' : True,
-    'top_for_ip' : top_for_ip,
+    # 'top_for_ip' : top_for_ip,
     'latest_annotations' : latest_annotations,
     },
     context_instance=RequestContext(request)
@@ -65,11 +66,11 @@ def country(request, country, year=DEFAULT_YEAR):
 
     years_max_min = models.CountryYear.objects.year_max_min(country)
 
-    # years = models.data.objects.years(country=country)
-
-    top_recipients = models.Recipient.objects.top_recipients(country=country, year=year)
-    top_schemes = models.Scheme.objects.top_schemes(country)
-    top_locations = models.Location.get_root_nodes().filter(country=country).order_by('-total')
+    years = models.CountryYear.objects.filter(country=country)
+    
+    top_recipients = models.Recipient.objects.top_recipients(country=country, year=year)[:5]
+    top_schemes = models.SchemeYear.objects.top_schemes(country, year=year)[:5]
+    top_locations = models.Location.get_root_nodes().filter(country=country, year=year).order_by('-total')[:5]
     
     #get transparency score
     transparency = None
@@ -96,7 +97,7 @@ def country(request, country, year=DEFAULT_YEAR):
         'latest_news_item': latest_news_item,
         'stats_year': settings.STATS_YEAR,
         'stats_info': stats_info,
-        # 'years' : years,
+        'years' : years,
         'selected_year' : int(year),
         'years_max_min' : years_max_min,
     },
@@ -246,9 +247,12 @@ def browse(request, country):
     )  
 
 @cache_page(60 * 60 * 4)
-def all_locations(request, country):
+def all_locations(request, country, year=0):
     locations = models.Location.objects.all()
-    kwargs = {'geo_type' : 'geo1'}
+    kwargs = {
+        'geo_type' : 'geo1',
+        'year' : year,
+        }
     if country != "EU":
         kwargs['country'] = country
     locations = locations.filter(**kwargs)
@@ -261,8 +265,8 @@ def all_locations(request, country):
         context_instance=RequestContext(request)
     )  
 
-@cache_page(60 * 60 * 4)
-def location(request, country, slug=None):
+# @cache_page(60 * 60 * 4)
+def location(request, country, slug=None, year=0):
     """
     Single location object. This is a node in the tree, and could have
     children.
@@ -270,12 +274,14 @@ def location(request, country, slug=None):
     If children are found, we call them 'sub locations' and display a list of
     them.
     """
-    location = get_object_or_404(models.Location, country=country, slug=slug)
-    kwargs = {}
-    for p in location.get_ancestors():
-        kwargs[p.geo_type] = p.name
-    location_recipients = models.Recipient.objects.all()[:10]
-    location_recipients = models.Recipient.objects.recipents_for_location(location).order_by('-total')[:10]
+    print year
+    
+    location = get_object_or_404(models.Location, country=country, slug=slug, year=year)
+
+    # kwargs = {}
+    # for p in location.get_ancestors():
+    #     kwargs[p.geo_type] = p.name
+    location_recipients = models.Recipient.objects.recipents_for_location(location, year=year).order_by('-total')[:10]
 
     sub_locations = location.get_children()
     

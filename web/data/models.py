@@ -5,7 +5,7 @@ from treebeard.mp_tree import MP_Node
 from django.contrib.gis.db import models as geo_models
 
 from managers.recipients import RecipientManager
-from managers.schemes import SchemeManager
+from managers.schemes import SchemeManager, SchemeYearManager
 from managers.countryyear import CountryYearManager
 
 import countryCodes
@@ -14,6 +14,11 @@ class CountryYear(models.Model):
     year = models.IntegerField(blank=True, null=True)
     country = models.CharField(blank=True, max_length=2)
     total = models.FloatField()
+    
+    class Meta:
+        get_latest_by = 'year'
+        ordering = ( 'year', )
+    
     
     objects = CountryYearManager()
 
@@ -136,6 +141,14 @@ class SchemeYear(models.Model):
     year = models.IntegerField(blank=True, null=True)
     total = models.FloatField()
 
+    objects = SchemeYearManager()
+
+    def get_absolute_url(self):
+        return reverse('scheme_view', args=[self.countrypayment, 
+                                            self.globalschemeid, 
+                                            slugify(self.nameenglish)])
+
+
 
 class SchemeType(models.Model):
     """
@@ -178,12 +191,13 @@ class Location(MP_Node):
     average = models.FloatField()
     lat = models.FloatField(null=True)
     lon = models.FloatField(null=True)
+    year = models.IntegerField(blank=True, null=True, db_index=True)
     
     def __unicode__(self):
         return self.name
     
     def get_absolute_url(self):
-        return reverse('location_view', args=[self.country, self.slug])
+        return reverse('location_view', args=[self.country, self.year, self.slug])
     
 class DataDownload(models.Model):
 

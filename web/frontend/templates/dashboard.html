@@ -1,0 +1,33 @@
+{% extends "account_base.html" %}
+
+{% load markup %}
+
+{% block account_content %}
+
+{% if latest_annotations %}
+    <div class="section">
+        <h3>Latest Annotations</h3>
+        {% for annotation in latest_annotations %}
+        {{ user.username }} annotated <a href="{{ annotation.content_object.get_absolute_url }}">{{ annotation.content_object.name }}</a>:
+        <blockquote>{{ annotation.comment|markdown|striptags|truncatewords:30 }}</blockquote>
+
+        {% endfor %}
+        <a href="{% url my_account:annotations %}">View All</a>
+    </div>
+{% endif %}
+
+
+{% if latest_lists %}
+    <div class="section halfcol">
+        <h3>Latest Lists</h3>
+        {% for list in latest_lists %}
+            <a href="{{ list.get_absolute_url }}">{{ list.name }}</a>
+            <blockquote>{{ list.description|markdown|striptags|truncatewords:30 }}<a href="{{ list.get_absolute_url }}">...</a></blockquote>
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+
+
+{% endblock %}

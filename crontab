@@ -1,0 +1,5 @@
+# Assumes cronic (http://habilis.net/cronic/) is installed.  
+# Simply remove 'cronic' from the front of the line if it's not about.
+
+*/12 * * *   cronic python2.6 /var/www/stage.farmsubsidy.org/web/cron_task.py parse_feeds
+*/5 * * * *   cronic python2.6 /var/www/stage.farmsubsidy.org/web/cron_task.py process_search_queue

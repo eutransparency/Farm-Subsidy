@@ -1,5 +1,9 @@
 """
-Various bits to clean upthe data
+Various bits to clean upthe data.
+
+This code is horrid.  I mean really horrid.
+
+And it does something specific, so edit with care, and test!
 
 """
 from optparse import make_option
@@ -25,7 +29,9 @@ class Command(BaseCommand):
         desc = cursor.description
         d = {}
         for r in cursor.fetchall():
-            d[r[0]] = dict(zip([col[0] for col in desc], r))
+            if not d.get(r[0]):
+                d[r[0]] = {}
+            d[r[0]][r[1]] = dict(zip([col[0] for col in desc], r))
         return d
         
         # return [dict(zip([col[0] for col in desc], row))   for row in cursor.fetchall()]
@@ -36,62 +42,123 @@ class Command(BaseCommand):
             raise Exception('A valid country is required')
         
         
-        # Make all locations lower case by default
-        print "Lowering location names"
-        cursor = connection.cursor()
-        cursor.execute("""
-        UPDATE data_recipient 
-        SET geo1=lower(geo1), geo2=lower(geo2), geo3=lower(geo3), geo4=lower(geo4)
-        WHERE countrypayment='%(country)s';
-        """ % {'country' : self.country})
+        # # Make all locations lower case by default
+        # print "Lowering location names"
+        # cursor = connection.cursor()
+        # cursor.execute("""
+        # UPDATE data_recipient 
+        # SET geo1=lower(geo1), geo2=lower(geo2), geo3=lower(geo3), geo4=lower(geo4)
+        # WHERE countrypayment='%(country)s';
+        # """ % {'country' : self.country})
         
         Location.objects.filter(country=self.country).delete()
         
         # Geo1 totals
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT geo1, SUM(total) as total, COUNT(*) as count, AVG(lat) as lat, AVG(lng) as lng
-            FROM data_recipient
-            WHERE countrypayment='%s'
-            AND geo1 IS NOT NULL
-            GROUP BY geo1
-        """ % self.country)
+            SELECT r.geo1, p.year, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
+            FROM data_recipient r
+            JOIN data_payment p
+            ON r.globalrecipientidx=p.globalrecipientidx
+            WHERE r.countrypayment='%(country)s'
+            AND r.geo1 IS NOT NULL
+            GROUP BY r.geo1, p.year;
+        """ % {'country' : self.country})
         geo1_total = self.dictfetchall(cursor)
 
+        cursor = connection.cursor()
+        cursor.execute("""
+            SELECT r.geo1, '0' as year, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
+            FROM data_recipient r
+            WHERE r.countrypayment='%(country)s'
+            AND r.geo1 IS NOT NULL
+            GROUP BY r.geo1;
+        """ % {'country' : self.country})
+        geo1_total_all = self.dictfetchall(cursor)
+        for k,v in geo1_total.items():
+            v['0'] = geo1_total_all[k]['0']
         
         # Geo2 totals
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT geo2, SUM(total) as total, COUNT(*) as count, AVG(lat) as lat, AVG(lng) as lng
-            FROM data_recipient
-            WHERE countrypayment='%s'
-            AND geo2 IS NOT NULL
-            GROUP BY geo1, geo2
+            SELECT r.geo2, p.year, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
+            FROM data_recipient r
+            JOIN data_payment p
+            ON r.globalrecipientidx=p.globalrecipientidx
+            WHERE r.countrypayment='%s'
+            AND r.geo2 IS NOT NULL
+            GROUP BY r.geo1, r.geo2, p.year
         """ % self.country)
         geo2_total = self.dictfetchall(cursor)
-
+        
+        cursor = connection.cursor()
+        cursor.execute("""
+            SELECT r.geo2, '0' as year, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
+            FROM data_recipient r
+            WHERE r.countrypayment='%(country)s'
+            AND r.geo2 IS NOT NULL
+            GROUP BY r.geo1, r.geo2;
+        """ % {'country' : self.country})
+        geo2_total_all = self.dictfetchall(cursor)
+        for k,v in geo2_total.items():
+            v['0'] = geo2_total_all[k]['0']
+        
+        
         # Geo3 totals
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT geo3, SUM(total) as total, COUNT(*) as count, AVG(lat) as lat, AVG(lng) as lng
-            FROM data_recipient
-            WHERE countrypayment='%s'
-            AND geo3 IS NOT NULL
-            GROUP BY geo1, geo2, geo3
+            SELECT r.geo3, p.year, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
+            FROM data_recipient r
+            JOIN data_payment p
+            ON r.globalrecipientidx=p.globalrecipientidx
+            WHERE r.countrypayment='%s'
+            AND r.geo3 IS NOT NULL
+            GROUP BY r.geo1, r.geo2, r.geo3, p.year
         """ % self.country)
         geo3_total = self.dictfetchall(cursor)
+
+        cursor = connection.cursor()
+        cursor.execute("""
+            SELECT r.geo3, '0' as year, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
+            FROM data_recipient r
+            WHERE r.countrypayment='%(country)s'
+            AND r.geo3 IS NOT NULL
+            GROUP BY r.geo1, r.geo2, r.geo3;
+        """ % {'country' : self.country})
+        geo3_total_all = self.dictfetchall(cursor)
+        for k,v in geo3_total.items():
+            v['0'] = geo3_total_all[k]['0']
         
+
+
         # Geo4 totals
         cursor = connection.cursor()
         cursor.execute("""
-            SELECT geo4, SUM(total) as total, COUNT(*) as count, AVG(lat) as lat, AVG(lng) as lng
-            FROM data_recipient
-            WHERE countrypayment='%s'
-            AND geo4 IS NOT NULL
-            GROUP BY geo1, geo2, geo3, geo4
+            SELECT r.geo4, p.year, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
+            FROM data_recipient r
+            JOIN data_payment p
+            ON r.globalrecipientidx=p.globalrecipientidx
+            WHERE r.countrypayment='%s'
+            AND r.geo4 IS NOT NULL
+            GROUP BY r.geo1, r.geo2, r.geo3, r.geo4, p.year
         """ % self.country)
         geo4_total = self.dictfetchall(cursor)
 
+        cursor = connection.cursor()
+        cursor.execute("""
+            SELECT r.geo4, '0' as year, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
+            FROM data_recipient r
+            WHERE r.countrypayment='%(country)s'
+            AND r.geo4 IS NOT NULL
+            GROUP BY r.geo1, r.geo2, r.geo3, r.geo4;
+        """ % {'country' : self.country})
+        geo4_total_all = self.dictfetchall(cursor)
+        for k,v in geo4_total.items():
+            v['0'] = geo4_total_all[k]['0']
+        
+
+
+        
         cursor = connection.cursor()
         cursor.execute("""
             SELECT geo1, geo2, geo3, geo4
@@ -103,6 +170,7 @@ class Command(BaseCommand):
         """ % self.country)
         
         geo1 = geo2 = geo3 = geo4 = None
+        geo1_obj = geo2_obj = geo3_obj = geo4_obj = {}
         data = {}
         
         def make_slug(parent, name):
@@ -115,64 +183,109 @@ class Command(BaseCommand):
         for location in cursor.fetchall():
             if geo1 != location[0]:
                 geo1 = location[0]
+                geo1_obj = {}
                 if geo1 != "":
-                    geo1_obj = Location().add_root(geo_type='geo1', 
-                                    name=geo1, 
-                                    country=self.country,
-                                    slug=make_slug(Location(), geo1),
-                                    total=geo1_total[geo1]['total'],
-                                    recipients=geo1_total[geo1]['count'],
-                                    average=geo1_total[geo1]['total']/geo1_total[geo1]['count'],
-                                    lat=geo1_total[geo1]['lat'],
-                                    lon=geo1_total[geo1]['lng'],
-                                    )
-
+                    for year, location_year in geo1_total[geo1].items():
+                        if not geo1_obj.get(location_year['geo1']):
+                            geo1_obj[location_year['geo1']] = {}
+                        geo1_obj[location_year['geo1']].update({year : {}})
+                        geo1_obj[location_year['geo1']][year] = Location().add_root(geo_type='geo1', 
+                                        name=geo1, 
+                                        country=self.country,
+                                        slug=make_slug(Location(), geo1),
+                                        total=location_year['total'],
+                                        recipients=location_year['count'],
+                                        average=location_year['total']/location_year['count'],
+                                        lat=location_year['lat'],
+                                        lon=location_year['lng'],
+                                        year=year,
+                                        )
+                print geo1_obj
             if geo2 != location[1]:
                  geo2 = location[1]
+                 geo2_obj = {}
                  if geo2 != "" and geo2 is not None:
-                     geo2_obj = geo1_obj.add_child(geo_type='geo2',
-                                    name=geo2, 
-                                    country=self.country,
-                                    total=geo2_total[geo2]['total'],
-                                    recipients=geo2_total[geo2]['count'],
-                                    average=geo2_total[geo2]['total']/geo2_total[geo2]['count'],
-                                    lat=geo2_total[geo2]['lat'],
-                                    lon=geo2_total[geo2]['lng'],
-                                    )
-                     geo2_obj.slug=make_slug(geo2_obj, geo2)
-                     geo2_obj.save()
+                     for year, location_year in geo2_total[geo2].items():
+
+                         if not geo2_obj.get(location_year['geo2']):
+                             geo2_obj[location_year['geo2']] = {}
+
+                         geo2_obj[location_year['geo2']].update({year : {}})
+                         geo2_obj[location_year['geo2']][year] = geo1_obj[location[0]][year].add_child(geo_type='geo2',
+                                        name=geo2, 
+                                        country=self.country,
+                                        total=location_year['total'],
+                                        recipients=location_year['count'],
+                                        average=location_year['total']/location_year['count'],
+                                        lat=location_year['lat'],
+                                        lon=location_year['lng'],
+                                        year=year
+                                        )
+                         geo2_obj[location_year['geo2']][year].slug=make_slug(geo2_obj[location_year['geo2']][year], geo2)
+                         geo2_obj[location_year['geo2']][year].save()
+            
 
             if geo3 != location[2]:
                 geo3 = location[2]
+                geo3_obj = {}
                 if geo2 != "" and geo3 != "" and geo3 is not None:
-                    geo3_obj = geo2_obj.add_child(geo_type='geo3',
-                                    name=geo3, 
-                                    country=self.country,
-                                    slug=make_slug(geo2_obj, geo3),
-                                    total=geo3_total[geo3]['total'], 
-                                    recipients=geo3_total[geo3]['count'],
-                                    average=geo3_total[geo3]['total']/geo3_total[geo3]['count'],
-                                    lat=geo3_total[geo3]['lat'],
-                                    lon=geo3_total[geo3]['lng'],
-                                    )
-                    geo3_obj.slug=make_slug(geo3_obj, geo3)
-                    geo3_obj.save()
-                    
+                    for year, location_year in geo3_total[geo3].items():
+                        
+                        if not geo3_obj.get(location_year['geo3']):
+                            geo3_obj[location_year['geo3']] = {}
+
+                        geo3_obj[location_year['geo3']].update({year : {}})
+                        geo3_obj[location_year['geo3']][year] = geo2_obj[location[1]][year].add_child(geo_type='geo3',
+                                        name=geo3, 
+                                        country=self.country,
+                                        total=location_year['total'], 
+                                        recipients=location_year['count'],
+                                        average=location_year['total']/location_year['count'],
+                                        lat=location_year['lat'],
+                                        lon=location_year['lng'],
+                                        year=year,
+                                        )
+                        geo3_obj[location_year['geo3']][year].slug=make_slug(geo3_obj[location_year['geo3']][year], geo3)
+                        geo3_obj[location_year['geo3']][year].save()
+                
             if geo4 != location[3]:
                 geo4 = location[3]
+                geo4_obj = {}
                 if geo2 != "" and geo3 != "" and geo4 != "" and geo4 is not None:
-                    geo4_obj = geo3_obj.add_child(geo_type='geo4',
-                                    name=geo4, 
-                                    country=self.country,
-                                    slug=make_slug(geo3_obj, geo4),
-                                    total=geo4_total[geo4]['total'],
-                                    recipients=geo4_total[geo4]['count'],
-                                    average=geo4_total[geo4]['total']/geo4_total[geo4]['count'],
-                                    lat=geo4_total[geo4]['lat'],
-                                    lon=geo4_total[geo4]['lng'],
-                                    )
-                    geo4_obj.slug=make_slug(geo4_obj, geo4)
-                    geo4_obj.save()
-                    
-                    
+                    for year, location_year in geo4_total[geo4].items():
+                        
+                        if not geo4_obj.get(location_year['geo4']):
+                            geo4_obj[location_year['geo4']] = {}
 
+                        geo4_obj[location_year['geo4']].update({year : {}})
+                        geo4_obj[location_year['geo4']][year] = geo3_obj[location[2]][year].add_child(geo_type='geo4',
+                                        name=geo4, 
+                                        country=self.country,
+                                        total=location_year['total'], 
+                                        recipients=location_year['count'],
+                                        average=location_year['total']/location_year['count'],
+                                        lat=location_year['lat'],
+                                        lon=location_year['lng'],
+                                        year=year,
+                                        )
+                        geo4_obj[location_year['geo4']][year].slug=make_slug(geo4_obj[location_year['geo4']][year], geo4)
+                        geo4_obj[location_year['geo4']][year].save()
+                
+            # if geo4 != location[3]:
+            #     geo4 = location[3]
+            #     if geo2 != "" and geo3 != "" and geo4 != "" and geo4 is not None:
+            #         for year, location_year in geo4_total[geo4].items():
+            #             geo4_obj[year] = geo3_obj[year].add_child(geo_type='geo4',
+            #                             name=geo4, 
+            #                             country=self.country,
+            #                             slug=make_slug(geo3_obj, geo4),
+            #                             total=location_year['total'],
+            #                             recipients=location_year['count'],
+            #                             average=location_year['total']/location_year['count'],
+            #                             lat=location_year['lat'],
+            #                             lon=location_year['lng'],
+            #                             year=year,
+            #                             )
+            #             geo4_obj[year].slug=make_slug(geo4_obj[year], geo4)
+            #             geo4_obj[year].save()
+            # 

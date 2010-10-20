@@ -9,6 +9,8 @@ body {font-family:Helvetica, Arial, sans-serif; text-align:center;color:#141618;
 #topbar form input {color:#808080;}
 #topbar img{vertical-align:bottom;}
 
+#topbar .loginbar {float:right; font-size:1em; text-align:right;}
+
 /* outer */
 #outer {width:90%; background: #fff url(../images/background.png) top right repeat-y; margin:0 auto; text-align:left;border:solid 1px #ccc;}
 
@@ -42,7 +44,7 @@ body {font-family:Helvetica, Arial, sans-serif; text-align:center;color:#141618;
 
 #header #search_form  {position:absolute; top:15px; right:0; padding:0.6em;}
 #header #search_form #q {width:15em; color:#808080;}
-#header #search_form small {display:block; padding-top:0.4em;}    
+#header #search_form small {display:block; padding-top:0.4em;}
 
 /* content */
 p.breadcrumbs {padding:0; margin:0; font-size:0.7em; position:relative; top:-0.3em; text-align:right;}
@@ -54,6 +56,12 @@ p {padding-bottom:1em; line-height:1.3em;}
 blockquote {padding:1em; line-height:1.3em; font-style:italic;}
 p.more_info {text-align:right; font-size:0.9em; padding-right:2em;}
 ul {padding-bottom:1em;}
+
+/* Tabs */
+ul.tabs {margin:0; padding:10px 0 5px 0; border-bottom:1px solid #CCC;}
+ul.tabs li {display:inline; margin:5px; padding:5px; border:1px solid #CCC; border-width:1px 1px 0 1px;}
+ul.tabs li.selected {border-bottom:1px solid #FFF; color:red;}
+ul.tabs li.selected a {color:#000; text-decoration:none;}
 
 
 table {font-size:0.9em; width:100%; margin-bottom:1.5em;}
