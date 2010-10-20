@@ -50,7 +50,7 @@ def countries(request):
     {'countries' : countries},
     context_instance=RequestContext(request))
         
-@cache_page(60 * 60 * 4)
+@cache_page(60 * 60 * 4, key_prefix="farm")
 def country(request, country, year=DEFAULT_YEAR):
     """
     Provides all the variables for the country pages at, for example "/AT/"
@@ -173,7 +173,7 @@ def recipient(request, country, recipient_id, name):
     context_instance=RequestContext(request)
   )  
 
-@cache_page(60 * 60 * 4)
+@cache_page(60 * 60 * 4, key_prefix="farm")
 def all_schemes(request, country='EU'):
     """
     Scheme browser (replaces generic 'browse' function for schemes)
@@ -245,7 +245,7 @@ def browse(request, country):
         context_instance=RequestContext(request)
     )  
 
-@cache_page(60 * 60 * 4)
+@cache_page(60 * 60 * 4, key_prefix="farm")
 def all_locations(request, country, year=0):
     locations = models.Location.objects.all()
     kwargs = {
