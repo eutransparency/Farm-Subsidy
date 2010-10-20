@@ -9,18 +9,18 @@
     <form method="POST" style="float:left; width:49%">
         {% csrf_token %}
         <h2>Login</h2>
-        <ul class="form">
-            {{ login_form.as_ul }}
+        <table class="form">
+            {{ login_form.as_table }}
             <input type="hidden" name="redirect" value="{{ redirect }}" id="redirect">
-        </ul>
+        </table>
         <p><input type="submit" name="login" value="Log In" id="login"></p>
     </form>
     <form method="POST" style="float:left; width:49%">
         {% csrf_token %}
         <h2>Register</h2>
-        <ul class="form">
-            {{ registration_form.as_ul }}
-        </ul>
+        <table class="form">
+            {{ registration_form.as_table }}
+        </table>
         <p><input type="submit" name="login" value="Register" id="login"></p>    
     </form>
 {% endblock %}

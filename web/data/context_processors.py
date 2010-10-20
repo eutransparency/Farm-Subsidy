@@ -63,7 +63,7 @@ def breadcrumb(request):
                  ]})
     
     # # Locations
-    if 'location' in path and path[2] == "location" and len(path) >= 4:
+    if 'location' in path and path[2] == "location" and len(path) >= 6:
         year = path[3]
         geos = ['geo1','geo2','geo3','geo4',]
         locations = path[4:]

@@ -16,17 +16,18 @@ from data import countryCodes
 import context_processors
 import models
 
-from misc.models import Profile
-from misc.forms import DataAgreementForm
+from frontend.models import Profile
+from frontend.forms import DataAgreementForm
 
 DEFAULT_YEAR = settings.DEFAULT_YEAR
 
 @cache_page(60 * 60 * 24)
 def home(request):
 
-  ip_country = request.session.get('ip_country', 'GB')
-  top_eu = models.Recipient.objects.top_recipients()
-  top_for_ip = models.Recipient.objects.top_recipients(country=ip_country)
+  # ip_country = request.session.get('ip_country', 'GB')
+  # top_for_ip = models.Recipient.objects.top_recipients(country=ip_country)
+
+  top_eu = models.Recipient.objects.top_recipients()[:10]
   
   latest_annotations = Comment.objects.all().order_by('-submit_date')[:5]
   
@@ -35,7 +36,7 @@ def home(request):
     {
     'top_eu' : top_eu,
     'is_home' : True,
-    'top_for_ip' : top_for_ip,
+    # 'top_for_ip' : top_for_ip,
     'latest_annotations' : latest_annotations,
     },
     context_instance=RequestContext(request)

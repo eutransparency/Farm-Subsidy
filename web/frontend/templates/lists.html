@@ -1,0 +1,21 @@
+{% extends "account_base.html" %}
+
+{% load markup %}
+{% load pagination_tags %}
+
+{% block account_content %}
+
+    {% autopaginate lists 30 as lists %}
+{% if lists %}
+    <div class="section">
+        <h3>All Lists</h3>
+        {% for list in lists %}
+            <a href="{{ list.get_absolute_url }}">{{ list.name }}</a>
+            <blockquote>{{ list.description|markdown|striptags|truncatewords:30 }}<a href="{{ list.get_absolute_url }}">...</a></blockquote>
+        {% endfor %}
+    </div>
+        <h4 class="pager">{% paginate %}</h4>
+{% endif %}
+
+
+{% endblock %}

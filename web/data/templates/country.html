@@ -19,7 +19,7 @@
 {% if stats_info or latest_news_item%}
     <p>
         {% if stats_info %}
-            In {{stats_year}} {{country.name}} received <strong>{{ stats_info.total_spending|safe }}</strong> in farm subsidies or approximately <strong>{{ stats_info.spending_per_farm|safe }} per farm</strong>.
+            In {{stats_year}} {{country.name}} received <strong>{{ stats_info.total_spending|safe }}</strong> in EU farm subsidies or approximately <strong>{{ stats_info.spending_per_farm|safe }} per farm</strong>.
         {% endif %}
         {% if latest_news_item %}
             Farm subsidies in {{country.name}} have most recently been featured in the story '<a href="{{latest_news_item.url}}">{{latest_news_item.title}}</a>'.
@@ -87,7 +87,7 @@
   {% endfor %}
   </table>
   <p class="more_info">
-    <a href="{% url location_view country=country.code %}">View all regions &raquo;</a>
+    <a href="{% url all_locations country=country.code year=selected_year %}">View all regions &raquo;</a>
   </p>
 </div>
 
