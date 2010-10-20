@@ -10,7 +10,7 @@
             <li class="{% active request "myaccount/$" %}"><a href="{% url my_account:dashboard %}">Dashboard</a></li>
             <li class="{% active request "myaccount/annotations/$" %}"><a href="{% url my_account:annotations %}">My Annotations</a></li>
             <li class="{% active request "myaccount/lists/$" %}"><a href="{% url my_account:lists %}">My Lists</a></li>
-            <li class="{% active request "myaccount/account/$" %}"><a href="{% url my_account:account %}">My Account</a></li>
+            {# <li class="{% active request "myaccount/account/$" %}"><a href="{% url my_account:account %}">My Account</a></li> #}
         </ul>
     {% endblock %}
     {% block account_content %}
