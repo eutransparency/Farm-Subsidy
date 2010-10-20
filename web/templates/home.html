@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load markup %}
+{% load cache %}
 
 {% block body_class %}onecol{% endblock %}
 {% block body_style %}home{% endblock %}
@@ -51,9 +52,11 @@
 {% block right %}
     <h3>Top Recipients</h3>
     <ul>
-    {% for r in top_eu %}
-      <li><a href="{{ r.get_absolute_url }}">{{ r.name }}</a></li>
-    {% endfor %}
+    {% cache 500 home_top_eu %}
+        {% for r in top_eu %}
+          <li><a href="{{ r.get_absolute_url }}">{{ r.name }}</a></li>
+        {% endfor %}
+    {% endcache %}
     </ul>
     <h3>Browse by country</h3>
     {% load countries %}

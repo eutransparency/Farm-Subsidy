@@ -21,7 +21,6 @@ from frontend.forms import DataAgreementForm
 
 DEFAULT_YEAR = settings.DEFAULT_YEAR
 
-@cache_page(60 * 60 * 24)
 def home(request):
 
   # ip_country = request.session.get('ip_country', 'GB')
