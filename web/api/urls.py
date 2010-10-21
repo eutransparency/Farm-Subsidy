@@ -35,6 +35,7 @@ countryoverview_handler = Resource(CountryOverviewHandler)
 urlpatterns = patterns('',
 
     # Recipient
+    url(r'^recipient/csv/(?P<recipient_id>.*)/$', views.csv_recipient, name="csv_recipient"),
     url(r'^recipient/', recipient_handler),
     url(r'^search/', search_handler, name="api_search"),
     url(r'^info/', countryoverview_handler),
