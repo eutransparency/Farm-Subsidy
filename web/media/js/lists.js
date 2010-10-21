@@ -101,7 +101,6 @@ $(document).ready(function() {
                 item_forms = $("input[value='"+list_item_id+"']")
 
                 item_forms.each(function(i, el) {
-                    console.debug(el)
                     item_form = $(el).parent();
                     item_link = item_form.children('a.list_item')[0];
                     
@@ -110,12 +109,14 @@ $(document).ready(function() {
                         $(item_form).children('.action').attr('name', 'remove');                                        
                         $(item_link).removeClass('list_add');
                         $(item_link).addClass('list_remove');
+                        $(item_link).children('span').text('Remove from list');
                     }
 
                     if (obj.action == "remove") {
                         $(item_form).children('.action').attr('name', 'add');
                         $(item_link).removeClass('list_remove');
                         $(item_link).addClass('list_add');
+                        $(item_link).children('span').text('Add to list');
                     }
                     
                 });

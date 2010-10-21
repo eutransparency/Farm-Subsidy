@@ -69,8 +69,11 @@ a.list_item span {
   padding-left:30px;
 }
 
+a.list_item span { background:url('/media/images/list_sprite.png') no-repeat left -72px;}
+
 a.list_remove span {
-  background-position:-39px left;
+  color:red;
+  background:url('/media/images/list_sprite.png') no-repeat left -39px;
 }
 
 
