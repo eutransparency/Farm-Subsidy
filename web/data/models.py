@@ -57,8 +57,8 @@ class Recipient(models.Model):
     def __unicode__(self):
         return "%s (%s)" % (self.pk, self.name)
     
-    # class Meta():
-    #     managed = False
+    class Meta():
+        ordering = ('-payment_set.year', '-total',)
     
     def get_absolute_url(self):
         return reverse('recipient_view', args=[self.countrypayment, self.pk, slugify(self.name)])

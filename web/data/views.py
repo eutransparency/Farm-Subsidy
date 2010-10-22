@@ -125,12 +125,12 @@ def recipient(request, country, recipient_id, name):
 
   recipient = models.Recipient.objects.get(globalrecipientidx=recipient_id)
   
-  payments = models.Payment.objects.select_related().filter(recipient=recipient_id).order_by('year', 'amounteuro')
+  payments = models.Payment.objects.select_related().filter(recipient=recipient_id).order_by('-year', '-amounteuro')
   expanded = request.GET.get('expand', False)
   if not expanded:
       # Hack to stop *all* payments getting displayed, when there are sometimes
       # many 'trasactions' per year in the same scheme.
-      all_payments = payments.values('year','scheme',).annotate(amounteuro=Sum('amounteuro')).order_by('year', 'amounteuro')
+      all_payments = payments.values('year','scheme',).annotate(amounteuro=Sum('amounteuro')).order_by('-year', '-amounteuro')
       payments = []
       for payment in all_payments:
           p = models.Payment()
