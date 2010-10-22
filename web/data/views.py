@@ -20,13 +20,14 @@ from frontend.models import Profile
 from frontend.forms import DataAgreementForm
 
 DEFAULT_YEAR = settings.DEFAULT_YEAR
+LATEST_YEAR = settings.LATEST_YEAR
 
 def home(request):
 
   # ip_country = request.session.get('ip_country', 'GB')
   # top_for_ip = models.Recipient.objects.top_recipients(country=ip_country)
 
-  top_eu = models.Recipient.objects.top_recipients()[:10]
+  top_eu = models.Recipient.objects.top_recipients(year=LATEST_YEAR)[:10]
   
   latest_annotations = Comment.objects.all().order_by('-submit_date')[:5]
   
@@ -35,6 +36,7 @@ def home(request):
     {
     'top_eu' : top_eu,
     'is_home' : True,
+    'LATEST_YEAR' : LATEST_YEAR,
     # 'top_for_ip' : top_for_ip,
     'latest_annotations' : latest_annotations,
     },

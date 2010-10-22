@@ -50,7 +50,7 @@
 
 
 {% block right %}
-    <h3>Top Recipients</h3>
+    <h3>Top Recipients in {{ LATEST_YEAR }}</h3>
     <ul>
     {% cache 1000000 home_top_eu %}
         {% for r in top_eu %}
