@@ -118,6 +118,8 @@
     <div class="section">
         {% country_map country.code %}
     </div>
+    {% if country == "EU" %}
+    
     <div class="section">
         <div class="section">
           <dl class="metadata">  
@@ -156,6 +158,7 @@
           </dl>
         </div>
     </div>
+    {% endif %}
 <!--
 <div class="block">
   <h3>Browse all recipients</h3>
