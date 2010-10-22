@@ -65,7 +65,7 @@
     </form>
     <div class="loginbar">
     {% if request.user.is_authenticated %}
-        Logged in as <a href="{{ request.user.profile_set.all.0.get_absolute_url }}">{{ request.user.username }}</a> | <a href="{% url my_account:logout %}">logout</a>
+        Logged in as {{ request.user.username }} | <a href="{{ request.user.profile_set.all.0.get_absolute_url }}">My account</a> | <a href="{% url mylists %}">My lists</a> | <a href="{% url my_account:logout %}">Sign out</a>
     {% else %}
         <a href="{% url my_account:login %}">Create an account</a> or <a href="{% url my_account:login %}">sign in</a>
     {% endif %}
