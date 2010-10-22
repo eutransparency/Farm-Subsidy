@@ -135,7 +135,9 @@
 
 {% block right %}
 {%if recipient.lat and recipient.lng %}
-    <img src="http://maps.google.com/maps/api/staticmap?center={{recipient.lat}},{{recipient.lng}}&zoom=15&size=245x200&sensor=false&maptype=satellite" title="Satellite image" alt="Satellite image" width="245" height="200"/>
+    <a href="http://maps.google.com/maps?f=q&source=s_q&hl=en&geocode=&q={{recipient.lat}},{{recipient.lng}}&z=15" target="_new">
+        <img src="http://maps.google.com/maps/api/staticmap?center={{recipient.lat}},{{recipient.lng}}&zoom=15&size=245x200&sensor=false&maptype=satellite" title="Satellite image" alt="Satellite image" width="245" height="200"/>
+    </a>
 {% endif %}
 
 

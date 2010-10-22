@@ -19,6 +19,7 @@
     <script type="text/javascript" src="{{ MEDIA_URL }}/js/jquery-ui-1.7.1.custom.min.js"></script>
     <script src="{{ MEDIA_URL }}/js/scripts.js" type="text/javascript" charset="utf-8"></script>
 
+    <link href="{% url feature_feed %}" type="application/atom+xml" rel="alternate" title="Farmsubsidy News Feed" />
     
     {% if list_enabled %}
         <link rel="stylesheet" href="/media/css/custom_lists.css" type="text/css" media="screen, projection">
