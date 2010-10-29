@@ -80,7 +80,6 @@ INSTALLED_APPS = [
     'search',
     'feeds',
     'frontend',
-    'graphs',
     'misc',
     'pagination',
     'tagging',
