@@ -1,5 +1,7 @@
 web/settings.py
 *.pyc
+*.swp
+*~
 include/
 lib/
 pip-log.txt
