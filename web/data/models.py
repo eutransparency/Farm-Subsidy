@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
@@ -58,7 +59,7 @@ class Recipient(models.Model):
         return "%s (%s)" % (self.pk, self.name)
     
     class Meta():
-        ordering = ('-payment_set.year', '-total',)
+        ordering = ('-total',)
     
     def get_absolute_url(self):
         return reverse('recipient_view', args=[self.countrypayment, self.pk, slugify(self.name)])

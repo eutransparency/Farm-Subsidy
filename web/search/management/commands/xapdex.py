@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import django
 from optparse import make_option
 from django.core.management.base import BaseCommand, CommandError
@@ -28,9 +29,14 @@ class Command(BaseCommand):
         else:
             recipient_index = site.get_index(Recipient)
             location_index = site.get_index(Location)
-
-            index_data = Recipient.objects.filter(countrypayment=options['country'])
-            locations = Location.objects.filter(country=options['country'])
+            
+            if options['country']:
+                index_data = Recipient.objects.select_related().filter(countrypayment=options['country'])
+                locations = Location.objects.filter(country=options['country'])
+            else:
+                index_data = Recipient.objects.all().select_related()
+                locations = Location.objects.all().select_related()
+                
 
             print "now indexing Recipients"
             back.update(recipient_index, index_data)

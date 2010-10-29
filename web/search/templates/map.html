@@ -3,6 +3,7 @@
 
 {% block results %}
 <form action="{% url search_map q 'map' %}" method="POST" accept-charset="utf-8" id="search_form">
+  {% csrf_token %}
   <h2><label for="search" class="section_title">{{ form.q.label }}</label></h2>
   <p>
       {{ form.q }}
