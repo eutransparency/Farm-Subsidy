@@ -13,7 +13,6 @@ urlpatterns = patterns('',
     (r'', include('frontend.urls', namespace="my_account")),
     (r'', include('search.urls')),
     (r'', include('countryinfo.urls')),
-    (r'', include('graphs.urls')),
     (r'^comments/', include('django.contrib.comments.urls')),
     
     (r'lists/', include('listmaker.urls')),
