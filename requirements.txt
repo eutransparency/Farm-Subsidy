@@ -25,3 +25,4 @@ git+http://github.com/sebleier/django-redis-cache.git
 svn+http://typogrify.googlecode.com/svn/trunk/
 git+git://github.com/toastdriven/queued_search.git
 svn+http://queues.googlecode.com/svn/trunk
+smartypants
