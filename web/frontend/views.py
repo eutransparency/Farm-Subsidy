@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.template import RequestContext
 from django import forms
 from django.http import HttpResponseRedirect
@@ -6,6 +7,7 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from registration.forms import RegistrationForm
+from django.contrib.auth.forms import User
 from django.contrib.auth.forms import AuthenticationForm
 
 from models import Profile
@@ -22,6 +24,8 @@ def login(request):
         redirect = request.GET.get('next')
     else:
         redirect = request.META.get('HTTP_REFERER', '/')
+        if redirect.endswith("login"):
+            redirect = "/myaccount"
     
     
     login_form = AuthenticationForm()
@@ -41,8 +45,14 @@ def login(request):
                 auth.login(request, user)
                 return HttpResponseRedirect(redirect)
         if registration_form.is_valid():
-            new_user = registration_form.save()
-            return HttpResponseRedirect(reverse('registration_complete'))
+            u = User.objects.create_user(request.POST['username'],
+                                     request.POST['email'],
+                                     request.POST['password1'])
+            u.is_active = True
+            user = auth.authenticate(username=request.POST['username'], password=request.POST['password1'])
+            #u.save()
+            auth.login(request, user)
+            return HttpResponseRedirect(redirect)
   
     return render_to_response('login.html', 
     {
