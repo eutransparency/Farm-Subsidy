@@ -1,6 +1,5 @@
-Django==1.1
+Django==1.2.3
 Markdown==2.0.1
-MySQL-python==1.2.3c1
 coverage==3.2
 django-devserver==0.0.2
 django-pagination==1.0.5
@@ -13,16 +12,13 @@ guppy==0.1.9
 johnny-cache==0.2
 pep8==0.4.2
 psycopg2
-pylint==0.19.0
-python-dateutil==1.4.1
-python-twitter==0.6
+python-dateutil
+python-twitter
 simplejson==2.0.9
 git+git://github.com/andymccurdy/redis-py.git
-twitter==1.2.1
+twitter
 git+git://github.com/symroe/xapian-haystack.git
 git+git://github.com/symroe/django-haystack.git
-http://sunet.dl.sourceforge.net/sourceforge/numpy/numpy-1.3.0.tar.gz
-http://sourceforge.net/projects/matplotlib/files/matplotlib/matplotlib-0.99.1/matplotlib-0.99.1.2.tar.gz/download
 django-piston==0.2.2
 django-notify==1.1.2
 git+http://github.com/sebleier/django-redis-cache.git
