@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 import random
 import socket
 import urllib2
 
 from django.core.urlresolvers import reverse
 from django.core.cache import cache
+from django.conf import settings
 
 from data import countryCodes
 from data.models import Recipient, Payment
@@ -62,7 +64,8 @@ def breadcrumb(request):
                  'url' : reverse('country', args=[country['code']])},
                  ]})
     
-    # # Locations
+
+# # Locations
     if 'location' in path and path[2] == "location" and len(path) >= 6:
         year = path[3]
         geos = ['geo1','geo2','geo3','geo4',]
@@ -99,20 +102,12 @@ def breadcrumb(request):
 def data_totals_info(request):
     from django.db.models import Sum
     
-    EXPIRE_TIME = 60*60*24*7*30 # cache for one month
+    file_path = "%s/data/stats/payment_totals.txt" % settings.ROOT_PATH
+    totals_file = open(file_path, 'r').read()
+    (total_recipients, sum_of_payments) = totals_file.split(',')
     
-    total_recipients = cache.get('total_recipients')
-    if not total_recipients:
-        total_recipients = Recipient.objects.count()
-        cache.set('total_recipients', total_recipients, EXPIRE_TIME)
 
-    sum_of_payments = cache.get('sum_of_payments')
-    if not sum_of_payments:
-        sum_of_payments = Payment.objects.aggregate(total=Sum('amounteuro'))
-        cache.set('sum_of_payments', sum_of_payments, EXPIRE_TIME)
-    
-    
     return {
         'total_recipients' : total_recipients,
-        'sum_of_payments' : sum_of_payments['total'],
+        'sum_of_payments' : sum_of_payments,
         }
