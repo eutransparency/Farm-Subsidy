@@ -9,7 +9,7 @@ body {font-family:Helvetica, Arial, sans-serif; text-align:center;color:#141618;
 #topbar form input {color:#808080;}
 #topbar img{vertical-align:bottom;}
 
-#topbar .loginbar {float:right; font-size:1em; text-align:right;}
+#topbar .loginbar {float:right; font-size:1em; text-align:right; margin-top:5px}
 
 /* outer */
 #outer {width:90%; background: #fff url(../images/background.png) top right repeat-y; margin:0 auto; text-align:left;border:solid 1px #ccc;}
@@ -18,7 +18,7 @@ body {font-family:Helvetica, Arial, sans-serif; text-align:center;color:#141618;
 #outer #right {width:239px; padding:1em 20px 0 20px; float:right; font-size:0.8em;min-height:300px;_min-height:300px;}
 
 /* header */
-#header {background:#fff; position:relative;}
+#header {background:#fff; position:relative; clear:both;}
 #header #mainmenu {background:#2a8330;text-align:right; padding:0.5em 20px 0.5em 400px;}
 #header #mainmenu li {display:inline;font-size:0.9em; font-weight:bold;}
 #header #mainmenu a {color:#fff;border-right:solid 2px #fff; padding-right:0.8em;padding-left:0.8em;}
