@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Various bits to clean upthe data
 
@@ -124,12 +125,12 @@ class Command(BaseCommand):
         
         # First do the recipients
 
-        # print "recipients"
-        # self.totals()
+        print "recipients"
+        #self.totals()
         # 
-        # print "schemes"
+        print "schemes"
         self.schemes()
 
-        #print "country years"
-        #self.country_years()
+        print "country years"
+        self.country_years()
     
