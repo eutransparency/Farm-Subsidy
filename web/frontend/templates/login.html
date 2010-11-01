@@ -8,12 +8,12 @@
 
     <form method="POST" style="float:left; width:49%">
         {% csrf_token %}
-        <h2>Login</h2>
+        <h2>Sign in</h2>
         <table class="form">
             {{ login_form.as_table }}
             <input type="hidden" name="redirect" value="{{ redirect }}" id="redirect">
         </table>
-        <p><input type="submit" name="login" value="Log In" id="login"></p>
+        <p><input type="submit" name="login" value="Sign in" id="login"></p>
     </form>
     <form method="POST" style="float:left; width:49%">
         {% csrf_token %}

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.conf.urls.defaults import *
 import django.contrib.auth.views as auth_views
 
@@ -6,6 +7,7 @@ import forms
 
 urlpatterns = patterns('',
    url(r'^$',list_views.lists_home, name='lists_home'),
+   url(r'^all_lists/$', list_views.all_lists, name="all_lists"),
    url(r'^edit/(?P<list_id>\d+)/$',list_views.manage_lists, name='edit_list'),
    url(r'^activate/$',list_views.activate, name='activate_list'),
    url(r'^deactivate/$',list_views.deactivate, name='deactivate_list'),

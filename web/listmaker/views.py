@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.core.urlresolvers import reverse
@@ -31,6 +32,14 @@ def lists_home(request):
     context_instance = RequestContext(request)
     )
 
+
+def all_lists(request):
+    all_lists_qs = models.List.objects.all()
+    return render_to_response(
+        'all_lists.html', 
+        {'lists' : all_lists_qs},
+        context_instance = RequestContext(request)
+    )
 
 def activate(request):
     list_name = lists.get_list_name(request)

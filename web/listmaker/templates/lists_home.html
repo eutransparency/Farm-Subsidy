@@ -1,17 +1,15 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load list_tags %}
-{% block page_title %}Custom Lists{% endblock %}
-{% block title %}Custom Lists{% endblock %}
+{% block page_title %}Lists{% endblock %}
+{% block title %}Lists{% endblock %}
 
 {% block content %}  
   <div class="col">
     <h3>What are lists?</h3>
-    <p>You can think of custom lists as a little like a shopping cart or an Amazon.com wish list: while browsing the website you can add &#8216;items&#8217; (subsidy recipients) to your list like you would on any shopping website. You can then save the list so you can access it at a later date, or publish it for others to see.</p>
+    <p>Lists allow you to put together groups of recipients. Lists work just like a shopping cart or an Amazon.com wish list. Begin making a list and keep adding recipients. Saving a list means you can come back to later and the list can be viewed by other users. </p>
 
-    <p>You can give your list a title and a description. We hope that lists will be a new way for people to share their own expertise and analysis. </p>
-
-    <p>For instance, if you have special knowledge about certain vessels that are fishing for an especially threatened fish stock, you might like to make a custom list of those vessels. Or if you know of a number of vessels that are all owned by the same company, you might make a list of them.</p>
+    <p>You can make any kind of list you like. You could make a list of large multinational companies, politicians getting farm subsidies, or farms in your local area. <a href="{% url all_lists %}">Here are some examples of lists.</a></p>
     
   </div>
   <div class="col">

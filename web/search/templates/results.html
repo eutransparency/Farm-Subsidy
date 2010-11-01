@@ -63,7 +63,7 @@
                     <a href="{% url country location.object.country %}">{% code_to_name location.object.country %}</a> &raquo;
                     {{ location.object.get_ancestors|join:" &raquo; " }} &raquo;
                     <a href="{{ location.object.get_absolute_url }}">
-                    {{ location.object.name }}
+                        {{ location.object.name }}
                     </a>
                 </li>
             {% endfor %}

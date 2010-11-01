@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load list_tags %}
+{% block page_title %}All Lists{% endblock %}
+{% block title %}All Lists{% endblock %}
+
+{% block content %}  
+  {% for list in lists %}
+    <h3><a href="{{ list.get_absolute_url }}">{{ list.name }}</a></h3>
+    {{ list.description }}
+  {% endfor %}
+{% endblock %}
+
+{% block right %}
+    {% latest_lists %}
+{% endblock %}
