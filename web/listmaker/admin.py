@@ -10,6 +10,7 @@ class ListInlines(admin.TabularInline):
 class ListAdmin(admin.ModelAdmin):
     inlines = (ListInlines,)
     list_display = ('name','user',)
+    prepopulated_fields = {"slug": ("name",)}
 
 
 
