@@ -70,8 +70,16 @@ def country(request, country, year=DEFAULT_YEAR):
     years = models.CountryYear.objects.filter(country=country)
     
     top_recipients = models.Recipient.objects.top_recipients(country=country, year=year)[:5]
-    top_schemes = models.SchemeYear.objects.top_schemes(country, year=year)[:5]
-    top_locations = models.Location.get_root_nodes().filter(country=country, year=year).order_by('-total')[:5]
+
+    if country and country != "EU":
+        top_schemes = models.SchemeYear.objects.top_schemes(year=year, country=country)[:5]
+    else:
+        top_schemes = models.SchemeYear.objects.top_schemes(year=year)[:5]
+    
+    top_locations = models.Location.get_root_nodes().filter(year=year)
+    if country and country != "EU":
+        top_locations = top_locations.filter(country=country)
+    top_locations = top_locations.order_by('-total')[:5]
     
     #get transparency score
     transparency = None
