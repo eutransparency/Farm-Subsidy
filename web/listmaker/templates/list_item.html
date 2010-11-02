@@ -18,7 +18,7 @@
 
   {{ list_item.description|markdown }}
 
-  
+<p>The total value of payments on this list is &euro;{{ list_total|floatformat:0|intcomma }}.</p>
   <div class="section">
     
   {% if list_item.listitem_set.all %}
@@ -32,11 +32,11 @@
           {% for item in list_item.listitem_set.all %}
             <tr>
               <td><a href="{{ item.content_object.get_absolute_url }}">{{ item.content_object.name }}</a></td>
-              <td class="money">&euro;{{ item.content_object.total|floatformat:2|intcomma }}</td>
+              <td class="money">&euro;{{ item.content_object.total|floatformat:0|intcomma }}</td>
               <td>{% list_item_edit item.content_object %}</td>
             </tr>
           {% endfor %}
-          <tr><td class="money" colspan="2"><strong>Total</strong>: &euro;{{ list_total }}</td></tr>
+          <tr><td class="money" colspan="2"><strong>Total</strong>: &euro;{{ list_total|floatformat:0|intcomma }}</td></tr>
         </tbody>
       </table>
   {% else %}
