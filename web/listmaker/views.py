@@ -33,7 +33,7 @@ def lists_home(request):
 
 
 def all_lists(request):
-    all_lists_qs = models.List.objects.all()
+    all_lists_qs = models.List.objects.all().order_by('-pk')
     return render_to_response(
         'all_lists.html', 
         {'lists' : all_lists_qs},
@@ -48,8 +48,12 @@ def activate(request):
 
 def deactivate(request):
     if request.POST.get('deactivate_confirm'):
-        if request.POST['deactivate_confirm'].lower() == "save":
-            return HttpResponseRedirect(reverse('save_list'))
+        if request.POST['deactivate_confirm'].lower().startswith("save"):
+            if request.session.get('list_object', None):
+                list_id = request.session['list_object'].pk
+            else:
+                list_id = None
+            return HttpResponseRedirect(reverse('save_list', kwargs={'list_id' : list_id} ))
         lists.delete_list(request)
         request.notifications.add("Your list has been deactivated")
         return HttpResponseRedirect(reverse('lists_home'))
@@ -82,6 +86,7 @@ def manage_lists(request, list_id=None):
                 lists.save_items(list_object, request.session.get('list_name'))
             
             form.save()
+
             return HttpResponseRedirect(form.instance.get_absolute_url())
 
     return render_to_response(
@@ -123,7 +128,7 @@ def edit_list_items(request, list_id=None):
     """
     if list_id:
         try:
-            list_object = models.List.objects.get(pk=list_id)
+            list_object = get_object_or_404(models.List, pk=list_id, user=request.user)
             request.session['list_object'] = list_object
         except models.List.DoesNotExist:
             return HttpResponseRedirect(reverse('create_list'))
@@ -141,7 +146,7 @@ def edit_list_items(request, list_id=None):
     request.session['list_object'] = list_object    
     request.session.modified = True
 
-    return HttpResponseRedirect(reverse('list_detail', args=(list_object.pk,)))
+    return HttpResponseRedirect(reverse('list_detail', args=(list_object.pk,list_object.slug,)))
 
 
 @active_list_required

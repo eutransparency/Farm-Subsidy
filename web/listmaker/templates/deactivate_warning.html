@@ -3,25 +3,26 @@
 
 {% block body_class %} short_page{% endblock %}
 
-{% block title %}{% trans "Deactivate List" %}{% endblock %}
-{% block page_title %}{% trans "Deactivate List" %}{% endblock %}
+{% block title %}{% trans "Cancel List" %}{% endblock %}
+{% block page_title %}{% trans "Cancel List" %}{% endblock %}
 
 {% block content %}
 {% blocktrans %}
-  <h3>Are you sure you want to deactivate your list?</h3>
+  <h3>Are you sure you want to cancel your list?</h3>
 
 {% endblocktrans %}
 
 
 <div class="col">
-    <p>If you deactivate your list, all unsaved changes will be lost.</p>
-  <form method="POST">{% csrf_token %} <input type="submit" name="deactivate_confirm" value="{% trans "Deactivate" %}" id="deactivate_confirm"></form>
+    <p>If this is a new list everything you have added to it will be removed.  If you are editing an existing list, all unsaved changed will be lost, and the saved version will remain as it was before you started editing.</p>
+  <form method="POST">{% csrf_token %} <input type="submit" name="deactivate_confirm" value="{% trans "Yes, continue without saving" %}" id="deactivate_confirm"></form>
 </div>
+<br />
 <div class="col">
   <p>Alternatively, you can save your list.  Saving your list will enable 
      you to edit your list at a later date and others to view your list</p>
   
-  <form method="POST" action="">{% csrf_token %}<input type="submit" name="deactivate_confirm" value="{% trans "Save" %}" id="deactivate_confirm"></form>
+  <form method="POST" action="">{% csrf_token %}<input type="submit" name="deactivate_confirm" value="{% trans "Save and publish" %}" id="deactivate_confirm"></form>
 </div>
 
 

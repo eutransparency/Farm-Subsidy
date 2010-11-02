@@ -34,6 +34,7 @@ class List(models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         super(List, self).save(*args, **kwargs)
+    
 
 class ListItem(models.Model):
     """Stores ids of other objects against a list"""
