@@ -86,7 +86,7 @@ def manage_lists(request, list_id=None):
                 lists.save_items(list_object, request.session.get('list_name'))
             
             form.save()
-
+            lists.delete_list(request)
             return HttpResponseRedirect(form.instance.get_absolute_url())
 
     return render_to_response(

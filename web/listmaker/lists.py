@@ -40,6 +40,10 @@ def delete_list(request):
             r.delete(k)
         r.delete(request.session['list_name'])
         del request.session['list_name']
+        try:
+            del request.session['list_object']
+        except:
+            pass
         request.session.modified = True
 
 def get_total(list_name):
