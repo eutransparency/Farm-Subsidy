@@ -102,7 +102,7 @@ def my_lists(request):
             }, context_instance = RequestContext(request))
 
 
-def list_view(request, list_id):
+def list_view(request, list_id, slug=None):
     try:
         list_item = models.List.objects.select_related().get(pk=list_id)
     except models.List.DoesNotExist:

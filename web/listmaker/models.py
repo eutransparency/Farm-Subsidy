@@ -16,6 +16,7 @@ class List(models.Model):
     """Stores list definitions against a user"""
     
     name = models.CharField(blank=False, max_length=100)
+    slug = models.SlugField(max_length=255)
     description = models.TextField(blank=False, help_text="""Format help: 
     Link: [text to display](http://example.net/) 
     List item: * example item 
@@ -26,7 +27,7 @@ class List(models.Model):
         return u"%s" % self.name
     
     def get_absolute_url(self):
-        return reverse('list_detail', kwargs={'list_id' : self.pk})
+        return reverse('list_detail', kwargs={'list_id' : self.pk, 'slug' : self.slug})
 
 class ListItem(models.Model):
     """Stores ids of other objects against a list"""
