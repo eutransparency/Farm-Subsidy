@@ -22,33 +22,30 @@
   <div class="section">
     
   {% if list_item.listitem_set.all %}
-
-
-
-  <table>
-    <thead>
-      <th>Name</th>
-      <th>Amount</th>
-      <th></th>
-    </thead>
-    <tbody>
-      {% for item in list_item.listitem_set.all %}
-        <tr>
-          <td><a href="{{ item.content_object.get_absolute_url }}">{{ item.content_object.name }}</a></td>
-          <td>{{ item.content_object.total|floatformat:2|intcomma }}</td>
-          <td>{% list_item_edit item.content_object %}</td>
-        </tr>
-      {% endfor %}
-      <p></p>
-    </tbody>
-  </table>
+      <table>
+        <thead>
+          <th>Name</th>
+          <th>Amount</th>
+          <th></th>
+        </thead>
+        <tbody>
+          {% for item in list_item.listitem_set.all %}
+            <tr>
+              <td><a href="{{ item.content_object.get_absolute_url }}">{{ item.content_object.name }}</a></td>
+              <td>&euro;{{ item.content_object.total|floatformat:2|intcomma }}</td>
+              <td>{% list_item_edit item.content_object %}</td>
+            </tr>
+          {% endfor %}
+          <p></p>
+        </tbody>
+      </table>
   {% else %}
-  {% ifequal user.pk list_item.user.pk  %}
-  There is nothing in your list yet.  
-  <p class="hint"><a href="{% url edit_list_items list_item.pk %}">Add Items</a></p>
-  {% else %}
-  The list owner hasn't added any items to this list yet.
-  {% endifequal %}
+      {% ifequal user.pk list_item.user.pk  %}
+          There is nothing in your list yet.  
+          <p class="hint"><a href="{% url edit_list_items list_item.pk %}">Add Items</a></p>
+      {% else %}
+          The list owner hasn't added any items to this list yet.
+      {% endifequal %}
   {% endif %}
   </div>
   
