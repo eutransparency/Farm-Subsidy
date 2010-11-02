@@ -9,7 +9,8 @@
 
 {% block content %}
   {% for feature in features %}
-    <h4><a href="{{ feature.get_absolute_url }}">{{ feature.title|typogrify }}</a></h4>
+    <h4><a href="{{ feature.get_absolute_url }}">{{ feature.title|typogrify }}</a> </h4>
+    {{ feature.date|date }}.
     {{ feature.teaser|markdown|typogrify }}
   {% endfor %}
 {% endblock %}

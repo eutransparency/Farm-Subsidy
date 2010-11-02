@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block content %}
+    {{ feature.date|date }}.
     {{ feature.body|markdown|typogrify }}
 {% endblock %}
 

@@ -156,3 +156,5 @@ POSTGIS_TEMPLATE='template_postgis'
 QUEUE_BACKEND = 'redisd'
 QUEUE_REDIS_CONNECTION = 'localhost:6379'
 QUEUE_REDIS_DB = 0
+
+DATE_FORMAT = 'j F Y'

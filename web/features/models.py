@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
@@ -22,6 +24,7 @@ class Feature(models.Model):
     body = models.TextField(blank=True)        
     published = models.BooleanField(default=True)
     featured = models.BooleanField(default=False)
+    date = models.DateTimeField(default=datetime.datetime.today)
     
     def get_absolute_url(self):
         return reverse('feature_detail', args=[self.slug,])
