@@ -71,7 +71,7 @@ class Recipient(models.Model):
 
         geos = [self.geo1,self.geo2,self.geo3,self.geo4,]
         slug = "/".join([slugify(n) for n in geos[:geo_type]])
-        return reverse('location_view', args=[self.countrypayment, slug])
+        return reverse('location_view', args=[self.countrypayment, 0, slug])
     
     def geo1_url(self):
         return self.geo_url(1)

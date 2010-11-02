@@ -23,7 +23,7 @@ urlpatterns = patterns('data.views',
 
   # Locations
   country_url(r'location/(?P<year>\d+)/(?P<slug>([^\d]+))/$', 'location', name='location_view' ),
-  country_url(r'location/(?P<slug>([^\d]+))/$', 'location', name='location_view' ),
+  # country_url(r'location/(?P<slug>([^\d]+))/$', 'location', name='location_view' ),
 
   country_url(r'location/(?P<year>\d+)/$', 'all_locations', name='all_locations' ),
   # country_url(r'location/$', 'all_locations', name='all_locations' ),
