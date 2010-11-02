@@ -108,10 +108,13 @@ def list_view(request, list_id):
     except models.List.DoesNotExist:
         raise Http404
 
+    list_total = sum([i.content_object.total for i in list_item.listitem_set.all()])
+    
     return render_to_response(
         'list_item.html',
             {
                 'list_item': list_item,
+                'list_total': list_total,
             }, context_instance = RequestContext(request))
 
 
