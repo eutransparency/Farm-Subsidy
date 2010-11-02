@@ -25,7 +25,6 @@ def active_list_required(view):
 
 
 def lists_home(request):
-    lists.list_items('test')
     return render_to_response(
     'lists_home.html', 
     {}, 

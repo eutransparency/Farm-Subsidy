@@ -6,6 +6,8 @@
 {% block page_title %}{{ list_item.name }}{% endblock %}
 {% block title %}{{ list_item.name }}{% endblock %}
 {% block content %}
+    {% if request.user == list_item.user %}
+        
 
     <p class="hint">  
         <a href="{% url edit_list_items list_item.pk %}">Edit this list</a> or <a href="{% url edit_list list_item.pk %}">edit title and description</a>
@@ -14,7 +16,7 @@
           NOTE: Because you are editing this list, the items below may not match the (unsaved) items you have added or removed.
         {% endif %}
     </p>
-  
+    {% endif %}  
 
   {{ list_item.description|markdown }}
 
