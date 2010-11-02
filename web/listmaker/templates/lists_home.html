@@ -7,17 +7,18 @@
 {% block content %}  
   <div class="col">
     <h3>What are lists?</h3>
-    <p>Lists allow you to put together groups of recipients. Lists work just like a shopping cart or an Amazon.com wish list. Begin making a list and keep adding recipients. Saving a list means you can come back to later and the list can be viewed by other users. </p>
 
-    <p>You can make any kind of list you like. You could make a list of large multinational companies, politicians getting farm subsidies, or farms in your local area. <a href="{% url all_lists %}">Here are some examples of lists.</a></p>
-    
+    <p>Lists allow you to put together groups of recipients. List work just like an online shopping cart or an Amazon.com wish list. Once you begin making a list you can keep on adding as many recipients as you like to that list. You can use a list as a simple way of adding payments made to multiple recipients or you can save and publish your list for other people to see. Saving a list also means you can come back to it later.</p>
+
+    <p>You can make any kind of list you like. You could make a list of large multinational companies, politicians getting farm subsidies, or farms in your local area. We hope lists will be a way for people to make more sense of the data presented on the website. Here are the latest lists that have been made.</p>
+
   </div>
   <div class="col">
     {% if list_enabled %}
     {# {% include "blocks/list_items.html" %} #}
     {% else %}
-      <h3>Create a list</h3>
-      <p>You don't currently have a list activated. <a href="{% url activate_list %}">Activate one now</a></p>
+      <h3>Start making a list</h3>
+      <p>You're not working on a list.  <a href="{% url activate_list %}">Start making one now</a>.</p>
     {% endif %}
     
   </div>
