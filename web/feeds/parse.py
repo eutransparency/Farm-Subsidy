@@ -11,7 +11,6 @@ import sys
 def parse():
 
   allfeeds = feeds.Feeds.objects.filter(is_active=True)
-  print allfeeds
   for f in allfeeds:
 
 
@@ -35,38 +34,40 @@ def parse():
 
   
       for e in d.entries:
-        if len(feeds.FeedItems.objects.filter(guid=e.guid)) == 0:      
-          date = datetime.datetime(*e.updated_parsed[:7])
-      
-          if 'tags' in e:
-          
-            for tag in e.tags:
-              if tag['term'][:3] == "pub":
-                date = time.strptime(str(tag['term']), "pub%Y%m%d")
-                date = time.strftime("%Y-%m-%d %H:%M:%S",date)
-          
-            tags = ", ".join([t.term for t in e.tags])
-          else:
-            tags = ""
+        try:
+          if len(feeds.FeedItems.objects.filter(guid=e.guid)) == 0:      
+            date = datetime.datetime(*e.updated_parsed[:7])
         
-          if 'summary' in e:
-            summary = e.summary
-          else:
-            summary = ''
+            if 'tags' in e:
+              for tag in e.tags:
+                if tag['term'][:3] == "pub":
+  
+                      date = time.strptime(str(tag['term']), "pub%Y%m%d")
+                      date = time.strftime("%Y-%m-%d %H:%M:%S",date)
+              tags = ", ".join([t.term for t in e.tags])
+            else:
+              tags = ""
           
-                  
-          item = feeds.FeedItems(
-             title = r"%s" % unicode(e.title[:300]),
-             description=summary,
-             date = date,
-             guid=e.guid,
-             feed=f,
-             url = e.link,
-             tags = tags
-             )
-          try:
-            item.save()  
-          except Exception, e:
-            print "%s can't be saved" % item
-            print e
-            sys.exit()
+            if 'summary' in e:
+              summary = e.summary
+            else:
+              summary = ''
+            
+                    
+            item = feeds.FeedItems(
+               title = r"%s" % unicode(e.title[:300]),
+               description=summary,
+               date = date,
+               guid=e.guid,
+               feed=f,
+               url = e.link,
+               tags = tags
+               )
+            try:
+              item.save()  
+            except Exception, e:
+              print "%s can't be saved" % item
+              print e
+              sys.exit()
+        except:
+            pass

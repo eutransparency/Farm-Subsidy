@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load typogrify %}
+{% load markup %}
+
+
+{% block content %}
+<div class="section">
+    <h2>News and reports from the farmsubsidy.org network</h2>
+    {% for feature in features %}
+        <h4><a href="{{ feature.get_absolute_url }}">{{ feature.title|typogrify }}</a> </h4>
+        {{ feature.date|date }}.
+        {{ feature.teaser|markdown|typogrify }}
+    {% endfor %}
+    <a href="{% url feature_list %}">View All</a>
+</div>
+
+<div class="section">
+    <h2>Media coverage</h2>
+    {% for feed_item in feed_items %}
+        <h4><a href="{{ feed_item.url }}" target="_blank">{{ feed_item.title }}</a> </h4>
+        {{ feed_item.date|date }}.
+        {{ feed_item.description|markdown|typogrify }}
+    {% endfor %}    
+    <a href="{% url media_list %}">View All</a>
+</div>
+    
+    
+    
+{% endblock %}

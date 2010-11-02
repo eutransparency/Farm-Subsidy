@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% load pagination_tags %}
+{% load typogrify %}
+{% load markup %}
+
+{% block title %}Media coverage{% endblock %}
+{% block page_title %}Media coverage{% endblock %}
+
+{% block content %}
+    {% autopaginate feed_items 10 as feed_items %}
+    {% for feed_item in feed_items %}
+        <h4><a href="{{ feed_item.url }}" target="_blank">{{ feed_item.title }}</a></h4>
+        {{ feed_item.date|date }}.
+        {{ feed_item.description|markdown|typogrify }}
+        
+    {% endfor %}
+    <h4 class="pager">{% paginate %}</h4>
+{% endblock %}

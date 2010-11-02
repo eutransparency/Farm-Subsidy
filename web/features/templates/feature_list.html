@@ -4,8 +4,8 @@
 {% load typogrify %}
 {% load markup %}
 
-{% block title %}{% trans "News &amp; reports" %}{% endblock %}
-{% block page_title %}{% trans "News &amp; reports" %}{% endblock %}
+{% block title %}{% trans "News &amp; reports from the farmsubsidy.org network" %}{% endblock %}
+{% block page_title %}{% trans "News &amp; reports from the farmsubsidy.org network" %}{% endblock %}
 
 {% block content %}
   {% for feature in features %}
@@ -13,8 +13,4 @@
     {{ feature.date|date }}.
     {{ feature.teaser|markdown|typogrify }}
   {% endfor %}
-{% endblock %}
-
-{% block right %}
-    {% latestnews %}
 {% endblock %}

@@ -40,4 +40,8 @@ class FeedItems(models.Model):
     
     def __unicode__(self):
       return self.title
-
+      
+    class Meta:
+      get_latest_by = '-date'
+      ordering = ( '-date', )
+     

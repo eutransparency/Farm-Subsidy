@@ -1,6 +1,4 @@
 import sys
-# sys.path.append('/var/www/farmsubsidy/web/feeds/')
-
 
 from models import *
 from django.template.loader import render_to_string
@@ -8,7 +6,6 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from tagging.utils import get_tag
 from tagging.models import TaggedItem
-
 
 
 def feed_list(request, category='', tag=None):
@@ -26,3 +23,4 @@ def feed_list(request, category='', tag=None):
 
   
   return render_to_response('page.html', {'items' : q, 'title' : category}, context_instance=RequestContext(request))    
+
