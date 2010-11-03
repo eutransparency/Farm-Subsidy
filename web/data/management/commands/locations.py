@@ -72,7 +72,6 @@ class Command(BaseCommand):
             SELECT r.geo1, '0' as year, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
             FROM data_recipient r
             WHERE r.countrypayment='%(country)s'
-            AND p.countrypayment='%(country)s'
             AND r.geo1 IS NOT NULL
             GROUP BY r.geo1;
         """ % {'country' : self.country})
@@ -99,7 +98,6 @@ class Command(BaseCommand):
             SELECT r.geo2, '0' as year, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
             FROM data_recipient r
             WHERE r.countrypayment='%(country)s'
-            AND p.countrypayment='%(country)s'
             AND r.geo2 IS NOT NULL
             GROUP BY r.geo1, r.geo2;
         """ % {'country' : self.country})
@@ -127,7 +125,6 @@ class Command(BaseCommand):
             SELECT r.geo3, '0' as year, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
             FROM data_recipient r
             WHERE r.countrypayment='%(country)s'
-            AND p.countrypayment='%(country)s'
             AND r.geo3 IS NOT NULL
             GROUP BY r.geo1, r.geo2, r.geo3;
         """ % {'country' : self.country})
@@ -156,7 +153,6 @@ class Command(BaseCommand):
             SELECT r.geo4, '0' as year, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
             FROM data_recipient r
             WHERE r.countrypayment='%(country)s'
-            AND p.countrypayment='%(country)s'
             AND r.geo4 IS NOT NULL
             GROUP BY r.geo1, r.geo2, r.geo3, r.geo4;
         """ % {'country' : self.country})

@@ -70,7 +70,8 @@ ul.tabs li.selected a {color:#000; text-decoration:none;}
 table {font-size:0.9em; width:100%; margin-bottom:1.5em;}
 table th {background:#303c30; color:#fff;padding:0.6em 1em;}
 table th a {color:#fff;}
-table tbody td{background:url(../images/featurebar.png);padding:0.6em 1em;}
+table {background:url(../images/featurebar.png);}
+table tbody td{padding:0.6em 1em;}
 th.money, td.money {text-align:right;}
 
 table td { border-bottom:solid 0 #fff;height:20px;padding:0.6em 1em;}
