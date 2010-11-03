@@ -187,6 +187,7 @@ class Command(BaseCommand):
         for location in cursor.fetchall():
             if geo1 != location[0]:
                 geo1 = location[0]
+                geo2 = geo3 = geo4 = None
                 geo1_obj = {}
                 if geo1 != "":
                     for year, location_year in geo1_total[geo1].items():
@@ -207,6 +208,7 @@ class Command(BaseCommand):
                 print geo1_obj
             if geo2 != location[1]:
                  geo2 = location[1]
+                 geo3 = geo4 = None
                  geo2_obj = {}
                  if geo2 != "" and geo2 is not None:
                      for year, location_year in geo2_total[geo2].items():
@@ -231,6 +233,7 @@ class Command(BaseCommand):
 
             if geo3 != location[2]:
                 geo3 = location[2]
+                geo4 = None
                 geo3_obj = {}
                 if geo2 != "" and geo3 != "" and geo3 is not None:
                     for year, location_year in geo3_total[geo3].items():
