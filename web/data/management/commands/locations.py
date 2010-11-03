@@ -89,7 +89,7 @@ class Command(BaseCommand):
         """
         
         geo2_sql = """
-        SELECT trim(r.geo1) as dgeo1, trim(r.geo2) as dgeo2, CAST(p.year as integer) as dyear, r.countrypayment as country, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
+        SELECT r.geo1 as dgeo1, r.geo2 as dgeo2, p.year as dyear, r.countrypayment as country, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
         FROM data_recipient r
         JOIN data_payment p
         ON r.globalrecipientidx=p.globalrecipientidx
@@ -98,7 +98,7 @@ class Command(BaseCommand):
         """
 
         geo2_sql_all_years = """
-        SELECT trim(r.geo1) as dgeo1, trim(r.geo2) as dgeo2, 0 as dyear, r.countrypayment as country, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
+        SELECT r.geo1 as dgeo1, r.geo2 as dgeo2, 0 as dyear, r.countrypayment as country, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
         FROM data_recipient r
         JOIN data_payment p
         ON r.globalrecipientidx=p.globalrecipientidx
@@ -115,7 +115,7 @@ class Command(BaseCommand):
         for row in rows:
             parent_slug = self.make_slug(Location(), row['dgeo1'])
             parent = Location.objects.get(
-                name=row['dgeo1'], 
+                name=row['dgeo1'].strip(), 
                 slug=parent_slug, 
                 year=row['dyear'], 
                 country=row['country'],
@@ -144,7 +144,7 @@ class Command(BaseCommand):
         """
         
         geo3_sql = """
-        SELECT trim(r.geo1) as dgeo1, trim(r.geo2) as dgeo2, trim(r.geo3) as dgeo3, CAST(p.year as integer) as dyear, r.countrypayment as country, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
+        SELECT r.geo1 as dgeo1, r.geo2 as dgeo2, r.geo3 as dgeo3, p.year as dyear, r.countrypayment as country, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
         FROM data_recipient r
         JOIN data_payment p
         ON r.globalrecipientidx=p.globalrecipientidx
@@ -154,7 +154,7 @@ class Command(BaseCommand):
         """
 
         geo3_sql_all_years = """
-        SELECT trim(r.geo1) as dgeo1, trim(r.geo2) as dgeo2, trim(r.geo3) as dgeo3, 0 as dyear, r.countrypayment as country, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
+        SELECT r.geo1 as dgeo1, r.geo2 as dgeo2, r.geo3 as dgeo3, 0 as dyear, r.countrypayment as country, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
         FROM data_recipient r
         JOIN data_payment p
         ON r.globalrecipientidx=p.globalrecipientidx
@@ -210,7 +210,7 @@ class Command(BaseCommand):
         """
         
         geo4_sql = """
-        SELECT trim(r.geo1) as dgeo1, trim(r.geo2) as dgeo2, trim(r.geo3) as dgeo3, trim(r.geo4) as dgeo4, CAST(p.year as integer) as dyear, r.countrypayment as country, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
+        SELECT r.geo1 as dgeo1, r.geo2 as dgeo2, r.geo3 as dgeo3, r.geo4 as dgeo4, p.year as dyear, r.countrypayment as country, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
         FROM data_recipient r
         JOIN data_payment p
         ON r.globalrecipientidx=p.globalrecipientidx
@@ -221,7 +221,7 @@ class Command(BaseCommand):
         """
 
         geo4_sql_all_years = """
-        SELECT trim(r.geo1) as dgeo1, trim(r.geo2) as dgeo2, trim(r.geo3) as dgeo3, trim(r.geo4) as dgeo4, 0 as dyear, r.countrypayment as country, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
+        SELECT r.geo1 as dgeo1, r.geo2 as dgeo2, r.geo3 as dgeo3, r.geo4 as dgeo4, 0 as dyear, r.countrypayment as country, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
         FROM data_recipient r
         JOIN data_payment p
         ON r.globalrecipientidx=p.globalrecipientidx
