@@ -152,7 +152,7 @@
         {% if recipient.zipcode %}{{ recipient.zipcode|slice:"3:" }}<br />{% endif %}
     </p>
     <p>
-        {% if recipient.geo4 %}<a href="{{ recipient.geo4_url }}">View other recipients in {{ recipient.geo1_url }}--{{ recipient.geo4|title }}</a><br />{% endif %}
+        {% if recipient.geo4 %}<a href="{{ recipient.geo4_url }}">View other recipients in {{ recipient.geo4|title }}</a><br />{% endif %}
         {% if recipient.geo3 %}<a href="{{ recipient.geo3_url }}">View other recipients in {{ recipient.geo3|title }}</a><br />{% endif %}
         {% if recipient.geo2 %}<a href="{{ recipient.geo2_url }}">View other recipients in {{ recipient.geo2|title }}</a><br />{% endif %}
         {% if recipient.geo1 %}<a href="{{ recipient.geo1_url }}">View other recipients in {{ recipient.geo1|title }}</a><br />{% endif %}
