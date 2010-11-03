@@ -65,7 +65,10 @@ class Command(BaseCommand):
         # sys.exit()
         
         for row in rows:
-
+            
+            if not row['total']: 
+                row['total'] = 0
+            
             Location().add_root(geo_type='geo1', 
                             name=row['dgeo1'], 
                             country=row['country'],
@@ -117,6 +120,11 @@ class Command(BaseCommand):
                 year=row['dyear'], 
                 country=row['country'],
                 geo_type='geo1')
+            
+            if not row['total']: 
+                row['total'] = 0
+            
+            
             child = parent.add_child(geo_type='geo2',
                             name=row['dgeo2'], 
                             country=row['country'],
@@ -179,6 +187,9 @@ class Command(BaseCommand):
                 slug = parent_slug,
                 country=row['country'],
                 geo_type='geo2')
+
+            if not row['total']: 
+                row['total'] = 0
 
             child = parent.add_child(geo_type='geo3',
                             name=row['dgeo3'], 
@@ -254,7 +265,9 @@ class Command(BaseCommand):
                 slug = parent_slug,
                 country=row['country'],
                 geo_type='geo3')
-
+                
+            if not row['total']: 
+                row['total'] = 0
             child = parent.add_child(geo_type='geo4',
                             name=row['dgeo4'], 
                             country=row['country'],
