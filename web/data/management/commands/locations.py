@@ -37,16 +37,16 @@ class Command(BaseCommand):
 
     def geo1(self):
         geo1_sql = """
-        SELECT trim(r.geo1) as dgeo1, CAST(p.year as integer) as dyear, r.countrypayment as country, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
+        SELECT r.geo1 as dgeo1, p.year as dyear, r.countrypayment as country, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
         FROM data_recipient r
         JOIN data_payment p
         ON r.globalrecipientidx=p.globalrecipientidx
-        WHERE CAST(p.year as integer) !=0
+        WHERE p.year !=0
         GROUP BY geo1, Dyear, country;
         """
 
         geo1_sql_all_years = """
-        SELECT trim(r.geo1) as dgeo1, 0 as Dyear, r.countrypayment as country, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
+        SELECT r.geo1 as dgeo1, 0 as Dyear, r.countrypayment as country, SUM(r.total) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
         FROM data_recipient r
         JOIN data_payment p
         ON r.globalrecipientidx=p.globalrecipientidx
