@@ -269,9 +269,14 @@ class Command(BaseCommand):
             child.save()
 
     def handle(self, **options):
-        # Location.objects.all().delete()
-        # self.geo1()
-        # self.geo2()
-        # self.geo3()
+        print "deleting all locations"
+        Location.objects.all().delete()
+        print "Making geo1"
+        self.geo1()
+        print "Making geo2"
+        self.geo2()
+        print "Making geo3"
+        self.geo3()
+        print "Making geo4"
         self.geo4()
         
