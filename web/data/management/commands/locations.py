@@ -86,11 +86,11 @@ class Command(BaseCommand):
             FROM data_recipient r
             JOIN data_payment p
             ON r.globalrecipientidx=p.globalrecipientidx
-            WHERE r.countrypayment='%s'
+            WHERE r.countrypayment='%(country)s'
             AND p.countrypayment='%(country)s'
             AND r.geo2 IS NOT NULL
             GROUP BY r.geo1, r.geo2, p.year
-        """ % self.country)
+        """ % {'country' : self.country})
         geo2_total = self.dictfetchall(cursor)
         
         cursor = connection.cursor()
@@ -113,11 +113,11 @@ class Command(BaseCommand):
             FROM data_recipient r
             JOIN data_payment p
             ON r.globalrecipientidx=p.globalrecipientidx
-            WHERE r.countrypayment='%s'
+            WHERE r.countrypayment='%(country)s'
             AND p.countrypayment='%(country)s'
             AND r.geo3 IS NOT NULL
             GROUP BY r.geo1, r.geo2, r.geo3, p.year
-        """ % self.country)
+        """ % {'country' : self.country})
         geo3_total = self.dictfetchall(cursor)
 
         cursor = connection.cursor()
@@ -141,11 +141,11 @@ class Command(BaseCommand):
             FROM data_recipient r
             JOIN data_payment p
             ON r.globalrecipientidx=p.globalrecipientidx
-            WHERE r.countrypayment='%s'
+            WHERE r.countrypayment='%(country)s'
             AND p.countrypayment='%(country)s'
             AND r.geo4 IS NOT NULL
             GROUP BY r.geo1, r.geo2, r.geo3, r.geo4, p.year
-        """ % self.country)
+        """ % {'country' : self.country})
         geo4_total = self.dictfetchall(cursor)
 
         cursor = connection.cursor()
