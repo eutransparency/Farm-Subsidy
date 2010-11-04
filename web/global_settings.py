@@ -93,6 +93,7 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'typogrify',
     'queued_search',
+    'piston',
     
 ]
 
