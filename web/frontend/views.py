@@ -17,8 +17,7 @@ def robots(request):
     res = HttpResponse()
     res.write(
 """User-agent: *
-Disallow: /
-Crawl-delay: 200
+Crawl-delay: 5
 """)
     return res
 
