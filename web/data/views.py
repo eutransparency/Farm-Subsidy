@@ -9,7 +9,7 @@ from django.contrib.comments.models import Comment
 from django.conf import settings
 from feeds.models import *
 from tagging.models import TaggedItem
-from misc.helpers import country_template, CachedCountQuerySetWrapper
+from misc.helpers import country_template, CachedCountQuerySetWrapper, QuerySetCache
 from web.countryinfo.transparency import transparency_score
 from web.countryinfo.load_info import load_info
 from data import countryCodes
@@ -28,6 +28,7 @@ def home(request):
   # top_for_ip = models.Recipient.objects.top_recipients(country=ip_country)
 
   top_eu = models.Recipient.objects.top_recipients(year=LATEST_YEAR)[:10]
+  top_eu = QuerySetCache(top_eu, key="home.top_eu", cache_type="filesystem")
   
   latest_annotations = Comment.objects.all().order_by('-submit_date')[:5]
   
@@ -51,8 +52,7 @@ def countries(request):
     return render_to_response('countries.html', 
     {'countries' : countries},
     context_instance=RequestContext(request))
-        
-@cache_page(60 * 60 * 4, key_prefix="farm")
+
 def country(request, country, year=DEFAULT_YEAR):
     """
     Provides all the variables for the country pages at, for example "/AT/"
@@ -66,21 +66,42 @@ def country(request, country, year=DEFAULT_YEAR):
     country = country.upper()
 
     years_max_min = models.CountryYear.objects.year_max_min(country)
-
     years = models.CountryYear.objects.filter(country=country)
     
     top_recipients = models.Recipient.objects.top_recipients(country=country, year=year)[:5]
+
+    # Cache top_recipients
+    top_recipients = QuerySetCache(
+                        top_recipients, 
+                        key="country.%s.%s.top_recipients" % (country, year), 
+                        cache_type="filesystem")
+
 
     if country and country != "EU":
         top_schemes = models.SchemeYear.objects.top_schemes(year=year, country=country)[:5]
     else:
         top_schemes = models.SchemeYear.objects.top_schemes(year=year)[:5]
-    
+
+    # Cache top_schemes
+    top_schemes = QuerySetCache(
+                        top_schemes,
+                        key="country.%s.%s.top_schemes" % (country, year),
+                        cache_type="filesystem")
+
+
     top_locations = models.Location.get_root_nodes().filter(year=year)
     if country and country != "EU":
         top_locations = top_locations.filter(country=country)
     top_locations = top_locations.order_by('-total')[:5]
     
+    # Cache top_locations
+    top_locations = QuerySetCache(
+                        top_locations,
+                        key="country.%s.%s.top_locations" % (country, year),
+                        cache_type="filesystem")
+
+
+
     #get transparency score
     transparency = None
     if country != "EU":

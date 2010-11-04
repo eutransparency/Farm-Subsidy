@@ -1,6 +1,9 @@
+import hashlib
+import cPickle
+
+from django.conf import settings
 from django.template.loader import select_template
 from django.core.cache import cache
-import hashlib
 
 def country_template(path, country):
     """
@@ -48,4 +51,45 @@ class CachedCountQuerySetWrapper(object):
     def __len__(self):
         return self.count()
 
+
+
+def QuerySetCache(qs, key=None, cache_type='deafult'):
+    """
+    Caches the *whole* queryset as it is given to the function.
+    
+    For this to work, make sure it's called as late as it can be.
+    
+    Calling this on paged queries will work, but is silly, as the cached 
+    queryset will normally be slower than just not caching it.
+    
+    You have been warned.
+    """
+
+    def make_key(key):
+        if key:
+            return "%s.%s" % (settings.CACHE_MIDDLEWARE_KEY_PREFIX, key)
+        else:
+            return hash(str(qs.query))+1
+    key = make_key(key)
+
+    # Use the django built in cache
+    if cache_type == 'deafult':
+        cached_qs = cache.get(key)
+        if cached_qs:
+            cached_qs = cPickle.loads(cached_qs)
+        else:
+            cached_qs = qs
+            cache.set(key, cPickle.dumps(cached_qs))
+        return cached_qs
+
+    # Use the file system, for more permanant caching
+    if cache_type == 'filesystem':
+        import os
+        file_path = "%s/%s" % (settings.FILE_CACHE_PATH, key)
+        if os.path.exists(file_path):
+            return cPickle.loads(open(file_path).read())
+        else:
+            f = open(file_path, 'w')
+            f.write(cPickle.dumps(qs))
+            return qs
 

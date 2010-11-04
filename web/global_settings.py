@@ -144,6 +144,7 @@ STATS_YEAR = 2008
 STATS_DIR = ROOT_PATH + '/data/stats'
 
 CACHE_BACKEND = 'redis_cache.cache://localhost:6379'
+CACHE_MIDDLEWARE_KEY_PREFIX = 'farm'
 JOHNNY_MIDDLEWARE_KEY_PREFIX='jc_farm_stage_tmp'
 JOHNNY_MIDDLEWARE_SECONDS = 500
 
@@ -159,3 +160,6 @@ QUEUE_REDIS_CONNECTION = 'localhost:6379'
 QUEUE_REDIS_DB = 0
 
 DATE_FORMAT = 'j F Y'
+
+
+FILE_CACHE_PATH = ROOT_PATH + "/data/cache"
