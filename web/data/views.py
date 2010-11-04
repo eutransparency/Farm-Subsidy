@@ -207,7 +207,7 @@ def all_schemes(request, country='EU'):
     Scheme browser (replaces generic 'browse' function for schemes)
     """
 
-    schemes = models.Scheme.objects.all().order_by('-total')
+    schemes = models.Scheme.objects.filter(total__isnull=False).order_by('-total')
     
     if country != 'EU':
         schemes = schemes.filter(countrypayment=country)
