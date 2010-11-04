@@ -4,6 +4,7 @@ import views
 
 
 urlpatterns = patterns('',
+   url(r'^robots.txt', views.robots, name='robots'),
    url(r'^login', views.login, name='login'),
    url(r'^logout', views.logout, name='logout'),
    url(r'^myaccount/$', views.dashboard, name='dashboard'),

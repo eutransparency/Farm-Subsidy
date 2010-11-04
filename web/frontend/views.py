@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.template import RequestContext
 from django import forms
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
@@ -12,6 +12,16 @@ from django.contrib.auth.forms import AuthenticationForm
 
 from models import Profile
 from forms import ProfileForm
+
+def robots(request):
+    res = HttpResponse()
+    res.write(
+"""User-agent: *
+Disallow: /admin
+Crawl-delay: 5
+""")
+    return res
+
 
 def login(request):
     
