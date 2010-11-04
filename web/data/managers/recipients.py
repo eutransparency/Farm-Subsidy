@@ -23,7 +23,7 @@ class RecipientManager(models.Manager):
             kwargs['countrypayment'] = country
         if int(year) != 0:
             kwargs['payment__year__exact'] = year
-            recipients = recipients.distinct()
+            # recipients = recipients.distinct()
         recipients = recipients.filter(**kwargs)
         recipients = recipients.order_by('-total')
         return recipients
@@ -41,8 +41,10 @@ class RecipientManager(models.Manager):
         geos.append(location)
         kwargs = {}
         if int(year) != 0:
+            print """asdasdasd %s""" % year
             kwargs['payment__year__exact'] = year
         for i, g in enumerate(geos):
             i = i + 1
             kwargs["geo%s" % i] = g.name
-        return self.filter(**kwargs).exclude(total=None).distinct()
+        qs =  self.filter(**kwargs).exclude(total=None).distinct()
+        return qs

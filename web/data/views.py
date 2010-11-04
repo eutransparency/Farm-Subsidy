@@ -287,9 +287,6 @@ def location(request, country, slug=None, year=0):
     
     location = get_object_or_404(models.Location, country=country, slug=slug, year=year)
 
-    # kwargs = {}
-    # for p in location.get_ancestors():
-    #     kwargs[p.geo_type] = p.name
     location_recipients = models.Recipient.objects.recipents_for_location(location, year=year).order_by('-total')[:10]
 
     sub_locations = location.get_children()
