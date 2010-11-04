@@ -240,7 +240,6 @@ def browse(request, country):
     """
 
     recipients = models.Recipient.objects.filter(total__isnull=False)\
-        .distinct()\
         .order_by('-total')
 
     if country != "EU":
