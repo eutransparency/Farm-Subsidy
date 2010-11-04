@@ -256,10 +256,10 @@ def browse(request, country):
     except ValueError:
         page = 1
 
-    try:
-        recipients = paginator.page(page)
-    except:
-        recipients = paginator.page(paginator.num_pages)
+    # try:
+    #     recipients = paginator.page(page)
+    # except:
+    #     recipients = paginator.page(paginator.num_pages)
     
     return render_to_response(
         country_template('browse.html', country),
