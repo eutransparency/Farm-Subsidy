@@ -1,4 +1,3 @@
-from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.cache import cache_page
 from django.core.urlresolvers import reverse
@@ -248,24 +247,11 @@ def browse(request, country):
   
     recipients = CachedCountQuerySetWrapper(recipients)
     
-    paginator = Paginator(recipients, 25)
-    
-    # Make sure page request is an int. If not, deliver first page.
-    try:
-        page = int(request.GET.get('page', '1'))
-    except ValueError:
-        page = 1
-
-    # try:
-    #     recipients = paginator.page(page)
-    # except:
-    #     recipients = paginator.page(paginator.num_pages)
     
     return render_to_response(
         country_template('browse.html', country),
         {
             'recipients' : recipients,
-            'paginator' : paginator,
         },
         context_instance=RequestContext(request)
     )  
