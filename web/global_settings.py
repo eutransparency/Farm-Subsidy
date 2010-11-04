@@ -1,5 +1,5 @@
 # Django settings for farmjango project.
-import os 
+import os
 PROJECT_PATH = os.path.abspath(os.path.dirname(__file__))
 ROOT_PATH = os.path.split(PROJECT_PATH)[0]
 
@@ -39,17 +39,17 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.eggs.load_template_source',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'pagination.middleware.PaginationMiddleware',
-    'django_notify.middleware.NotificationsMiddleware',    
+    'django_notify.middleware.NotificationsMiddleware',
     'web.misc.middleware.Middleware',
-    'django.middleware.transaction.TransactionMiddleware',    
-)
+    'django.middleware.transaction.TransactionMiddleware',
+]
 
 ROOT_URLCONF = 'web.urls'
 
@@ -85,7 +85,7 @@ INSTALLED_APPS = [
     'tagging',
     'registration',
     'profiles',
-    'devserver',   
+    'devserver',
     'treebeard',
     'haystack',
     'listmaker',
@@ -94,7 +94,6 @@ INSTALLED_APPS = [
     'typogrify',
     'queued_search',
     'piston',
-    
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -108,7 +107,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
   'listmaker.context_processors.list_items',
   # 'misc.context_processors.latest_tweet',
   'misc.context_processors.google_api_key',
-  'misc.context_processors.header_class',  
+  'misc.context_processors.header_class',
   'data.context_processors.breadcrumb',
   'data.context_processors.data_totals_info',
   'features.context_processors.featured_items',
@@ -124,7 +123,7 @@ DEFAULT_FROM_EMAIL = "team@farmsubsidy.org"
 TWITTER_USER = "farmsubsidy"
 TWITTER_TIMEOUT = 3600
 
-DEFAULT_CHARSET = "utf8" 
+DEFAULT_CHARSET = "utf8"
 
 INTERNAL_IPS = ('127.0.0.1',)
 

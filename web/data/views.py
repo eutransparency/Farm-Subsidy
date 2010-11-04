@@ -76,7 +76,6 @@ def country(request, country, year=DEFAULT_YEAR):
                         key="country.%s.%s.top_recipients" % (country, year), 
                         cache_type="filesystem")
 
-
     if country and country != "EU":
         top_schemes = models.SchemeYear.objects.top_schemes(year=year, country=country)[:5]
     else:
@@ -203,7 +202,6 @@ def recipient(request, country, recipient_id, name):
     context_instance=RequestContext(request)
   )  
 
-@cache_page(60 * 60 * 4, key_prefix="farm")
 def all_schemes(request, country='EU'):
     """
     Scheme browser (replaces generic 'browse' function for schemes)
@@ -214,6 +212,12 @@ def all_schemes(request, country='EU'):
     if country != 'EU':
         schemes = schemes.filter(countrypayment=country)
 
+    schemes = QuerySetCache(
+                        schemes,
+                        key="all_schemes.%s.schemes" % (country,),
+                        cache_type="filesystem")
+    
+    
     return render_to_response(
         country_template('all_schemes.html', country),
         {
