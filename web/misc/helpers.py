@@ -42,7 +42,7 @@ class CachedCountQuerySetWrapper(object):
         count = cache.get(key)
         if not count:
             count = self.queryset.count()
-            cache.set(key, count, 60)
+            cache.set(key, count)
         return count
 
     def __len__(self):
