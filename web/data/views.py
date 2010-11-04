@@ -131,7 +131,7 @@ def recipient(request, country, recipient_id, name):
   
   country = country.upper()
 
-  recipient = models.Recipient.objects.get(globalrecipientidx=recipient_id)
+  recipient = get_object_or_404(models.Recipient, globalrecipientidx=recipient_id)
   
   payments = models.Payment.objects.select_related().filter(recipient=recipient_id).order_by('-year', '-amounteuro')
   expanded = request.GET.get('expand', False)
