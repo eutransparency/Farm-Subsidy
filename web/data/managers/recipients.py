@@ -25,7 +25,7 @@ class RecipientManager(models.Manager):
             kwargs['payment__year__exact'] = year
             # recipients = recipients.distinct()
         recipients = recipients.filter(**kwargs)
-        recipients = recipients.order_by('-total')
+        recipients = recipients.order_by('-total').distinct()
         return recipients
         
     def recipents_for_location(self, location, year=0):
