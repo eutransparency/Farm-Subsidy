@@ -33,7 +33,7 @@ class CachedCountQuerySetWrapper(object):
 
     def __init__(self, queryset, key=None):
         self.queryset = queryset
-        self.key = make_key(key)
+        self.key = self.make_key(key)
 
     def make_key(key):
         if key:
