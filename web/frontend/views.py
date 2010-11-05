@@ -24,7 +24,6 @@ Crawl-delay: 5
 
 
 def login(request):
-    assert False
     #grab the redirect URL if set
     if request.POST.get('next'):
         redirect = request.POST.get('next')
