@@ -41,7 +41,6 @@ class RecipientManager(models.Manager):
         geos.append(location)
         kwargs = {}
         if int(year) != 0:
-            print """asdasdasd %s""" % year
             kwargs['payment__year__exact'] = year
         for i, g in enumerate(geos):
             i = i + 1
