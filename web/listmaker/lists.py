@@ -57,8 +57,10 @@ def make_total(list_name, method, total=None):
     tmp_total = 0
     for obj in r.keys('%s:hashes:*' % list_name):
         t =  r.hget(obj, 'total')
-        if t:
+        try:
             tmp_total += float(t)
+        except:
+            tmp_total += float(0)
     new_total = tmp_total
     
     r.delete("%s:total" % list_name)
