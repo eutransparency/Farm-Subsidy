@@ -11,6 +11,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db import connection, backend, models
 import treebeard
 
+from data import countryCodes
 from data.models import Recipient, Location
 
 
@@ -42,16 +43,20 @@ class Command(BaseCommand):
         JOIN data_payment p
         ON r.globalrecipientidx=p.globalrecipientidx
         WHERE p.year !=0
+        AND r.countrypayment IN (%(country_in_sql)s)
+        AND p.countrypayment IN (%(country_in_sql)s)
         GROUP BY geo1, Dyear, country;
-        """
+        """ % {'country_in_sql' : self.country_in_sql}
 
         geo1_sql_all_years = """
         SELECT TRIM(r.geo1) dgeo1, 0 as Dyear, r.countrypayment as country, SUM(p.amounteuro) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
         FROM data_recipient r
         JOIN data_payment p
         ON r.globalrecipientidx=p.globalrecipientidx
+        WHERE r.countrypayment IN (%(country_in_sql)s)
+        AND p.countrypayment IN (%(country_in_sql)s)
         GROUP BY dgeo1, Dyear, country;
-        """
+        """ % {'country_in_sql' : self.country_in_sql}
         cursor = connection.cursor()
 
         cursor.execute(geo1_sql)
@@ -80,9 +85,8 @@ class Command(BaseCommand):
                             lon=row['lng'],
                             year=row['dyear'],
                             )
-            
-        
-    
+
+
     def geo2(self):
         """
         
@@ -94,8 +98,10 @@ class Command(BaseCommand):
         JOIN data_payment p
         ON r.globalrecipientidx=p.globalrecipientidx
         WHERE geo2 IS NOT NULL
+        AND r.countrypayment IN (%(country_in_sql)s)
+        AND p.countrypayment IN (%(country_in_sql)s)
         GROUP BY dgeo1, dgeo2, dyear, country;
-        """
+        """ % {'country_in_sql' : self.country_in_sql}
 
         geo2_sql_all_years = """
         SELECT TRIM(r.geo1) dgeo1, TRIM(r.geo2) dgeo2, 0 as dyear, r.countrypayment as country, SUM(p.amounteuro) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
@@ -103,8 +109,10 @@ class Command(BaseCommand):
         JOIN data_payment p
         ON r.globalrecipientidx=p.globalrecipientidx
         WHERE geo2 IS NOT NULL
+        AND r.countrypayment IN (%(country_in_sql)s)
+        AND p.countrypayment IN (%(country_in_sql)s)
         GROUP BY dgeo1, dgeo2, dyear, country;
-        """
+        """ % {'country_in_sql' : self.country_in_sql}
         cursor = connection.cursor()
 
         cursor.execute(geo2_sql)
@@ -114,7 +122,6 @@ class Command(BaseCommand):
 
         for row in rows:
             parent_slug = self.make_slug(Location(), row['dgeo1'])
-            print row
             parent = Location.objects.get(
                 name=row['dgeo1'].strip(), 
                 slug=parent_slug, 
@@ -124,7 +131,6 @@ class Command(BaseCommand):
             
             if not row['total']: 
                 row['total'] = 0
-            
             
             child = parent.add_child(geo_type='geo2',
                             name=row['dgeo2'], 
@@ -139,6 +145,7 @@ class Command(BaseCommand):
             child.slug=self.make_slug(child, row['dgeo2'])
             child.save()
 
+
     def geo3(self):
         """
         
@@ -151,8 +158,10 @@ class Command(BaseCommand):
         ON r.globalrecipientidx=p.globalrecipientidx
         WHERE geo2 IS NOT NULL
         AND geo3 IS NOT NULL
+        AND r.countrypayment IN (%(country_in_sql)s)
+        AND p.countrypayment IN (%(country_in_sql)s)
         GROUP BY dgeo1, dgeo2, dgeo3, dyear, country;
-        """
+        """ % {'country_in_sql' : self.country_in_sql}
 
         geo3_sql_all_years = """
         SELECT TRIM(r.geo1) dgeo1, TRIM(r.geo2) dgeo2, TRIM(r.geo3) dgeo3, 0 as dyear, r.countrypayment as country, SUM(p.amounteuro) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
@@ -161,8 +170,10 @@ class Command(BaseCommand):
         ON r.globalrecipientidx=p.globalrecipientidx
         WHERE geo2 IS NOT NULL
         AND geo3 IS NOT NULL
+        AND r.countrypayment IN (%(country_in_sql)s)
+        AND p.countrypayment IN (%(country_in_sql)s)
         GROUP BY dgeo1, dgeo2, dgeo3, dyear, country;
-        """
+        """ % {'country_in_sql' : self.country_in_sql}
         cursor = connection.cursor()
 
         cursor.execute(geo3_sql)
@@ -205,6 +216,7 @@ class Command(BaseCommand):
             child.slug=self.make_slug(child, row['dgeo3'])
             child.save()
 
+
     def geo4(self):
         """
         
@@ -218,8 +230,10 @@ class Command(BaseCommand):
         WHERE geo2 IS NOT NULL
         AND geo3 IS NOT NULL
         AND geo4 IS NOT NULL
+        AND r.countrypayment IN (%(country_in_sql)s)
+        AND p.countrypayment IN (%(country_in_sql)s)
         GROUP BY dgeo1, dgeo2, dgeo3, dgeo4, dyear, country;
-        """
+        """ % {'country_in_sql' : self.country_in_sql}
 
         geo4_sql_all_years = """
         SELECT TRIM(r.geo1) dgeo1, TRIM(r.geo2) dgeo2, TRIM(r.geo3) dgeo3, TRIM(r.geo4) dgeo4, 0 as dyear, r.countrypayment as country, SUM(p.amounteuro) as total, COUNT(r.*) as count, AVG(r.lat) as lat, AVG(r.lng) as lng
@@ -229,8 +243,10 @@ class Command(BaseCommand):
         WHERE geo2 IS NOT NULL
         AND geo3 IS NOT NULL
         AND geo4 IS NOT NULL
+        AND r.countrypayment IN (%(country_in_sql)s)
+        AND p.countrypayment IN (%(country_in_sql)s)
         GROUP BY dgeo1, dgeo2, dgeo3, dgeo4, dyear, country;
-        """
+        """ % {'country_in_sql' : self.country_in_sql}
         cursor = connection.cursor()
 
         cursor.execute(geo4_sql)
@@ -282,9 +298,19 @@ class Command(BaseCommand):
             child.slug=self.make_slug(child, row['dgeo4'])
             child.save()
 
+
     def handle(self, **options):
+        country = options.get('country')
+        if country == "EU":
+            self.country = countryCodes.country_codes()
+        else:
+            self.country = [country,]
+        
+        self.country_in_sql = ",".join(["'%s'" % c for c in self.country])
+
         print "deleting all locations"
-        Location.objects.all().delete()
+        Location.objects.filter(country__in=self.country).delete()
+
         print "Making geo1"
         self.geo1()
         print "Making geo2"
