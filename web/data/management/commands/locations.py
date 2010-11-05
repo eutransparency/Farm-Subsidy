@@ -45,7 +45,7 @@ class Command(BaseCommand):
         WHERE p.year !=0
         AND r.countrypayment IN (%(country_in_sql)s)
         AND p.countrypayment IN (%(country_in_sql)s)
-        GROUP BY geo1, Dyear, country;
+        GROUP BY dgeo1, Dyear, country;
         """ % {'country_in_sql' : self.country_in_sql}
 
         geo1_sql_all_years = """
