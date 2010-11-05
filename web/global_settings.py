@@ -94,6 +94,10 @@ INSTALLED_APPS = [
     'typogrify',
     'queued_search',
     'piston',
+    'indexer',
+    'paging',
+    'sentry',
+    'sentry.client',
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = (

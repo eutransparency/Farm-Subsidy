@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     (r'^accounts/', include('registration.urls')),
 
     (r'^api/', include('web.api.urls')),
+    (r'^sentry/', include('sentry.urls')),
     )
 
 if settings.DEBUG:
