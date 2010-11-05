@@ -134,3 +134,4 @@ class Command(BaseCommand):
         print "country years"
         self.country_years()
     
+# INSERT INTO data_georecipient  SELECT r.globalrecipientidx, geometryfromtext('POINT(' || lng || ' ' || lat || ')', 4326) from data_recipient r WHERE lng !=0
