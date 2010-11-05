@@ -31,9 +31,17 @@ def country_template(path, country):
 
 class CachedCountQuerySetWrapper(object):
 
-    def __init__(self, queryset):
+    def __init__(self, queryset, key=None):
         self.queryset = queryset
+        self.key = make_key(key)
 
+    def make_key(key):
+        if key:
+            return "%s.%s" % (settings.CACHE_MIDDLEWARE_KEY_PREFIX, key)
+        else:
+            return hash(str(qs.query))
+
+    
     def __getitem__(self, k):
         if not isinstance(k, slice):
             raise TypeError
@@ -45,7 +53,7 @@ class CachedCountQuerySetWrapper(object):
         count = cache.get(key)
         if not count:
             count = self.queryset.count()
-            cache.set(key, count)
+            cache.set(key, count, 0)
         return count
 
     def __len__(self):
@@ -62,6 +70,8 @@ def QuerySetCache(qs, key=None, cache_type='deafult'):
     Calling this on paged queries will work, but is silly, as the cached 
     queryset will normally be slower than just not caching it.
     
+    Use CachedCountQuerySetWrapper for speeding up paged results.
+    
     You have been warned.
     """
 
@@ -69,7 +79,7 @@ def QuerySetCache(qs, key=None, cache_type='deafult'):
         if key:
             return "%s.%s" % (settings.CACHE_MIDDLEWARE_KEY_PREFIX, key)
         else:
-            return hash(str(qs.query))+1
+            return hash(str(qs.query))
     key = make_key(key)
 
     # Use the django built in cache
