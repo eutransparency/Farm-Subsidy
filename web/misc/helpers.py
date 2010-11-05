@@ -35,11 +35,11 @@ class CachedCountQuerySetWrapper(object):
         self.queryset = queryset
         self.key = self.make_key(key)
 
-    def make_key(key):
+    def make_key(self, key):
         if key:
             return "%s.%s" % (settings.CACHE_MIDDLEWARE_KEY_PREFIX, key)
         else:
-            return hash(str(qs.query))
+            return hash(str(self.queryset.query))
 
     
     def __getitem__(self, k):
