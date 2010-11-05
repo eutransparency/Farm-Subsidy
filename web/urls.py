@@ -6,7 +6,10 @@ from data import countryCodes
 from django.contrib.gis import admin
 admin.autodiscover()
 
+handler500 = 'frontend.views.server_error'
+
 urlpatterns = patterns('',
+    (r'^sentry/', include('sentry.urls')),
     (r'^admin/(.*)', admin.site.root),
     (r'', include('data.urls')),
     (r'^news/', include('features.urls')),
@@ -19,7 +22,6 @@ urlpatterns = patterns('',
     (r'^accounts/', include('registration.urls')),
 
     (r'^api/', include('web.api.urls')),
-    (r'^sentry/', include('sentry.urls')),
     )
 
 if settings.DEBUG:

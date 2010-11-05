@@ -9,6 +9,7 @@ from django.contrib import auth
 from registration.forms import RegistrationForm
 from django.contrib.auth.forms import User
 from django.contrib.auth.forms import AuthenticationForm
+from django.conf import settings
 
 from models import Profile
 from forms import ProfileForm
@@ -23,7 +24,7 @@ Crawl-delay: 5
 
 
 def login(request):
-    
+    assert False
     #grab the redirect URL if set
     if request.POST.get('next'):
         redirect = request.POST.get('next')
@@ -148,3 +149,18 @@ def account(request):
     context_instance = RequestContext(request)
     )
 
+
+
+def server_error(request, template_name='500.html'):
+    """
+    Override the default 500 error view to add settings.MEDIA_URL.
+    """
+    from django import http
+    from django.template import Context, RequestContext, loader
+    
+    t = loader.get_template(template_name) # You need to create a 500.html template.
+    return http.HttpResponseServerError(t.render(
+        Context({
+            'MEDIA_URL' : settings.MEDIA_URL
+        })
+        ))

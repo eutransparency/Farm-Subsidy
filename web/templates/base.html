@@ -95,7 +95,10 @@
             <small>e.g. <a href="{% url search 'nestle' %}">Nestle</a> or <a href="{% url search 'windsor' %}">Windsor</a></small>
         </form>
         
-        <span id="totalizer" class="transparent">&euro;{{ sum_of_payments|intword }} in payments to {{ total_recipients }} recipients</span>
+        {% if sum_of_payments %}
+            <span id="totalizer" class="transparent">&euro;{{ sum_of_payments|intword }} in payments to {{ total_recipients }} recipients</span>
+        {% endif %}
+        
         
         {# main menu #}
         <ul id="mainmenu">
