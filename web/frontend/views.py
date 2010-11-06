@@ -54,12 +54,16 @@ def login(request):
                 auth.login(request, user)
                 return HttpResponseRedirect(redirect)
         if registration_form.is_valid():
-            u = User.objects.create_user(request.POST['username'],
-                                     request.POST['email'],
-                                     request.POST['password1'])
+            u = User(username=request.POST['username'],
+                                    email=request.POST['email'],
+                                     )
+            u.set_password(request.POST['password1'])
             u.is_active = True
+            u.save()
+            p = Profile(user=u)
+            p.save()
             user = auth.authenticate(username=request.POST['username'], password=request.POST['password1'])
-            #u.save()
+
             auth.login(request, user)
             return HttpResponseRedirect(redirect)
   

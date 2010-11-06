@@ -13,7 +13,7 @@ urlpatterns = patterns('',
    url(r'^deactivate/$',list_views.deactivate, name='deactivate_list'),
    url(r'^save/$',list_views.manage_lists, name='save_list'),
    url(r'^save/(?P<list_id>\d+)/$',list_views.manage_lists, name='save_list'),
-   url(r'^mylists$',list_views.my_lists, name="mylists"),
+   # url(r'^mylists$',list_views.my_lists, name="mylists"),
    url(r'^(?P<list_id>\d+)/(?P<slug>([^/]+))/$',list_views.list_view, name="list_detail"),
    url(r'^edit_items/(?P<list_id>\d+)/$',list_views.edit_list_items, name="edit_list_items"),
    
