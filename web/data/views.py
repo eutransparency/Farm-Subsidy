@@ -271,11 +271,8 @@ def browse(request, country):
 
     if country != "EU":
         recipients = recipients.filter(countrypayment=country)
-
-    recipients = QuerySetCache(
-                        recipients,
-                        key="browse.%s" % (country,),
-                        cache_type="filesystem")
+    recipients = recipients.only('name', 'total', 'countrypayment')
+    recipients = CachedCountQuerySetWrapper(recipients)
     
     
     return render_to_response(
