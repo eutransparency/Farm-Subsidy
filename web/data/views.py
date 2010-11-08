@@ -158,7 +158,7 @@ def recipient(request, country, recipient_id, name):
   if not expanded:
       # Hack to stop *all* payments getting displayed, when there are sometimes
       # many 'trasactions' per year in the same scheme.
-      all_payments = payments.values('year','scheme',).annotate(amounteuro=Sum('amounteuro')).order_by('-year', '-amounteuro')
+      all_payments = payments.values('year','scheme',).annotate(amounteuro=Sum('amounteuro')).order_by('-year', '-amounteuro').select_related()
       payments = []
       for payment in all_payments:
           p = models.Payment()
@@ -245,7 +245,11 @@ def scheme(request, country, globalschemeid, name):
         .annotate(scheme_total=Sum('payment__amounteuro'))\
         .order_by('-scheme_total')
     
-    top_recipients = CachedCountQuerySetWrapper(top_recipients)
+    # top_recipients = CachedCountQuerySetWrapper(top_recipients)
+    top_recipients = QuerySetCache(
+                        top_recipients,
+                        key="schemes.%s.%s.schemes" % (country,globalschemeid,),
+                        cache_type="filesystem")
     
     return render_to_response(
         country_template('scheme.html', country), 
@@ -267,8 +271,11 @@ def browse(request, country):
 
     if country != "EU":
         recipients = recipients.filter(countrypayment=country)
-  
-    recipients = CachedCountQuerySetWrapper(recipients)
+
+    recipients = QuerySetCache(
+                        recipients,
+                        key="browse.%s" % (country,),
+                        cache_type="filesystem")
     
     
     return render_to_response(
