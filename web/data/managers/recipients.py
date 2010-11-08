@@ -46,4 +46,5 @@ class RecipientManager(models.Manager):
             i = i + 1
             kwargs["geo%s" % i] = g.name
         qs =  self.filter(**kwargs).exclude(total=None).distinct()
+        qs = qs.only('name', 'total', 'countrypayment',)
         return qs
