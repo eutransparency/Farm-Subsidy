@@ -244,12 +244,12 @@ def scheme(request, country, globalschemeid, name):
         payment__scheme=globalschemeid)\
         .annotate(scheme_total=Sum('payment__amounteuro'))\
         .order_by('-scheme_total')
-    
-    # top_recipients = CachedCountQuerySetWrapper(top_recipients)
-    top_recipients = QuerySetCache(
-                        top_recipients,
-                        key="schemes.%s.%s.schemes" % (country,globalschemeid,),
-                        cache_type="filesystem")
+
+    top_recipients = CachedCountQuerySetWrapper(top_recipients)
+    # top_recipients = QuerySetCache(
+    #                     top_recipients,
+    #                     key="schemes.%s.%s.schemes" % (country,globalschemeid,),
+    #                     cache_type="filesystem")
     
     return render_to_response(
         country_template('scheme.html', country), 
