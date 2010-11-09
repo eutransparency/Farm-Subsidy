@@ -59,7 +59,7 @@ class Command(BaseCommand):
                 GROUP BY globalrecipientidx, year, countrypayment);
         """, {'country' : self.country})
 
-    
+
     def country_years(self):
         print "Making country year totals for %s" % self.country
         cursor = connection.cursor()

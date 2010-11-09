@@ -239,17 +239,14 @@ def scheme(request, country, globalschemeid, name):
 
     # To add one day
     # scheme_years = models.SchemeYear.objects.filter(globalschemeid=globalschemeid)
-
+    top_recipients = models.Recipient.objects.all()
     top_recipients = models.Recipient.objects.filter(
         payment__scheme=globalschemeid)\
+        .values('name', 'pk', 'countrypayment')\
         .annotate(scheme_total=Sum('payment__amounteuro'))\
         .order_by('-scheme_total')
 
     top_recipients = CachedCountQuerySetWrapper(top_recipients)
-    # top_recipients = QuerySetCache(
-    #                     top_recipients,
-    #                     key="schemes.%s.%s.schemes" % (country,globalschemeid,),
-    #                     cache_type="filesystem")
     
     return render_to_response(
         country_template('scheme.html', country), 

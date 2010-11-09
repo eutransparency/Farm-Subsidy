@@ -85,7 +85,6 @@ class Recipient(models.Model):
     def geo4_url(self):
         return self.geo_url(4)
 
-
 class GeoRecipient(geo_models.Model):
     recipient = models.ForeignKey(Recipient, primary_key=True)
     location = geo_models.PointField()
