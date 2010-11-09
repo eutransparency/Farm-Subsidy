@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load humanize %}
+{% load cache %}
 
 {% block title %}
     {{ scheme.nameenglish }}
@@ -13,7 +14,7 @@
   
   {% load pagination_tags %}
   {% autopaginate top_recipients 30 %}
-  
+  {% cache 10000000 scheme_recipients %}
   <h3>All Recipients</h3>
   <table>
     <thead>
@@ -29,6 +30,7 @@
       {% endfor %}
     </tbody>
   </table>
+  {% endcache %}
   <h4 class="pager">{% paginate %}</h4>
 
 
