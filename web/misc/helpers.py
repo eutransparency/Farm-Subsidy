@@ -49,7 +49,8 @@ class CachedCountQuerySetWrapper(object):
         return self.queryset[k.start:k.stop]
 
     def count(self):
-        key = "count.%s" % hash(str(self.queryset.query))
+        key = self.make_key(self.key)
+        print key
         count = cache.get(key)
         if not count:
             count = self.queryset.count()

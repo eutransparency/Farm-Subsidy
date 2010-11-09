@@ -246,7 +246,7 @@ def scheme(request, country, globalschemeid, name):
         .annotate(scheme_total=Sum('payment__amounteuro'))\
         .order_by('-scheme_total')
 
-    top_recipients = CachedCountQuerySetWrapper(top_recipients)
+    top_recipients = CachedCountQuerySetWrapper(top_recipients, key="data.scheme.%s.%s.top_recipients" % (country, globalschemeid))
     
     return render_to_response(
         country_template('scheme.html', country), 
