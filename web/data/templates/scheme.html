@@ -23,7 +23,7 @@
     <tbody>
       {% for recipient in top_recipients %}
       <tr>
-        <td><a href="{{ recipient.get_absolute_url }}">{{ recipient.name }}</a></td>
+        <td><a href="/{{ recipient.countrypayment }}/recipient/{{ recipient.pk }}/{{ recipient.name|slugify }}">{{ recipient.name }}</a></td>
         <td class="money">&euro;{{ recipient.scheme_total|floatformat:0|intcomma }}</td>
       </tr>
       {% endfor %}
