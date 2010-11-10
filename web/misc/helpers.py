@@ -83,6 +83,12 @@ def QuerySetCache(qs, key=None, cache_type='deafult'):
             return hash(str(qs.query))
     key = make_key(key)
 
+    def write_to_cache(file_path, qs):
+        f = open(file_path, 'w')
+        f.write(cPickle.dumps(qs))
+        return qs
+        
+    
     # Use the django built in cache
     if cache_type == 'deafult':
         cached_qs = cache.get(key)
@@ -92,15 +98,16 @@ def QuerySetCache(qs, key=None, cache_type='deafult'):
             cached_qs = qs
             cache.set(key, cPickle.dumps(cached_qs))
         return cached_qs
-
+    
     # Use the file system, for more permanant caching
     if cache_type == 'filesystem':
         import os
         file_path = "%s/%s" % (settings.FILE_CACHE_PATH, key)
         if os.path.exists(file_path):
-            return cPickle.loads(open(file_path).read())
+            try:
+                return cPickle.loads(open(file_path).read())
+            except EOFError:
+                # The file wasn't written cleanly, so remake it
+                return write_to_cache(file_path, qs)
         else:
-            f = open(file_path, 'w')
-            f.write(cPickle.dumps(qs))
-            return qs
-
+            return write_to_cache(file_path, qs)
