@@ -59,7 +59,21 @@ class Command(BaseCommand):
                 GROUP BY globalrecipientidx, year, countrypayment);
         """, {'country' : self.country})
 
-
+    def recipient_year(self):
+        print "Making recipient year totals for %s" % self.country
+        cursor = connection.cursor()
+        cursor.execute("""
+            DELETE FROM data_recipientyear WHERE country=%(country)s;
+            INSERT INTO data_recipientyear (recipient_id, name, year, country, total)
+            SELECT pay.globalrecipientidx, r.name, pay.year, pay.countrypayment, pay.total FROM 
+                (SELECT globalrecipientidx, year, countrypayment, sum(amounteuro) as total 
+                FROM data_payment
+                GROUP BY countrypayment, year, globalrecipientidx) as pay
+            JOIN data_recipient r
+            ON r.globalrecipientidx=pay.globalrecipientidx;
+            COMMIT;
+        """, {'country' : self.country})
+        
     def country_years(self):
         print "Making country year totals for %s" % self.country
         cursor = connection.cursor()

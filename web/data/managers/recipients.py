@@ -28,11 +28,14 @@ class RecipientManager(models.Manager):
         recipients = recipients.order_by('-total').distinct()
         return recipients
         
-    def recipents_for_location(self, location, year=0):
+    def recipents_for_location(self, location):
         """
         Given a location slug, retuen all recipients where the geo fields match.
         
         Location slugs are paths like a/b/c, where a=geo1, b-geo2 etc.
+        
+        Because we have the RecipientYear model, every total returned here is 
+        for all years
         """
         
         geos = []
@@ -40,11 +43,16 @@ class RecipientManager(models.Manager):
             geos.append(l)
         geos.append(location)
         kwargs = {}
-        if int(year) != 0:
-            kwargs['payment__year__exact'] = year
         for i, g in enumerate(geos):
             i = i + 1
             kwargs["geo%s" % i] = g.name
-        qs =  self.filter(**kwargs).exclude(total=None).distinct()
+
+        qs =  self.filter(**kwargs).exclude(total=None)
         qs = qs.only('name', 'total', 'countrypayment',)
         return qs
+
+
+
+
+
+

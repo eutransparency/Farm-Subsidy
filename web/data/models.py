@@ -6,6 +6,7 @@ from treebeard.mp_tree import MP_Node
 from django.contrib.gis.db import models as geo_models
 
 from managers.recipients import RecipientManager
+from managers.recipient_year import RecipientYearManager
 from managers.schemes import SchemeManager, SchemeYearManager
 from managers.countryyear import CountryYearManager
 
@@ -84,6 +85,26 @@ class Recipient(models.Model):
 
     def geo4_url(self):
         return self.geo_url(4)
+
+
+class RecipientYear(models.Model):
+    """
+    Denormalized model containing the total each recipient received per year.
+    """
+    recipient = models.ForeignKey('Recipient', db_index=True)
+    name = models.TextField(null=True)
+    year = models.IntegerField(blank=True, null=True)
+    country = models.CharField(blank=True, max_length=2)
+    total = models.FloatField()
+
+    objects = RecipientYearManager()
+
+    class Meta():
+        ordering = ('-total',)
+
+    def get_absolute_url(self):
+        return reverse('recipient_view', args=[self.country, self.recipient_id, slugify(self.name)])
+
 
 class GeoRecipient(geo_models.Model):
     recipient = models.ForeignKey(Recipient, primary_key=True)
