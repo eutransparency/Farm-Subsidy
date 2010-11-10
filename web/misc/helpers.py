@@ -50,7 +50,6 @@ class CachedCountQuerySetWrapper(object):
 
     def count(self):
         key = self.make_key(self.key)
-        print key
         count = cache.get(key)
         if not count:
             count = self.queryset.count()
