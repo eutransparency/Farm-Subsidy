@@ -26,6 +26,10 @@ class Feature(models.Model):
     featured = models.BooleanField(default=False)
     date = models.DateTimeField(default=datetime.datetime.today)
     
+    class Meta:
+        get_latest_by = 'date'
+        ordering = ( '-date', )
+    
     def get_absolute_url(self):
         return reverse('feature_detail', args=[self.slug,])
     
