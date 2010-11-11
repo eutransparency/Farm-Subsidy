@@ -344,7 +344,7 @@ def download(request, data_file=None):
         return HttpResponseRedirect(reverse('data_agreement_form'))
 
     if data_file:
-        download_file = get_object_or_404(DataDownload, pk=data_file)
+        download_file = get_object_or_404(models.DataDownload, pk=data_file)
         f = open(download_file.file_path)
         file_mimetype = mimetypes.guess_type(download_file.file_path)
         response = HttpResponse(FileWrapper(f), content_type=file_mimetype[0])
