@@ -24,12 +24,13 @@ from frontend.forms import DataAgreementForm
 DEFAULT_YEAR = settings.DEFAULT_YEAR
 LATEST_YEAR = settings.LATEST_YEAR
 
+
 def home(request):
 
   # ip_country = request.session.get('ip_country', 'GB')
   # top_for_ip = models.Recipient.objects.top_recipients(country=ip_country)
 
-  top_eu = models.Recipient.objects.top_recipients(year=LATEST_YEAR)[:10]
+  top_eu = models.RecipientYear.objects.filter(year=LATEST_YEAR)[:10]
   top_eu = QuerySetCache(top_eu, key="home.top_eu", cache_type="filesystem")
   
   latest_annotations = Comment.objects.all().order_by('-submit_date')[:5]
@@ -44,7 +45,8 @@ def home(request):
     'latest_annotations' : latest_annotations,
     },
     context_instance=RequestContext(request)
-  )  
+  )
+
 
 def countries(request):
     countries = []
@@ -54,6 +56,7 @@ def countries(request):
     return render_to_response('countries.html', 
     {'countries' : countries},
     context_instance=RequestContext(request))
+
 
 def country(request, country, year=DEFAULT_YEAR):
     """
@@ -70,7 +73,15 @@ def country(request, country, year=DEFAULT_YEAR):
     years_max_min = models.CountryYear.objects.year_max_min(country)
     years = models.CountryYear.objects.filter(country=country)
     
-    top_recipients = models.Recipient.objects.top_recipients(country=country, year=year)[:5]
+    if year !=0:
+        top_recipients = models.RecipientYear.objects.filter(year=year)
+        if country != "EU":
+            top_recipients = top_recipients.filter(country=country)
+    else:
+        top_recipients = models.Recipient.objects.all()
+        if country != "EU":
+            top_recipients = top_recipients.filter(countrypayment=country)
+    top_recipients = top_recipients[:5]
 
     # Cache top_recipients
     top_recipients = QuerySetCache(
@@ -313,7 +324,10 @@ def location(request, country, slug=None, year=0):
     
     location = get_object_or_404(models.Location, country=country, slug=slug, year=year)
 
-    location_recipients = models.Recipient.objects.recipents_for_location(location, year=year).order_by('-total')[:10]
+    if int(year) != 0:
+        location_recipients = models.RecipientYear.objects.recipents_for_location(location, year=year)[:10]
+    else:
+        location_recipients = models.Recipient.objects.recipents_for_location(location).order_by('-total')[:10]
 
     sub_locations = location.get_children()
     
