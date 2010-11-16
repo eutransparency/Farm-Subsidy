@@ -17,7 +17,7 @@ class RecipientManager(models.Manager):
 
     def top_recipients(self, country=None, year=0):
         recipients = self.all()
-        recipients = recipients.exclude(total=None)
+        recipients = recipients
         kwargs = {}
         if country and country != 'EU':
             kwargs['countrypayment'] = country
@@ -47,7 +47,7 @@ class RecipientManager(models.Manager):
             i = i + 1
             kwargs["geo%s" % i] = g.name
 
-        qs =  self.filter(**kwargs).exclude(total=None)
+        qs =  self.filter(**kwargs)
         qs = qs.only('name', 'total', 'countrypayment',)
         return qs
 
