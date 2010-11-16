@@ -11,10 +11,9 @@
 {% endblock %}
 
 {% block content %}
-  
   {% load pagination_tags %}
   {% autopaginate top_recipients 30 %}
-  {% cache 10000000 scheme_recipients %}
+  {% cache 10000000 scheme_recipients request.page %}
   <h3>All Recipients</h3>
   <table>
     <thead>
