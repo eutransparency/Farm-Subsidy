@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load markup %}
 {% load i18n %}
 {% load list_tags %}
 {% block page_title %}All Lists{% endblock %}
@@ -7,7 +8,7 @@
 {% block content %}  
   {% for list in lists %}
     <h3><a href="{{ list.get_absolute_url }}">{{ list.name }}</a></h3>
-    {{ list.description }}
+    <p>{{ list.description|markdown|striptags|truncatewords:"30" }}</p>
   {% endfor %}
 {% endblock %}
 
