@@ -34,7 +34,7 @@ class RecipientYearManager(models.Manager):
             kwargs["recipient__geo%s" % i] = g.name
         
         kwargs['year'] = year
-        qs =  self.filter(**kwargs).exclude(total=None)
+        qs =  self.filter(**kwargs)
         # qs = qs.only('name', 'total', 'country',)
         return qs
 
