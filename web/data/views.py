@@ -325,9 +325,9 @@ def location(request, country, slug=None, year=0):
     location = get_object_or_404(models.Location, country=country, slug=slug, year=year)
 
     if int(year) != 0:
-        location_recipients = models.RecipientYear.objects.recipents_for_location(location, year=year)[:10]
+        location_recipients = models.RecipientYear.objects.recipents_for_location(location, year=year)
     else:
-        location_recipients = models.Recipient.objects.recipents_for_location(location).order_by('-total')[:10]
+        location_recipients = models.Recipient.objects.recipents_for_location(location).order_by('-total')
 
     sub_locations = location.get_children()
     

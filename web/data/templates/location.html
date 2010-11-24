@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load humanize %}
+{% load pagination_tags %}
 
 {% block title %}
   {% if location.name %}
@@ -52,6 +53,7 @@
   
   
   <div class="block top_recipients">
+    {% autopaginate location_recipients 30 as location_recipients %}
     <h3>Recipients</h3>
     <table>  
       <thead>
@@ -68,6 +70,7 @@
 
       </tbody>
     </table>
+    <h4 class="pager">{% paginate %}</h4>
   </div>
   
   
