@@ -15,7 +15,7 @@ class RecipientYearManager(models.Manager):
     Various reusable queries, like top_recipients
     """
 
-    def recipents_for_location(self, location, year=DEFAULT_YEAR):
+    def recipents_for_location(self, location, year=DEFAULT_YEAR, country='EU'):
         """
         Given a location slug, retuen all recipients where the geo fields match.
         
@@ -32,6 +32,11 @@ class RecipientYearManager(models.Manager):
         for i, g in enumerate(geos):
             i = i + 1
             kwargs["recipient__geo%s" % i] = g.name
+        
+        if country != 'EU':
+            kwargs['country'] = country
+            kwargs['recipient__countrypayment'] = country
+
         
         kwargs['year'] = year
         qs =  self.filter(**kwargs)

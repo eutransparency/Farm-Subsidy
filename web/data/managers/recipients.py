@@ -28,7 +28,7 @@ class RecipientManager(models.Manager):
         recipients = recipients.order_by('-total').distinct()
         return recipients
         
-    def recipents_for_location(self, location):
+    def recipents_for_location(self, location, country='EU'):
         """
         Given a location slug, retuen all recipients where the geo fields match.
         
@@ -46,9 +46,9 @@ class RecipientManager(models.Manager):
         for i, g in enumerate(geos):
             i = i + 1
             kwargs["geo%s" % i] = g.name
-
+        
         qs =  self.filter(**kwargs)
-        qs = qs.only('name', 'total', 'countrypayment',)
+        # qs = qs.only('name', 'total', 'countrypayment',)
         return qs
 
 
