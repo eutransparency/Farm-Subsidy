@@ -328,7 +328,9 @@ def location(request, country, slug=None, year=0):
         location_recipients = models.RecipientYear.objects.recipents_for_location(location, year=year, country=country)
     else:
         location_recipients = models.Recipient.objects.recipents_for_location(location, country=country).order_by('-total')
-
+    
+    location_recipients = CachedCountQuerySetWrapper(location_recipients)
+    
     sub_locations = location.get_children()
     
     years_max_min = models.CountryYear.objects.year_max_min(country)
