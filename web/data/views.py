@@ -276,8 +276,7 @@ def browse(request, country):
     Browse recipients, sorted / filtered by various things using django-filter
     """
 
-    recipients = models.Recipient.objects.filter(total__isnull=False)\
-        .order_by('-total')
+    recipients = models.Recipient.objects.order_by('-total')
 
     if country != "EU":
         recipients = recipients.filter(countrypayment=country)
