@@ -276,14 +276,18 @@ def browse(request, country):
     Browse recipients, sorted / filtered by various things using django-filter
     """
 
+    from misc.fast_pager import Paginator
+    
     recipients = models.Recipient.objects.order_by('-total')
 
     if country != "EU":
         recipients = recipients.filter(countrypayment=country)
     recipients = recipients.only('name', 'total', 'countrypayment')
-    recipients = CachedCountQuerySetWrapper(recipients)
-    
-    
+    recipients = CachedCountQuerySetWrapper(queryset=recipients)
+    paginator = Paginator(recipients, 30)
+
+    recipients = paginator.page(request.GET.get('page', 1), start=request.GET.get('start', ''))
+
     return render_to_response(
         country_template('browse.html', country),
         {
