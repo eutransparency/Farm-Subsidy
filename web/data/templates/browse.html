@@ -11,8 +11,6 @@
 {% endblock %}
 
 {% block content %}
-{% load pagination_tags %}
-        {% autopaginate recipients 30 as recipients %}
     <table>
         <thead>
             <th>Name</th>
@@ -22,7 +20,7 @@
             {% endif %}
         </thead>
         <tbody>
-            {% for recipient in recipients %}
+            {% for recipient in recipients.object_list %}
                 <tr>
                     <td><a href="{{ recipient.get_absolute_url }}">{{ recipient.name }}</a></td>
                     <td class="money">&euro;{{ recipient.total|floatformat:0|intcomma }}</td>
@@ -31,7 +29,12 @@
             {% endfor %}
         </tbody>
     </table>
-    <h4 class="pager">{% paginate %}</h4>
+    <h4 class="pager">
+        {% if recipients.has_previous %}
+            <a href="{{ recipients.format_previous_link }}">Previous</a>
+        {% endif %}
+        <a href="{{ recipients.format_next_link }}">Next</a>
+    </h4>
 {% endblock %}
 
 {% block right %}

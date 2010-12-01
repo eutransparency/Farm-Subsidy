@@ -40,11 +40,16 @@ class CachedCountQuerySetWrapper(object):
             return "%s.%s" % (settings.CACHE_MIDDLEWARE_KEY_PREFIX, key)
         else:
             return hash(str(self.queryset.query))
-
+    
+    def __getattr__(self, name):
+        """
+        Hack to pretend this is actually a queryset object
+        """
+        return getattr(self.queryset, name)
     
     def __getitem__(self, k):
         if not isinstance(k, slice):
-            raise TypeError
+            return self.queryset[k]
 
         return self.queryset[k.start:k.stop]
 
