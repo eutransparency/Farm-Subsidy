@@ -407,3 +407,12 @@ def data_agreement_form(request):
       }, 
       context_instance=RequestContext(request)
     )
+
+def heatmap(request):
+    return render_to_response(
+      'heatmap.html', 
+      {
+      }, 
+      context_instance=RequestContext(request)
+    )
+    
