@@ -22,6 +22,9 @@ urlpatterns = patterns('',
     (r'^accounts/', include('registration.urls')),
 
     (r'^api/', include('web.api.urls')),
+    
+    (r'^gheat/', include('gheat.urls')),
+    
     )
 
 if settings.DEBUG:

@@ -166,3 +166,7 @@ DATE_FORMAT = 'j F Y'
 
 
 FILE_CACHE_PATH = ROOT_PATH + "/data/cache"
+
+# GHEAT_ALWAYS_BUILD = False
+GHEAT_MEDIA_ROOT = MEDIA_ROOT + "heatmap/tiles/"
+GHEAT_BUILD_EMPTIES = False
