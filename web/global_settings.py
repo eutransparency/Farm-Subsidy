@@ -48,7 +48,7 @@ MIDDLEWARE_CLASSES = [
     'pagination.middleware.PaginationMiddleware',
     'django_notify.middleware.NotificationsMiddleware',
     'web.misc.middleware.Middleware',
-    'django.middleware.transaction.TransactionMiddleware',
+    # 'django.middleware.transaction.TransactionMiddleware',
 ]
 
 ROOT_URLCONF = 'web.urls'
