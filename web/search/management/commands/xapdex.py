@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import django
 from optparse import make_option
+from django.db import connection
 from django.core.management.base import BaseCommand, CommandError
 
 from haystack import backend, site
@@ -43,4 +44,4 @@ class Command(BaseCommand):
 
             print "now indexing Location"
             back.update(location_index, locations)
-
+        connection.close()
