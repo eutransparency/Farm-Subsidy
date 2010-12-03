@@ -1,7 +1,7 @@
 <body onload="initialize()" onunload="GUnload()" >
     
 
-<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key={{ google_key }}"></script>
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key={{ GOOGLE_MAPS_API_KEY }}"></script>
 <script>
 
     bounds = new GLatLngBounds( new GLatLng(-90, -180)
@@ -20,8 +20,8 @@
     
     heatmap = new GTileLayer(copyrights, 10, 0);
     heatmap.getTileUrl = function (tile, zoom) {
-        base = 'http://127.0.0.1:8000/gheat/';
-        color_scheme = 'fire';
+        base = '/gheat/';
+        color_scheme = 'firetrans';
         url = base + color_scheme +'/'+ zoom +'/'
         url += tile.x +','+ tile.y +'.png';
         return url;
