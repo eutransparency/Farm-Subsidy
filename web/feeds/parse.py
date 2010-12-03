@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+from django.db import connection
 import models as feeds
 import feedparser
 import datetime
@@ -71,3 +72,4 @@ def parse():
               sys.exit()
         except:
             pass
+  connection.close()
