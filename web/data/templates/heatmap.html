@@ -21,7 +21,7 @@
     heatmap = new GTileLayer(copyrights, 10, 0);
     heatmap.getTileUrl = function (tile, zoom) {
         base = 'http://127.0.0.1:8000/gheat/';
-        color_scheme = 'fire';
+        color_scheme = 'firetras';
         url = base + color_scheme +'/'+ zoom +'/'
         url += tile.x +','+ tile.y +'.png';
         return url;
