@@ -98,6 +98,7 @@ INSTALLED_APPS = [
     'paging',
     'sentry',
     'sentry.client',
+    'gheat',
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = (
