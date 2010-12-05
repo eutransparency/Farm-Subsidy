@@ -99,7 +99,6 @@ INSTALLED_APPS = [
     'sentry',
     'sentry.client',
     'gheat',
-    'test_bb',
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = (
