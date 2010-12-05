@@ -46,4 +46,8 @@ urlpatterns = patterns('data.views',
 
   url(r'^heatmap$', 'heatmap', name='heatmap'),    
   
+  url(r'^tiles/(?P<color_scheme>\w+)/(?P<zoom>\d+)/(?P<x>\d+),(?P<y>\d+).png$','serve_tile', name='serve_tile',),
+  
+  
+  
 )

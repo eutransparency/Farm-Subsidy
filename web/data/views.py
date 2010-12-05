@@ -416,3 +416,36 @@ def heatmap(request):
       context_instance=RequestContext(request)
     )
     
+
+
+from django.http import HttpResponse, HttpResponseBadRequest
+from gheat import dots, renderer, StorageBackend, color_schemes
+# from gheat_demo.tweetmap.models import TweetPoint
+
+def serve_tile(request,color_scheme,zoom,x,y):
+    # Check arguments
+    print "serving"
+    try:
+        assert color_scheme in color_schemes, ( "bad color_scheme: "
+                                              + color_scheme
+                                               )
+        assert zoom.isdigit() and x.isdigit() and y.isdigit(), "not digits"
+        zoom = int(zoom)
+        x = int(x)
+        y = int(y)
+        assert 0 <= zoom <= 30, "bad zoom: %d" % zoom
+    except AssertionError, err:
+        return HttpResponseBadRequest()
+
+    # Get image and storage backends
+    tile = renderer.Tile(models.GeoRecipient.objects.all(), color_scheme, dots, zoom, x, y, point_field='location')
+    storage_backend = StorageBackend()
+
+    # Grab the raw image data
+    if tile.is_empty():
+        bytes = storage_backend.get_emptytile_bytes(tile)
+    else: # tile.is_stale() or ALWAYS_BUILD:
+        bytes = storage_backend.get_tile_bytes(tile, 'farm')
+
+    # Write the bytes out to the HttpResponse
+    return HttpResponse(bytes, content_type="image/png")
