@@ -99,6 +99,7 @@ INSTALLED_APPS = [
     'sentry',
     'sentry.client',
     'gheat',
+    'test_bb',
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -169,5 +170,6 @@ DATE_FORMAT = 'j F Y'
 FILE_CACHE_PATH = ROOT_PATH + "/data/cache"
 
 # GHEAT_ALWAYS_BUILD = False
-GHEAT_MEDIA_ROOT = MEDIA_ROOT + "heatmap/tiles/"
+GHEAT_FILESYSTEM_STORAGE_DIR = MEDIA_ROOT + "heatmap/tiles/"
 GHEAT_BUILD_EMPTIES = False
+GHEAT_STORAGE_BACKEND = 1
