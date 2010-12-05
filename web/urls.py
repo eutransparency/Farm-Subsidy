@@ -23,8 +23,6 @@ urlpatterns = patterns('',
 
     (r'^api/', include('web.api.urls')),
     
-    (r'^gheat/', include('gheat.urls')),
-    
     )
 
 if settings.DEBUG:
