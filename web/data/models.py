@@ -108,7 +108,8 @@ class RecipientYear(models.Model):
 
 class GeoRecipient(geo_models.Model):
     recipient = models.ForeignKey(Recipient, primary_key=True)
-    location = geo_models.PointField()
+    location = geo_models.PointField(spatial_index=True, geography=True)
+
     objects = geo_models.GeoManager()
 
     def __unicode__(self):

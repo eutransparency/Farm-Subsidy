@@ -192,7 +192,7 @@ def recipient(request, country, recipient_id, name):
   
   try:
       georecipient = models.GeoRecipient.objects.get(pk=recipient.pk)
-      closest = models.GeoRecipient.objects.distance(georecipient.location).order_by('distance')[:5]
+      closest = models.GeoRecipient.objects.filter(location__dwithin=(georecipient.location, 20)).distance(georecipient.location).order_by('distance')[:5]
   except:
       closest = None
 
