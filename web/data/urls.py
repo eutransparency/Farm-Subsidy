@@ -30,6 +30,7 @@ urlpatterns = patterns('data.views',
 
   # Schemes
   country_url(r'scheme/$', 'all_schemes', name='all_schemes'),
+  country_url(r'scheme/(?P<globalschemeid>[^/]+)/(?P<name>(.*))/(?P<year>(\d+))/', 'scheme', name='scheme_view'),
   country_url(r'scheme/(?P<globalschemeid>[^/]+)/(?P<name>(.*))/', 'scheme', name='scheme_view'),
 
 
