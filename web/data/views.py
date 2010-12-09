@@ -192,7 +192,7 @@ def recipient(request, country, recipient_id, name):
   
   try:
       georecipient = models.GeoRecipient.objects.get(pk=recipient.pk)
-      closest = models.GeoRecipient.objects.distance(georecipient.location).order_by('distance')[:5]
+      closest = models.GeoRecipient.objects.filter(location__dwithin=(georecipient.location, 20)).distance(georecipient.location).order_by('distance')[:5]
   except:
       closest = None
 
@@ -240,7 +240,7 @@ def all_schemes(request, country='EU'):
     )  
     
 
-def scheme(request, country, globalschemeid, name):
+def scheme(request, country, globalschemeid, name, year=0):
     """
     Show a single scheme and a list of top recipients to get payments under it
 
@@ -248,23 +248,22 @@ def scheme(request, country, globalschemeid, name):
     - ``globalschemeid` globalschemeid from the data_schemes table in the database
     """ 
 
+    selected_year = int(year)
+
     scheme = models.Scheme.objects.get(globalschemeid=globalschemeid)
 
     # To add one day
-    # scheme_years = models.SchemeYear.objects.filter(globalschemeid=globalschemeid)
-    top_recipients = models.Recipient.objects.all()
-    top_recipients = models.Recipient.objects.filter(
-        payment__scheme=globalschemeid)\
-        .values('name', 'pk', 'countrypayment')\
-        .annotate(scheme_total=Sum('payment__amounteuro'))\
-        .order_by('-scheme_total')
+    scheme_years = models.SchemeYear.objects.filter(globalschemeid=scheme)
 
-    top_recipients = CachedCountQuerySetWrapper(top_recipients, key="data.scheme.%s.%s.top_recipients" % (country, globalschemeid))
+    top_recipients = models.RecipientSchemeYear.objects.filter(scheme=scheme, year=selected_year)
+
+    top_recipients = CachedCountQuerySetWrapper(top_recipients, key="data.scheme.%s.%s.%s.top_recipients" % (country, globalschemeid, year))
     
     return render_to_response(
         country_template('scheme.html', country), 
         {
             'scheme' : scheme,
+            'scheme_years' : scheme_years,
             'top_recipients' : top_recipients,
         },
         context_instance=RequestContext(request)

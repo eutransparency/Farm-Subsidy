@@ -128,6 +128,20 @@ class Command(BaseCommand):
             COMMIT;
         """, {'country' : self.country})
         
+        print "Making recipient scheme year totals"
+        cursor = connection.cursor()
+        cursor.execute("""
+            BEGIN;
+            DELETE FROM data_recipientschemeyear WHERE country=%(country)s;
+            COMMIT;
+            BEGIN;
+            INSERT INTO data_recipientschemeyear (recipient_id, scheme_id, country, year, total)
+            SELECT globalrecipientidx, globalschemeid, '%(country)s', '0', SUM(amounteuro) 
+            FROM data_payment
+            GROUP BY globalschemeid, globalrecipientidx
+            COMMIT;
+        """, {'country' : self.country})
+        
     
     
     

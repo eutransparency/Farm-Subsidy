@@ -108,7 +108,7 @@ class RecipientYear(models.Model):
 
 class GeoRecipient(geo_models.Model):
     recipient = models.ForeignKey(Recipient, primary_key=True)
-    location = geo_models.PointField()
+    location = geo_models.PointField(spatial_index=True, geography=True)
 
     objects = geo_models.GeoManager()
 
@@ -156,7 +156,7 @@ class Scheme(models.Model):
 
 
 class SchemeYear(models.Model):
-    globalschemeid = models.CharField(blank=True, max_length=40, db_index=True)
+    globalschemeid = models.ForeignKey(Scheme, db_column='globalschemeid')
     nameenglish = models.TextField(blank=True)
     countrypayment = models.CharField(blank=True, max_length=2)
     year = models.IntegerField(blank=True, null=True)
@@ -164,11 +164,33 @@ class SchemeYear(models.Model):
 
     objects = SchemeYearManager()
 
+    class Meta():
+        ordering = ('year',)
+
     def get_absolute_url(self):
         return reverse('scheme_view', args=[self.countrypayment, 
                                             self.globalschemeid, 
                                             slugify(self.nameenglish)])
 
+class RecipientSchemeYear(models.Model):
+    """
+    Denormalized data, containing the sum of the payments to each recipient in a
+    year, including '0' for all years
+    """
+    recipient = models.ForeignKey(Recipient)
+    scheme = models.ForeignKey(Scheme)
+    country = models.CharField(blank=True, max_length=2)
+    year = models.IntegerField(blank=True, null=True)
+    total = models.FloatField()
+    
+    def __unicode__(self):
+        return u"%s - %s" (self.recipient, self.year)
+        
+    class Meta():
+        ordering = ('-total',)
+
+    def get_absolute_url(self):
+        return reverse('recipient_view', args=[self.country, self.recipient_id, slugify(self.recipient.name)])
 
 
 class SchemeType(models.Model):
