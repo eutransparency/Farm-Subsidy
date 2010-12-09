@@ -423,7 +423,6 @@ from gheat import dots, renderer, StorageBackend, color_schemes
 
 def serve_tile(request,color_scheme,zoom,x,y):
     # Check arguments
-    print "serving"
     try:
         assert color_scheme in color_schemes, ( "bad color_scheme: "
                                               + color_scheme
