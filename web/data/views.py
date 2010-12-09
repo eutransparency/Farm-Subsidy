@@ -264,6 +264,7 @@ def scheme(request, country, globalschemeid, name, year=0):
         {
             'scheme' : scheme,
             'scheme_years' : scheme_years,
+            'selected_year' : selected_year,
             'top_recipients' : top_recipients,
         },
         context_instance=RequestContext(request)
