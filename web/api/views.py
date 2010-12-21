@@ -89,7 +89,6 @@ def csv_recipient(request, recipient_id):
             else:
                 csv_data.append(payment.__dict__[field])
 
-        print csv_data
         csv_writer.writerow(csv_data)
 
     return response
