@@ -47,4 +47,3 @@ class ListItem(models.Model):
     def __unicode__(self):
         return u"%s-%s" % (self.content_type, self.object_id)
 
-

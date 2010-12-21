@@ -47,7 +47,7 @@
             {% for list in list_search %}                
                 <li>
                     <h3><a href="{{ list.object.get_absolute_url }}">{{ list.name }}</a></h3>
-                    {{ list.object.description }}
+                    {{ list.object.description|markdown|striptags|truncatewords:30 }}
                 </li>
             {% endfor %}
         </ul>

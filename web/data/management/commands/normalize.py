@@ -68,7 +68,7 @@ class Command(BaseCommand):
             SELECT pay.globalrecipientidx, r.name, pay.year, pay.countrypayment, pay.total FROM 
                 (SELECT globalrecipientidx, year, countrypayment, sum(amounteuro) as total 
                 FROM data_payment
-                GROUP BY countrypayment, year, globalrecipientidx) as pay
+                GROUP BY countrypayment, globalrecipientidx, year) as pay
             JOIN data_recipient r
             ON r.globalrecipientidx=pay.globalrecipientidx;
             COMMIT;
