@@ -70,9 +70,8 @@ def csv_recipient(request, recipient_id):
         recipient_info.append(field_value)
     
     
-    # response = HttpResponse(mimetype='text/csv')
     response = HttpResponse(mimetype='text/csv')
-    # response['Content-Disposition'] = 'attachment; filename=recipient-%s.csv' % recipient.pk
+    response['Content-Disposition'] = 'attachment; filename=recipient-%s.csv' % recipient.pk
 
     csv_writer = csv.writer(response)
 
