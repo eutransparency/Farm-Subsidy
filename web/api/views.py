@@ -63,16 +63,16 @@ def csv_recipient(request, recipient_id):
                       )
 
     recipient_info = []
-
+    from django.utils.encoding import smart_unicode, smart_str
     for field in recipient_fields:
-        field_value = unicode(recipient.__dict__[field])
-        if field_value:
-            field_value = field_value.encode('utf8')
+        field_value = u"%s" % recipient.__dict__[field]
+        field_value = field_value.encode('utf8')
         recipient_info.append(field_value)
     
     
+    # response = HttpResponse(mimetype='text/csv')
     response = HttpResponse(mimetype='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=recipient-%s.csv' % recipient.pk
+    # response['Content-Disposition'] = 'attachment; filename=recipient-%s.csv' % recipient.pk
 
     csv_writer = csv.writer(response)
 
@@ -85,11 +85,11 @@ def csv_recipient(request, recipient_id):
 
         for field in payment_fields:
             if field == "scheme":
-                csv_data.append(payment.scheme.nameenglish)
+                csv_data.append(payment.scheme.nameenglish.encode('utf8'))
             else:
                 csv_data.append(payment.__dict__[field])
 
-
+        print csv_data
         csv_writer.writerow(csv_data)
 
     return response
