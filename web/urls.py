@@ -22,6 +22,8 @@ urlpatterns = patterns('',
     (r'^accounts/', include('registration.urls')),
 
     (r'^api/', include('web.api.urls')),
+
+    (r'^petition/', include('web.petition.urls')),
     
     )
 

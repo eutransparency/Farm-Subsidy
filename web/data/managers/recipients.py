@@ -32,7 +32,7 @@ class RecipientManager(models.Manager):
         """
         Given a location slug, retuen all recipients where the geo fields match.
         
-        Location slugs are paths like a/b/c, where a=geo1, b-geo2 etc.
+        Location slugs are paths like a/b/c, where a=geo1, b=geo2 etc.
         
         Because we have the RecipientYear model, every total returned here is 
         for all years
