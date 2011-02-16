@@ -30,3 +30,7 @@ GOOGLE_MAPS_API_KEY = ""
 HAYSTACK_SEARCH_ENGINE = 'whoosh'
 HAYSTACK_WHOOSH_PATH = ROOT_PATH + '/whoosh'
 MEDIA_URL = "/media"
+
+# Use this to add local apps for testing or debugging.  Any apps required for 
+# the site to work *must* be placed in global_setting.py
+# INSTALLED_APPS.append('test_utils')

@@ -17,6 +17,7 @@ from web.countryinfo.load_info import load_info
 from data import countryCodes
 import context_processors
 import models
+from listmaker.models import ListItem, List
 
 from frontend.models import Profile
 from frontend.forms import DataAgreementForm
@@ -82,7 +83,7 @@ def country(request, country, year=DEFAULT_YEAR):
         if country != "EU":
             top_recipients = top_recipients.filter(countrypayment=country)
     top_recipients = top_recipients[:5]
-
+    
     # Cache top_recipients
     top_recipients = QuerySetCache(
                         top_recipients, 
@@ -155,13 +156,7 @@ def recipient(request, country, recipient_id, name):
   - `recipient_id` is actually a globalrecipientidx in the date
   
   """
-  # settings.DISABLE_QUERYSET_CACHE_QUERYSET_CACHE = True
-  # # settings.DISABLE_QUERYSET_CACHE = False
-  # 
-  # from johnny.middleware import QueryCacheMiddleware
-  # QueryCacheMiddleware().unpatch()
-  
-  
+
   country = country.upper()
 
   recipient = get_object_or_404(models.Recipient, globalrecipientidx=recipient_id)
@@ -195,6 +190,11 @@ def recipient(request, country, recipient_id, name):
       closest = models.GeoRecipient.objects.filter(location__dwithin=(georecipient.location, 20)).distance(georecipient.location).order_by('distance')[:5]
   except:
       closest = None
+  
+  # lists this recipient is in:
+  recipient_lists = []
+  for list_obj in ListItem.objects.filter(object_id=recipient_id):
+      recipient_lists.append(list_obj.list_id)
 
   years_max_min = models.CountryYear.objects.year_max_min(country)
   return render_to_response(
@@ -203,6 +203,7 @@ def recipient(request, country, recipient_id, name):
         'recipient' : recipient,
         'payments' : payments,
         'recipient_total' : recipient_total,
+        'recipient_lists' : recipient_lists,
         'payment_years' : payment_years,
         'has_direct' : 1 in payment_schemes,
         'has_indirect' : 2 in payment_schemes,
@@ -264,6 +265,7 @@ def scheme(request, country, globalschemeid, name, year=0):
         {
             'scheme' : scheme,
             'scheme_years' : scheme_years,
+            'selected_year' : selected_year,
             'top_recipients' : top_recipients,
         },
         context_instance=RequestContext(request)
@@ -331,7 +333,7 @@ def location(request, country, slug=None, year=0):
     else:
         location_recipients = models.Recipient.objects.recipents_for_location(location, country=country).order_by('-total')
     
-    location_recipients = CachedCountQuerySetWrapper(location_recipients)
+    location_recipients = CachedCountQuerySetWrapper(location_recipients, key="data.locaion.count.%s.%s.%s" % (country, year, slug))
     
     sub_locations = location.get_children()
     
@@ -423,7 +425,6 @@ from gheat import dots, renderer, StorageBackend, color_schemes
 
 def serve_tile(request,color_scheme,zoom,x,y):
     # Check arguments
-    print "serving"
     try:
         assert color_scheme in color_schemes, ( "bad color_scheme: "
                                               + color_scheme

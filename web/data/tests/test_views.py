@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from data import countryCodes
 
 class DataViewsTest(TestCase):
-    fixtures = ['data/fixtures/test_data.json']
+    # fixtures = ['data/fixtures/test_data.json']
     
     def country_runner(self, f):
         for country in countryCodes.country_codes():

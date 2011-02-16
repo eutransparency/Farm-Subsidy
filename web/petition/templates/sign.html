@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load markup %}
+{% block title %}European Civil Society Joint Position{% endblock %}
+{% block page_title %}European Civil Society Joint Position{% endblock %}
+
+{% block content %}
+    
+    {% filter markdown %}
+
+
+### Transparency of End Beneficiaries of CAP Payments 
+
+In November 2010, the European Court of Justice deemed the EU rules requiring the publication of end beneficiaries of common agricultural policy funds to be partially invalid. The ruling presents an opportunity to increase the transparency and accountability of the common agricultural policy (CAP) and to equip civil society with the information necessary to engage in a constructive, well-informed public debate about the future of a policy that accounts for forty per cent of the EU’s budget.
+
+In line with the objectives of the European Transparency Initiative, we call on the Council and Commission to agree new regulations to require the publication of information on beneficiaries of CAP funds in a way that improves public oversight of public expenditure and does a better job at explaining who was paid what, and why. As well as contributing to greater public accountability and legitimacy, budget transparency is a powerful safeguard against waste, fraud and abuse of EU funds.
+
+Individual payment information, indicating beneficiary name and geographical location is essential for the public to know who benefits from payments under the CAP. Are the beneficiaries large multinational companies or small family farms? Is the policy concentrating aid in Europe’s wealthiest or least advantaged regions? Is the policy contributing to conservation or over-exploitation of natural resources? Equally important is information about the nature of the measures under which payments are made. Explaining who got what is only half the story. The public is entitled to know why the money was paid.
+
+Previous transparency rules required every Member State to publish the data in the form of a website with a search tool. This was a costly exercise and in many ways made it harder for the public to access the data. We advocate the publication of data in a simple, machine readable data format (CSV, XML, RDF or similar), in line with best practice in open government data. If member state governments wish to publish the data using a website search tool as well, they should be free to do so, and this decision can be taken by Member States. Under the previous transparency rules, only four data fields were published: beneficiary name, amount, payment type (three broad categories) and municipality/postcode. As the European Court of Justice has ruled, this limited data was insufficient to give the public a real understanding of the policy.
+
+To maximise transparency and accountability and to minimise administrative burdens, the simplest way of publishing the data is for each Member State to publish a public version of the ‘matrix files’ that they are already required to compile and submit to the Commission for audit purposes by 1 February each year. The table below sets out the most important data fields that should be included in this public version. 
+
+
+<table>
+    <thead>
+        <th>Matrix file field name</th>
+        <th>Field code</th>
+        <th>Reason for disclosure</th>
+    </thead>
+    <tbody>
+        <tr><td>Name</td><td>F201</td><td>To show who benefits from the CAP; also as an anti-fraud measure</td></tr>
+        <tr><td>Identification code</td><td>F200</td><td>To identification of beneficiaries across years and measures</td></tr>
+        <tr><td>Town/municipality</td><td>F202B</td><td>To show the territorial distribution of funds</td></tr>
+        <tr><td>International postcode</td><td>F202A</td><td>To show the territorial distribution of funds</td></tr>
+        <tr><td>Region and subregion</td><td>F207</td><td>To show the territorial distribution of funds</td></tr>
+        <tr><td>Budget code</td><td>F109</td><td>To show  the reason for payment; also as an anti-fraud measure</td></tr>
+        <tr><td>Product / Rural Development code</td><td>F500</td><td>To show  the reason for payment; also as an anti-fraud measure</td></tr>
+        <tr><td>Date of payment</td><td>F108</td><td>To show who benefits from the CAP</td></tr>
+        <tr><td>Amount of payment</td><td>F106</td><td>To show who benefits from the CAP</td></tr>
+        <tr><td>Payment currency</td><td>F107</td><td>To show who benefits from the CAP</td></tr>
+        <tr><td>Area covered by payment made</td><td>F508B</td><td>To show the reason for payment; also as an anti-fraud measure</td></tr>
+        <tr><td>Export refund code</td><td>F804</td><td>To show  the reason for payment; also as an anti-fraud measure</td></tr>
+        <tr><td>Code for destination</td><td>F805</td><td>To show  the reason for payment; also as an anti-fraud measure</td></tr>
+    </tbody>
+</table>
+
+
+### Signatories and affiliations
+
+* Jack Thurston, Nils Mulvad, Brigitte Alfter — __farmsubsdy.org__
+* Trees Robijns — __BirdLife International__
+* Kirtana Chandrasekaran — __Friends of the Earth International__
+* Celsa Peiteado Morales — __WWF España__
+* Ana Carricondo — __SEO/BirdLife__
+* Jana Mittermaier — __Transparency International Liaison Office to the EU__
+* Victoria Anderica Caffarena — __Access Info Europe__
+* Jonathan Gray — __Open Knowledge Foundation__
+* Tim Grabiel — __Client Earth__
+
+{% endfilter %}
+    
+    
+<form method="POST">{% csrf_token %}<table>{{ form.as_table }}</table><input type="submit" /></form>
+{% endblock %}

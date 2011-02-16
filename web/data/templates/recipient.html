@@ -58,7 +58,22 @@
         </tr>
     </table>
   </div>
-
+    
+    {% if recipient_lists %}        
+    <div class="section">
+        <h3>Lists</h3>
+        <p>This recipient features in the following Lists (<a href="{% url lists_home %}">what are Lists?</a>):</p>
+        <ul>
+            {% for list in recipient_lists %}
+            <li>
+                <h4><a href="{{ list.get_absolute_url }}">{{ list }}</a></h4>
+                <p>{{ list.description|markdown|striptags|truncatewords:30 }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    
     <div class="section">
         {% get_comment_list for recipient as comment_list %}
         {% if not comment_list %}

@@ -11,7 +11,7 @@ import shutil
 class Command(BaseCommand):
     def handle(self, **options):
         
-        shutil.rmtree(ROOT)
+        #shutil.rmtree(ROOT)
         Point.objects.all().delete()
         
         for recipient in GeoRecipient.objects.all():

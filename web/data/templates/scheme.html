@@ -38,7 +38,7 @@
     <table>
         <thead>
             <th>Name</th>
-            <th class="money">Total (for this scheme, all years)</th>
+            <th class="money">Total (for this scheme, {% if selected_year == 0 %}all years{% else %}in {{ selected_year }}{% endif %})</th>
         </thead>
         <tbody>
             {% for recipient in top_recipients %}

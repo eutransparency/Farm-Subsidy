@@ -39,7 +39,7 @@ class CachedCountQuerySetWrapper(object):
         if key:
             return "%s.%s" % (settings.CACHE_MIDDLEWARE_KEY_PREFIX, key)
         else:
-            return hash(str(self.queryset.query))
+            return hash(str(self.queryset.query).decode('utf8'))
     
     def __getattr__(self, name):
         """
@@ -84,7 +84,7 @@ def QuerySetCache(qs, key=None, cache_type='deafult'):
         if key:
             return "%s.%s" % (settings.CACHE_MIDDLEWARE_KEY_PREFIX, key)
         else:
-            return hash(str(qs.query))
+            return hash(str(qs.query).decode('utf8'))
     key = make_key(key)
 
     def write_to_cache(file_path, qs):
