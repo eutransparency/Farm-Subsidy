@@ -333,7 +333,7 @@ def location(request, country, slug=None, year=0):
     else:
         location_recipients = models.Recipient.objects.recipents_for_location(location, country=country).order_by('-total')
     
-    location_recipients = CachedCountQuerySetWrapper(location_recipients)
+    location_recipients = CachedCountQuerySetWrapper(location_recipients, key="data.locaion.count.%s.%s.%s" % (country, year, slug))
     
     sub_locations = location.get_children()
     

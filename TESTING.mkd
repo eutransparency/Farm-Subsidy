@@ -1,0 +1,17 @@
+Test coverage is poor, but new tests are being written all the time, as my resolution is not to fix any bug without writing a test for it first.
+
+Some tests only test code, but mostly the tests are there for making sure the database is being processes correctly in the (de)normalization process.
+
+Because there is quite a large dataset (to make testing better) it's highly recommended that a persistent test database is set up and the [persistent test runner](http://readthedocs.org/docs/django-test-utils/en/0.3/keep_database_runner.htm) from Django Test Utils is used.
+
+The initial data for the recipient, payment and scheme model is found in ./web/data/fixtures/data.sql.  This should be loaded in to the test_[db_name] database before running the tests.
+
+Below are the steps that should be taken, assuming the code is actually running:
+
+1) Install django-test-utils and append 'test_utils' to INSTALLED_APPS in settings.py (see comment there)
+
+2) Create the test database somehow.  I find this is easiest done by running ./manage.py testserver as this doesn't destroy the database on exit.  You could also prefix the database name in settings with 'test_', syncdb and then change it back again.
+
+3) Load the data in ./web/data/fixtures/data.sql in to the new database.   This isn't added automatically because of the time it takes to run tests without the persistent database.
+
+4) run ./manage.py quicktest
