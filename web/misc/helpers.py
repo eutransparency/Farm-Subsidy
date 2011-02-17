@@ -5,6 +5,16 @@ from django.conf import settings
 from django.template.loader import select_template
 from django.core.cache import cache
 
+from django.utils.encoding import force_unicode
+
+def make_key(qs, key=None):
+    if key:
+        key = force_unicode(key)
+        return "%s.%s" % (settings.CACHE_MIDDLEWARE_KEY_PREFIX, key)
+    else:
+        return qs.__hash__()
+
+
 def country_template(path, country):
     """
     Wrapper function for select_template.
@@ -33,14 +43,8 @@ class CachedCountQuerySetWrapper(object):
 
     def __init__(self, queryset, key=None):
         self.queryset = queryset
-        self.key = self.make_key(key)
+        self.key = self.make_key(queryset, key)
 
-    def make_key(self, key):
-        if key:
-            return "%s.%s" % (settings.CACHE_MIDDLEWARE_KEY_PREFIX, key)
-        else:
-            return hash(str(self.queryset.query).decode('utf8'))
-    
     def __getattr__(self, name):
         """
         Hack to pretend this is actually a queryset object
@@ -80,12 +84,7 @@ def QuerySetCache(qs, key=None, cache_type='deafult'):
     You have been warned.
     """
 
-    def make_key(key):
-        if key:
-            return "%s.%s" % (settings.CACHE_MIDDLEWARE_KEY_PREFIX, key)
-        else:
-            return hash(str(qs.query).decode('utf8'))
-    key = make_key(key)
+    key = make_key(qs, key)
 
     def write_to_cache(file_path, qs):
         f = open(file_path, 'w')
