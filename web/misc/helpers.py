@@ -43,7 +43,7 @@ class CachedCountQuerySetWrapper(object):
 
     def __init__(self, queryset, key=None):
         self.queryset = queryset
-        self.key = self.make_key(queryset, key)
+        self.key = make_key(queryset, key)
 
     def __getattr__(self, name):
         """
@@ -58,7 +58,7 @@ class CachedCountQuerySetWrapper(object):
         return self.queryset[k.start:k.stop]
 
     def count(self):
-        key = self.make_key(self.key)
+        key = make_key(self.key)
         count = cache.get(key)
         if not count:
             count = self.queryset.count()
