@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import django
+from django.conf import settings
 from optparse import make_option
 from django.db import connection
 from django.core.management.base import BaseCommand, CommandError
@@ -21,7 +22,7 @@ class Command(BaseCommand):
     help = 'Normalizeation scripts for the farm data'
 
     def handle(self, **options):
-        back = backend.SearchBackend()
+
         
         if options['index_type'] == 'feature':
                     feature_index = site.get_index(Feature)
@@ -32,13 +33,13 @@ class Command(BaseCommand):
             location_index = site.get_index(Location)
             
             if options['country']:
-                index_data = Recipient.objects.select_related().filter(countrypayment=options['country'])
+                index_data = Recipient.objects.select_related().filter(countrypayment=options['country'], total__gt=1000).only('name', 'geo1', 'geo2', 'geo3', 'geo4', 'zipcode', 'countrypayment')
                 locations = Location.objects.filter(country=options['country'])
             else:
-                index_data = Recipient.objects.all().select_related()
-                locations = Location.objects.all().select_related()
-                
-
+                raise ValueError('Country is required')
+            
+            settings.HAYSTACK_XAPIAN_PATH = "%s-%s" % (settings.HAYSTACK_XAPIAN_PATH, options['country'])
+            back = backend.SearchBackend()
             print "now indexing Recipients"
             back.update(recipient_index, index_data)
 
