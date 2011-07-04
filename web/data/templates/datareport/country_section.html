@@ -1,0 +1,18 @@
+{% load humanize %}
+
+<h2>{{ country }}</h2>
+<h4>{{ country_count }} recipients in total</h4>
+<table>
+    <thead>
+        <th>Recipient Name</th>
+        <th>Total (All years)</th>
+    </thead>
+    <tbody>
+        {% for recipient in top10 %}
+        <tr>
+            <td>{{ recipient.name }}</td>
+            <td>&euro;{{ recipient.total|floatformat:0|intcomma }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
